@@ -1,0 +1,7 @@
+doc/*.html
+doc/html
+.DS_Store
+*~
+demos/html
+*.mex*
+*.orig
