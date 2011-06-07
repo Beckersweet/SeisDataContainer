@@ -1,7 +1,7 @@
-function x = distFileRead(name,dimensions,varargin)
-%DISTREAD  Reads in binary files as distributed arrays
+function x = DataRead(name,dimensions,varargin)
+%DATAREAD  Reads in binary files as distributed arrays
 %
-%   x = distFileRead(FILENAME,DIMENSIONS,PARAM1,VALUE1,PARAM2,VALUE2,...) reads
+%   x = DataRead(FILENAME,DIMENSIONS,PARAM1,VALUE1,PARAM2,VALUE2,...) reads
 %   the binary file specified by FILENAME directly into a distributed array
 %   x of size DIMENSIONS distributed over the last dimension. Addtional
 %   parameters include:

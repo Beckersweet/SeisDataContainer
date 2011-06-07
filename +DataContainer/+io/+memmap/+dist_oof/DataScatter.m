@@ -1,10 +1,11 @@
-function distFileScatter(filename,dimensions,tempdirname,varargin)
-%DISTREAD  Reads in binary files as distributed arrays
+function DataScatter(filename,dimensions,tempdirname,varargin)
+%DATASCATTER reads the binary file and saves the real data. The number of
+%                output files equals to the number of labs. 
 %
-%   x = distFileRead(FILENAME,DIMENSIONS,PARAM1,VALUE1,PARAM2,VALUE2,...) reads
-%   the binary file specified by FILENAME directly into a distributed array
-%   x of size DIMENSIONS distributed over the last dimension. Addtional
-%   parameters include:
+%   DataScatter(FILENAME,DIMENSIONS,TEMPDIRNAME,PARAM1,VALUE1,PARAM2,VALUE2,...)
+%   reads the binary file specified by FILENAME and stores the real data in 
+%   seperate directories depending on the number of labs. 
+%   Addtional parameters include:
 %   OFFSET    - An integer specifying the number of bits to skip from the 
 %               start of file before actual reading occurs, defaults to 0
 %   PRECISION - A string specifying the precision of one unit of data, 
@@ -67,54 +68,29 @@ end
 
 spmd
     % Preallocate local files
-    mkdir(tempdirname,int2str(labindex)); % Create local subfolder
+    tempdirname = [tempdirname int2str(labindex)];
+    mkdir(tempdirname); % Create local subfolder
     loclabwidth = labwidth(labindex);
     local_size  = [dimensions(1:end-2) loclabwidth dimensions(end)];
-    DataCon.io.allocFile(tempdirname,prod(local_size,8),8);
+    DataContainer.io.allocFile([tempdirname filesep 'real'],prod(local_size)*8,8);
         
     for o=1:dimensions(end)
-        % Reading slices
-%         % Account for column vectors % Not needed now since last
-%         dimension is trimmed
-%         if length(dimensions) == 2 && dimensions(2) == 1
-%             % Setup local chunk size
-%             global_codist   = codistributor1d(1,[],dimensions);
-%             partition       = global_codist.Partition;
-%             local_size      = [partition(labindex) 1];
-% 
-%             % Setup offsets
-%             global_part     = codistributed(1:dimensions(end));
-%             global_indices  = globalIndices(global_part,1,labindex);
-%             elements_offset = global_indices(1) - 1;
-%             local_offset    = offset + elements_offset*bytesize;
-% 
-%         else % Multivectors
-%             % Setup local chunk size
-%             global_codist   = codistributor1d(length(dimensions),[],dimensions);
-%             partition       = global_codist.Partition;
-%             local_size      = [dimensions(1:end-1) partition(labindex)];
-% 
-%             % Setup offsets
-%             global_part     = codistributed(1:dimensions(end-1));
-%             global_indices  = globalIndices(global_part,2,labindex);
-%             elements_offset = prod([dimensions(1:end-2) global_indices(1) - 1]);
-%             local_offset    = offset*o + elements_offset*bytesize;
-%         end
-
         % Setup global memmapfile
-        outcoreoffset = (offset + dimensions(1:end-1))*(o-1)*bytesize;
+        outcoreoffset = offset + prod(dimensions(1:end-1))*(o-1)*bytesize;
         paroffset     = dimensions(1:end-2)*sum(labwidth(1:labindex-1))...
                          *bytesize;
         M = memmapfile(filename,'format',{precision,[local_size(1:end-1) 1],...
-            'x'}, 'offset',outcoreoffset+paroffset,'repeat',repeat);
-                
+            'x'},'offset',outcoreoffset+paroffset,'repeat',repeat);
+             
         % Setup memmap of local file
-        locoffset     = local_size(1:end-1)*(o-1)*8;
-        MW = memmapfile([tempdirname filesep 'real'],'format',...
-            {'double',local_size,'x'}, 'offset',locoffset,'writable',...
-            true, 'repeat',repeat);
+        locoffset     = prod(local_size(1:end-1))*(o-1)*8;
+        MW = memmapfile(fullfile(tempdirname,'real'),'format',...
+            {'double',local_size,'x'},'offset',locoffset,'writable',...
+            true,'repeat',repeat);
         
         % Read global data and Write local data
-        MW.data(1).x = double(M.data(1).x);
+        numel(MW.data(1).x)
+        numel(double(M.data(1).x))
+        MW.data(1).x  = double(M.data(1).x);
     end
 end % spmd

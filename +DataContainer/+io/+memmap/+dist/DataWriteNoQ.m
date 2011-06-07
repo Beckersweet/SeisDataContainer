@@ -1,7 +1,7 @@
-function distFileWriteNoQ(name,x,varargin)
-%DISTWRITE  Write distributed data to binary file
+function DataWriteNoQ(name,x,varargin)
+%DATAWRITENOQ  Write distributed data to binary file
 %
-%   x = distFileWrite(FILENAME,DATA,PARAM1,VALUE1,PARAM2,VALUE2,...) writes
+%   x = DataWriteNoQ(FILENAME,DATA,PARAM1,VALUE1,PARAM2,VALUE2,...) writes
 %   the distributed data DATA into file FILENAME. Addtional
 %   parameters include:
 %   OFFSET    - An integer specifying the number of bits to skip from the 

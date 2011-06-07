@@ -1,5 +1,5 @@
-function [n,d,o,l,u,complex] = distHeaderRead( file_name )
-%DISTHEADERREAD Reads the data from xml file
+function [n,d,o,l,u,complex] = HeaderRead( file_name )
+%HEADERREAD Reads the data from xml file
 
 assert(ischar(file_name), 'file_name must be a string');
 
