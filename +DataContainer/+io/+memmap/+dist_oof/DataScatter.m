@@ -71,8 +71,8 @@ spmd
     tempdirname = [tempdirname int2str(labindex)];
     mkdir(tempdirname); % Create local subfolder
     loclabwidth = labwidth(labindex);
-    local_size  = [dimensions(1:end-2) loclabwidth dimensions(end)];
-    DataContainer.io.allocFile([tempdirname filesep 'real'],prod(local_size)*8,8);
+    local_size  = [dimensions(1:end-2) loclabwidth 1];
+    DataContainer.io.allocFile([tempdirname filesep 'real'],prod(local_size)*dimensions(end)*8,8);
         
     for o=1:dimensions(end)
         % Setup global memmapfile
@@ -89,8 +89,6 @@ spmd
             true,'repeat',repeat);
         
         % Read global data and Write local data
-        numel(MW.data(1).x)
-        numel(double(M.data(1).x))
         MW.data(1).x  = double(M.data(1).x);
     end
 end % spmd
