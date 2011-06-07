@@ -62,7 +62,7 @@ switch precision
 end
 
 % Preallocate File
-DataCon.io.allocFile(filename,prod(size(x)),bytesize);
+DataContainer.io.allocFile(filename,prod(size(x)),bytesize);
 
 spmd
     % Setup local chunk size
