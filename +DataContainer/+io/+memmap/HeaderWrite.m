@@ -1,5 +1,5 @@
-function distHeaderWrite(file_name, n, d, o, l, u, complex)
-% distHeaderWrite writes header to xml file
+function HeaderWrite(file_name, n, d, o, l, u, complex)
+% HeaderWrite writes header to xml file
 % Complex is 1 when our data is complex and 0 if our data is real
 
 % Check file_name
