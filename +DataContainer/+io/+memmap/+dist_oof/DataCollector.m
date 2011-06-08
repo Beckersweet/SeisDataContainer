@@ -59,7 +59,7 @@ end
 
 % Preallocate collector output file
 global_size = dimensions(1:end);
-DataCon.io.allocFile(dirname,prod([global_size 8]),8);
+DataContainer.io.allocFile(dirname,prod([global_size 8]),8);
 
 spmd % reading all real files 
     for o=1:dimensions(end)
@@ -71,7 +71,7 @@ spmd % reading all real files
             'format',{precision,[global_size(1:end) 1],'x'}, 'offset',...
             outcoreoffset+paroffset,'repeat',repeat);
 
-        % Setup memmap of local file
+        % Setup memmap of global file
         globoffset     = global_size(1:end)*o*8;
         MW = memmapfile(fullfile(dirname,'collected'),'format',...
             {'double',global_size,'x'},'offset',globoffset,'writable',...
