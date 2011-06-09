@@ -8,8 +8,7 @@ function DataWrite(dirname,filename,x,varargin)
 %               defaults to 'double' (8 bits)
 %               Supported precisions: 'double', 'single'
 %
-%   Warning: If the specified file already exist,
-%            it will be overwritten.
+%   Warning: If the specified file must exist,
 assert(ischar(dirname), 'directory name must be a string')
 assert(ischar(filename), 'file name must be a string')
 assert(isreal(x), 'data must be real')
@@ -37,8 +36,8 @@ switch precision
         error('Unsupported precision');
 end
 
-% Preallocate File
-DataContainer.io.allocFile(filename,prod(size(x)),bytesize);
+% Check File
+assert(exist(filename)==2,'Fatal error: file %s does not exist',filename);
 
 % Setup memmapfile
 M = memmapfile(filename,...

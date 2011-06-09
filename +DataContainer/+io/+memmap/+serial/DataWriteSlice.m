@@ -8,8 +8,7 @@ function DataWriteSlice(dirname,filename,dimensions,slice,x,varargin)
 %               defaults to 'double' (8 bits)
 %               Supported precisions: 'double', 'single'
 %
-%   Warning: If the specified file already exist,
-%            it will be overwritten.
+%   Warning: If the specified file must exist,
 assert(ischar(dirname), 'directory name must be a string')
 assert(ischar(filename), 'file name must be a string')
 assert(isvector(dimensions), 'dimensions must be a vector')
