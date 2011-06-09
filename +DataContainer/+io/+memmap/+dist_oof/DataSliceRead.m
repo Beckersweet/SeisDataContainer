@@ -1,7 +1,7 @@
-function DataSliceRead(filename,dimensions,tempdirname,sliceIndex,varargin)
-%DATASLICEREAD Reads the specified slice and writes to binary file(s)
+function DataSliceRead(filename,dimensions,sliceIndex,varargin)
+%DATASLICEREAD Reads the specified slice and writes to a binary file
 %
-%   DataSliceRead(FILENAME,DIMENSIONS,TEMPDIRNAME,SLICEINDEX,PARAM1,VALUE1,PARAM2,VALUE2,...)
+%   DataSliceRead(FILENAME,DIMENSIONS,SLICEINDEX,PARAM1,VALUE1,PARAM2,VALUE2,...)
 %   reads the binary file specified by FILENAME and stores the real data in 
 %   seperate directories depending on the number of labs. 
 %   Addtional parameters include:
@@ -47,48 +47,13 @@ for i = 1:2:length(varargin)
     end
 end
 
-% Set bytesize
-switch precision
-    case 'single'
-        bytesize = 4;
-    case 'double'
-        bytesize = 8;
-    otherwise
-        error('Unsupported precision');
-end
-
-% Setup labwidth
-labwidth = pSPOT.utils.defaultDistribution(dimensions(sliceIndex-1));
-
-% Trimming empty last dimensions
-while(dimensions(sliceIndex) == 1)
-    dimensions = dimensions(1:sliceIndex-1);
-end
-
-spmd
-    % Preallocate local files
-    mkdir(tempdirname,int2str(labindex)); % Create local subfolder
-    loclabwidth = labwidth(labindex);
-    local_size  = [dimensions(1:sliceIndex-2) loclabwidth dimensions(sliceIndex)];
-    DataCon.io.allocFile(tempdirname,prod(local_size,8),8);
-        
-    for o=1:dimensions(sliceIndex)
-        % Setup global memmapfile
-        outcoreoffset = (offset + dimensions(1:sliceIndex-1))*(o-1)*bytesize;
-        paroffset     = dimensions(1:sliceIndex-2)*sum(labwidth(1:labindex-1))...
-                         *bytesize;
-        M = memmapfile(filename,'format',{precision,[local_size(1:sliceIndex-1) 1],...
-            'x'}, 'offset',outcoreoffset+paroffset,'repeat',repeat);
-                
-        % Setup memmap of local file
-        locoffset     = local_size(1:sliceIndex-1)*(o-1)*8;
-        MW = memmapfile(fullfile(tempdirname,['slice' sliceIndex]),'format',...
-            {'double',local_size,'x'},'offset',locoffset,'writable',...
-            true,'repeat',repeat);
-        
-        % Read global data and Write local data
-        MW.data(1).x  = double(M.data(1).x);
-    end
-end % spmd
+x = DataContainer.io.memmap.dist.DataRead(filename,dimensions);
+l = length(x);
+% Makes the mask for the colons
+y = repmat({':'},1,(l-1));
+% Gets the slice
+x = x(y{:},l-1);
+name = ['slice' int2str(sliceIndex)];
+DataContainer.io.memmap.dist.DataWrite(name,x);
 
 end
