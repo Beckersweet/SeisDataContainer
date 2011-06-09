@@ -11,10 +11,13 @@ function [tmpdir, toptmpdir] = getTmpDir(varargin)
 %   - TMPDIR: temporary directory on master process
 %   - TOPTMPDIR: detected parent directory of TMPDIR
 %
+    error(nargchk(0, 1, nargin, 'struct'));
+
     toptmpdir = '/tmp';
     envtmpdir = getenv('TMPDIR');
 
-    if nargin>0 & isstr(varargin{1})
+    if nargin > 0
+        assert(ischar(varargin{1}),'Fatal error: argument is not a string');
         toptmpdir = varargin{1};
     elseif length(envtmpdir)>0
         toptmpdir = envtmpdir;
@@ -22,5 +25,5 @@ function [tmpdir, toptmpdir] = getTmpDir(varargin)
 
     tmpdir = tempname(toptmpdir);
     status = mkdir(tmpdir);
-    assert(status,'Fatal error while creating directory %s',tmpdir)
+    assert(status,'Fatal error while creating directory %s',tmpdir);
 end

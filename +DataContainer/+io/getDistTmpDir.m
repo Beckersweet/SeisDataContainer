@@ -15,9 +15,12 @@ function [tmpdir, tmpdirs] = getDistTmpDir(varargin)
 %   Note: getDistTmpDir will still work if matlabpool is not called
 %         except TMPDIRS will be empty.
 %
-    tmpdirs=Composite();
+    error(nargchk(0, 1, nargin, 'struct'));
 
-    if nargin>0 & isstr(varargin{1})
+    tmpdirs = Composite();
+
+    if nargin > 0
+        assert(ischar(varargin{1}),'Fatal error: argument is not a string');
         [tmpdir,dtd] = DataContainer.io.getTmpDir(varargin{1});
     else
         [tmpdir,dtd] = DataContainer.io.getTmpDir();
@@ -25,7 +28,9 @@ function [tmpdir, tmpdirs] = getDistTmpDir(varargin)
 
     if matlabpool('size') > 0
         spmd
-            tmpdirs=DataContainer.io.getTmpDir(dtd);
+            tmpdirs = DataContainer.io.getTmpDir(dtd);
         end
+    else
+    	warning('Warning: called outside of matlabpool/batch call');
     end
 end
