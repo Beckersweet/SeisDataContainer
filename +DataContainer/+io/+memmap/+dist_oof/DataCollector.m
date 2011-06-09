@@ -56,28 +56,31 @@ switch precision
         error('Unsupported precision');
 end
 
+% Setup labwidth
+labwidth = pSPOT.utils.defaultDistribution(dimensions(end-1));
 
-% Preallocate collector output file
-global_size = dimensions(1:end);
-DataContainer.io.allocFile(dirname,prod([global_size 8]),8);
-
-spmd % reading all real files 
+DataContainer.io.allocFile(filename,prod(dimensions)*8*numlabs,bytesize);
+%prod(local_size)*dimensions(end)*8
+spmd    
+    %loclabwidth = labwidth(labindex);
+    local_size = dimensions(1:end);
+    
     for o=1:dimensions(end)
         % Setup global memmapfile
-        outcoreoffset = offset + prod(dimensions(1:end))*o*bytesize;
-        paroffset     = dimensions(1:end-1)*sum(labwidth(1:labindex-1))...
+        outcoreoffset = offset + prod(dimensions(1:end-1))*(o-1)*bytesize;
+        paroffset     = dimensions(1:end-2)*sum(labwidth(1:labindex-1))...
                          *bytesize;
         M = memmapfile(fullfile(dirname,int2str(labindex),'real'),...
-            'format',{precision,[global_size(1:end) 1],'x'}, 'offset',...
-            outcoreoffset+paroffset,'repeat',repeat);
-
-        % Setup memmap of global file
-        globoffset     = global_size(1:end)*o*8;
-        MW = memmapfile(fullfile(dirname,'collected'),'format',...
-            {'double',global_size,'x'},'offset',globoffset,'writable',...
+            'format',{precision,local_size,'x'},...
+            'offset',outcoreoffset+paroffset,'repeat',repeat);
+             
+        % Setup memmap of local file
+        locoffset     = prod(local_size(1:end-1))*(o-1)*8;
+        MW = memmapfile(fullfile(dirname,filename),'format',...
+            {'double',local_size,'x'},'offset',locoffset,'writable',...
             true,'repeat',repeat);
-
-        % Read global data and Write global data
-        MW.data(1).x = double(M.data(1).x);
+        
+        % Read global data and Write local data
+        MW.data(1).x  = double(M.data(1).x);
     end
 end
