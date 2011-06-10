@@ -91,3 +91,4 @@ spmd
         MW.data(1).x  = double(M.data(1).x);
     end
 end % spmd
+end % function

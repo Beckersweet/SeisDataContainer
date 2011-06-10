@@ -1,4 +1,4 @@
-function DataSliceRead(filename,dimensions,sliceIndex,varargin)
+function DataSliceRead(filename,dimensions,sliceIndex,tempdirname,varargin)
 %DATASLICEREAD Reads the specified slice and writes to a binary file
 %
 %   DataSliceRead(FILENAME,DIMENSIONS,SLICEINDEX,PARAM1,VALUE1,PARAM2,VALUE2,...)
@@ -20,7 +20,7 @@ function DataSliceRead(filename,dimensions,sliceIndex,varargin)
 precision = 'double';
 repeat    = inf;
 offset    = 0;
-
+name      = ['slice' int2str(sliceIndex)];
 % Preprocess input arguments
 error(nargchk(1, nargin, nargin, 'struct'));
 
@@ -47,13 +47,47 @@ for i = 1:2:length(varargin)
     end
 end
 
-x = DataContainer.io.memmap.dist.DataRead(filename,dimensions);
-l = length(x);
-% Makes the mask for the colons
-y = repmat({':'},1,(l-1));
-% Gets the slice
-x = x(y{:},l-1);
-name = ['slice' int2str(sliceIndex)];
-DataContainer.io.memmap.dist.DataWrite(name,x);
-
+% Set bytesize
+switch precision
+    case 'single'
+        bytesize = 4;
+    case 'double'
+        bytesize = 8;
+    otherwise
+        error('Unsupported precision');
 end
+
+% The following commented code gives us the nth slice as a distributed array
+% x = DataContainer.io.memmap.dist.DataRead(filename,dimensions);
+% l = length(x);
+% % Makes the mask for the colons
+% y = repmat({':'},1,(l-1));
+% % Gets the slice
+% x = x(y{:},l-1);
+% end
+
+% Setup labwidth
+labwidth = pSPOT.utils.defaultDistribution(dimensions(end-1));
+
+spmd
+    tempdirname = [tempdirname int2str(labindex)];
+    mkdir(tempdirname);
+    loclabwidth = labwidth(labindex);
+    local_size  = [dimensions(1:end-1) loclabwidth];
+    DataContainer.io.allocFile([tempdirname filesep name],prod(local_size)*8,8);
+    % Setup global memmapfile
+    outcoreoffset = offset + prod(dimensions(1:end-1))*(sliceIndex-1)*bytesize;
+    paroffset     = dimensions(1:end-2)*sum(labwidth(1:labindex-1))*bytesize;
+    M = memmapfile(filename,'format',{precision,local_size,'x'},...
+        'offset',outcoreoffset+paroffset,'repeat',repeat);
+         
+    % Setup memmap of local file
+    locoffset     = prod(local_size(1:end-1))*(sliceIndex)*8;
+    MW = memmapfile(fullfile(tempdirname,name),'format',...
+        {'double',local_size,'x'},'offset',locoffset,'writable',...
+        true,'repeat',repeat);
+    
+    % Read global data and Write local data
+    MW.data(1).x  = double(M.data(1).x);
+end % spmd
+end % function
