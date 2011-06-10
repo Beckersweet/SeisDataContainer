@@ -12,7 +12,7 @@ function DataWriteSlice(dirname,filename,dimensions,slice,x,varargin)
 assert(ischar(dirname), 'directory name must be a string')
 assert(ischar(filename), 'file name must be a string')
 assert(isvector(dimensions), 'dimensions must be a vector')
-assert(isnumeric(slice), 'slice index must be numeric')
+assert(isfloat(slice), 'slice index must be float')
 assert(isreal(x), 'data must be real')
 assert(~isdistributed(x), 'data must not be distributed')
 

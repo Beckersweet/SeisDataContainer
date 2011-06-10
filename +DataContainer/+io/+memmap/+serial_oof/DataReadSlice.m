@@ -11,7 +11,7 @@ function x = DataReadSlice(dirname,filename,dimensions,slice,file_precision,vara
 assert(ischar(dirname), 'directory name must be a string')
 assert(ischar(filename), 'file name must be a string')
 assert(isvector(dimensions), 'dimensions must be a vector')
-assert(isnumeric(slice), 'slice index must be numeric')
+assert(isfloat(slice), 'slice index must be float')
 assert(ischar(file_precision), 'file_precision name must be a string')
 
 % Setup variables
