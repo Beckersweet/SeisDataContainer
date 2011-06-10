@@ -1,4 +1,4 @@
-function HeaderWrite(file_name, n, d, o, l, u, complex)
+function HeaderWrite(file_name, n, d, o, l, u, precision, complex)
 % HeaderWrite writes header to xml file
 % Complex is 1 when our data is complex and 0 if our data is real
 
@@ -6,14 +6,17 @@ function HeaderWrite(file_name, n, d, o, l, u, complex)
 assert(ischar(file_name), 'file_name must be a string');
 
 % Check number of arguments
-assert(nargin >= 2 || nargin <= 7,'# of input arguments should be between 2 and 7');
+assert(nargin >= 2 || nargin <= 8,'# of input arguments should be between 2 and 7');
 
 dims = length(n);
 
-% Set the default values in case we have less than 7 arguments
-if(nargin < 7)
+% Set the default values in case we have less than 8 arguments
+if(nargin < 8)
     complex = 0;
-    if(nargin < 5)
+    if(nargin < 7)
+        precision = 'double';
+    end
+    if(nargin < 6)
         for i=1:dims
         u(i) = {['u',int2str(i)]};
         end
@@ -37,6 +40,9 @@ end % if
 
 % Check complex
 assert(complex == 0 || complex == 1,'complex should be either 0 or 1');
+
+% Check precision
+assert(ischar(precision), 'precision must be a string');
 
 docNode = com.mathworks.xml.XMLUtils.createDocument... 
     ('memmap');
@@ -97,6 +103,12 @@ docRootNode.appendChild(thisElement);
 thisElement = docNode.createElement('complex');
 thisElement.appendChild... 
     (docNode.createTextNode(sprintf('%i',complex)));
+docRootNode.appendChild(thisElement);
+
+% Writing precision to xml
+thisElement = docNode.createElement('precision');
+thisElement.appendChild... 
+    (docNode.createTextNode(sprintf('%s',precision)));
 docRootNode.appendChild(thisElement);
 
 % Setting the xml file name

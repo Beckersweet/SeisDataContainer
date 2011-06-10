@@ -1,4 +1,4 @@
-function [n,d,o,l,u,complex] = HeaderRead( file_name )
+function [n,d,o,l,u,precision,complex] = HeaderRead( file_name )
 %HEADERREAD Reads the data from xml file
 
 assert(ischar(file_name), 'file_name must be a string');
@@ -22,8 +22,10 @@ l = regexp(l, ' ', 'split');
 u =  char(xDoc.getElementsByTagName('u').item(0).getFirstChild.getData);
 u = regexp(u, ' ', 'split');
 
-%complex
+% precision
+precision = char(xDoc.getElementsByTagName('precision').item(0).getFirstChild.getData);
+
+% complex
 complex = eval(char(xDoc.getElementsByTagName('complex').item(0).getFirstChild.getData));
 
 end
-
