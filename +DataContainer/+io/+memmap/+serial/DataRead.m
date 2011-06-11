@@ -30,19 +30,12 @@ assert(exist(filename)==2,'Fatal error: file %s does not exist',filename);
 % Setup memmapfile
 M = memmapfile(filename,...
             'format',{file_precision,dimensions,'x'},...
-	    'writable', true);
+	    'writable', false);
         
 % Read local data
 x = M.data(1).x;
         
 % swap x_precision
-switch x_precision
-    case 'single'
-        if ~isa(x,'single'); x=single(x); end;
-    case 'double'
-        if ~isa(x,'double'); x=double(x); end;
-    otherwise
-        error('Unsupported precision for X');
-end
+x = DataContainer.utils.switchPrecision(x,x_precision);
 
 end

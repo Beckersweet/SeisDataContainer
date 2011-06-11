@@ -18,7 +18,7 @@ precision = DataContainer.utils.getPrecision(x);
 
 % Preprocess input arguments
 error(nargchk(2, 3, nargin, 'struct'));
-if nargin>3
+if nargin>2
     assert(ischar(varargin{1}),'Fatal error: precision is not a string?');
     precision = varargin{1};
 end;

@@ -33,14 +33,4 @@ if imaginary
     x=complex(x,dummy);
 end
  
-% swap x_precision
-switch x_precision
-    case 'single'
-        if ~isa(x,'single'); x=single(x); end;
-    case 'double'
-        if ~isa(x,'double'); x=double(x); end;
-    otherwise
-        error('Unsupported precision for X');
-end
-
 end

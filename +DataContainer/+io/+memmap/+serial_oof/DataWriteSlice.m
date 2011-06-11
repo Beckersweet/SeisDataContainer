@@ -12,15 +12,15 @@ function DataWriteSlice(dirname,filename,dimensions,slice,x,varargin)
 assert(ischar(dirname), 'directory name must be a string')
 assert(ischar(filename), 'file name must be a string')
 assert(isvector(dimensions), 'dimensions must be a vector')
-assert(isfloat(slice), 'slice index must be float')
+assert(isvector(slice), 'slice index must be a vector')
 assert(isreal(x), 'data must be real')
 assert(~isdistributed(x), 'data must not be distributed')
 
 % Setup variables
 precision = 'double';
-slice_dims = dimensions(1:end-1);
+[slice_dims, slice_offset] =...
+    DataContainer.utils.getSliceInfo(dimensions,slice);
 assert(prod(slice_dims)==prod(size(x)))
-slice_offset = prod(slice_dims)*(slice-1);
 
 % Preprocess input arguments
 error(nargchk(5, 6, nargin, 'struct'));
@@ -32,14 +32,7 @@ end;
 
 % Set bytesize
 bytesize = DataContainer.utils.getByteSize(precision);
-switch precision
-    case 'single'
-        if ~isa(x,'single'); x=single(x); end;
-    case 'double'
-	if ~isa(x,'double'); x=double(x); end;
-    otherwise
-        error('Unsupported precision');
-end
+x = DataContainer.utils.switchPrecision(x,precision);
 slice_byte_offset = slice_offset*bytesize;
 
 % Check File

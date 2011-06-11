@@ -11,13 +11,13 @@ function x = DataReadSlice(dirname,filename,dimensions,slice,file_precision,vara
 assert(ischar(dirname), 'directory name must be a string')
 assert(ischar(filename), 'file name must be a string')
 assert(isvector(dimensions), 'dimensions must be a vector')
-assert(isfloat(slice), 'slice index must be float')
+assert(isvector(slice), 'slice index must be a vector')
 assert(ischar(file_precision), 'file_precision name must be a string')
 
 % Setup variables
 x_precision = 'double';
-slice_dims = dimensions(1:end-1);
-slice_offset = prod(slice_dims)*(slice-1);
+[slice_dims, slice_offset] =...
+    DataContainer.utils.getSliceInfo(dimensions,slice);
 
 % Preprocess input arguments
 error(nargchk(5, 6, nargin, 'struct'));
@@ -38,19 +38,12 @@ assert(exist(filename)==2,'Fatal error: file %s does not exist',filename);
 M = memmapfile(filename,...
             'format',{file_precision,slice_dims,'x'},...
 	    'offset',slice_byte_offset,...
-	    'writable', true);
+	    'writable', false);
         
 % Read local data
 x = M.data(1).x;
         
 % swap x_precision
-switch x_precision
-    case 'single'
-        if ~isa(x,'single'); x=single(x); end;
-    case 'double'
-        if ~isa(x,'double'); x=double(x); end;
-    otherwise
-        error('Unsupported precision for X');
-end
+x = DataContainer.utils.switchPrecision(x,x_precision);
 
 end

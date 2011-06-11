@@ -25,19 +25,12 @@ if nargin>3
     precision = varargin{1};
 end;
 
-% Set bytesize
-bytesize = DataContainer.utils.getByteSize(precision);
-switch precision
-    case 'single'
-        if ~isa(x,'single'); x=single(x); end;
-    case 'double'
-	if ~isa(x,'double'); x=double(x); end;
-    otherwise
-        error('Unsupported precision');
-end
-
 % Check File
 assert(exist(filename)==2,'Fatal error: file %s does not exist',filename);
+
+% Set bytesize
+bytesize = DataContainer.utils.getByteSize(precision);
+x = DataContainer.utils.switchPrecision(x,precision);
 
 % Setup memmapfile
 M = memmapfile(filename,...
