@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 function header = basicHeaderStruct(xsize,xprecision,xcomplex,xdistributed)
-=======
-function header = minimalHeaderStruct(xsize,xprecision,xcomplex,xdistributed)
->>>>>>> ea79f1c65b83917a20fd5cd3f1df7cba8bc28bea
     header = struct();
     dims = length(xsize);
 
