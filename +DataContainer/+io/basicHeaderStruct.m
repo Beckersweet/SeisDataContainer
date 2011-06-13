@@ -1,4 +1,4 @@
-function header = emptyHeaderStruct(xsize,xprecision,xcomplex,xdistributed)
+function header = basicHeaderStruct(xsize,xprecision,xcomplex,xdistributed)
     header = struct();
     dims = length(xsize);
 

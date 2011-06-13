@@ -4,13 +4,23 @@ function precision = getPrecision(x)
 %   PRECISION = getPrecision(X)
 %           Supported precisions: 'double', 'single'
 %
-    assert(isfloat(x), 'data must be float')
+    assert(isfloat(x) | isdistributed(x), 'data must be float or distributed')
 
-    if isa(x,'single')
-        precision = 'single';
-    elseif isa(x,'double')
-        precision = 'double';
+    if isdistributed(x)
+        if isaUnderlying(x,'single')
+            precision = 'single';
+        elseif isaUnderlying(x,'double')
+            precision = 'double';
+        else
+            error('Unsupported precision');
+        end
     else
-        error('Unsupported precision');
+        if isa(x,'single')
+            precision = 'single';
+        elseif isa(x,'double')
+            precision = 'double';
+        else
+            error('Unsupported precision');
+        end
     end
 end
