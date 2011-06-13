@@ -1,42 +1,21 @@
-function HeaderWrite(file_name, n, d, o, l, u, precision, complex)
-% HeaderWrite writes header to xml file
-% Complex is 1 when our data is complex and 0 if our data is real
+function HeaderWrite(file_name, header)
+% HEADERWRITE writes header to xml file
+%
+% HeaderWrite(file_name, header) writes header to xml file. header is a 
+% struct which is defined using minimalHeaderStruct
 
 % Check file_name
 assert(ischar(file_name), 'file_name must be a string');
 
-% Check number of arguments
-assert(nargin >= 2 || nargin <= 8,'# of input arguments should be between 2 and 7');
-
-dims = length(n);
-
-% Set the default values in case we have less than 8 arguments
-if(nargin < 8)
-    complex = 0;
-    if(nargin < 7)
-        precision = 'double';
-    end
-    if(nargin < 6)
-        for i=1:dims
-        u(i) = {['u',int2str(i)]};
-        end
-    end
-    if(nargin < 5)
-        for i=1:dims
-        l(i) = {['l',int2str(i)]};
-        end
-    end
-    if(nargin < 4)
-        for i=1:dims
-        o(i) = 0;
-        end
-    end
-    if(nargin < 3)
-        for i=1:dims
-        d(i) = 1;
-        end
-    end
-end % if
+dims        = header.dims;
+n           = header.size;
+d           = header.interval;
+o           = header.offset;
+l           = header.label;
+u           = header.unit;
+precision   = header.precision;
+complex     = header.complex;
+distributed = header.distributed;
 
 % Check complex
 assert(complex == 0 || complex == 1,'complex should be either 0 or 1');
@@ -111,9 +90,16 @@ thisElement.appendChild...
     (docNode.createTextNode(sprintf('%s',precision)));
 docRootNode.appendChild(thisElement);
 
+% Writing distributed to xml
+thisElement = docNode.createElement('distributed');
+thisElement.appendChild... 
+    (docNode.createTextNode(sprintf('%i',distributed)));
+docRootNode.appendChild(thisElement);
+
+
 % Setting the xml file name
 xmlFileName = [file_name,'.xml'];
 xmlwrite(xmlFileName,docNode);
-%type(xmlFileName);
+type(xmlFileName);
 
 end % function

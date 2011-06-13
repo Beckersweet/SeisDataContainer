@@ -1,4 +1,4 @@
-function [n,d,o,l,u,precision,complex] = HeaderRead( file_name )
+function header = HeaderRead( file_name )
 %HEADERREAD Reads the data from xml file
 
 assert(ischar(file_name), 'file_name must be a string');
@@ -27,5 +27,14 @@ precision = char(xDoc.getElementsByTagName('precision').item(0).getFirstChild.ge
 
 % complex
 complex = eval(char(xDoc.getElementsByTagName('complex').item(0).getFirstChild.getData));
+
+% distributed
+distributed = eval(char(xDoc.getElementsByTagName('distributed').item(0).getFirstChild.getData));
+
+header = DataContainer.io.minimalHeaderStruct(n, precision, complex, distributed);
+header.label    = l;
+header.unit     = u;
+header.offset   = o;
+header.interval = d;
 
 end
