@@ -1,7 +1,7 @@
-function DataWriteSlice(dirname,filename,dimensions,slice,x,varargin)
+function DataWriteLeftChunk(dirname,filename,dimensions,range,slice,x,varargin)
 %DATAWRITE  Write serial data slice to binary file
 %
-%   DataWrite(DIRNAME,FILENAME,DIMENSION,SLICE,DATA,FILE_PRECISION) writes
+%   DataWrite(DIRNAME,FILENAME,DIMENSION,range,SLICE,DATA,FILE_PRECISION) writes
 %   the slice (from last dimension) of the real serial array X into file DIRNAME/FILENAME.
 %   Addtional parameter:
 %   FILE_PRECISION - An optional string specifying the precision of one unit of data,
@@ -18,14 +18,14 @@ assert(~isdistributed(x), 'data must not be distributed')
 
 % Setup variables
 precision = 'double';
-[slice_dims, slice_offset] =...
-    DataContainer.utils.getSliceInfo(dimensions,slice);
-assert(prod(slice_dims)==prod(size(x)))
+[chunk_dims, chunk_offset] =...
+    DataContainer.utils.getLeftChunkInfo(dimensions,range,slice);
+assert(prod(chunk_dims)==prod(size(x)),'X array does not match the given dimensions')
 
 % Preprocess input arguments
-error(nargchk(5, 6, nargin, 'struct'));
+error(nargchk(6, 7, nargin, 'struct'));
 filename=fullfile(dirname,filename);
-if nargin>5
+if nargin>6
     assert(ischar(varargin{1}),'Fatal error: precision is not a string?');
     precision = varargin{1};
 end;
@@ -33,7 +33,7 @@ end;
 % Set bytesize
 bytesize = DataContainer.utils.getByteSize(precision);
 x = DataContainer.utils.switchPrecision(x,precision);
-slice_byte_offset = slice_offset*bytesize;
+chunk_byte_offset = chunk_offset*bytesize;
 
 % Check File
 assert(exist(filename)==2,'Fatal error: file %s does not exist',filename);
@@ -41,7 +41,7 @@ assert(exist(filename)==2,'Fatal error: file %s does not exist',filename);
 % Setup memmapfile
 M = memmapfile(filename,...
             'format',{precision,size(x),'x'},...
-	    'offset',slice_byte_offset,...
+	    'offset',chunk_byte_offset,...
 	    'writable', true);
         
 % Write local data
