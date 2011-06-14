@@ -73,20 +73,18 @@ spmd
     tempdirname = [tempdirname int2str(labindex)];
     mkdir(tempdirname);
     loclabwidth = labwidth(labindex);
-    local_size  = [dimensions(1:end-1) loclabwidth];
-    DataContainer.io.allocFile([tempdirname filesep name],prod(local_size)*8,8);
+    local_size  = [dimensions(1:end-2) loclabwidth];
+    DataContainer.io.allocFile([tempdirname filesep name],prod(local_size(1:end-1))*8,8);
     % Setup global memmapfile
     outcoreoffset = offset + prod(dimensions(1:end-1))*(sliceIndex-1)*bytesize;
-    paroffset     = dimensions(1:end-2)*sum(labwidth(1:labindex-1))*bytesize;
+    paroffset     = prod(dimensions(1:end-2))*sum(labwidth(1:labindex-1))*bytesize;
     M = memmapfile(filename,'format',{precision,local_size,'x'},...
         'offset',outcoreoffset+paroffset,'repeat',repeat);
-         
     % Setup memmap of local file
-    locoffset     = prod(local_size(1:end-1))*(sliceIndex)*8;
+    locoffset     = prod(local_size(1:end-1))*8-(8*dimensions(end));
     MW = memmapfile(fullfile(tempdirname,name),'format',...
         {'double',local_size,'x'},'offset',locoffset,'writable',...
         true,'repeat',repeat);
-    
     % Read global data and Write local data
     MW.data(1).x  = double(M.data(1).x);
 end % spmd

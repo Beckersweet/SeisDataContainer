@@ -100,6 +100,6 @@ docRootNode.appendChild(thisElement);
 % Setting the xml file name
 xmlFileName = [file_name,'.xml'];
 xmlwrite(xmlFileName,docNode);
-type(xmlFileName);
+%type(xmlFileName);
 
 end % function
