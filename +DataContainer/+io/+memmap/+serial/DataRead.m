@@ -29,8 +29,8 @@ assert(exist(filename)==2,'Fatal error: file %s does not exist',filename);
 
 % Setup memmapfile
 M = memmapfile(filename,...
-            'format',{file_precision,dimensions,'x'},...
-	    'writable', false);
+        'format',{file_precision,dimensions,'x'},...
+        'writable', false);
         
 % Read local data
 x = M.data(1).x;

@@ -11,7 +11,7 @@ function x = switchPrecision(x,precision)
         case 'single'
             if ~isa(x,'single'); x=single(x); end;
         case 'double'
-	    if ~isa(x,'double'); x=double(x); end;
+        if ~isa(x,'double'); x=double(x); end;
         otherwise
             error('Unsupported precision');
     end

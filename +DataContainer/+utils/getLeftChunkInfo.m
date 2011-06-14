@@ -28,8 +28,8 @@ function [cdims, offset] = getLeftChunkInfo(dimensions,range,slice)
     % chunk offset
     for i=1:l_s
         assert(0<cslice(i)&cslice(i)<=rdims(i),...
-	    'Fatal error: slice index %d out of range(1,%d)',cslice(i),rdims(i))
-	ldims = dimensions(1:l_sd+i-1);
-	offset = offset + prod(ldims)*(cslice(i)-1);
+        'Fatal error: slice index %d out of range(1,%d)',cslice(i),rdims(i))
+    ldims = dimensions(1:l_sd+i-1);
+    offset = offset + prod(ldims)*(cslice(i)-1);
     end
 end

@@ -34,8 +34,8 @@ x = DataContainer.utils.switchPrecision(x,precision);
 
 % Setup memmapfile
 M = memmapfile(filename,...
-            'format',{precision,size(x),'x'},...
-	    'writable', true);
+        'format',{precision,size(x),'x'},...
+        'writable', true);
         
 % Write local data
 M.data(1).x = x;

@@ -31,6 +31,6 @@ function [tmpdir, tmpdirs] = getDistTmpDir(varargin)
             tmpdirs = DataContainer.io.getTmpDir(dtd);
         end
     else
-    	warning('Warning: called outside of matlabpool/batch call');
+        warning('Warning: called outside of matlabpool/batch call');
     end
 end

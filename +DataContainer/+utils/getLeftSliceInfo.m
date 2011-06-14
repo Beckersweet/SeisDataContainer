@@ -19,8 +19,8 @@ function [dims, offset] = getLeftSliceInfo(dimensions,slice)
 
     for i=1:l_s
         assert(0<slice(i)&slice(i)<=rdims(i),...
-	    'Fatal error: slice index %d out of range(1,%d)',slice(i),rdims(i))
-	ldims = dimensions(1:l_d+i-1);
-	offset = offset + prod(ldims)*(slice(i)-1);
+        'Fatal error: slice index %d out of range(1,%d)',slice(i),rdims(i))
+    ldims = dimensions(1:l_d+i-1);
+    offset = offset + prod(ldims)*(slice(i)-1);
     end
 end
