@@ -72,11 +72,11 @@ spmd
     mkdir(tempdirname); % Create local subfolder
     loclabwidth = labwidth(labindex);
     local_size  = [dimensions(1:end-2) loclabwidth 1];
-    DataContainer.io.allocFile([tempdirname filesep 'real'],prod(local_size)*dimensions(end)*8,8);    
+    DataContainer.io.allocFile([tempdirname filesep 'real'],prod(local_size(1:end-1))*8,8);    
     for o=1:dimensions(end)
         % Setup global memmapfile
         outcoreoffset = offset + prod(dimensions(1:end-1))*(o-1)*bytesize;
-        paroffset     = dimensions(1:end-2)*sum(labwidth(1:labindex-1))...
+        paroffset     = prod(dimensions(1:end-2))*sum(labwidth(1:labindex-1))...
                          *bytesize;
         M = memmapfile(filename,'format',{precision,[local_size(1:end-1) 1],...
             'x'},'offset',outcoreoffset+paroffset,'repeat',repeat);
