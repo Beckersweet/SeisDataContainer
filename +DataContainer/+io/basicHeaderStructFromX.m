@@ -3,7 +3,6 @@ function header = basicHeaderStructFromX(x)
     xsize = size(x);
     xprecision = DataContainer.utils.getPrecision(x);
     xcomplex = ~isreal(x);
-    xdistributed = isdistributed(x);
     dims = length(xsize);
 
     header.dims = dims;
@@ -23,10 +22,6 @@ function header = basicHeaderStructFromX(x)
     end
     header.label = l;
 
-    header.distributed = xdistributed;
-    header.distribution = struct();
-    header.distribution.dim = nan;
-    header.distribution.distribution = nan;
-    header.distribution.location =nan;
+    header.distributed = 0;
 
 end

@@ -1,4 +1,4 @@
-function header = basicHeaderStruct(xsize,xprecision,xcomplex,xdistributed)
+function header = basicHeaderStruct(xsize,xprecision,xcomplex)
     header = struct();
     dims = length(xsize);
 
@@ -19,10 +19,6 @@ function header = basicHeaderStruct(xsize,xprecision,xcomplex,xdistributed)
     end
     header.label = l;
 
-    header.distributed = xdistributed;
-    header.distribution = struct();
-    header.distribution.dim = nan;
-    header.distribution.distribution = nan;
-    header.distribution.location =nan;
+    header.distributed = 0;
 
 end
