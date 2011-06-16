@@ -74,9 +74,9 @@ function y = nDimsInfNorm(x,p)
         y = p(p(abs(x)));
     else
         SIZE = size(x);
-        y = nDimsInfNorm(pSPOT.utils.ldind(x,1),p);
+        y = nDimsInfNorm(DataContainer.utils.ldind(x,1),p);
         for i = 2:SIZE(end)
-            y = [ y nDimsInfNorm(pSPOT.utils.ldind(x,i),p)];
+            y = [ y nDimsInfNorm(DataContainer.utils.ldind(x,i),p)];
         end
         y = p(y);
     end
