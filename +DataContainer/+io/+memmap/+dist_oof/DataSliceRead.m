@@ -57,15 +57,6 @@ switch precision
         error('Unsupported precision');
 end
 
-% The following commented code gives us the nth slice as a distributed array
-% x = DataContainer.io.memmap.dist.DataRead(filename,dimensions);
-% l = length(x);
-% % Makes the mask for the colons
-% y = repmat({':'},1,(l-1));
-% % Gets the slice
-% x = x(y{:},l-1);
-% end
-
 % Setup labwidth
 labwidth = pSPOT.utils.defaultDistribution(dimensions(end-1));
 

@@ -64,7 +64,7 @@ y = 0;
     else
         SIZE = size(x);
         for i = 1:SIZE(end)
-            y = y + nDimsPNorm(pSPOT.utils.ldind(x,i),p);
+            y = y + nDimsPNorm(DataContainer.utils.ldind(x,i),p);
         end
     end
 end
