@@ -58,7 +58,7 @@ switch precision
 end
 
 % Setup labwidth
-labwidth = pSPOT.utils.defaultDistribution(dimensions(end-1));
+labwidth = DataContainer.utils.defaultDistribution(dimensions(end-1));
 
 spmd
     tempdirname = [tempdirname int2str(labindex)];

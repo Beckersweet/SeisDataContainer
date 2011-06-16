@@ -9,10 +9,10 @@ function test_dist_oof_readWriteSlice
 n = randi(10);
 m = randi(n);
 A = distributed.rand(n,n,n,n,n);
-DataContainer.io.memmap.dist.DataWrite('test',A);
+DataContainer.io.memmap.dist_deprecated.DataWrite('test',A);
 DataContainer.io.memmap.dist_oof.DataSliceRead('test',[n n n n n],m,'./');
 DataContainer.io.memmap.dist_oof.DataSliceWrite('slice',[n n n n n],m);
-B = DataContainer.io.memmap.dist.DataRead('slice',[n n n n n]);
+B = DataContainer.io.memmap.dist_deprecated.DataRead('slice',[n n n n n]);
 isequal(B(:,:,:,:,m),A(:,:,:,:,m));
 delete test;
 delete slice;
@@ -40,8 +40,8 @@ function test_dist_DataReadWrite
 %%
     x = randi(20);
     n1 = distributed.randn(x,x,x,x);
-    DataContainer.io.memmap.dist.DataWrite('test',n1);
-    n2 = DataContainer.io.memmap.dist.DataRead('test', [x x x x]);
+    DataContainer.io.memmap.dist_deprecated.DataWrite('test',n1);
+    n2 = DataContainer.io.memmap.dist_deprecated.DataRead('test', [x x x x]);
     delete test;
     assert(isequal(n1,n2));   
 end

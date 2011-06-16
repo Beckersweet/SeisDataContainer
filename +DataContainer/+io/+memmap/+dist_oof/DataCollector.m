@@ -57,7 +57,7 @@ switch precision
 end
 
 % Setup labwidth
-labwidth = pSPOT.utils.defaultDistribution(dimensions(end-1));
+labwidth = DataContainer.utils.defaultDistribution(dimensions(end-1));
 
 DataContainer.io.allocFile(filename,prod(dimensions)*8*numlabs,bytesize);
 %prod(local_size)*dimensions(end)*8
