@@ -30,7 +30,7 @@ assert(exist(filename)==2,'Fatal error: file %s does not exist',filename);
 
 % Set bytesize
 bytesize = DataContainer.utils.getByteSize(precision);
-x = DataContainer.utils.switchPrecision(x,precision);
+x = DataContainer.utils.switchPrecisionIP(x,precision);
 
 % Setup memmapfile
 M = memmapfile(filename,...

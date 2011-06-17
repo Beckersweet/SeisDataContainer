@@ -32,7 +32,7 @@ end;
 
 % Set bytesize
 bytesize = DataContainer.utils.getByteSize(precision);
-x = DataContainer.utils.switchPrecision(x,precision);
+x = DataContainer.utils.switchPrecisionIP(x,precision);
 slice_byte_offset = slice_offset*bytesize;
 
 % Check File

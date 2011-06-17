@@ -44,6 +44,6 @@ M = memmapfile(filename,...
 x = M.data(1).x;
         
 % swap x_precision
-x = DataContainer.utils.switchPrecision(x,x_precision);
+x = DataContainer.utils.switchPrecisionIP(x,x_precision);
 
 end
