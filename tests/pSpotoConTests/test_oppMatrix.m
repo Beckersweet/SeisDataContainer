@@ -53,7 +53,7 @@ A2 = oppMatrix(distributed(A1));
 x  = iCon(A2.drandn);
 y  = A1*x;
 
-assertElementsAlmostEqual(A2\y,x);
+assertElementsAlmostEqual(gather(A2\y),gather(x));
 end % divide
 
 function test_oppMatrix_plus
