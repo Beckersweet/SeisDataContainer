@@ -1,7 +1,7 @@
-function [x header] = FileReadLeftChunk(dirname,range,slice,varargin)
+function [x header] = FileReadLeftSlice(dirname,slice,varargin)
 %FILEWRITE  Write serial data to binary file
 %
-%   [X, HEADER] = FileReadLeftChunk(DIRNAME,DIMENSIONS,X_PRECISION) reads
+%   [X, HEADER] = FileReadLeftSlice(DIRNAME,DIMENSIONS,X_PRECISION) reads
 %   the serial real array X from file DIRNAME/FILENAME.
 %   Addtional parameter:
 %   X_PRECISION - An optional string specifying the precision of one unit of data,
@@ -10,15 +10,14 @@ function [x header] = FileReadLeftChunk(dirname,range,slice,varargin)
 %
 assert(ischar(dirname), 'directory name must be a string')
 assert(isdir(dirname),'Fatal error: directory %s does not exist',dirname);
-assert(isvector(range)&length(range)==2, 'range index must be a vector with 2 elements')
 assert(isvector(slice)|isequal(slice,[]), 'slice index must be a vector')
 
 % Setup variables
 x_precision = 'double';
 
 % Preprocess input arguments
-error(nargchk(3, 4, nargin, 'struct'));
-if nargin>3
+error(nargchk(2, 3, nargin, 'struct'));
+if nargin>2
     assert(ischar(varargin{1}),'Fatal error: precision is not a string?');
     x_precision = varargin{1};
 end;
@@ -26,11 +25,11 @@ end;
 % Read header
 header = load(fullfile(dirname,'header.mat'));
 % Read file
-x=DataContainer.io.memmap.serial_oof.DataReadLeftChunk(dirname,'real',...
-    header.size,range,slice,header.precision,x_precision);
+x=DataContainer.io.memmap.serial.DataReadLeftSlice(dirname,'real',...
+    header.size,slice,header.precision,x_precision);
 if header.complex
-    dummy=DataContainer.io.memmap.serial_oof.DataReadLeftChunk(dirname,'imag',...
-        header.size,range,slice,header.precision,x_precision);
+    dummy=DataContainer.io.memmap.serial.DataReadLeftSlice(dirname,'imag',...
+        header.size,slice,header.precision,x_precision);
     x=complex(x,dummy);
 end
  

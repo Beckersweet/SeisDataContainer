@@ -1,7 +1,7 @@
-function FileWriteLeftSlice(dirname,x,slice)
+function FileAlloc(dirname,header)
 %FILEWRITE  Write serial data to binary file
 %
-%   FileWriteLeftSlice(DIRNAME,DATA,FILE_PRECISION|HEADER_STRUCT) writes
+%   DataWrite(DIRNAME,DATA,FILE_PRECISION|HEADER_STRUCT) writes
 %   the real serial array X into file DIRNAME/FILENAME.
 %   Addtional argument is either of:
 %   FILE_PRECISION - An optional string specifying the precision of one unit of data,
@@ -13,19 +13,19 @@ function FileWriteLeftSlice(dirname,x,slice)
 %
 %   Warning: If the specified dirname will be removed,
 assert(ischar(dirname), 'directory name must be a string')
-assert(isfloat(x), 'data must be float')
-assert(~isdistributed(x), 'data must not be distributed')
-assert(isvector(slice)|isequal(slice,[]), 'slice index must be a vector')
+assert(isstruct(header), 'header must be a header struct')
 
-% Read header
-header = load(fullfile(dirname,'header.mat'));
+% Make Directory
+if isdir(dirname); rmdir(dirname,'s'); end;
+status = mkdir(dirname);
+assert(status,'Fatal error while creating directory %s',dirname);
 
 % Write file
-DataContainer.io.memmap.serial_oof.DataWriteLeftSlice(dirname,'real',...
-    header.size,real(x),slice,header.precision);
-if ~isreal(x)
-    DataContainer.io.memmap.serial_oof.DataWriteLeftSlice(dirname,'imag',...
-        header.size,imag(x),slice,header.precision);
+DataContainer.io.memmap.serial.DataAlloc(dirname,'real',header.size,header.precision);
+if header.complex
+    DataContainer.io.memmap.serial.DataAlloc(dirname,'imag',header.size,header.precision);
 end
+% Write header
+save(fullfile(dirname,'header.mat'),'-struct','header');
 
 end
