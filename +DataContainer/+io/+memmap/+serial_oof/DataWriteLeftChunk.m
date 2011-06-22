@@ -1,7 +1,7 @@
-function DataWriteLeftChunk(dirname,filename,dimensions,range,slice,x,varargin)
+function DataWriteLeftChunk(dirname,filename,dimensions,x,range,slice,varargin)
 %DATAWRITE  Write serial data slice to binary file
 %
-%   DataWrite(DIRNAME,FILENAME,DIMENSION,range,SLICE,DATA,FILE_PRECISION) writes
+%   DataWrite(DIRNAME,FILENAME,DIMENSION,DATA,RANGE,SLICE,FILE_PRECISION) writes
 %   the slice (from last dimension) of the real serial array X into file DIRNAME/FILENAME.
 %   Addtional parameter:
 %   FILE_PRECISION - An optional string specifying the precision of one unit of data,
@@ -12,7 +12,8 @@ function DataWriteLeftChunk(dirname,filename,dimensions,range,slice,x,varargin)
 assert(ischar(dirname), 'directory name must be a string')
 assert(ischar(filename), 'file name must be a string')
 assert(isvector(dimensions), 'dimensions must be a vector')
-assert(isvector(slice), 'slice index must be a vector')
+assert(isvector(range)&length(range)==2, 'range index must be a vector with 2 elements')
+assert(isvector(slice)|isequal(slice,[]), 'slice index must be a vector')
 assert(isreal(x), 'data must be real')
 assert(~isdistributed(x), 'data must not be distributed')
 

@@ -11,7 +11,7 @@ function x = DataReadLeftSlice(dirname,filename,dimensions,slice,file_precision,
 assert(ischar(dirname), 'directory name must be a string')
 assert(ischar(filename), 'file name must be a string')
 assert(isvector(dimensions), 'dimensions must be a vector')
-assert(isvector(slice), 'slice index must be a vector')
+assert(isvector(slice)|isequal(slice,[]), 'slice index must be a vector')
 assert(ischar(file_precision), 'file_precision name must be a string')
 
 % Setup variables
