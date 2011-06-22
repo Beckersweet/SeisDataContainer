@@ -1,38 +1,33 @@
-function DataWriteLeftSlice(dirname,filename,dimensions,x,slice,varargin)
+function DataWriteLeftSlice(dirname,filename,dimensions,x,slice,file_precision)
 %DATAWRITE  Write serial data slice to binary file
 %
 %   DataWriteLeftSlice(DIRNAME,FILENAME,DIMENSION,DATA,SLICE,FILE_PRECISION) writes
 %   the slice (from last dimension) of the real serial array X into file DIRNAME/FILENAME.
-%   Addtional parameter:
-%   FILE_PRECISION - An optional string specifying the precision of one unit of data,
-%               defaults to 'double' (8 bits)
+%
+%   FILE_PRECISION - An string specifying the precision of one unit of data,
 %               Supported precisions: 'double', 'single'
 %
-%   Warning: If the specified file must exist,
+%   Warning: the specified file must exist,
+error(nargchk(6, 6, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 assert(ischar(filename), 'file name must be a string')
 assert(isvector(dimensions), 'dimensions must be a vector')
 assert(isreal(x), 'data must be real')
 assert(isvector(slice)|isequal(slice,[]), 'slice index must be a vector')
+assert(ischar(file_precision), 'file_precision must be a string')
 assert(~isdistributed(x), 'data must not be distributed')
 
 % Setup variables
-precision = 'double';
 [slice_dims, slice_offset] =...
     DataContainer.utils.getLeftSliceInfo(dimensions,slice);
 assert(prod(slice_dims)==prod(size(x)))
 
 % Preprocess input arguments
-error(nargchk(5, 6, nargin, 'struct'));
 filename=fullfile(dirname,filename);
-if nargin>5
-    assert(ischar(varargin{1}),'Fatal error: precision is not a string?');
-    precision = varargin{1};
-end;
 
 % Set bytesize
-bytesize = DataContainer.utils.getByteSize(precision);
-x = DataContainer.utils.switchPrecisionIP(x,precision);
+bytesize = DataContainer.utils.getByteSize(file_precision);
+x = DataContainer.utils.switchPrecisionIP(x,file_precision);
 slice_byte_offset = slice_offset*bytesize;
 
 % Check File
@@ -40,7 +35,7 @@ assert(exist(filename)==2,'Fatal error: file %s does not exist',filename);
 
 % Setup memmapfile
 M = memmapfile(filename,...
-        'format',{precision,size(x),'x'},...
+        'format',{file_precision,size(x),'x'},...
         'offset',slice_byte_offset,...
         'writable', true);
         

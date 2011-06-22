@@ -3,7 +3,7 @@ function FileWrite(dirname,x,varargin)
 %
 %   DataWrite(DIRNAME,DATA,FILE_PRECISION|HEADER_STRUCT) writes
 %   the real serial array X into file DIRNAME/FILENAME.
-%   Addtional argument is either of:
+%   Optional argument is either of:
 %   FILE_PRECISION - An optional string specifying the precision of one unit of data,
 %               defaults to type of x
 %               Supported precisions: 'double', 'single'
@@ -12,6 +12,7 @@ function FileWrite(dirname,x,varargin)
 %               or DataContainer.io.basicHeaderStruct
 %
 %   Warning: If the specified dirname will be removed,
+error(nargchk(2, 3, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 assert(isfloat(x), 'data must be float')
 assert(~isdistributed(x), 'data must not be distributed')
@@ -21,7 +22,6 @@ header = DataContainer.io.basicHeaderStructFromX(x);
 f_precision = header.precision;
 
 % Preprocess input arguments
-error(nargchk(2, 3, nargin, 'struct'));
 if nargin>2
     assert(ischar(varargin{1})|isstruct(varargin{1}),...
         'argument mast be either file_precision string or header struct')

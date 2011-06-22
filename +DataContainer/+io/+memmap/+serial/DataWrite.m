@@ -1,40 +1,33 @@
-function DataWrite(dirname,filename,x,varargin)
+function DataWrite(dirname,filename,x,file_precision)
 %DATAWRITE  Write serial data to binary file
 %
 %   DataWrite(DIRNAME,FILENAME,DATA,FILE_PRECISION) writes
 %   the real serial array X into file DIRNAME/FILENAME.
-%   Addtional parameter:
-%   FILE_PRECISION - An optional string specifying the precision of one unit of data,
-%               defaults to 'double' (8 bits)
+%
+%   FILE_PRECISION - An string specifying the precision of one unit of data,
 %               Supported precisions: 'double', 'single'
 %
 %   Warning: If the specified file must exist,
+error(nargchk(4, 4, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 assert(ischar(filename), 'file name must be a string')
 assert(isreal(x), 'data must be real')
 assert(~isdistributed(x), 'data must not be distributed')
-
-% Setup variables
-precision = 'double';
+assert(ischar(file_precision), 'file_precision name must be a string')
 
 % Preprocess input arguments
-error(nargchk(3, 4, nargin, 'struct'));
 filename=fullfile(dirname,filename);
-if nargin>3
-    assert(ischar(varargin{1}),'Fatal error: precision is not a string?');
-    precision = varargin{1};
-end;
 
 % Check File
 assert(exist(filename)==2,'Fatal error: file %s does not exist',filename);
 
 % Set bytesize
-bytesize = DataContainer.utils.getByteSize(precision);
-x = DataContainer.utils.switchPrecisionIP(x,precision);
+bytesize = DataContainer.utils.getByteSize(file_precision);
+x = DataContainer.utils.switchPrecisionIP(x,file_precision);
 
 % Setup memmapfile
 M = memmapfile(filename,...
-        'format',{precision,size(x),'x'},...
+        'format',{file_precision,size(x),'x'},...
         'writable', true);
         
 % Write local data

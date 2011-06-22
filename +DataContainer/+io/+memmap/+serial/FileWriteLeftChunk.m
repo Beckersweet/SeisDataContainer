@@ -12,6 +12,7 @@ function FileWriteLeftChunk(dirname,x,range,slice)
 %               or DataContainer.io.basicHeaderStruct
 %
 %   Warning: If the specified dirname will be removed,
+error(nargchk(4, 4, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 assert(isfloat(x), 'data must be float')
 assert(~isdistributed(x), 'data must not be distributed')

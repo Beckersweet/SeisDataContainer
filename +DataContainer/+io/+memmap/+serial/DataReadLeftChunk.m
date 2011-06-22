@@ -1,32 +1,27 @@
-function x = DataReadLeftChunk(dirname,filename,dimensions,range,slice,file_precision,varargin)
+function x = DataReadLeftChunk(dirname,filename,dimensions,range,slice,file_precision,x_precision)
 %DATAWRITE  Write serial data slice to binary file
 %
 %   X = DataRead(DIRNAME,FILENAME,DIMENSIONS,range,SLICE,FILE_PRECISION,X_PRECISION) reads
 %   the slice (from last dimension) of the real serial array X from file DIRNAME/FILENAME.
-%   Addtional parameter:
-%   X_PRECISION - An optional string specifying the precision of one unit of data,
-%               defaults to 'double' (8 bits)
+%
+%   *_PRECISION - An string specifying the precision of one unit of data,
 %               Supported precisions: 'double', 'single'
 %
+error(nargchk(7, 7, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 assert(ischar(filename), 'file name must be a string')
 assert(isvector(dimensions), 'dimensions must be a vector')
 assert(isvector(range)&length(range)==2, 'range index must be a vector with 2 elements')
 assert(isvector(slice)|isequal(slice,[]), 'slice index must be a vector')
 assert(ischar(file_precision), 'file_precision name must be a string')
+assert(ischar(x_precision), 'x_precision name must be a string')
 
 % Setup variables
-x_precision = 'double';
 [chunk_dims, chunk_offset] =...
     DataContainer.utils.getLeftChunkInfo(dimensions,range,slice);
 
 % Preprocess input arguments
-error(nargchk(6, 7, nargin, 'struct'));
 filename=fullfile(dirname,filename);
-if nargin>6
-    assert(ischar(varargin{1}),'Fatal error: precision is not a string?');
-    x_precision = varargin{1};
-end;
 
 % Set bytesize
 bytesize = DataContainer.utils.getByteSize(file_precision);
