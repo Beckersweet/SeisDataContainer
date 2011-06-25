@@ -1,40 +1,29 @@
-function header = addDistHeaderStructFromX(x,headerin)
-    assert(isdistributed(x),'x has to be distributed');
+function header = addDistHeaderStruct(dimension,partition,headerin)
     assert(isstruct(headerin),'headerin has to be a header struct');
 
     header = headerin;
-    dims = length(size(x));
+    dims = length(header.size);
     poolsize = matlabpool('size');
-    cdim = Composite();
     csize = Composite();
-    cpart = Composite();
     cindecies = Composite();
     header.distribution = struct();
 
     spmd
-        codist = getCodistributor(x);
-        cdim = codist.Dimension;
-        cpart = codist.Partition;
+        codist = codistributor1d(dimension,partition,header.size);
         csize = header.size;
-        csize(cdim) = cpart(labindex);
-        cindecies = codist.globalIndices(cdim);
+        csize(dimension) = partition(labindex);
+        cindecies = codist.globalIndices(dimension);
         cindecies = [cindecies(1) cindecies(end)];
     end
 
-    ddim = cdim{1};
-    header.distribution.dim = ddim;
+    header.distribution.dim = dimension;
 
     for l=1:poolsize
-        dummy = csize{l};
-        while length(dummy) < dims
-            dummy(end+1) = 1;
-        end
-        xsize{l} = dummy;
+        xsize{l} = csize{l};
     end
     header.distribution.size = xsize;
 
-    dpart = cpart{1};
-    header.distribution.partition = dpart;
+    header.distribution.partition = partition;
 
     min_indx = ones(1,poolsize);
     max_indx = zeros(1,poolsize);

@@ -158,6 +158,5 @@ ls('-l',td)
 DataContainer.io.memmap.serial.FileDelete(td);
 if isdir(td); dir(td); end;
 
-clear all
 disp('Done');
 end
