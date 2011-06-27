@@ -15,7 +15,7 @@ disp(norm(imat(:)))
 
 disp('*****');
 disp('DataContainer.io.memmap.serial.File* single complex');
-td=DataContainer.io.getTmpDir();
+td=DataContainer.io.makeDir();
 orig=complex(imat,1);
 hdr=DataContainer.io.basicHeaderStructFromX(orig);
 hdr.precision='single';
@@ -28,7 +28,7 @@ if isdir(td); dir(td); end;
 
 disp('*****');
 disp('DataContainer.io.memmap.serial.File* double complex');
-td=DataContainer.io.getTmpDir();
+td=DataContainer.io.makeDir();
 orig=complex(imat,1);
 DataContainer.io.memmap.serial.FileWrite(td,orig,DataContainer.io.basicHeaderStructFromX(orig));
 new=DataContainer.io.memmap.serial.FileRead(td,'double');
@@ -39,7 +39,7 @@ if isdir(td); dir(td); end;
 
 disp('*****');
 disp('DataContainer.io.memmap.serial.File* single real');
-td=DataContainer.io.getTmpDir();
+td=DataContainer.io.makeDir();
 DataContainer.io.memmap.serial.FileWrite(td,imat,'single');
 new=DataContainer.io.memmap.serial.FileRead(td,'single');
 assert(isequal(single(imat),new))
@@ -49,7 +49,7 @@ if isdir(td); dir(td); end;
 
 disp('*****');
 disp('DataContainer.io.memmap.serial.File* double real');
-td=DataContainer.io.getTmpDir();
+td=DataContainer.io.makeDir();
 DataContainer.io.memmap.serial.FileWrite(td,imat);
 new=DataContainer.io.memmap.serial.FileRead(td,'double');
 assert(isequal(imat,new))
@@ -59,7 +59,7 @@ if isdir(td); dir(td); end;
 
 disp('*****');
 disp('DataContainer.io.memmap.serial.File*LeftSlice last none');
-td=DataContainer.io.getTmpDir();
+td=DataContainer.io.makeDir();
 DataContainer.io.memmap.serial.FileWrite(td,imat);
 slice=DataContainer.io.memmap.serial.FileReadLeftSlice(td,[]);
 assert(isequal(imat,slice))
@@ -74,7 +74,7 @@ if isdir(td); dir(td); end;
 
 disp('*****');
 disp('DataContainer.io.memmap.serial.File*LeftSlice last one');
-td=DataContainer.io.getTmpDir();
+td=DataContainer.io.makeDir();
 DataContainer.io.memmap.serial.FileWrite(td,imat);
 for k=1:K
     slice=DataContainer.io.memmap.serial.FileReadLeftSlice(td,[k]);
@@ -94,7 +94,7 @@ if isdir(td); dir(td); end;
 
 disp('*****');
 disp('DataContainer.io.memmap.serial.File*LeftSlice last two');
-td=DataContainer.io.getTmpDir();
+td=DataContainer.io.makeDir();
 DataContainer.io.memmap.serial.FileWrite(td,imat);
 for k=1:K
     for j=1:J
@@ -118,7 +118,7 @@ if isdir(td); dir(td); end;
 
 disp('*****');
 disp('DataContainer.io.memmap.serial.File*LeftChunk last none');
-td=DataContainer.io.getTmpDir();
+td=DataContainer.io.makeDir();
 DataContainer.io.memmap.serial.FileWrite(td,imat);
 for k=1:K-2
     slice=DataContainer.io.memmap.serial.FileReadLeftChunk(td,[k k+2],[]);
@@ -137,7 +137,7 @@ if isdir(td); dir(td); end;
 
 disp('*****');
 disp('DataContainer.io.memmap.serial.File*LeftChunk last one');
-td=DataContainer.io.getTmpDir();
+td=DataContainer.io.makeDir();
 DataContainer.io.memmap.serial.FileWrite(td,imat);
 for k=1:K
     for j=1:J-2
