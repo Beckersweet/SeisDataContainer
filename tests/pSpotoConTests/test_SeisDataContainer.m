@@ -20,10 +20,6 @@ rmdir('1', 's');
 rmdir('2', 's');
 end
 
-function test_dist_readWriteData
-%%
-end
-
 function test_HeaderReadWrite
 %%
     x = randi(100);
