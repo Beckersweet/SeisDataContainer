@@ -1,4 +1,8 @@
 function header = HeaderRead(dirname)
+%HEADERREAD  Read header from specified directory
+%
+%   HeaderRead(DIRNAME) reads the serial header
+%   from file DIRNAME/FILENAME.
 %
 error(nargchk(1, 1, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')

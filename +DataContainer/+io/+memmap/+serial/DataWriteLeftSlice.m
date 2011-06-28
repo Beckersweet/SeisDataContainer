@@ -1,5 +1,5 @@
 function DataWriteLeftSlice(dirname,filename,dimensions,x,slice,file_precision)
-%DATAWRITE  Write serial data slice to binary file
+%DATAWRITELEFTSCLICE  Write serial data left slice to binary file
 %
 %   DataWriteLeftSlice(DIRNAME,FILENAME,DIMENSION,DATA,SLICE,FILE_PRECISION) writes
 %   the slice (from last dimension) of the real serial array X into file DIRNAME/FILENAME.
@@ -7,7 +7,7 @@ function DataWriteLeftSlice(dirname,filename,dimensions,x,slice,file_precision)
 %   FILE_PRECISION - An string specifying the precision of one unit of data,
 %               Supported precisions: 'double', 'single'
 %
-%   Warning: the specified file must exist,
+%   Warning: The specified file must exist.
 error(nargchk(6, 6, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 assert(ischar(filename), 'file name must be a string')

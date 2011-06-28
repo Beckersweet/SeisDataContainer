@@ -1,5 +1,5 @@
 function x = DataRead(dirname,filename,dimensions,file_precision,x_precision)
-%DATAWRITE  Write serial data to binary file
+%DATAREAD  Read serial data from binary file
 %
 %   X = DataRead(DIRNAME,FILENAME,DIMENSIONS,FILE_PRECISION,X_PRECISION) reads
 %   the serial real array X from file DIRNAME/FILENAME.

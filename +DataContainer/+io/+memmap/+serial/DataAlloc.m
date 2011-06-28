@@ -7,8 +7,7 @@ function DataAlloc(dirname,filename,dimensions,file_precision)
 %   FILE_PRECISION - An string specifying the precision of one unit of data,
 %               Supported precisions: 'double', 'single'
 %
-%   Warning: If the specified file already exist,
-%            it will be overwritten.
+%   Warning: If the specified file already exists, it will be overwritten.
 error(nargchk(4, 4, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 assert(ischar(filename), 'file name must be a string')

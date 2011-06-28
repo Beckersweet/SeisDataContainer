@@ -1,5 +1,5 @@
 function [x header] = FileReadLeftSlice(dirname,slice,varargin)
-%FILEWRITE  Write serial data to binary file
+%FILEREADLEFTSLICE  Read serial left slice data from binary file
 %
 %   [X, HEADER] = FileReadLeftSlice(DIRNAME,DIMENSIONS,X_PRECISION) reads
 %   the serial real array X from file DIRNAME/FILENAME.

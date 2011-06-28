@@ -1,5 +1,5 @@
 function [x header] = FileRead(dirname,varargin)
-%FILEWRITE  Write serial data to binary file
+%FILEREAD  Read serial data and header from binary file
 %
 %   [X, HEADER] = DataRead(DIRNAME,DIMENSIONS,X_PRECISION) reads
 %   the serial real array X from file DIRNAME/FILENAME.

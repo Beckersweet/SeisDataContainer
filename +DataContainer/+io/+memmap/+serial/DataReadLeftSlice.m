@@ -1,5 +1,5 @@
 function x = DataReadLeftSlice(dirname,filename,dimensions,slice,file_precision,x_precision)
-%DATAWRITE  Write serial data slice to binary file
+%DATAREADLEFTSLICE  Reads left slice from binary file
 %
 %   X = DataReadLeftSlice(DIRNAME,FILENAME,DIMENSIONS,SLICE,FILE_PRECISION,X_PRECISION) reads
 %   the slice (from last dimension) of the real serial array X from file DIRNAME/FILENAME.

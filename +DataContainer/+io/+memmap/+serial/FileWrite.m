@@ -1,7 +1,7 @@
 function FileWrite(dirname,x,varargin)
 %FILEWRITE  Write serial data to binary file
 %
-%   DataWrite(DIRNAME,DATA,FILE_PRECISION|HEADER_STRUCT) writes
+%   FileWrite(DIRNAME,DATA,FILE_PRECISION|HEADER_STRUCT) writes
 %   the real serial array X into file DIRNAME/FILENAME.
 %   Optional argument is either of:
 %   FILE_PRECISION - An optional string specifying the precision of one unit of data,
@@ -11,7 +11,7 @@ function FileWrite(dirname,x,varargin)
 %               by DataContainer.io.basicHeaderStructFromX
 %               or DataContainer.io.basicHeaderStruct
 %
-%   Warning: If the specified dirname will be removed,
+%   Warning: If the specified dirname exists, it will be removed.
 error(nargchk(2, 3, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 assert(isfloat(x), 'data must be float')

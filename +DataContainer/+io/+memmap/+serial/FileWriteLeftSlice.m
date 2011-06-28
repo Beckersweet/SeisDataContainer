@@ -1,5 +1,5 @@
 function FileWriteLeftSlice(dirname,x,slice)
-%FILEWRITE  Write serial data to binary file
+%FILEWRITELEFTSLICE  Write serial left slice data to binary file
 %
 %   FileWriteLeftSlice(DIRNAME,DATA,FILE_PRECISION|HEADER_STRUCT) writes
 %   the real serial array X into file DIRNAME/FILENAME.

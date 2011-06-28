@@ -1,8 +1,8 @@
 function x = DataReadLeftChunk(dirname,filename,dimensions,range,slice,file_precision,x_precision)
-%DATAWRITE  Write serial data slice to binary file
+%DATAREADLEFTCHUNCK  Read left chunck from binary file
 %
-%   X = DataRead(DIRNAME,FILENAME,DIMENSIONS,range,SLICE,FILE_PRECISION,X_PRECISION) reads
-%   the slice (from last dimension) of the real serial array X from file DIRNAME/FILENAME.
+%   X = DataReadLeftChunk(DIRNAME,FILENAME,DIMENSIONS,RANGE,SLICE,FILE_PRECISION,X_PRECISION)
+%   reads the chunk (from last dimension) of the real serial array X from file DIRNAME/FILENAME.
 %
 %   *_PRECISION - An string specifying the precision of one unit of data,
 %               Supported precisions: 'double', 'single'

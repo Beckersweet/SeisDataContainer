@@ -7,7 +7,7 @@ function DataWrite(dirname,filename,x,file_precision)
 %   FILE_PRECISION - An string specifying the precision of one unit of data,
 %               Supported precisions: 'double', 'single'
 %
-%   Warning: If the specified file must exist,
+%   Warning: The specified file must exist.
 error(nargchk(4, 4, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 assert(ischar(filename), 'file name must be a string')

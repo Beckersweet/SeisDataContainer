@@ -1,5 +1,5 @@
 function [x header] = FileReadLeftChunk(dirname,range,slice,varargin)
-%FILEWRITE  Write serial data to binary file
+%FILEREADLEFTCHUNK  Read serial left chunck data from binary file
 %
 %   [X, HEADER] = FileReadLeftChunk(DIRNAME,DIMENSIONS,X_PRECISION) reads
 %   the serial real array X from file DIRNAME/FILENAME.

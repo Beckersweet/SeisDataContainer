@@ -1,13 +1,9 @@
 function FileAlloc(dirname,header)
-%FILEWRITE  Write serial data to binary file
+%FILEALLOC  Allocate file space for header
 %
-%   DataWrite(DIRNAME,DATA,FILE_PRECISION|HEADER_STRUCT) writes
+%   FileAlloc(DIRNAME,HEADER) allocates file for serial header writing.
 %
-%   HEADER_STRUCT - An optional header struct as created
-%               by DataContainer.io.basicHeaderStructFromX
-%               or DataContainer.io.basicHeaderStruct
-%
-%   Warning: If the specified dirname will be removed,
+
 error(nargchk(2, 2, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 assert(isstruct(header), 'header must be a header struct')
