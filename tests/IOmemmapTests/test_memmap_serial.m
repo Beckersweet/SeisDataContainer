@@ -2,11 +2,9 @@ function test_suite = test_memmap_serial
 initTestSuite;
 end
 
-function test_file_single_complex
+function test_serial_file_single_complex
 %%
     imat=rand(13,11,9);
-    disp('*****');
-    disp('DataContainer.io.memmap.serial.File* single complex');
     td=DataContainer.io.makeDir();
     orig=complex(imat,1);
     hdr=DataContainer.io.basicHeaderStructFromX(orig);
@@ -14,59 +12,47 @@ function test_file_single_complex
     DataContainer.io.memmap.serial.FileWrite(td,orig,hdr);
     new=DataContainer.io.memmap.serial.FileRead(td,'single');
     assert(isequal(single(orig),new))
-    ls('-l',td)
     DataContainer.io.memmap.serial.FileDelete(td);
     if isdir(td); dir(td); end;
 end
 
-function test_file_double_complex
+function test_serial_file_double_complex
 %%
     imat=rand(13,11,9);
-    disp('*****');
-    disp('DataContainer.io.memmap.serial.File* double complex');
     td=DataContainer.io.makeDir();
     orig=complex(imat,1);
     DataContainer.io.memmap.serial.FileWrite(td,orig,DataContainer.io.basicHeaderStructFromX(orig));
     new=DataContainer.io.memmap.serial.FileRead(td,'double');
     assert(isequal(orig,new))
-    ls('-l',td)
     DataContainer.io.memmap.serial.FileDelete(td);
     if isdir(td); dir(td); end;
 end
 
-function test_file_single_real
+function test_serial_file_single_real
 %%
     imat=rand(13,11,9);
-    disp('*****');
-    disp('DataContainer.io.memmap.serial.File* single real');
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.serial.FileWrite(td,imat,'single');
     new=DataContainer.io.memmap.serial.FileRead(td,'single');
     assert(isequal(single(imat),new))
-    ls('-l',td)
     DataContainer.io.memmap.serial.FileDelete(td);
     if isdir(td); dir(td); end;
 end
 
-function test_file_double_real
+function test_serial_file_double_real
 %%
     imat=rand(13,11,9);
-    disp('*****');
-    disp('DataContainer.io.memmap.serial.File* double real');
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.serial.FileWrite(td,imat);
     new=DataContainer.io.memmap.serial.FileRead(td,'double');
     assert(isequal(imat,new))
-    ls('-l',td)
     DataContainer.io.memmap.serial.FileDelete(td);
     if isdir(td); dir(td); end;
 end
 
-function test_file_LeftSlice_lastNone_single_complex
+function test_serial_file_LeftSlice_lastNone_single_complex
 %%
     imat=rand(13,11,9);
-    disp('*****');
-    disp('DataContainer.io.memmap.serial.File*LeftSlice last none single complex');
     td=DataContainer.io.makeDir();
     orig=complex(imat,1);
     hdr=DataContainer.io.basicHeaderStructFromX(orig);
@@ -79,16 +65,13 @@ function test_file_LeftSlice_lastNone_single_complex
     DataContainer.io.memmap.serial.FileWriteLeftSlice(td,nmat,[]);
     smat = DataContainer.io.memmap.serial.FileRead(td,'single');
     assert(isequal(smat,single(nmat)))
-    ls('-l',td)
     DataContainer.io.memmap.serial.FileDelete(td);
     if isdir(td); dir(td); end;
 end
 
-function test_file_LeftSlice_lastNone_double_complex
+function test_serial_file_LeftSlice_lastNone_double_complex
 %%
     imat=rand(13,11,9);
-    disp('*****');
-    disp('DataContainer.io.memmap.serial.File*LeftSlice last none double complex');
     td=DataContainer.io.makeDir();
     orig=complex(imat,1);
     DataContainer.io.memmap.serial.FileWrite(td,orig,DataContainer.io.basicHeaderStructFromX(orig));
@@ -99,16 +82,13 @@ function test_file_LeftSlice_lastNone_double_complex
     DataContainer.io.memmap.serial.FileWriteLeftSlice(td,nmat,[]);
     smat = DataContainer.io.memmap.serial.FileRead(td);
     assert(isequal(smat,nmat))
-    ls('-l',td)
     DataContainer.io.memmap.serial.FileDelete(td);
     if isdir(td); dir(td); end;
 end
 
-function test_file_LeftSlice_lastNone_single_real
+function test_serial_file_LeftSlice_lastNone_single_real
 %%
     imat=rand(13,11,9);
-    disp('*****');
-    disp('DataContainer.io.memmap.serial.File*LeftSlice last none single real');
     td=DataContainer.io.makeDir();
     hdr=DataContainer.io.basicHeaderStructFromX(imat);
     hdr.precision='single';
@@ -120,16 +100,13 @@ function test_file_LeftSlice_lastNone_single_real
     DataContainer.io.memmap.serial.FileWriteLeftSlice(td,nmat,[]);
     smat = DataContainer.io.memmap.serial.FileRead(td,'single');
     assert(isequal(smat,single(nmat)))
-    ls('-l',td)
     DataContainer.io.memmap.serial.FileDelete(td);
     if isdir(td); dir(td); end;
 end
 
-function test_file_LeftSlice_lastNone_double_real
+function test_serial_file_LeftSlice_lastNone_double_real
 %%
     imat=rand(13,11,9);
-    disp('*****');
-    disp('DataContainer.io.memmap.serial.File*LeftSlice last none double real');
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.serial.FileWrite(td,imat);
     slice=DataContainer.io.memmap.serial.FileReadLeftSlice(td,[]);
@@ -139,17 +116,14 @@ function test_file_LeftSlice_lastNone_double_real
     DataContainer.io.memmap.serial.FileWriteLeftSlice(td,nmat,[]);
     smat = DataContainer.io.memmap.serial.FileRead(td);
     assert(isequal(smat,nmat))
-    ls('-l',td)
     DataContainer.io.memmap.serial.FileDelete(td);
     if isdir(td); dir(td); end;
 end
 
-function test_file_LeftSlice_lastOne_single_complex
+function test_serial_file_LeftSlice_lastOne_single_complex
 %%
     imat=rand(13,11,9);
     K=9;
-    disp('*****');
-    disp('DataContainer.io.memmap.serial.File*LeftSlice last one single complex');
     td=DataContainer.io.makeDir();
     origc=complex(imat,1);
     hdr=DataContainer.io.basicHeaderStructFromX(origc);
@@ -167,18 +141,15 @@ function test_file_LeftSlice_lastOne_single_complex
     end
     smat = DataContainer.io.memmap.serial.FileRead(td,'single');
     assert(isequal(smat,single(nmat)))
-    ls('-l',td)
     DataContainer.io.memmap.serial.FileDelete(td);
     if isdir(td); dir(td); end;
 end
 
 
-function test_file_LeftSlice_lastOne_double_complex
+function test_serial_file_LeftSlice_lastOne_double_complex
 %%
     imat=rand(13,11,9);
     K=9;
-    disp('*****');
-    disp('DataContainer.io.memmap.serial.File*LeftSlice last one double complex');
     td=DataContainer.io.makeDir();
     origc=complex(imat,1);
     DataContainer.io.memmap.serial.FileWrite(td,origc,DataContainer.io.basicHeaderStructFromX(origc));
@@ -194,17 +165,14 @@ function test_file_LeftSlice_lastOne_double_complex
     end
     smat = DataContainer.io.memmap.serial.FileRead(td);
     assert(isequal(smat,nmat))
-    ls('-l',td)
     DataContainer.io.memmap.serial.FileDelete(td);
     if isdir(td); dir(td); end;
 end
 
-function test_file_LeftSlice_lastOne_single_real
+function test_serial_file_LeftSlice_lastOne_single_real
 %%
     imat=rand(13,11,9);
     K=9;
-    disp('*****');
-    disp('DataContainer.io.memmap.serial.File*LeftSlice last one single real');
     td=DataContainer.io.makeDir();
     hdr=DataContainer.io.basicHeaderStructFromX(imat);
     hdr.precision='single';
@@ -221,17 +189,14 @@ function test_file_LeftSlice_lastOne_single_real
     end
     smat = DataContainer.io.memmap.serial.FileRead(td,'single');
     assert(isequal(smat,single(nmat)))
-    ls('-l',td)
     DataContainer.io.memmap.serial.FileDelete(td);
     if isdir(td); dir(td); end;
 end
 
-function test_file_LeftSlice_lastOne_double_real
+function test_serial_file_LeftSlice_lastOne_double_real
 %%
     imat=rand(13,11,9);
     K=9;
-    disp('*****');
-    disp('DataContainer.io.memmap.serial.File*LeftSlice last one double real');
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.serial.FileWrite(td,imat);
     for k=1:K
@@ -246,18 +211,15 @@ function test_file_LeftSlice_lastOne_double_real
     end
     smat = DataContainer.io.memmap.serial.FileRead(td);
     assert(isequal(smat,nmat))
-    ls('-l',td)
     DataContainer.io.memmap.serial.FileDelete(td);
     if isdir(td); dir(td); end;
 end
 
-function test_file_LeftSlice_lastTwo_single_complex
+function test_serial_file_LeftSlice_lastTwo_single_complex
 %%
     imat=rand(13,11,9);
     J=11;
     K=9;
-    disp('*****');
-    disp('DataContainer.io.memmap.serial.File*LeftSlice last two single complex');
     td=DataContainer.io.makeDir();
     origc=complex(imat,1);
     hdr=DataContainer.io.basicHeaderStructFromX(origc);
@@ -279,18 +241,15 @@ function test_file_LeftSlice_lastTwo_single_complex
     end
     smat = DataContainer.io.memmap.serial.FileRead(td,'single');
     assert(isequal(smat,single(nmat)))
-    ls('-l',td)
     DataContainer.io.memmap.serial.FileDelete(td);
     if isdir(td); dir(td); end;
 end
 
-function test_file_LeftSlice_lastTwo_double_complex
+function test_serial_file_LeftSlice_lastTwo_double_complex
 %%
     imat=rand(13,11,9);
     J=11;
     K=9;
-    disp('*****');
-    disp('DataContainer.io.memmap.serial.File*LeftSlice last two double complex');
     td=DataContainer.io.makeDir();
     origc=complex(imat,1);
     DataContainer.io.memmap.serial.FileWrite(td,origc,DataContainer.io.basicHeaderStructFromX(origc));
@@ -310,18 +269,15 @@ function test_file_LeftSlice_lastTwo_double_complex
     end
     smat = DataContainer.io.memmap.serial.FileRead(td);
     assert(isequal(smat,nmat))
-    ls('-l',td)
     DataContainer.io.memmap.serial.FileDelete(td);
     if isdir(td); dir(td); end;
 end
 
-function test_file_LeftSlice_lastTwo_single_real
+function test_serial_file_LeftSlice_lastTwo_single_real
 %%
     imat=rand(13,11,9);
     J=11;
     K=9;
-    disp('*****');
-    disp('DataContainer.io.memmap.serial.File*LeftSlice last two single real');
     td=DataContainer.io.makeDir();
     hdr=DataContainer.io.basicHeaderStructFromX(imat);
     hdr.precision='single';
@@ -342,18 +298,15 @@ function test_file_LeftSlice_lastTwo_single_real
     end
     smat = DataContainer.io.memmap.serial.FileRead(td,'single');
     assert(isequal(smat,single(nmat)))
-    ls('-l',td)
     DataContainer.io.memmap.serial.FileDelete(td);
     if isdir(td); dir(td); end;
 end
 
-function test_file_LeftSlice_lastTwo_double_real
+function test_serial_file_LeftSlice_lastTwo_double_real
 %%
     imat=rand(13,11,9);
     J=11;
     K=9;
-    disp('*****');
-    disp('DataContainer.io.memmap.serial.File*LeftSlice last two double real');
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.serial.FileWrite(td,imat);
     for k=1:K
@@ -372,17 +325,14 @@ function test_file_LeftSlice_lastTwo_double_real
     end
     smat = DataContainer.io.memmap.serial.FileRead(td);
     assert(isequal(smat,nmat))
-    ls('-l',td)
     DataContainer.io.memmap.serial.FileDelete(td);
     if isdir(td); dir(td); end;
 end
 
-function test_file_LeftChunk_lastNone_single_complex
+function test_serial_file_LeftChunk_lastNone_single_complex
 %%
     imat=rand(13,11,9);
     K=9;
-    disp('*****');
-    disp('DataContainer.io.memmap.serial.File*LeftChunk last none single complex');
     td=DataContainer.io.makeDir();
     origc=complex(imat,1);
     hdr=DataContainer.io.basicHeaderStructFromX(origc);
@@ -399,17 +349,14 @@ function test_file_LeftChunk_lastNone_single_complex
     DataContainer.io.memmap.serial.FileWriteLeftChunk(td,nmat(:,:,3:K),[3 K],[]);
     smat = DataContainer.io.memmap.serial.FileRead(td,'single');
     assert(isequal(smat,single(nmat)))
-    ls('-l',td)
     DataContainer.io.memmap.serial.FileDelete(td);
     if isdir(td); dir(td); end;
 end
 
-function test_file_LeftChunk_lastNone_double_complex
+function test_serial_file_LeftChunk_lastNone_double_complex
 %%
     imat=rand(13,11,9);
     K=9;
-    disp('*****');
-    disp('DataContainer.io.memmap.serial.File*LeftChunk last none double complex');
     td=DataContainer.io.makeDir();
     origc=complex(imat,1);
     DataContainer.io.memmap.serial.FileWrite(td,origc,DataContainer.io.basicHeaderStructFromX(origc));
@@ -424,17 +371,14 @@ function test_file_LeftChunk_lastNone_double_complex
     DataContainer.io.memmap.serial.FileWriteLeftChunk(td,nmat(:,:,3:K),[3 K],[]);
     smat = DataContainer.io.memmap.serial.FileRead(td);
     assert(isequal(smat,nmat))
-    ls('-l',td)
     DataContainer.io.memmap.serial.FileDelete(td);
     if isdir(td); dir(td); end;
 end
 
-function test_file_LeftChunk_lastNone_single_real
+function test_serial_file_LeftChunk_lastNone_single_real
 %%
     imat=rand(13,11,9);
     K=9;
-    disp('*****');
-    disp('DataContainer.io.memmap.serial.File*LeftChunk last none single real');
     td=DataContainer.io.makeDir();
     hdr=DataContainer.io.basicHeaderStructFromX(imat);
     hdr.precision='single';
@@ -450,17 +394,14 @@ function test_file_LeftChunk_lastNone_single_real
     DataContainer.io.memmap.serial.FileWriteLeftChunk(td,nmat(:,:,3:K),[3 K],[]);
     smat = DataContainer.io.memmap.serial.FileRead(td,'single');
     assert(isequal(smat,single(nmat)))
-    ls('-l',td)
     DataContainer.io.memmap.serial.FileDelete(td);
     if isdir(td); dir(td); end;
 end
 
-function test_file_LeftChunk_lastNone_double_real
+function test_serial_file_LeftChunk_lastNone_double_real
 %%
     imat=rand(13,11,9);
     K=9;
-    disp('*****');
-    disp('DataContainer.io.memmap.serial.File*LeftChunk last none double real');
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.serial.FileWrite(td,imat);
     for k=1:K-2
@@ -474,18 +415,15 @@ function test_file_LeftChunk_lastNone_double_real
     DataContainer.io.memmap.serial.FileWriteLeftChunk(td,nmat(:,:,3:K),[3 K],[]);
     smat = DataContainer.io.memmap.serial.FileRead(td);
     assert(isequal(smat,nmat))
-    ls('-l',td)
     DataContainer.io.memmap.serial.FileDelete(td);
     if isdir(td); dir(td); end;
 end
 
-function test_file_LeftChunk_lastOne_single_complex
+function test_serial_file_LeftChunk_lastOne_single_complex
 %%
     imat=rand(13,11,9);
     J=11;
     K=9;
-    disp('*****');
-    disp('DataContainer.io.memmap.serial.File*LeftChunk last one single complex');
     td=DataContainer.io.makeDir();
     origc=complex(imat,1);
     hdr=DataContainer.io.basicHeaderStructFromX(origc);
@@ -506,18 +444,15 @@ function test_file_LeftChunk_lastOne_single_complex
     end
     smat = DataContainer.io.memmap.serial.FileRead(td,'single');
     assert(isequal(smat,single(nmat)))
-    ls('-l',td)
     DataContainer.io.memmap.serial.FileDelete(td);
     if isdir(td); dir(td); end;
 end
 
-function test_file_LeftChunk_lastOne_double_complex
+function test_serial_file_LeftChunk_lastOne_double_complex
 %%
     imat=rand(13,11,9);
     J=11;
     K=9;
-    disp('*****');
-    disp('DataContainer.io.memmap.serial.File*LeftChunk last one double complex');
     td=DataContainer.io.makeDir();
     origc=complex(imat,1);
     DataContainer.io.memmap.serial.FileWrite(td,origc,DataContainer.io.basicHeaderStructFromX(origc));
@@ -536,18 +471,15 @@ function test_file_LeftChunk_lastOne_double_complex
     end
     smat = DataContainer.io.memmap.serial.FileRead(td);
     assert(isequal(smat,nmat))
-    ls('-l',td)
     DataContainer.io.memmap.serial.FileDelete(td);
     if isdir(td); dir(td); end;
 end
 
-function test_file_LeftChunk_lastOne_single_real
+function test_serial_file_LeftChunk_lastOne_single_real
 %%
     imat=rand(13,11,9);
     J=11;
     K=9;
-    disp('*****');
-    disp('DataContainer.io.memmap.serial.File*LeftChunk last one single real');
     td=DataContainer.io.makeDir();
     hdr=DataContainer.io.basicHeaderStructFromX(imat);
     hdr.precision='single';
@@ -567,18 +499,15 @@ function test_file_LeftChunk_lastOne_single_real
     end
     smat = DataContainer.io.memmap.serial.FileRead(td,'single');
     assert(isequal(smat,single(nmat)))
-    ls('-l',td)
     DataContainer.io.memmap.serial.FileDelete(td);
     if isdir(td); dir(td); end;
 end
 
-function test_file_LeftChunk_lastOne_double_real
+function test_serial_file_LeftChunk_lastOne_double_real
 %%
     imat=rand(13,11,9);
     J=11;
     K=9;
-    disp('*****');
-    disp('DataContainer.io.memmap.serial.File*LeftChunk last one double real');
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.serial.FileWrite(td,imat);
     for k=1:K
@@ -596,7 +525,6 @@ function test_file_LeftChunk_lastOne_double_real
     end
     smat = DataContainer.io.memmap.serial.FileRead(td);
     assert(isequal(smat,nmat))
-    ls('-l',td)
     DataContainer.io.memmap.serial.FileDelete(td);
     if isdir(td); dir(td); end;
 end
