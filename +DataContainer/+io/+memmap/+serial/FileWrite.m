@@ -48,6 +48,6 @@ if ~isreal(x)
     DataContainer.io.memmap.serial.DataWrite(dirname,'imag',imag(x),f_precision);
 end
 % Write header
-save(fullfile(dirname,'header.mat'),'-struct','header');
+DataContainer.io.memmap.serial.HeaderWrite(dirname,header);
 
 end

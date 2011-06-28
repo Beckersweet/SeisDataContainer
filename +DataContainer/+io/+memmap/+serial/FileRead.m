@@ -22,7 +22,7 @@ if nargin>1
 end;
 
 % Read header
-header = load(fullfile(dirname,'header.mat'));
+header = DataContainer.io.memmap.serial.HeaderRead(dirname);
 % Read file
 x=DataContainer.io.memmap.serial.DataRead(dirname,'real',...
     header.size,header.precision,x_precision);

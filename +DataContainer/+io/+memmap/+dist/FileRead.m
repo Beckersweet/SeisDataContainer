@@ -9,6 +9,7 @@ function [x header] = FileRead(dirname,varargin)
 %               Supported precisions: 'double', 'single'
 %
 assert(ischar(dirname), 'directory name must be a string')
+assert(isdir(dirname),'Fatal error: directory %s does not exist',dirname);
 
 % Setup variables
 x_precision = 'double';
@@ -23,7 +24,6 @@ end;
 % Read header
 header = load(fullfile(dirname,'header.mat'));
 % Read file
-assert(isdir(dirname),'Fatal error: directory %s does not exist',dirname);
 x=DataContainer.io.memmap.serial.DataRead(dirname,'real',...
     header.size,header.precision,x_precision);
 if header.complex

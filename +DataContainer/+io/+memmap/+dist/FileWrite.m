@@ -1,4 +1,4 @@
-function FileWrite(dirname,x,varargin)
+function FileWrite(dirname,x,distribute,varargin)
 %FILEWRITE  Write serial data to binary file
 %
 %   DataWrite(DIRNAME,DATA,FILE_PRECISION|HEADER_STRUCT) writes

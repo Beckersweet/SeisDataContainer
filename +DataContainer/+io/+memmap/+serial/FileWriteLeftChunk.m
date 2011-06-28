@@ -20,7 +20,7 @@ assert(isvector(range)&length(range)==2, 'range index must be a vector with 2 el
 assert(isvector(slice)|isequal(slice,[]), 'slice index must be a vector')
 
 % Read header
-header = load(fullfile(dirname,'header.mat'));
+header = DataContainer.io.memmap.serial.HeaderRead(dirname);
 
 % Write file
 DataContainer.io.memmap.serial.DataWriteLeftChunk(dirname,'real',...

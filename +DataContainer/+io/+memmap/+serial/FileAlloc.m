@@ -23,6 +23,6 @@ if header.complex
     DataContainer.io.memmap.serial.DataAlloc(dirname,'imag',header.size,header.precision);
 end
 % Write header
-save(fullfile(dirname,'header.mat'),'-struct','header');
+DataContainer.io.memmap.serial.HeaderWrite(dirname,header);
 
 end

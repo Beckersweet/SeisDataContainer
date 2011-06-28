@@ -12,7 +12,7 @@ assert(~isdistributed(x), 'data must not be distributed')
 assert(isvector(slice)|isequal(slice,[]), 'slice index must be a vector')
 
 % Read header
-header = load(fullfile(dirname,'header.mat'));
+header = DataContainer.io.memmap.serial.HeaderRead(dirname);
 
 % Write file
 DataContainer.io.memmap.serial.DataWriteLeftSlice(dirname,'real',...
