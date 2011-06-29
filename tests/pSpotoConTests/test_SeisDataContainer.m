@@ -6,7 +6,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function test_dist_oof_readWriteSlice
 %%
-n = randi(10);
+n = randi(10)+1;
 m = randi(n);
 A = distributed.rand(n,n,n,n,n);
 DataContainer.io.memmap.dist_deprecated.DataWrite('test',A);
@@ -22,7 +22,7 @@ end
 
 function test_HeaderReadWrite
 %%
-    x = randi(100);
+    x = randi(100)+1;
     y = randi(50);
     n1 = randi(x,[1,y]);   
     n1 = DataContainer.io.basicHeaderStructFromX(n1);
@@ -34,7 +34,7 @@ end
 
 function test_dist_DataReadWrite
 %%
-    x = randi(20);
+    x = randi(20)+1;
     n1 = distributed.randn(x,x,x,x);
     DataContainer.io.memmap.dist_deprecated.DataWrite('test',n1);
     n2 = DataContainer.io.memmap.dist_deprecated.DataRead('test', [x x x x]);
