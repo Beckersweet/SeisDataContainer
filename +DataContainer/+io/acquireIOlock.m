@@ -15,6 +15,8 @@ function status = acquireIOlock(dirname,varargin)
         [status msg msgid] = mkdir(dirname,lockname);
         if status==1 & length(msg)==0 & length(msgid)==0
             flag = false;
+        else
+        pause(rand());
         end
     end
     
