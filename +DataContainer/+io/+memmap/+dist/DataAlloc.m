@@ -10,7 +10,7 @@ function DataAlloc(dirnames,filename,dimensions,file_precision)
 %   Warning: If the specified file already exist,
 %            it will be overwritten.
 error(nargchk(4, 4, nargin, 'struct'));
-assert(matlabpool('size')>0,'matlabpool must be running')
+assert(matlabpool('size')>0,'matlabpool must be open')
 assert(iscell(dirnames), 'directory name must be a cell')
 assert(ischar(filename), 'file name must be a string')
 assert(iscell(dimensions), 'dimensions must be given as a cell')

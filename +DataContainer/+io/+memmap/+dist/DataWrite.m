@@ -15,6 +15,7 @@ assert(isreal(x), 'data must be real')
 assert(isdistributed(x), 'data must be distributed')
 assert(isstruct(distribution), 'distribution must be a headser struct')
 assert(ischar(file_precision), 'file_precision name must be a string')
+assert(matlabpool('size')>0,'matlabpool must be open')
 if distribute
     assert(iscell(dirnames), 'directory names must be a cell')
     dirname = DataContainer.utils.Cell2Composite(dirnames);

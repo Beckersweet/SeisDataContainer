@@ -13,6 +13,7 @@ assert(isvector(dimensions), 'dimensions must be given as a vector')
 assert(isstruct(distribution), 'distribution must be a headser struct')
 assert(ischar(file_precision), 'file_precision name must be a string')
 assert(ischar(x_precision), 'x_precision name must be a string')
+assert(matlabpool('size')>0,'matlabpool must be open')
 if distributed
     assert(iscell(dirnames), 'directory names must be a cell')
     dirname = DataContainer.utils.Cell2Composite(dirnames);

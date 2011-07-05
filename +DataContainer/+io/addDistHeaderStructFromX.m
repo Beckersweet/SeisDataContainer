@@ -1,6 +1,7 @@
 function header = addDistHeaderStructFromX(x,headerin)
     assert(isdistributed(x),'x has to be distributed');
     assert(isstruct(headerin),'headerin has to be a header struct');
+    assert(matlabpool('size')>0,'matlabpool has to open');
 
     header = headerin;
     dims = length(size(x));

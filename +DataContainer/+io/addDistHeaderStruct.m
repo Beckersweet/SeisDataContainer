@@ -1,5 +1,6 @@
 function header = addDistHeaderStruct(dimension,partition,headerin)
     assert(isstruct(headerin),'headerin has to be a header struct');
+    assert(matlabpool('size')>0,'matlabpool has to open');
 
     header = headerin;
     dims = length(header.size);

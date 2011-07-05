@@ -12,7 +12,7 @@ function tmpdirs = makeDistDir(varargin)
 %   - TMPDIRS: composite of temporary directories for workers
 %
     error(nargchk(0, 1, nargin, 'struct'));
-    assert(matlabpool('size') > 0,'matlabpool has to be open');
+    assert(matlabpool('size')>0,'matlabpool has to open');
 
     tmpdirs = Composite();
 

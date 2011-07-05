@@ -9,7 +9,6 @@ function FileAlloc(dirname,header)
 %
 %   Warning: If the specified dirname will be removed,
 error(nargchk(2, 2, nargin, 'struct'));
-assert(matlabpool('size')>0,'matlabpool must be running')
 assert(ischar(dirname), 'directory name must be a string')
 assert(isstruct(header), 'header must be a header struct')
 assert(header.distributed==1,'header is missing file distribution')

@@ -4,7 +4,7 @@ function FileDelete(dirname)
 %   DataWrite(DIRNAME) writes
 %
 error(nargchk(1, 1, nargin, 'struct'));
-assert(matlabpool('size')>0,'matlabpool must be running')
+assert(matlabpool('size')>0,'matlabpool must be open')
 assert(ischar(dirname), 'directory name must be a string')
 
 % Read header
