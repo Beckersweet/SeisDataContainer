@@ -46,18 +46,26 @@ DataContainer.io.verifyHeaderStructWithX(header,x);
 
 % Write file
 if distribute
-    DataContainer.io.memmap.dist.DataAlloc(header.directories,'real',header.distribution.size,f_precision);
-    DataContainer.io.memmap.dist.DataWrite(1,header.directories,'real',real(x),header.distribution,f_precision);
+    DataContainer.io.memmap.dist.DataAlloc(header.directories,'real',...
+        header.distribution.size,f_precision);
+    DataContainer.io.memmap.dist.DataWrite(1,header.directories,'real',...
+        real(x),header.distribution,f_precision);
     if ~isreal(x)
-        DataContainer.io.memmap.dist.DataAlloc(header.directories,'imag',header.distribution.size,f_precision);
-        DataContainer.io.memmap.dist.DataWrite(1,header.directories,'imag',imag(x),header.distribution,f_precision);
+        DataContainer.io.memmap.dist.DataAlloc(header.directories,'imag',...
+            header.distribution.size,f_precision);
+        DataContainer.io.memmap.dist.DataWrite(1,header.directories,'imag',...
+            imag(x),header.distribution,f_precision);
     end
 else
-    DataContainer.io.memmap.serial.DataAlloc(dirname,'real',size(x),f_precision);
-    DataContainer.io.memmap.dist.DataWrite(0,dirname,'real',real(x),header.distribution,f_precision);
+    DataContainer.io.memmap.serial.DataAlloc(dirname,'real',...
+        size(x),f_precision);
+    DataContainer.io.memmap.dist.DataWrite(0,dirname,'real',...
+        real(x),header.distribution,f_precision);
     if ~isreal(x)
-        DataContainer.io.memmap.serial.DataAlloc(dirname,'imag',size(x),f_precision);
-        DataContainer.io.memmap.dist.DataWrite(0,dirname,'imag',imag(x),header.distribution,f_precision);
+        DataContainer.io.memmap.serial.DataAlloc(dirname,'imag',...
+            size(x),f_precision);
+        DataContainer.io.memmap.dist.DataWrite(0,dirname,'imag',...
+            imag(x),header.distribution,f_precision);
     end
 end
 % Write header

@@ -24,12 +24,22 @@ end;
 % Read header
 header = DataContainer.io.memmap.serial.HeaderRead(dirname);
 % Read file
-x=DataContainer.io.memmap.serial.DataRead(dirname,'real',...
-    header.size,header.precision,x_precision);
-if header.complex
-    dummy=DataContainer.io.memmap.serial.DataRead(dirname,'imag',...
-        header.size,header.precision,x_precision);
-    x=complex(x,dummy);
+if header.distributed
+    x=DataContainer.io.memmap.dist.DataRead(1,header.directories,'real',...
+        header.size,header.distribution,header.precision,x_precision);
+    if header.complex
+        dummy=DataContainer.io.memmap.dist.DataRead(1,header.directories,'imag',...
+            header.size,header.distribution,header.precision,x_precision);
+        x=complex(x,dummy);
+    end
+else
+    x=DataContainer.io.memmap.dist.DataRead(0,dirname,'real',...
+        header.size,header.distribution,header.precision,x_precision);
+    if header.complex
+        dummy=DataContainer.io.memmap.dist.DataRead(0,dirname,'imag',...
+            header.size,header.distribution,header.precision,x_precision);
+        x=complex(x,dummy);
+    end
 end
  
 end

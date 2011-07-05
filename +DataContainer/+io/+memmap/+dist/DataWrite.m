@@ -13,6 +13,7 @@ assert(isscalar(distribute),'distribute flag must be a scalar')
 assert(ischar(filename), 'file name must be a string')
 assert(isreal(x), 'data must be real')
 assert(isdistributed(x), 'data must be distributed')
+assert(isstruct(distribution), 'distribution must be a headser struct')
 assert(ischar(file_precision), 'file_precision name must be a string')
 if distribute
     assert(iscell(dirnames), 'directory names must be a cell')
@@ -21,7 +22,6 @@ else
     assert(ischar(dirnames), 'directory name must be a string')
     dirname = dirnames;
 end
-distribution
 
 spmd
     % Check File
