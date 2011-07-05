@@ -12,6 +12,7 @@ function FileWrite(dirname,x,distribute,varargin)
 %               or DataContainer.io.basicHeaderStruct
 %
 %   Warning: If the specified dirname will be removed,
+error(nargchk(3, 4, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 assert(isdistributed(x), 'data must not be distributed')
 assert(isscalar(distribute),'distribute flag must be a scalar')
@@ -30,7 +31,6 @@ end
 f_precision = header.precision;
 
 % Preprocess input arguments
-error(nargchk(3, 4, nargin, 'struct'));
 if nargin>3
     assert(ischar(varargin{1})|isstruct(varargin{1}),...
         'argument mast be either file_precision string or header struct')
