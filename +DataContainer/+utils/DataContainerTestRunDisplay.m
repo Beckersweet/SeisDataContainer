@@ -73,7 +73,7 @@ classdef DataContainerTestRunDisplay < TestRunMonitor
             
             if isa(component, 'TestCase')
                 self.TestCaseCount = self.TestCaseCount + 1;
-                fprintf(' %3i: %-40s\t\t',self.TestCaseCount,component.Name);
+                fprintf(' %3i: %-60s\t\t',self.TestCaseCount,component.Name);
                 if did_pass
                    fprintf('[pass]');
                 else
