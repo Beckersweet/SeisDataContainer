@@ -1,7 +1,7 @@
 function DataAlloc(dirnames,filename,dimensions,file_precision)
-%DATAALLOC  Allocate file space for binary data
+%DATAALLOC  Allocate file for binary data
 %
-%   DataAlloc(DIRNAME,FILENAME,DIMENSIONS,FILE_PRECISION)
+%   DataAlloc(DIRNAMES,FILENAME,DIMENSIONS,FILE_PRECISION)
 %   allocates binary file for serial data writing.
 %
 %   FILE_PRECISION - An string specifying the precision of one unit of data,

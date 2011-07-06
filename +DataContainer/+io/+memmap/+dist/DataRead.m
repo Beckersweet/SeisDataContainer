@@ -1,8 +1,8 @@
 function x = DataRead(distributed,dirnames,filename,dimensions,distribution,file_precision,x_precision)
 %DATAREAD  Read serial data from binary file
 %
-%   X = DataRead(DIRNAME,FILENAME,DIMENSIONS,FILE_PRECISION,X_PRECISION) reads
-%   the serial real array X from file DIRNAME/FILENAME.
+%   X = DataRead(DISTRIBUTED,DIRNAMES,FILENAME,DIMENSIONS,DISTRIBUTION,FILE_PRECISION,X_PRECISION)
+%   reads the serial real array X from file DIRNAME/FILENAME.
 %   *_PRECISION - An string specifying the precision of one unit of data,
 %               Supported precisions: 'double', 'single'
 %

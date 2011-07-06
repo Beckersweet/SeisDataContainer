@@ -1,7 +1,7 @@
 function [x header] = FileRead(dirname,varargin)
 %FILEWRITE  Write serial data to binary file
 %
-%   [X, HEADER] = DataRead(DIRNAME,DIMENSIONS,X_PRECISION) reads
+%   [X, HEADER] = FILEREAD(DIRNAME,X_PRECISION) reads
 %   the serial real array X from file DIRNAME/FILENAME.
 %   Addtional parameter:
 %   X_PRECISION - An optional string specifying the precision of one unit of data,

@@ -1,7 +1,7 @@
 function DataWrite(distribute,dirnames,filename,x,distribution,file_precision)
 %DATAWRITE  Write serial data to binary file
 %
-%   DataWrite(DIRNAME,FILENAME,DATA,FILE_PRECISION) writes
+%   DataWrite(DISTRIBUTE,DIRNAMES,FILENAME,DATA,DISTRIBUTION,FILE_PRECISION) writes
 %   the real serial array X into file DIRNAME/FILENAME.
 %
 %   FILE_PRECISION - An string specifying the precision of one unit of data,

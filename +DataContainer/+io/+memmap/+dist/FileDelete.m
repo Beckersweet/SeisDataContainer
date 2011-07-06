@@ -1,7 +1,7 @@
 function FileDelete(dirname)
-%FILEWRITE  Write serial data to binary file
+%FILEDELETE  remove the specified directory
 %
-%   DataWrite(DIRNAME) writes
+%   FILEDELETE(DIRNAME)
 %
 error(nargchk(1, 1, nargin, 'struct'));
 assert(matlabpool('size')>0,'matlabpool must be open')
