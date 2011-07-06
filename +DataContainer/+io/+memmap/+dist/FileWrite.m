@@ -68,6 +68,10 @@ else
             imag(x),header.distribution,f_precision);
     end
 end
+if ~distribute
+    header.distribution = struct();
+    header = rmfield(header,'distribution');
+end
 % Write header
 DataContainer.io.memmap.serial.HeaderWrite(dirname,header);
 
