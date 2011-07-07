@@ -4,6 +4,7 @@ function [x header] = FileReadLeftSlice(dirname,slice,varargin)
 %   [X, HEADER] = FileReadLeftSlice(DIRNAME,DIMENSIONS,X_PRECISION) reads
 %   the serial real array X from file DIRNAME/FILENAME.
 %
+%   DIMENSIONS  - A vector specifying the dimensions
 %   X_PRECISION - An optional string specifying the precision of one unit of data,
 %               defaults to 'double' (8 bits)
 %               Supported precisions: 'double', 'single'

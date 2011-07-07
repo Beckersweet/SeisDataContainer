@@ -4,7 +4,9 @@ function FileWriteLeftSlice(dirname,x,slice)
 %   FileWriteLeftSlice(DIRNAME,DATA,FILE_PRECISION|HEADER_STRUCT) writes
 %   the real serial array X into file DIRNAME/FILENAME.
 %
-%   Warning: If the specified dirname will be removed,
+%   FILE_PRECISION - An string specifying the precision of one unit of data,
+%                    Supported precisions: 'double', 'single'
+%   Warning: If the specified dirname exists, it will be removed
 error(nargchk(3, 3, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 assert(isdistributed(x), 'data must be distributed')
