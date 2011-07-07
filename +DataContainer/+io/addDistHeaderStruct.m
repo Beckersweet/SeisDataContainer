@@ -1,13 +1,19 @@
 function header = addDistHeaderStruct(dimension,partition,headerin)
+    assert(isscalar(dimension),'dimensions must be a scalar')
+    assert(isvector(partition)|isequal(partition,[]),'partition must be a vector or empty vector [] (for default)')
     assert(isstruct(headerin),'headerin has to be a header struct');
     assert(matlabpool('size')>0,'matlabpool has to open');
+    assert(dimension>0&dimension<=headerin.dims,'distributed dimensions outside of arrey dimensions')
 
     header = headerin;
-    dims = length(header.size);
+    dims = header.dims;
     poolsize = matlabpool('size');
     csize = Composite();
     cindecies = Composite();
     header.distribution = struct();
+    if isequal(partition,[])
+        partition = DataContainer.utils.defaultDistribution(header.size(dimension));
+    end
 
     spmd
         codist = codistributor1d(dimension,partition,header.size);

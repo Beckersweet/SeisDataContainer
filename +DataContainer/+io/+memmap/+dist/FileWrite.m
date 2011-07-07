@@ -3,8 +3,8 @@ function FileWrite(dirname,x,distribute,varargin)
 %
 %   FILEWRITE(DIRNAME,DATA,DISTRIBUTE,FILE_PRECISION|HEADER_STRUCT) writes
 %   the real serial array X into file DIRNAME/FILENAME.
-%   Addtional argument is either of:
 %   DISTRIBUTE - 1 for distribute or 0 for no distribute
+%   Addtional argument is either of:
 %   FILE_PRECISION - An optional string specifying the precision of one unit of data,
 %               defaults to type of x
 %               Supported precisions: 'double', 'single'
@@ -31,6 +31,7 @@ if distribute
     header=DataContainer.io.addDistFileHeaderStruct(dirname,header);
 end
 f_precision = header.precision;
+assert(header.dims==header.distribution.dim,'x must be distributed over the last dimension')
 
 % Preprocess input arguments
 if nargin>3
