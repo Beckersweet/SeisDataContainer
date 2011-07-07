@@ -15,11 +15,11 @@ assert(isvector(slice)|isequal(slice,[]), 'slice index must be a vector')
 header = DataContainer.io.memmap.serial.HeaderRead(dirname);
 
 % Write file
-DataContainer.io.memmap.serial.DataWriteLeftSlice(dirname,'real',...
-    header.size,real(x),slice,header.precision);
+DataContainer.io.memmap.serial.DataWriteLeftSlice(dirname,'real',real(x),...
+    header.size,slice,header.precision);
 if ~isreal(x)
-    DataContainer.io.memmap.serial.DataWriteLeftSlice(dirname,'imag',...
-        header.size,imag(x),slice,header.precision);
+    DataContainer.io.memmap.serial.DataWriteLeftSlice(dirname,'imag',imag(x),...
+        header.size,slice,header.precision);
 end
 
 end

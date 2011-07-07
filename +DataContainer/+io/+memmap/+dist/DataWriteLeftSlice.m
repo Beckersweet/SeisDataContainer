@@ -32,12 +32,12 @@ spmd
     assert(isequal(distribution.size{labindex}(1:distribution.dim),size(lx)),...
         'distribution.size does not match the size of LocalPart')
     if distribute
-        DataContainer.io.memmap.serial.DataWriteLeftSlice(dirname,filename,distribution.size{labindex},lx,...
-            slice,file_precision);
+        DataContainer.io.memmap.serial.DataWriteLeftSlice(dirname,filename,lx,...
+            distribution.size{labindex},slice,file_precision);
     else
         DataContainer.io.acquireIOlock(dirname);
-        DataContainer.io.memmap.serial.DataWriteLeftChunk(dirname,filename,...
-            dimensions,lx,[distribution.min_indx(labindex) distribution.max_indx(labindex)],slice,file_precision);
+        DataContainer.io.memmap.serial.DataWriteLeftChunk(dirname,filename,lx,...
+            dimensions,[distribution.min_indx(labindex) distribution.max_indx(labindex)],slice,file_precision);
         DataContainer.io.releaseIOlock(dirname);
     end
 end

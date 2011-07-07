@@ -35,8 +35,8 @@ spmd
         DataContainer.io.memmap.serial.DataWrite(dirname,filename,lx,file_precision);
     else
         DataContainer.io.acquireIOlock(dirname);
-        DataContainer.io.memmap.serial.DataWriteLeftChunk(dirname,filename,...
-            size(x),lx,[distribution.min_indx(labindex) distribution.max_indx(labindex)],[],file_precision);
+        DataContainer.io.memmap.serial.DataWriteLeftChunk(dirname,filename,lx,...
+            size(x),[distribution.min_indx(labindex) distribution.max_indx(labindex)],[],file_precision);
         DataContainer.io.releaseIOlock(dirname);
     end
 end
