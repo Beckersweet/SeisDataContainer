@@ -13,8 +13,8 @@ end
 td=DataContainer.io.makeDir()
 
 hdrb=DataContainer.io.basicHeaderStructFromX(imat3);
-hdrx=DataContainer.io.addDistHeaderStructFromX(imat3,hdrb);
-hdrd=DataContainer.io.addDistHeaderStruct(hdrx.distribution.dim,[],hdrb);
+hdrx=DataContainer.io.addDistHeaderStructFromX(hdrb,imat3);
+hdrd=DataContainer.io.addDistHeaderStruct(hdrb,hdrx.distribution.dim,[]);
 assert(isequal(hdrx,hdrd),'distributions do not match')
 
 disp('serial')
@@ -44,8 +44,8 @@ ls('-lR',td)
 DataContainer.io.memmap.dist.FileDelete(td);
 
 hdrs=DataContainer.io.basicHeaderStructFromX(imat3);
-hdrs=DataContainer.io.addDistHeaderStruct(hdrs.dims-1,[],hdrs);
-hdrs=DataContainer.io.addDistFileHeaderStruct(td,hdrs);
+hdrs=DataContainer.io.addDistHeaderStruct(hdrs,hdrs.dims-1,[]);
+hdrs=DataContainer.io.addDistFileHeaderStruct(hdrs,td);
 DataContainer.io.memmap.dist.FileAlloc(td,hdrs);
 for k=1:K
     DataContainer.io.memmap.dist.FileWriteLeftSlice(td,imat2(:,:,k),[k])

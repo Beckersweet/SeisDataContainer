@@ -1,6 +1,6 @@
-function header = addDistFileHeaderStruct(dirname,headerin)
-    assert(ischar(dirname), 'directory name must be a string')
+function header = addDistFileHeaderStruct(headerin,dirname)
     assert(isstruct(headerin),'headerin has to be a header struct');
+    assert(ischar(dirname), 'directory name must be a string')
 
     header = headerin;
     header.distributed = 1;

@@ -28,7 +28,7 @@ distdim = header.dims - length(slice);
 assert(distdim>0,'invalid distributed diemnsion; too many indecies in the slice?')
 partition = DataContainer.utils.defaultDistribution(header.size(distdim));
 if ~header.distributed
-    header = DataContainer.io.addDistHeaderStruct(distdim,partition,header);
+    header = DataContainer.io.addDistHeaderStruct(header,distdim,partition);
 else
     assert(distdim==header.distribution.dim,...
         'distributed dimension of reading request (%d) does not match (%d) in stored file',distdim,header.distribution.dim)

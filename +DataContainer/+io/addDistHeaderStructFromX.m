@@ -1,6 +1,6 @@
-function header = addDistHeaderStructFromX(x,headerin)
-    assert(isdistributed(x),'x has to be distributed');
+function header = addDistHeaderStructFromX(headerin,x)
     assert(isstruct(headerin),'headerin has to be a header struct');
+    assert(isdistributed(x),'x has to be distributed');
     assert(matlabpool('size')>0,'matlabpool has to open');
 
     header = headerin;

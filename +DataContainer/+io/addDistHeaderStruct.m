@@ -1,7 +1,7 @@
-function header = addDistHeaderStruct(dimension,partition,headerin)
+function header = addDistHeaderStruct(headerin,dimension,partition)
+    assert(isstruct(headerin),'headerin has to be a header struct');
     assert(isscalar(dimension),'dimensions must be a scalar')
     assert(isvector(partition)|isequal(partition,[]),'partition must be a vector or empty vector [] (for default)')
-    assert(isstruct(headerin),'headerin has to be a header struct');
     assert(matlabpool('size')>0,'matlabpool has to open');
     assert(dimension>0&dimension<=headerin.dims,'distributed dimensions outside of arrey dimensions')
 

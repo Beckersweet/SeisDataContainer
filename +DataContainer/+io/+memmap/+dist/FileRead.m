@@ -33,8 +33,8 @@ if header.distributed
         x=complex(x,dummy);
     end
 else
-    header = DataContainer.io.addDistHeaderStruct(header.dims,...
-        DataContainer.utils.defaultDistribution(header.size(end)),header);
+    header = DataContainer.io.addDistHeaderStruct(header,...
+        header.dims,DataContainer.utils.defaultDistribution(header.size(end)));
     x=DataContainer.io.memmap.dist.DataRead(0,dirname,'real',...
         header.size,header.distribution,header.precision,x_precision);
     if header.complex
