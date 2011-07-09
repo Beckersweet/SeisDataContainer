@@ -4,6 +4,7 @@ function DataAlloc(dirnames,filename,dimensions,file_precision)
 %   DataAlloc(DIRNAMES,FILENAME,DIMENSIONS,FILE_PRECISION)
 %   allocates binary file for serial data writing.
 %
+%   DIMENSIONS     - A vector specifying the dimensions
 %   FILE_PRECISION - An string specifying the precision of one unit of data,
 %               Supported precisions: 'double', 'single'
 %

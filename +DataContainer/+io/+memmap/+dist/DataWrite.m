@@ -4,6 +4,7 @@ function DataWrite(distribute,dirnames,filename,x,distribution,file_precision)
 %   DataWrite(DISTRIBUTE,DIRNAMES,FILENAME,DATA,DISTRIBUTION,FILE_PRECISION) writes
 %   the real serial array X into file DIRNAME/FILENAME.
 %
+%   DISTRIBUTE     - 1 for distributed or 0 otherwise
 %   FILE_PRECISION - An string specifying the precision of one unit of data,
 %               Supported precisions: 'double', 'single'
 %

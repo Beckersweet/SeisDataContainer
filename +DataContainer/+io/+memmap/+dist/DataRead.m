@@ -3,6 +3,9 @@ function x = DataRead(distributed,dirnames,filename,dimensions,distribution,file
 %
 %   X = DataRead(DISTRIBUTED,DIRNAMES,FILENAME,DIMENSIONS,DISTRIBUTION,FILE_PRECISION,X_PRECISION)
 %   reads the serial real array X from file DIRNAME/FILENAME.
+%
+%   DISTRIBUTED - 1 for distributed or 0 otherwise
+%   DIMENSIONS  - A vector specifying the dimensions
 %   *_PRECISION - An string specifying the precision of one unit of data,
 %               Supported precisions: 'double', 'single'
 %

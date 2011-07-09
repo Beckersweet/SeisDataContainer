@@ -3,6 +3,8 @@ function x = DataReadLeftSlice(distributed,dirnames,filename,dimensions,distribu
 %
 %   X = DataRead(DIRNAME,FILENAME,DIMENSIONS,FILE_PRECISION,X_PRECISION) reads
 %   the serial real array X from file DIRNAME/FILENAME.
+%
+%   DIMENSIONS  - A vector specifying the dimensions
 %   *_PRECISION - An string specifying the precision of one unit of data,
 %               Supported precisions: 'double', 'single'
 %
