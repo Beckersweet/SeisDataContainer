@@ -26,7 +26,7 @@ function test_distributed_dataReadWrite_noDistribute_double_real
     imat=distributed.rand(2,2,4);
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.dist.FileWrite(td,imat,0);
-    [x hdrn] = DataContainer.io.memmap.dist.FileRead(td);
+    x = DataContainer.io.memmap.dist.FileRead(td);
     DataContainer.io.memmap.serial.FileDelete(td);
     assert(isequal(x,imat))
 end
@@ -37,7 +37,7 @@ function test_distributed_dataReadWrite_noDistribute_double_complex
     imat=complex(imat,imat);
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.dist.FileWrite(td,imat,0);
-    [x hdrn] = DataContainer.io.memmap.dist.FileRead(td);
+    x = DataContainer.io.memmap.dist.FileRead(td);
     DataContainer.io.memmap.serial.FileDelete(td);
     assert(isequal(x,imat))
 end
@@ -47,7 +47,7 @@ function test_distributed_dataReadWrite_noDistribute_single_real
     imat=distributed.rand(2,2,4);
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.dist.FileWrite(td,imat,0,'single');
-    [x hdrn] = DataContainer.io.memmap.dist.FileRead(td,'single');
+    x = DataContainer.io.memmap.dist.FileRead(td,'single');
     DataContainer.io.memmap.serial.FileDelete(td);
     assert(isequal(x,single(imat)))
 end
@@ -58,7 +58,7 @@ function test_distributed_dataReadWrite_noDistribute_single_complex
     imat=complex(imat,imat);
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.dist.FileWrite(td,imat,0,'single');
-    [x hdrn] = DataContainer.io.memmap.dist.FileRead(td,'single');
+    x = DataContainer.io.memmap.dist.FileRead(td,'single');
     DataContainer.io.memmap.serial.FileDelete(td);
     assert(isequal(x,single(imat)))
 end
@@ -68,7 +68,7 @@ function test_distributed_dataReadWrite_distribute_double_real
     imat=distributed.rand(2,2,4);
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.dist.FileWrite(td,imat,1);
-    [x hdrn] = DataContainer.io.memmap.dist.FileRead(td);
+    x = DataContainer.io.memmap.dist.FileRead(td);
     DataContainer.io.memmap.dist.FileDelete(td);
     assert(isequal(x,imat))
 end
@@ -79,7 +79,7 @@ function test_distributed_dataReadWrite_distribute_double_complex
     imat=complex(imat,imat);
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.dist.FileWrite(td,imat,1);
-    [x hdrn] = DataContainer.io.memmap.dist.FileRead(td);
+    x = DataContainer.io.memmap.dist.FileRead(td);
     DataContainer.io.memmap.dist.FileDelete(td);
     assert(isequal(x,imat))
 end
@@ -89,7 +89,7 @@ function test_distributed_dataReadWrite_distribute_single_real
     imat=distributed.rand(2,2,4);
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.dist.FileWrite(td,imat,1,'single');
-    [x hdrn] = DataContainer.io.memmap.dist.FileRead(td,'single');
+    x = DataContainer.io.memmap.dist.FileRead(td,'single');
     DataContainer.io.memmap.dist.FileDelete(td);
     assert(isequal(x,single(imat)))
 end
@@ -100,7 +100,7 @@ function test_distributed_dataReadWrite_distribute_single_complex
     imat=complex(imat,imat);
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.dist.FileWrite(td,imat,1,'single');
-    [x hdrn] = DataContainer.io.memmap.dist.FileRead(td,'single');
+    x = DataContainer.io.memmap.dist.FileRead(td,'single');
     DataContainer.io.memmap.dist.FileDelete(td);
     assert(isequal(x,single(imat)))
 end
@@ -110,7 +110,7 @@ function test_distributed_fileReadWrite_noDistribute_double_real
     imat=distributed.rand(2,2,4);
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.dist.FileWrite(td,imat,0);
-    [x hdrn] = DataContainer.io.memmap.dist.FileRead(td);
+    x = DataContainer.io.memmap.dist.FileRead(td);
     DataContainer.io.memmap.serial.FileDelete(td);
     assert(isequal(x,imat))
 end
@@ -121,7 +121,7 @@ function test_distributed_fileReadWrite_noDistribute_double_complex
     imat=complex(imat,imat);
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.dist.FileWrite(td,imat,0);
-    [x hdrn] = DataContainer.io.memmap.dist.FileRead(td);
+    x = DataContainer.io.memmap.dist.FileRead(td);
     DataContainer.io.memmap.serial.FileDelete(td);
     assert(isequal(x,imat))
 end
@@ -131,7 +131,7 @@ function test_distributed_fileReadWrite_noDistribute_single_real
     imat=distributed.rand(2,2,4);
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.dist.FileWrite(td,imat,0,'single');
-    [x hdrn] = DataContainer.io.memmap.dist.FileRead(td,'single');
+    x = DataContainer.io.memmap.dist.FileRead(td,'single');
     DataContainer.io.memmap.serial.FileDelete(td);
     assert(isequal(x,single(imat)))
 end
@@ -142,7 +142,7 @@ function test_distributed_fileReadWrite_noDistribute_single_complex
     imat=complex(imat,imat);
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.dist.FileWrite(td,imat,0,'single');
-    [x hdrn] = DataContainer.io.memmap.dist.FileRead(td,'single');
+    x = DataContainer.io.memmap.dist.FileRead(td,'single');
     DataContainer.io.memmap.serial.FileDelete(td);
     assert(isequal(x,single(imat)))
 end
@@ -152,7 +152,7 @@ function test_distributed_fileReadWrite_distribute_double_real
     imat=distributed.rand(2,2,4);
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.dist.FileWrite(td,imat,1);
-    [x hdrn] = DataContainer.io.memmap.dist.FileRead(td);
+    x = DataContainer.io.memmap.dist.FileRead(td);
     DataContainer.io.memmap.dist.FileDelete(td);
     assert(isequal(x,imat))
 end
@@ -163,7 +163,7 @@ function test_distributed_fileReadWrite_distribute_double_complex
     imat=complex(imat,imat);
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.dist.FileWrite(td,imat,1);
-    [x hdrn] = DataContainer.io.memmap.dist.FileRead(td);
+    x = DataContainer.io.memmap.dist.FileRead(td);
     DataContainer.io.memmap.dist.FileDelete(td);
     assert(isequal(x,imat))
 end
@@ -173,7 +173,7 @@ function test_distributed_fileReadWrite_distribute_single_real
     imat=distributed.rand(2,2,4);
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.dist.FileWrite(td,imat,1,'single');
-    [x hdrn] = DataContainer.io.memmap.dist.FileRead(td,'single');
+    x = DataContainer.io.memmap.dist.FileRead(td,'single');
     DataContainer.io.memmap.dist.FileDelete(td);
     assert(isequal(x,single(imat)))
 end
@@ -184,7 +184,7 @@ function test_distributed_fileReadWrite_distribute_single_complex
     imat=complex(imat,imat);
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.dist.FileWrite(td,imat,1,'single');
-    [x hdrn] = DataContainer.io.memmap.dist.FileRead(td,'single');
+    x = DataContainer.io.memmap.dist.FileRead(td,'single');
     DataContainer.io.memmap.dist.FileDelete(td);
     assert(isequal(x,single(imat)))
 end
@@ -194,11 +194,10 @@ function test_distributed_fileReadLeftSlice_double_real
     imat=distributed.rand(2,2,4);
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.dist.FileWrite(td,imat,0);
-    for i=1:4
-        [x hdrn] = DataContainer.io.memmap.dist.FileReadLeftSlice(td,i);
-        assert(isequal(x,imat(:,:,i)))
-    end    
-    DataContainer.io.memmap.serial.FileDelete(td);    
+    i = randi(4);
+    x = DataContainer.io.memmap.dist.FileReadLeftSlice(td,i);
+    assert(isequal(x,imat(:,:,i)))
+    DataContainer.io.memmap.serial.FileDelete(td);
 end
 
 function test_distributed_fileReadLeftSlice_double_complex
@@ -207,11 +206,10 @@ function test_distributed_fileReadLeftSlice_double_complex
     imat=complex(imat,imat);
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.dist.FileWrite(td,imat,0);
-    for i=1:4
-        [x hdrn] = DataContainer.io.memmap.dist.FileReadLeftSlice(td,i);
-        assert(isequal(x,imat(:,:,i)))
-    end    
-    DataContainer.io.memmap.serial.FileDelete(td);    
+    i = randi(4);
+    x = DataContainer.io.memmap.dist.FileReadLeftSlice(td,i);
+    assert(isequal(x,imat(:,:,i)))
+    DataContainer.io.memmap.serial.FileDelete(td);
 end
 
 function test_distributed_fileReadLeftSlice_single_real
@@ -219,11 +217,10 @@ function test_distributed_fileReadLeftSlice_single_real
     imat=distributed.rand(2,2,4);
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.dist.FileWrite(td,imat,0,'single');
-    for i=1:4
-        [x hdrn] = DataContainer.io.memmap.dist.FileReadLeftSlice(td,i,'single');
-        assert(isequal(x,single(imat(:,:,i))))
-    end    
-    DataContainer.io.memmap.serial.FileDelete(td);    
+    i = randi(4);
+    x = DataContainer.io.memmap.dist.FileReadLeftSlice(td,i,'single');
+    assert(isequal(x,single(imat(:,:,i))))
+    DataContainer.io.memmap.serial.FileDelete(td);
 end
 
 function test_distributed_fileReadLeftSlice_single_complex
@@ -232,11 +229,10 @@ function test_distributed_fileReadLeftSlice_single_complex
     imat=complex(imat,imat);
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.dist.FileWrite(td,imat,0,'single');
-    for i=1:4
-        [x hdrn] = DataContainer.io.memmap.dist.FileReadLeftSlice(td,i,'single');
-        assert(isequal(x,single(imat(:,:,i))))
-    end    
-    DataContainer.io.memmap.serial.FileDelete(td);    
+    i = randi(4);
+    x = DataContainer.io.memmap.dist.FileReadLeftSlice(td,i,'single');
+    assert(isequal(x,single(imat(:,:,i))))
+    DataContainer.io.memmap.serial.FileDelete(td);
 end
 
 function test_distributed_fileWriteLeftSlice_double_real
@@ -245,12 +241,11 @@ function test_distributed_fileWriteLeftSlice_double_real
     dmat=distributed.rand(2,2);
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.dist.FileWrite(td,imat,0);
-    for i=1:4
-        DataContainer.io.memmap.dist.FileWriteLeftSlice(td,dmat,[i]);
-        [x hdrn] = DataContainer.io.memmap.dist.FileReadLeftSlice(td,[i]);
-        assert(isequal(x,dmat))
-    end
-    DataContainer.io.memmap.serial.FileDelete(td);    
+    i = randi(4);
+    DataContainer.io.memmap.dist.FileWriteLeftSlice(td,dmat,[i]);
+    x = DataContainer.io.memmap.dist.FileReadLeftSlice(td,[i]);
+    assert(isequal(x,dmat))
+    DataContainer.io.memmap.serial.FileDelete(td);
 end
 
 function test_distributed_fileWriteLeftSlice_double_complex
@@ -261,12 +256,11 @@ function test_distributed_fileWriteLeftSlice_double_complex
     dmat=complex(dmat,dmat);
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.dist.FileWrite(td,imat,0);
-    for i=1:4
-        DataContainer.io.memmap.dist.FileWriteLeftSlice(td,dmat,[i]);
-        [x hdrn] = DataContainer.io.memmap.dist.FileReadLeftSlice(td,[i]);
-        assert(isequal(x,dmat))
-    end
-    DataContainer.io.memmap.serial.FileDelete(td);    
+    i = randi(4);
+    DataContainer.io.memmap.dist.FileWriteLeftSlice(td,dmat,[i]);
+    x = DataContainer.io.memmap.dist.FileReadLeftSlice(td,[i]);
+    assert(isequal(x,dmat))
+    DataContainer.io.memmap.serial.FileDelete(td);
 end
 
 function test_distributed_fileWriteLeftSlice_single_real
@@ -275,11 +269,10 @@ function test_distributed_fileWriteLeftSlice_single_real
     dmat=distributed.rand(2,2);
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.dist.FileWrite(td,imat,0,'single');
-    for i=1:4
-        DataContainer.io.memmap.dist.FileWriteLeftSlice(td,dmat,[i]);
-        [x hdrn] = DataContainer.io.memmap.dist.FileReadLeftSlice(td,[i],'single');
-        assert(isequal(x,single(dmat)))
-    end
+    i = randi(4);
+    DataContainer.io.memmap.dist.FileWriteLeftSlice(td,dmat,[i]);
+    x = DataContainer.io.memmap.dist.FileReadLeftSlice(td,[i],'single');
+    assert(isequal(x,single(dmat)))
     DataContainer.io.memmap.serial.FileDelete(td);
 end
 
@@ -291,10 +284,9 @@ function test_distributed_fileWriteLeftSlice_single_complex
     dmat=complex(dmat,dmat);
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.dist.FileWrite(td,imat,0,'single');
-    for i=1:4
-        DataContainer.io.memmap.dist.FileWriteLeftSlice(td,dmat,[i]);
-        [x hdrn] = DataContainer.io.memmap.dist.FileReadLeftSlice(td,[i],'single');
-        assert(isequal(x,single(dmat)))
-    end
+    i = randi(4);
+    DataContainer.io.memmap.dist.FileWriteLeftSlice(td,dmat,[i]);
+    x = DataContainer.io.memmap.dist.FileReadLeftSlice(td,[i],'single');
+    assert(isequal(x,single(dmat)))
     DataContainer.io.memmap.serial.FileDelete(td);
-end   
+end
