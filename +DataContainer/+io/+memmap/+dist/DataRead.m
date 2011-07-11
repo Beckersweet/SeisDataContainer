@@ -1,13 +1,16 @@
 function x = DataRead(distributed,dirnames,filename,dimensions,distribution,file_precision,x_precision)
-%DATAREAD  Read serial data from binary file
+%DATAREAD Reads serial data from binary file
 %
 %   X = DataRead(DISTRIBUTED,DIRNAMES,FILENAME,DIMENSIONS,DISTRIBUTION,FILE_PRECISION,X_PRECISION)
 %   reads the serial real array X from file DIRNAME/FILENAME.
 %
-%   DISTRIBUTED - 1 for distributed or 0 otherwise
-%   DIMENSIONS  - A vector specifying the dimensions
-%   *_PRECISION - An string specifying the precision of one unit of data,
-%               Supported precisions: 'double', 'single'
+%   DISTRIBUTED  - 1 for distributed or 0 otherwise
+%   DIRNAMES     - A string specifying the directory name
+%   FILENAME     - A string specifying the file name
+%   DIMENSIONS   - A vector specifying the dimensions
+%   DISTRIBUTION - A header struct specifying the distribution
+%   *_PRECISION  - An string specifying the precision of one unit of data,
+%                  Supported precisions: 'double', 'single'
 %
 error(nargchk(7, 7, nargin, 'struct'));
 assert(isscalar(distributed),'distributed flag must be a scalar')

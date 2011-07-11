@@ -1,11 +1,13 @@
 function FileWriteLeftSlice(dirname,x,slice)
-%FILEWRITELEFTSLICE  Write serial left slice data to binary file
+%FILEWRITELEFTSLICE Writes serial left slice data to binary file
 %
-%   FileWriteLeftSlice(DIRNAME,DATA,FILE_PRECISION|HEADER_STRUCT) writes
+%   FileWriteLeftSlice(DIRNAME,DATA,SLICE) writes
 %   the real serial array X into file DIRNAME/FILENAME.
 %
-%   FILE_PRECISION - An string specifying the precision of one unit of data,
-%                    Supported precisions: 'double', 'single'
+%   DIRNAME - A string specifying the directory name
+%   DATA    - Distributed data
+%   SLICE   - A vector specifying the slice index
+%
 %   Warning: If the specified dirname exists, it will be removed
 error(nargchk(3, 3, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')

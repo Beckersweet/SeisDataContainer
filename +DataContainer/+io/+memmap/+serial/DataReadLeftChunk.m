@@ -1,11 +1,16 @@
 function x = DataReadLeftChunk(dirname,filename,dimensions,range,slice,file_precision,x_precision)
-%DATAREADLEFTCHUNCK  Read left chunck from binary file
+%DATAREADLEFTCHUNCK Reads left chunck from binary file
 %
 %   X = DataReadLeftChunk(DIRNAME,FILENAME,DIMENSIONS,RANGE,SLICE,FILE_PRECISION,X_PRECISION)
 %   reads the chunk (from last dimension) of the real serial array X from file DIRNAME/FILENAME.
 %
+%   DIRNAME     - A string specifying the directory name
+%   FILENAME    - A string specifying the file name
+%   DIMENSIONS  - A vector specifying the dimensions
+%   RANGE       - A vector with two elements specifying the range of data
+%   SLICE       - A vector specifying the slice index
 %   *_PRECISION - An string specifying the precision of one unit of data,
-%               Supported precisions: 'double', 'single'
+%                 Supported precisions: 'double', 'single'
 %
 error(nargchk(7, 7, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')

@@ -1,11 +1,15 @@
 function x = DataReadLeftSlice(dirname,filename,dimensions,slice,file_precision,x_precision)
-%DATAREADLEFTSLICE  Reads left slice from binary file
+%DATAREADLEFTSLICE Reads left slice from binary file
 %
 %   X = DataReadLeftSlice(DIRNAME,FILENAME,DIMENSIONS,SLICE,FILE_PRECISION,X_PRECISION) reads
 %   the slice (from last dimension) of the real serial array X from file DIRNAME/FILENAME.
 %
+%   DIRNAME     - A string specifying the directory name
+%   FILENAME    - A string specifying the file name
+%   DIMENSIONS  - A vector specifying the dimensions
+%   SLICE       - A vector specifying the slice index
 %   *_PRECISION - An string specifying the precision of one unit of data,
-%               Supported precisions: 'double', 'single'
+%                 Supported precisions: 'double', 'single'
 %
 error(nargchk(6, 6, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')

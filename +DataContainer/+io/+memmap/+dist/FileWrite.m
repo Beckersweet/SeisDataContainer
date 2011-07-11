@@ -1,16 +1,20 @@
 function FileWrite(dirname,x,distribute,varargin)
-%FILEWRITE  Write serial data to binary file
+%FILEWRITE Writes serial data to binary file
 %
 %   FILEWRITE(DIRNAME,DATA,DISTRIBUTE,FILE_PRECISION|HEADER_STRUCT) writes
 %   the real serial array X into file DIRNAME/FILENAME.
-%   DISTRIBUTE - 1 for distribute or 0 for no distribute
+%
+%   DIRNAME    - A string specifying the directory name
+%   DATA       - Non-distributed data
+%   DISTRIBUTE - A scalar that takes 1 for distribute or 0 for no distribute
+%
 %   Addtional argument is either of:
 %   FILE_PRECISION - An optional string specifying the precision of one unit of data,
-%               defaults to type of x
-%               Supported precisions: 'double', 'single'
-%   HEADER_STRUCT - An optional header struct as created
-%               by DataContainer.io.basicHeaderStructFromX
-%               or DataContainer.io.basicHeaderStruct
+%                    defaults to type of x
+%                    Supported precisions: 'double', 'single'
+%   HEADER_STRUCT  - An optional header struct as created
+%                    by DataContainer.io.basicHeaderStructFromX
+%                    or DataContainer.io.basicHeaderStruct
 %
 %   Warning: If the specified dirname already exist,
 %            it will be overwritten.  

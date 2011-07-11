@@ -1,12 +1,15 @@
 function [x header] = FileReadLeftChunk(dirname,range,slice,varargin)
-%FILEREADLEFTCHUNK  Read serial left chunck data from binary file
+%FILEREADLEFTCHUNK Reads serial left chunck data from binary file
 %
-%   [X, HEADER] = FileReadLeftChunk(DIRNAME,DIMENSIONS,X_PRECISION) reads
-%   the serial real array X from file DIRNAME/FILENAME.
+%   [X, HEADER] = FileReadLeftChunk(DIRNAME,RANGE,SLICE,X_PRECISION) reads
+%   the serial left chunk from DIRNAME/FILENAME.
 %
+%   DIRNAME     - A string specifying the directory name
+%   RANGE       - A vector with two elements specifying the range of data
+%   SLICE       - A vector specifying the slice index
 %   X_PRECISION - An optional string specifying the precision of one unit of data,
-%               defaults to 'double' (8 bits)
-%               Supported precisions: 'double', 'single'
+%                 defaults to 'double' (8 bits)
+%                 Supported precisions: 'double', 'single'
 %
 error(nargchk(3, 4, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')

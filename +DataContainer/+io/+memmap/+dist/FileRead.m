@@ -1,12 +1,15 @@
 function [x header] = FileRead(dirname,varargin)
-%FILEWRITE  Write serial data to binary file
+%FILEREAD Reads serial data from binary file
 %
 %   [X, HEADER] = FILEREAD(DIRNAME,X_PRECISION) reads
 %   the serial real array X from file DIRNAME/FILENAME.
+%
+%   DIRNAME     - A string specifying the directory name
+%
 %   Addtional parameter:
 %   X_PRECISION - An optional string specifying the precision of one unit of data,
-%               defaults to 'double' (8 bits)
-%               Supported precisions: 'double', 'single'
+%                 defaults to 'double' (8 bits)
+%                 Supported precisions: 'double', 'single'
 %
 error(nargchk(1, 2, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')

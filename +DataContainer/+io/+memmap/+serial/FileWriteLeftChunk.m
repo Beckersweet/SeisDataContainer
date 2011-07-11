@@ -1,12 +1,14 @@
 function FileWriteLeftChunk(dirname,x,range,slice)
-%FILEWRITELEFTCHUNK  Write serial left chunk data to binary file
+%FILEWRITELEFTCHUNK Writes serial left chunk data to binary file
 %
 %   FileWriteLeftChunk(DIRNAME,DATA,RANGE,SLICE) writes
-%   the real serial array X into file DIRNAME/FILENAME.
-%   Addtional argument is either of:
-%   RANGE - A vector with two elements representing the range of
-%           data that we want to write            
-%   SLICE - A vector representing the specific slice that we want
+%   the real serial left chunk into DIRNAME/FILENAME.
+%
+%   DIRNAME - A string specifying the directory name
+%   DATA    - Non-distributed float data
+%   RANGE   - A vector with two elements representing the range of
+%             data that we want to write            
+%   SLICE   - A vector specifying the slice
 %
 %   Warning: If the specified dirname exists, it will be removed.
 error(nargchk(4, 4, nargin, 'struct'));

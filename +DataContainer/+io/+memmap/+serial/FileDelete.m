@@ -1,7 +1,9 @@
 function FileDelete(dirname)
-%FILEDELETE  Delete file from specified directory
+%FILEDELETE Deletes file from specified directory
 %
 %   FileDelete(DIRNAME) removes the specified directory
+%
+%   DIRNAME - A string specifying the directory name
 %
 %   Warning: The specified directory must exist.
 error(nargchk(1, 1, nargin, 'struct'));

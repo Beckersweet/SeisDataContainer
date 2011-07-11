@@ -1,7 +1,10 @@
 function FileAlloc(dirname,header)
-%FILEALLOC  Allocate file space for header
+%FILEALLOC Allocates file space for header
 %
 %   FileAlloc(DIRNAME,HEADER) allocates file for serial header writing.
+%
+%   DIRNAME - A string specifying the directory name
+%   HEADER  - A header struct specifying the distribution
 %
 
 error(nargchk(2, 2, nargin, 'struct'));

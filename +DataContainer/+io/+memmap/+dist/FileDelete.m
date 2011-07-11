@@ -1,7 +1,9 @@
 function FileDelete(dirname)
-%FILEDELETE  remove the specified directory
+%FILEDELETE removes the specified directory
 %
 %   FILEDELETE(DIRNAME)
+%
+%   DIRNAME - A string specifying the directory name
 %
 error(nargchk(1, 1, nargin, 'struct'));
 assert(matlabpool('size')>0,'matlabpool must be open')

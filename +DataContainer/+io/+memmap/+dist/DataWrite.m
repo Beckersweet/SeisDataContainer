@@ -1,12 +1,16 @@
 function DataWrite(distribute,dirnames,filename,x,distribution,file_precision)
-%DATAWRITE  Write serial data to binary file
+%DATAWRITE Writes serial data to binary file
 %
 %   DataWrite(DISTRIBUTE,DIRNAMES,FILENAME,DATA,DISTRIBUTION,FILE_PRECISION) writes
 %   the real serial array X into file DIRNAME/FILENAME.
 %
-%   DISTRIBUTE     - 1 for distributed or 0 otherwise
+%   DISTRIBUTE     - A scalar that takes 1 for distribute or 0 for no distribute
+%   DIRNAMES       - A string specifying the directory name
+%   FILENAME       - A string specifying the file name
+%   DATA           - Distributed real data
+%   DISTRIBUTION   - A header struct specifying the distribution
 %   FILE_PRECISION - An string specifying the precision of one unit of data,
-%               Supported precisions: 'double', 'single'
+%                    Supported precisions: 'double', 'single'
 %
 %   Warning: The specified file must exist.
 error(nargchk(6, 6, nargin, 'struct'));

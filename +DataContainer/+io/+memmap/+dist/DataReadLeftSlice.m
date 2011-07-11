@@ -1,12 +1,17 @@
 function x = DataReadLeftSlice(distributed,dirnames,filename,dimensions,distribution,slice,file_precision,x_precision)
-%DATAREAD  Read serial data from binary file
+%DATAREADLEFTSLICE Reads serial data from binary file
 %
-%   X = DataRead(DIRNAME,FILENAME,DIMENSIONS,FILE_PRECISION,X_PRECISION) reads
-%   the serial real array X from file DIRNAME/FILENAME.
+%   X = DataReadLeftSlice(DISTRIBUTED,DIRNAMES,FILENAME,DIMENSIONS,DISTRIBUTION,SLICE,FILE_PRECISION,X_PRECISION)
+%   reads the serial real left slice from file DIRNAME/FILENAME.
 %
-%   DIMENSIONS  - A vector specifying the dimensions
-%   *_PRECISION - An string specifying the precision of one unit of data,
-%               Supported precisions: 'double', 'single'
+%   DISTRIBUTED  - 1 for distributed or 0 otherwise
+%   DIRNAMES     - A string specifying the directory name
+%   FILENAME     - A string specifying the file name
+%   DIMENSIONS   - A vector specifying the dimensions
+%   DISTRIBUTION - A header struct specifying the distribution
+%   SLICE        - A vector specifying the slice index
+%   *_PRECISION  - An string specifying the precision of one unit of data,
+%                 Supported precisions: 'double', 'single'
 %
 error(nargchk(8, 8, nargin, 'struct'));
 assert(isscalar(distributed),'distributed flag must be a scalar')

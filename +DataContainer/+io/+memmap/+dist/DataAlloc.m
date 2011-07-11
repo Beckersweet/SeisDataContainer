@@ -1,12 +1,14 @@
 function DataAlloc(dirnames,filename,dimensions,file_precision)
-%DATAALLOC  Allocate file for binary data
+%DATAALLOC Allocates file for binary data
 %
 %   DataAlloc(DIRNAMES,FILENAME,DIMENSIONS,FILE_PRECISION)
 %   allocates binary file for serial data writing.
 %
+%   DIRNAMES       - A cell specifying the directory names
+%   FILENAME       - A string specifying the file name
 %   DIMENSIONS     - A vector specifying the dimensions
 %   FILE_PRECISION - An string specifying the precision of one unit of data,
-%               Supported precisions: 'double', 'single'
+%                    supported precisions: 'double', 'single'
 %
 %   Warning: If the specified file already exist,
 %            it will be overwritten.
