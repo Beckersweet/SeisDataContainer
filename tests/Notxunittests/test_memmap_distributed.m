@@ -36,10 +36,13 @@ for k=1:K
     assert(isequal(imat2(:,:,k),x))
 end
 ls('-lR',td)
+DataContainer.io.memmap.dist.FileDistribute(td,tdo,1);
+ls('-lR',td)
 DataContainer.io.memmap.dist.FileDistribute(td,tdo,2);
 ls('-lR',tdo)
 DataContainer.io.memmap.dist.FileDistribute(td,tdo,3);
 cmat = DataContainer.io.memmap.dist.FileRead(tdo);
+ls('-lR',tdo)
 assert(isequal(gather(imat2),gather(cmat)))
 ls('-lR',tdo)
 DataContainer.io.memmap.serial.FileDelete(td);

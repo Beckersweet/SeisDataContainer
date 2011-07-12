@@ -41,9 +41,19 @@ spmd
         lx = DataContainer.io.memmap.serial.DataReadLeftChunk(dirname,filename,...
             dimensions,[distribution.min_indx(labindex) distribution.max_indx(labindex)],slice,file_precision,x_precision);
     end
-    codist = codistributor1d(distribution.dim,distribution.partition,dimensions(1:distribution.dim));
+    if distribution.dim==1
+        codist = codistributor1d(distribution.dim,distribution.partition,[dimensions(1:distribution.dim) 1]);
+    else
+        codist = codistributor1d(distribution.dim,distribution.partition,dimensions(1:distribution.dim));
+    end
     x = codistributed.build(lx,codist);
 end
-assert(isequal(dimensions(1:distribution.dim),size(x)),'dimensions does not match the size of codistributed x')
+if distribution.dim==1
+    assert(isequal([dimensions(1:distribution.dim) 1],size(x)),...
+        'dimensions does not match the size of codistributed x')
+else
+    assert(isequal(dimensions(1:distribution.dim),size(x)),...
+        'dimensions does not match the size of codistributed x')
+end
 
 end

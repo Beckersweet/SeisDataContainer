@@ -36,8 +36,13 @@ spmd
     assert(exist(filecheck)==2,'Fatal error: file %s does not exist',filecheck);
     % write data
     lx = getLocalPart(x);
-    assert(isequal(distribution.size{labindex}(1:distribution.dim),size(lx)),...
-        'distribution.size does not match the size of LocalPart')
+    if distribution.dim==1
+        assert(isequal([distribution.size{labindex}(1:distribution.dim) 1],size(lx)),...
+            'distribution.size does not match the size of LocalPart')
+    else
+        assert(isequal(distribution.size{labindex}(1:distribution.dim),size(lx)),...
+            'distribution.size does not match the size of LocalPart')
+    end
     if distribute
         DataContainer.io.memmap.serial.DataWriteLeftSlice(dirname,filename,lx,...
             distribution.size{labindex},slice,file_precision);
