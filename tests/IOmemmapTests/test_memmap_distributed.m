@@ -293,7 +293,7 @@ end
 
 function test_distributed_fileDistribute
 %%
-    imat=rand(12,12,12);
+    imat=rand(2,2,4);
     ts=DataContainer.io.makeDir();
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.serial.FileWrite(ts,imat);
@@ -307,7 +307,7 @@ end
 
 function test_distributed_fileGather
 %%
-    imat=distributed.rand(12,12,12);
+    imat=distributed.rand(2,2,4);
     ts=DataContainer.io.makeDir();
     td=DataContainer.io.makeDir();
     DataContainer.io.memmap.dist.FileWrite(ts,imat,1);
