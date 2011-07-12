@@ -11,6 +11,7 @@ error(nargchk(2, 2, nargin, 'struct'));
 assert(ischar(dirin), 'input directory name must be a string')
 assert(ischar(dirout), 'output directory name must be a string')
 assert(isdir(dirin),'Fatal error: input directory %s does not exist',dirin);
+assert(matlabpool('size')>0,'matlabpool must be open')
 
 % Read header
 hdrin = DataContainer.io.memmap.serial.HeaderRead(dirin);

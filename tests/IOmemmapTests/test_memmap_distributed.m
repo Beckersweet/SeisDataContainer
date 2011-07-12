@@ -290,3 +290,18 @@ function test_distributed_fileWriteLeftSlice_single_complex
     assert(isequal(x,single(dmat)))
     DataContainer.io.memmap.serial.FileDelete(td);
 end
+
+function test_distributed_fileDistribute
+%%
+    imat=rand(12,12,12);
+    ts=DataContainer.io.makeDir();
+    td=DataContainer.io.makeDir();
+    DataContainer.io.memmap.serial.FileWrite(ts,imat);
+    i = randi(3);
+    DataContainer.io.memmap.dist.FileDistribute(ts,td,i);
+    x = DataContainer.io.memmap.dist.FileRead(td);
+    assert(isequal(x,imat))
+    DataContainer.io.memmap.serial.FileDelete(td);
+    DataContainer.io.memmap.serial.FileDelete(ts);
+    clear
+end
