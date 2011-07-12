@@ -1,5 +1,13 @@
 function FileDistribute(dirin,dirout,distdim)
-% FileDistribute - copy serial file into distributed
+% FILEDISTRIBUTE copies serial file into distributed
+%
+%   FileDistribute(DIRIN,DIROUT,DISTDIM)
+%   Converts serial file to distributed file on a given dimension
+%
+%   DIRIN   - A string specifying the input file directory
+%   DIROUT  - A string specifying the output file directory
+%   DISTDIM - A scalar specifying the distribution dimension
+%
 error(nargchk(3, 3, nargin, 'struct'));
 assert(ischar(dirin), 'input directory name must be a string')
 assert(ischar(dirout), 'output directory name must be a string')

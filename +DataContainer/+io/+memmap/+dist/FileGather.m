@@ -1,5 +1,12 @@
 function FileGather(dirin,dirout)
-% FileGather - copy distributed file into serial
+% FILEGATHER copies distributed file into serial
+%
+%   FileGather(DIRIN,DIROUT)
+%   Converts distributed file to serial file
+%
+%   DIRIN   - A string specifying the input file directory
+%   DIROUT  - A string specifying the output file directory
+%
 error(nargchk(2, 2, nargin, 'struct'));
 assert(ischar(dirin), 'input directory name must be a string')
 assert(ischar(dirout), 'output directory name must be a string')
