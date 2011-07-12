@@ -38,6 +38,10 @@ end
 ls('-lR',td)
 DataContainer.io.memmap.dist.FileDistribute(td,tdo,2);
 ls('-lR',tdo)
+DataContainer.io.memmap.dist.FileDistribute(td,tdo,3);
+cmat = DataContainer.io.memmap.dist.FileRead(tdo);
+assert(isequal(gather(imat2),gather(cmat)))
+ls('-lR',tdo)
 DataContainer.io.memmap.serial.FileDelete(td);
 DataContainer.io.memmap.serial.FileDelete(tdo);
 
@@ -58,6 +62,8 @@ for k=1:K
 end
 ls('-lR',td)
 DataContainer.io.memmap.dist.FileGather(td,tdo);
+cmat = DataContainer.io.memmap.serial.FileRead(tdo);
+assert(isequal(gather(imat2),gather(cmat)))
 ls('-lR',tdo)
 DataContainer.io.memmap.dist.FileDelete(td);
 DataContainer.io.memmap.serial.FileDelete(tdo);
