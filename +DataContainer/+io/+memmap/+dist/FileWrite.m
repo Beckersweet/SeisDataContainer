@@ -75,11 +75,10 @@ else
             imag(x),header.distribution,f_precision);
     end
 end
-if ~distribute
-    header.distribution = struct();
-    header = rmfield(header,'distribution');
-end
 % Write header
+if ~distribute
+    header = DataContainer.io.deleteDistHeaderStruct(header);
+end
 DataContainer.io.memmap.serial.HeaderWrite(dirname,header);
 
 end

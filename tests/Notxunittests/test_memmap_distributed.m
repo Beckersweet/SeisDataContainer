@@ -11,6 +11,7 @@ spmd
     imat2 = codistributed.build(myLocalPart, codistr);
 end
 td=DataContainer.io.makeDir()
+tdo=DataContainer.io.makeDir()
 
 hdrb=DataContainer.io.basicHeaderStructFromX(imat3);
 hdrx=DataContainer.io.addDistHeaderStructFromX(hdrb,imat3);
@@ -35,7 +36,10 @@ for k=1:K
     assert(isequal(imat2(:,:,k),x))
 end
 ls('-lR',td)
+DataContainer.io.memmap.dist.FileDistribute(td,tdo,2);
+ls('-lR',tdo)
 DataContainer.io.memmap.serial.FileDelete(td);
+DataContainer.io.memmap.serial.FileDelete(tdo);
 
 disp('distributed')
 DataContainer.io.memmap.dist.FileWrite(td,imat3,1);
@@ -53,7 +57,10 @@ for k=1:K
     assert(isequal(imat2(:,:,k),x))
 end
 ls('-lR',td)
+DataContainer.io.memmap.dist.FileGather(td,tdo);
+ls('-lR',tdo)
 DataContainer.io.memmap.dist.FileDelete(td);
+DataContainer.io.memmap.serial.FileDelete(tdo);
 
 disp('Garbage');
 if isdir(td); ls('-R',td); rmdir(td,'s'); end;
