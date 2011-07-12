@@ -303,5 +303,17 @@ function test_distributed_fileDistribute
     assert(isequal(x,imat))
     DataContainer.io.memmap.serial.FileDelete(td);
     DataContainer.io.memmap.serial.FileDelete(ts);
-    clear
+end
+
+function test_distributed_fileGather
+%%
+    imat=distributed.rand(12,12,12);
+    ts=DataContainer.io.makeDir();
+    td=DataContainer.io.makeDir();
+    DataContainer.io.memmap.dist.FileWrite(ts,imat,1);
+    DataContainer.io.memmap.dist.FileGather(ts,td);
+    x = DataContainer.io.memmap.dist.FileRead(td);
+    assert(isequal(x,imat))
+    DataContainer.io.memmap.serial.FileDelete(td);
+    DataContainer.io.memmap.serial.FileDelete(ts);
 end
