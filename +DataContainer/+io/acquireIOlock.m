@@ -9,15 +9,22 @@ function status = acquireIOlock(dirname,varargin)
         lockname = varargin{1};
     end
 
+    lockfile = fullfile(dirname,lockname);
     flag = true;
     status = 0;
     while flag
-        [status msg msgid] = mkdir(dirname,lockname);
+        while isdir(lockfile)
+            mypause();
+        end
+        [status msg msgid] = mkdir(lockfile);
         if status==1 & length(msg)==0 & length(msgid)==0
             flag = false;
-        else
-        pause(rand());
         end
     end
     
+end
+
+function mypause()
+    time = rand();
+    pause(time);
 end
