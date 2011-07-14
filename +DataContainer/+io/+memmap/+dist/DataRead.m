@@ -40,7 +40,8 @@ spmd
             dimensions,[distribution.min_indx(labindex) distribution.max_indx(labindex)],[],file_precision,x_precision);
     end
     codist = codistributor1d(distribution.dim,distribution.partition,dimensions);
-    x = codistributed.build(lx,codist);
+    % 'noCommunication' below is faster but dangerous
+    x = codistributed.build(lx,codist,'noCommunication');
 end
 assert(isequal(dimensions,size(x)),'dimensions does not match the size of codistributed x')
 

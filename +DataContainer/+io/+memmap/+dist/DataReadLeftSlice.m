@@ -46,7 +46,8 @@ spmd
     else
         codist = codistributor1d(distribution.dim,distribution.partition,dimensions(1:distribution.dim));
     end
-    x = codistributed.build(lx,codist);
+    % 'noCommunication' below is faster but dangerous
+    x = codistributed.build(lx,codist,'noCommunication');
 end
 if distribution.dim==1
     assert(isequal([dimensions(1:distribution.dim) 1],size(x)),...
