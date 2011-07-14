@@ -11,9 +11,9 @@ spmd
     myLocalPart = rand(I,Jl,K);
     imat2 = codistributed.build(myLocalPart, codistr);
 end
-td=DataContainer.io.makeDir([pwd '/tmp']);
+td=DataContainer.io.makeDir();
 fprintf('td :%s\n',td);
-tdo=DataContainer.io.makeDir([pwd '/tmp']);
+tdo=DataContainer.io.makeDir();
 fprintf('tdo:%s\n',tdo);
 
 disp('distributed header')
@@ -133,6 +133,7 @@ DataContainer.io.memmap.serial.FileDelete(tdo);
 
 disp('Garbage');
 if isdir(td); ls('-R',td); rmdir(td,'s'); end;
+if isdir(tdo); ls('-R',tdo); rmdir(tdo,'s'); end;
 
 disp('Done');
 end
