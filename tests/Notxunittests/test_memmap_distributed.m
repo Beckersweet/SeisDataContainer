@@ -1,8 +1,9 @@
 function test_distributed()
 disp('Start');
 assert(matlabpool('size')>0,'matlabpool has to be open first')
-I=13; J=11; K=9;
-I=matlabpool('size')*2; J=matlabpool('size')*1; K=matlabpool('size')*2;
+I=2; J=2; K=2;
+I=matlabpool('size')*I; J=matlabpool('size')*J; K=matlabpool('size')*K;
+disp([I J K])
 imat3=distributed.rand(I,J,K);
 imat3=complex(imat3,imat3);
 spmd
