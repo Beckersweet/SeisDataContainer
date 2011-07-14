@@ -1,14 +1,14 @@
 function test_distributed()
 disp('Start');
 assert(matlabpool('size')>0,'matlabpool has to be open first')
-I=2; J=2; K=2;
-I=matlabpool('size')*I; J=matlabpool('size')*J; K=matlabpool('size')*K;
+Il=2; Jl=2; Kl=2;
+I=matlabpool('size')*Il; J=matlabpool('size')*Jl; K=matlabpool('size')*Kl;
 disp([I J K])
 imat3=distributed.rand(I,J,K);
 imat3=complex(imat3,imat3);
 spmd
     codistr = codistributor1d(2,codistributor1d.unsetPartition,[I J K]);
-    myLocalPart = rand(I,1,K);
+    myLocalPart = rand(I,Jl,K);
     imat2 = codistributed.build(myLocalPart, codistr);
 end
 td=DataContainer.io.makeDir([pwd '/tmp']);
