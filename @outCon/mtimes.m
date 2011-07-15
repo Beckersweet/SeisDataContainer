@@ -11,3 +11,8 @@ if nargin == 3 && strcmp(swapflag,'swap')
     A   = tmp;
     clear('tmp');
 end
+
+% Read data and multiply
+
+
+% 
