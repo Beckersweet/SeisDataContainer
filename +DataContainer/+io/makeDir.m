@@ -1,13 +1,13 @@
-function [tmpdir, toptmpdir] = getTmpDir(varargin)
-%   getTmpDir(varargin) creates unique temporary directory
+function [tmpdir, toptmpdir] = makeDir(varargin)
+%   makeDir(varargin) creates unique temporary directory
 % 
-%   [TMPDIR, TOPTMPDIR] = getTmpDir()
+%   [TMPDIR, TOPTMPDIR] = makeDir()
 %       returns new directory created inside of the directory defined by
 %       getenv('TMPDIR') or '/tmp' if TMPDIR environment is not set.
-%   [TMPDIR, TOPTMPDIR] = getTmpDir(PARENT)
+%   [TMPDIR, TOPTMPDIR] = makeDir(PARENT)
 %       returns new directory created inside of PARENT directory.
 %
-%   In either case getTmpDir returns:
+%   In either case makeDir returns:
 %   - TMPDIR: temporary directory on master process
 %   - TOPTMPDIR: detected parent directory of TMPDIR
 %

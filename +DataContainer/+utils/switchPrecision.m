@@ -1,7 +1,7 @@
-function x = switchPrecision(x,precision)
-% getPrecision returns precision type of x as string
+function y = switchPrecision(x,precision)
+% getPrecision returns with new precision
 %
-%   PRECISION = switchPrecision(X,PRECISION)
+%   Y = switchPrecision(X,PRECISION)
 %           Supported precisions: 'double', 'single'
 %
     assert(isfloat(x), 'data must be float')
@@ -9,9 +9,9 @@ function x = switchPrecision(x,precision)
 
     switch precision
         case 'single'
-            if ~isa(x,'single'); x=single(x); end;
+            if ~isa(x,'single'); y=single(x); end;
         case 'double'
-        if ~isa(x,'double'); x=double(x); end;
+            if ~isa(x,'double'); y=double(x); end;
         otherwise
             error('Unsupported precision');
     end

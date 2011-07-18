@@ -12,7 +12,7 @@ function [cdims, offset] = getLeftChunkInfo(dimensions,range,slice)
     assert(isvector(dimensions), 'dimensions must be a vector')
     assert(isvector(range)&length(range)==2, 'chunk range must be a vector with two elements')
     assert(range(2)>=range(1),'range indecies must be sorted')
-    assert(isvector(slice), 'slice index must be a vector')
+    assert(isvector(slice)|isequal(slice,[]), 'slice index must be a vector')
 
     cslice = [range(1) slice];
     l_s = length(cslice);
@@ -29,7 +29,7 @@ function [cdims, offset] = getLeftChunkInfo(dimensions,range,slice)
     for i=1:l_s
         assert(0<cslice(i)&cslice(i)<=rdims(i),...
         'Fatal error: slice index %d out of range(1,%d)',cslice(i),rdims(i))
-    ldims = dimensions(1:l_sd+i-1);
-    offset = offset + prod(ldims)*(cslice(i)-1);
+        ldims = dimensions(1:l_sd+i-1);
+        offset = offset + prod(ldims)*(cslice(i)-1);
     end
 end

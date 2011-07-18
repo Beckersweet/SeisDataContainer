@@ -1,96 +1,48 @@
-function x = DataRead(name,dimensions,varargin)
-%DATAREAD  Reads in binary files as distributed arrays
+function x = DataRead(distributed,dirnames,filename,dimensions,distribution,file_precision,x_precision)
+%DATAREAD Reads serial data from binary file
 %
-%   x = DataRead(FILENAME,DIMENSIONS,PARAM1,VALUE1,PARAM2,VALUE2,...) reads
-%   the binary file specified by FILENAME directly into a distributed array
-%   x of size DIMENSIONS distributed over the last dimension. Addtional
-%   parameters include:
-%   OFFSET    - An integer specifying the number of bits to skip from the 
-%               start of file before actual reading occurs, defaults to 0
-%   PRECISION - A string specifying the precision of one unit of data, 
-%               defaults to 'double' (8 bits)
-%               Supported precisions: 'double', 'single'
-%   REPEAT    - Positive integer or Inf (defaults to Inf).
-%               Number of times to apply the specified format to the mapped
-%               region of the file. If Inf, repeat until end of file. 
+%   X = DataRead(DISTRIBUTED,DIRNAMES,FILENAME,DIMENSIONS,DISTRIBUTION,FILE_PRECISION,X_PRECISION)
+%   reads the serial real array X from file DIRNAME/FILENAME.
 %
-%   Note: The absolute path to the file must be provided.
-
-% Setup variables
-filename  = name;
-precision = 'double';
-repeat    = inf;
-offset    = 0;
-
-% Preprocess input arguments
-error(nargchk(1, nargin, nargin, 'struct'));
-
-if rem(length(varargin), 2) ~= 0
-    error('Param/value pairs must come in pairs.');
+%   DISTRIBUTED  - 1 for distributed or 0 otherwise
+%   DIRNAMES     - A string specifying the directory name
+%   FILENAME     - A string specifying the file name
+%   DIMENSIONS   - A vector specifying the dimensions
+%   DISTRIBUTION - A header struct specifying the distribution
+%   *_PRECISION  - An string specifying the precision of one unit of data,
+%                  Supported precisions: 'double', 'single'
+%
+error(nargchk(7, 7, nargin, 'struct'));
+assert(isscalar(distributed),'distributed flag must be a scalar')
+assert(ischar(filename), 'file name must be a string')
+assert(isvector(dimensions), 'dimensions must be given as a vector')
+assert(isstruct(distribution), 'distribution must be a headser struct')
+assert(ischar(file_precision), 'file_precision name must be a string')
+assert(ischar(x_precision), 'x_precision name must be a string')
+assert(matlabpool('size')>0,'matlabpool must be open')
+if distributed
+    assert(iscell(dirnames), 'directory names must be a cell')
+    dirname = DataContainer.utils.Cell2Composite(dirnames);
+else
+    assert(ischar(dirnames), 'directory name must be a string')
+    dirname = dirnames;
 end
-
-assert(ischar(name), 'filename must be a string')
-assert(isnumeric(dimensions), 'dimensions must be numeric')
-
-% Parse param-value pairs
-for i = 1:2:length(varargin)
-    
-    assert(ischar(varargin{i}),...
-        'Parameter at input %d must be a string.', i);
-    
-    fieldname = lower(varargin{i});
-    switch fieldname
-        case {'offset', 'precision', 'repeat'}
-            eval([fieldname ' = varargin{i+1};']);
-        otherwise
-            error('Parameter "%s" is unrecognized.', ...
-                varargin{i});
-    end
-end
-
-% Set bytesize
-switch precision
-    case 'single'
-        bytesize = 4;
-    case 'double'
-        bytesize = 8;
-    otherwise
-        error('Unsupported precision');
-end    
 
 spmd
-    % Account for column vectors
-    if length(dimensions) == 2 && dimensions(2) == 1
-        % Setup local chunk size
-        global_codist   = codistributor1d(1,[],dimensions);
-        partition       = global_codist.Partition;
-        local_size      = [partition(labindex) 1];
-
-        % Setup offsets
-        global_part     = codistributed(1:dimensions(end));
-        global_indices  = globalIndices(global_part,1,labindex);
-        elements_offset = global_indices(1) - 1;
-        local_offset    = offset + elements_offset*bytesize;
-        
-    else % Multivectors
-        % Setup local chunk size
-        global_codist   = codistributor1d(length(dimensions),[],dimensions);
-        partition       = global_codist.Partition;
-        local_size      = [dimensions(1:end-1) partition(labindex)];
-
-        % Setup offsets
-        global_part     = codistributed(1:dimensions(end));
-        global_indices  = globalIndices(global_part,2,labindex);
-        elements_offset = prod([dimensions(1:end-1) global_indices(1) - 1]);
-        local_offset    = offset + elements_offset*bytesize;
+    % Check File
+    filecheck=fullfile(dirname,filename);
+    assert(exist(filecheck)==2,'Fatal error: file %s does not exist',filecheck);
+    % read data
+    if distributed
+        lx = DataContainer.io.memmap.serial.DataRead(dirname,filename,distribution.size{labindex},file_precision,x_precision);
+    else
+        lx = DataContainer.io.memmap.serial.DataReadLeftChunk(dirname,filename,...
+            dimensions,[distribution.min_indx(labindex) distribution.max_indx(labindex)],[],file_precision,x_precision);
     end
-    
-    % Setup memmapfile
-    M = memmapfile(filename,'format',{precision,local_size,'x'},...
-        'offset',local_offset,'repeat',repeat);
-    
-    % Read local data
-    local_data      = double(M.data(1).x);
-    x = codistributed.build(local_data,global_codist,'noCommunication');
-    
-end % spmd
+    codist = codistributor1d(distribution.dim,distribution.partition,dimensions);
+    % 'noCommunication' below is faster but dangerous
+    x = codistributed.build(lx,codist,'noCommunication');
+end
+assert(isequal(dimensions,size(x)),'dimensions does not match the size of codistributed x')
+
+end

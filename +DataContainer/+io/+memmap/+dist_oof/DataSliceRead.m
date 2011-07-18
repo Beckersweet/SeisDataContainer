@@ -57,17 +57,8 @@ switch precision
         error('Unsupported precision');
 end
 
-% The following commented code gives us the nth slice as a distributed array
-% x = DataContainer.io.memmap.dist.DataRead(filename,dimensions);
-% l = length(x);
-% % Makes the mask for the colons
-% y = repmat({':'},1,(l-1));
-% % Gets the slice
-% x = x(y{:},l-1);
-% end
-
 % Setup labwidth
-labwidth = pSPOT.utils.defaultDistribution(dimensions(end-1));
+labwidth = DataContainer.utils.defaultDistribution(dimensions(end-1));
 
 spmd
     tempdirname = [tempdirname int2str(labindex)];
@@ -81,7 +72,7 @@ spmd
     M = memmapfile(filename,'format',{precision,local_size,'x'},...
         'offset',outcoreoffset+paroffset,'repeat',repeat);
     % Setup memmap of local file
-    locoffset     = prod(local_size(1:end-1))*8-(8*dimensions(end));
+    locoffset     = prod(local_size(1:end-1))*8;
     MW = memmapfile(fullfile(tempdirname,name),'format',...
         {'double',local_size,'x'},'offset',locoffset,'writable',...
         true,'repeat',repeat);

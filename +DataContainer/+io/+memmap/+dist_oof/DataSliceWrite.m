@@ -58,12 +58,12 @@ switch precision
 end
 
 % Setup labwidth
-labwidth = pSPOT.utils.defaultDistribution(dimensions(end-1));
+labwidth = DataContainer.utils.defaultDistribution(dimensions(end-1));
 
 spmd
     loclabwidth = labwidth(labindex);
     local_size  = [dimensions(1:end-2) loclabwidth];
-    DataContainer.io.allocFile(dirname,prod(dimensions(1:end-1))*8,8);
+    DataContainer.io.allocFile(dirname,prod(dimensions(1:end))*8,8);
     % Setup global memmapfile
     outcoreoffset = offset + prod(dimensions(1:end-1))*(sliceIndex-1)*bytesize;
     paroffset     = prod(dimensions(1:end-2))*sum(labwidth(1:labindex-1))*bytesize;

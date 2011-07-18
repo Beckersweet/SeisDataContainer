@@ -31,10 +31,11 @@ complex = eval(char(xDoc.getElementsByTagName('complex').item(0).getFirstChild.g
 % distributed
 distributed = eval(char(xDoc.getElementsByTagName('distributed').item(0).getFirstChild.getData));
 
-header = DataContainer.io.minimalHeaderStruct(n, precision, complex, distributed);
-header.label    = l;
-header.unit     = u;
-header.offset   = o;
-header.interval = d;
+header = DataContainer.io.basicHeaderStruct(n, precision, complex);
+header.label       = l;
+header.unit        = u;
+header.offset      = o;
+header.interval    = d;
+header.distributed = distributed;
 
 end
