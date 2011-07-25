@@ -23,14 +23,14 @@ filename=fullfile(dirname,filename);
 % Check File
 assert(exist(filename)==2,'Fatal error: file %s does not exist',filename);
 
-% Setup memmapfile
-M = memmapfile(filename,...
-        'format',{file_precision,dimensions,'x'},...
-        'writable', false);
-        
 % Read local data
-x = M.data(1).x;
-        
+fid = fopen(filename,'r');
+x = fread(fid,prod(dimensions),file_precision);
+if length(dimensions) > 1
+    x = reshape(x,dimensions);
+end
+fclose(fid);
+
 % swap x_precision
 x = DataContainer.utils.switchPrecisionIP(x,x_precision);
 

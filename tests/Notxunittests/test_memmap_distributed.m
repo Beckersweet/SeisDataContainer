@@ -1,5 +1,6 @@
 function test_distributed()
 disp('Start');
+gstart=tic;
 assert(matlabpool('size')>0,'matlabpool has to be open first')
 Il=2; Jl=2; Kl=2;
 I=matlabpool('size')*Il; J=matlabpool('size')*Jl; K=matlabpool('size')*Kl;
@@ -136,4 +137,5 @@ if isdir(td); ls('-R',td); rmdir(td,'s'); end;
 if isdir(tdo); ls('-R',tdo); rmdir(tdo,'s'); end;
 
 disp('Done');
+disp(toc(gstart));
 end

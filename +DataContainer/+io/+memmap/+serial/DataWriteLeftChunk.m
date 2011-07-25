@@ -40,13 +40,10 @@ chunk_byte_offset = chunk_offset*bytesize;
 % Check File
 assert(exist(filename)==2,'Fatal error: file %s does not exist',filename);
 
-% Setup memmapfile
-M = memmapfile(filename,...
-        'format',{file_precision,size(x),'x'},...
-        'offset',chunk_byte_offset,...
-        'writable', true);
-        
 % Write local data
-M.data(1).x = x;
-        
+fid = fopen(filename,'r+');
+fseek(fid,chunk_byte_offset,-1);
+fwrite(fid,x(:),file_precision);
+fclose(fid);
+
 end
