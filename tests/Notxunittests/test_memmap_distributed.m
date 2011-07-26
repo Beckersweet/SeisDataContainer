@@ -1,4 +1,7 @@
 function test_distributed()
+SeisDataContainer_init();
+global globalSDCTmpDir;
+global localSDCTmpDir;
 disp('Start');
 gstart=tic;
 assert(matlabpool('size')>0,'matlabpool has to be open first')
@@ -70,10 +73,12 @@ disp('global distribute 1st')
 tic
 DataContainer.io.memmap.dist.FileDistribute(td,tdo,1);
 toc
+DataContainer.io.memmap.dist.FileDelete(tdo);
 disp('global distribute 2nd')
 tic
 DataContainer.io.memmap.dist.FileDistribute(td,tdo,2);
 toc
+DataContainer.io.memmap.dist.FileDelete(tdo);
 disp('global distribute 3rd')
 tic
 DataContainer.io.memmap.dist.FileDistribute(td,tdo,3);
@@ -84,7 +89,7 @@ cmat = DataContainer.io.memmap.dist.FileRead(tdo);
 assert(isequal(gather(imat2),gather(cmat)))
 toc
 DataContainer.io.memmap.serial.FileDelete(td);
-DataContainer.io.memmap.serial.FileDelete(tdo);
+DataContainer.io.memmap.dist.FileDelete(tdo);
 
 disp('distributed write')
 tic
@@ -100,7 +105,7 @@ disp('distributed alloc')
 tic
 hdrs=DataContainer.io.basicHeaderStructFromX(imat3);
 hdrs=DataContainer.io.addDistHeaderStruct(hdrs,hdrs.dims-1,[]);
-hdrs=DataContainer.io.addDistFileHeaderStruct(hdrs,td);
+hdrs=DataContainer.io.addDistFileHeaderStruct(hdrs);
 DataContainer.io.memmap.dist.FileAlloc(td,hdrs);
 toc
 disp('distributed write slice')

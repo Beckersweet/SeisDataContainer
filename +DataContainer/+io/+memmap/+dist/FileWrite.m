@@ -32,7 +32,7 @@ assert(status,'Fatal error while creating directory %s',dirname);
 header = DataContainer.io.basicHeaderStructFromX(x);
 header = DataContainer.io.addDistHeaderStructFromX(header,x);
 if distribute
-    header=DataContainer.io.addDistFileHeaderStruct(header,dirname);
+    header=DataContainer.io.addDistFileHeaderStruct(header);
 end
 f_precision = header.precision;
 assert(header.dims==header.distribution.dim,'x must be distributed over the last dimension')
