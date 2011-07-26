@@ -1,7 +1,7 @@
 function test_serial()
 disp('Start');
 tic;
-disp(getenv('TMPDIR'));
+SeisDataContainer_init();
 I=13; J=11; K=9;
 imat=rand(I,J,K);
 %for i=1:I
