@@ -1,10 +1,10 @@
-function tmpdirs = makeDistDir(varargin)
+function [tmpdirs, toptmpdir] = makeDistDir(varargin)
 %   makeDistDir creates unique temporary directories
 %                 on worker processes
 %
 %   TMPDIRS = makeDistDir()
 %       returns new directories created inside of the directory defined by
-%       getenv('TMPDIR') or '/tmp' if TMPDIR environment is not set.
+%       localSDCTmpDir (see SeisDataContainer_init.m)
 %   TMPDIRS = makeDistDir(PARENT)
 %       returns new directories created inside of PARENT directory.
 %
@@ -13,18 +13,19 @@ function tmpdirs = makeDistDir(varargin)
 %
     error(nargchk(0, 1, nargin, 'struct'));
     assert(matlabpool('size')>0,'matlabpool has to open');
+    global localSDCTmpDir;
 
     tmpdirs = Composite();
 
     if nargin > 0
         assert(ischar(varargin{1}),'Fatal error: argument is not a string');
-        spmd
-            tmpdirs = DataContainer.io.makeDir(varargin{1});
-        end
+        toptmpdir = varargin{1};
     else
-        spmd
-            tmpdirs = DataContainer.io.makeDir();
-        end
+        assert(~isempty(localSDCTmpDir),'you first need to execute SeisDataContainer_init')
+        toptmpdir = localSDCTmpDir;
+    end
+    spmd
+        tmpdirs = DataContainer.io.makeDir(toptmpdir);
     end
 
     tmpdirs = DataContainer.utils.Composite2Cell(tmpdirs);

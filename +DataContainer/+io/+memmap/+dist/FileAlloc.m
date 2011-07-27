@@ -15,6 +15,11 @@ assert(ischar(dirname), 'directory name must be a string')
 assert(isstruct(header), 'header must be a header struct')
 assert(header.distributed==1,'header is missing file distribution')
 
+% Make Directory
+if isdir(dirname); rmdir(dirname,'s'); end;
+status = mkdir(dirname);
+assert(status,'Fatal error while creating directory %s',dirname);
+
 % Write file
 DataContainer.io.memmap.dist.DataAlloc(header.directories,'real',header.distribution.size,header.precision);
 if header.complex
