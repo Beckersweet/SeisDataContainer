@@ -1,11 +1,12 @@
 function DataTranspose(dirIn,dirOut,filename,dimensions,file_precision)
 %DATATRANSPOSE Transposes input data and writes it to output file
 %
-%   DataTranspose(FILEIN,FILEOUT,DIMENSIONS,FILE_file_precision)
+%   DataTranspose(DIRIN,DIROUT,FILENAME,DIMENSIONS,FILE_PRECISION)
 %   allocates binary file for serial data writing.
 %
-%   FILEIN         - A string specifying the input file name
-%   FILEOUT        - A string specifying the output file name
+%   DIRIN          - A string specifying the input directory
+%   DIROUT         - A string specifying the output directory
+%   FILENAME       - A string specifying the file name 
 %   DIMENSIONS     - A vector specifying the dimensions
 %   FILE_PRECISION - An string specifying the file_precision of one unit of data,
 %                    Supported precisions: 'double' or 'single'

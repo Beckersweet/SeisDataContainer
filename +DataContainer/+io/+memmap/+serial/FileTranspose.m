@@ -1,14 +1,12 @@
 function FileTranspose(dirnameIn,dirnameOut,sepDim)
 %DATATRANSPOSE Transposes input data and writes it to output file
 %
-%   FileTranspose(DIRNAMEIN,DIRNAMEOUT,FILE_PRECISION)
+%   FileTranspose(DIRNAMEIN,DIRNAMEOUT,SEPDIM)
 %   allocates binary file for serial data writing.
 %
-%   FILEIN         - A string specifying the input file name
-%   FILEOUT        - A string specifying the output file name
-%   DIMENSIONS     - A vector specifying the dimensions
-%   FILE_PRECISION - An string specifying the file_precision of one unit of data,
-%                    Supported precisions: 'double' or 'single'
+%   DIRNAMEIN  - A string specifying the input directory
+%   DIRNAMEOUT - A string specifying the output directory
+%   SEPDIM     - A scalar specifying the separation dimension
 %
 %   Warning: If the specified output file already exists, it will be overwritten.
 error(nargchk(3, 3, nargin, 'struct'));
@@ -23,9 +21,13 @@ headerIn = DataContainer.io.memmap.serial.HeaderRead(dirnameIn);
 % Making the transpose vector
 dim2D = [prod(headerIn.size(1:sepDim)) prod(headerIn.size(sepDim+1:end))];
 
-% Making the output header
-headerOut = DataContainer.io.basicHeaderStruct(...
-    [headerIn.size(sepDim+1:end) headerIn.size(1:sepDim)], headerIn.precision, headerIn.complex);
+% Setting up the output header
+headerOut = headerIn;
+headerOut.size = [headerIn.size(sepDim+1:end) headerIn.size(1:sepDim)];
+headerOut.offset = [headerIn.offset(sepDim+1:end) headerIn.offset(1:sepDim)];
+headerOut.interval = [headerIn.interval(sepDim+1:end) headerIn.interval(1:sepDim)];
+headerOut.unit = [headerIn.unit(sepDim+1:end) headerIn.unit(1:sepDim)];
+headerOut.label = [headerIn.label(sepDim+1:end) headerIn.label(1:sepDim)];
 
 % Transpose file
 if(header.complex)
