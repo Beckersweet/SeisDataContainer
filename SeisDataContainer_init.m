@@ -1,4 +1,17 @@
 function  SeisDataContainer_init(varargin)
+% SeisDataContainer_init initializes global and local temporary directories
+%
+%   SeisDataContainer_init() will try to get GLOBTMPDIR and TMPDIR environment
+%       to initialize respectively global and local temporary directories.
+%       If GLOBTMPDIR environment is not set,
+%           it will use fullfile(pwd,'SDC.tmp') directory instead.
+%       If TMPDIR environment is not set,
+%           it will use '/tmp/SDC.tmp' directory instead.
+%   SeisDataContainer_init(GLOBTMPDIR) will use
+%       GLOBTMPDIR argument instead of GLOBTMPDIR environment.
+%   SeisDataContainer_init(GLOBTMPDIR,LOCALTMPDIR) will use
+%       GLOBTMPDIR argument instead of GLOBTMPDIR environment and
+%       LOCALTMPDIR argument instead of TMPDIR environment.
     error(nargchk(0, 2, nargin, 'struct'));
     global globalSDCTmpDir;
     global localSDCTmpDir;
