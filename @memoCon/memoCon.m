@@ -1,4 +1,4 @@
-classdef memoCon < outCon
+classdef memoCon < oCon
     %MEMOCON  Memory-mapping out-of-core data container for binaries
     %
     %   memoCon(DIRNAME,FILENAME,SIZE,PARAM1,VALUE1,...)
@@ -52,7 +52,7 @@ classdef memoCon < outCon
             % just read in data header
             
             % Construct and set class attributes
-            x = x@outCon('serial memmap',dimensions,iscomplex);
+            x = x@oCon('serial memmap',dimensions,iscomplex);
             x.dirname   = dname;
             x.filename  = fname;
             x.exdims    = 0; % Explicit dimensions of data
