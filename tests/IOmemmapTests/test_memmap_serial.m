@@ -536,3 +536,17 @@ function test_serial_file_LeftChunk_lastOne_double_real
     DataContainer.io.memmap.serial.FileDelete(td);
     if isdir(td); dir(td); end;
 end
+
+function test_serial_file_Transpose_double_real
+%%
+    imat=rand(3,7);
+    header=DataContainer.io.basicHeaderStructFromX(imat);
+    in=DataContainer.io.makeDir();
+    out=DataContainer.io.makeDir();
+    DataContainer.io.memmap.serial.FileWrite(in,imat,header);
+    DataContainer.io.memmap.serial.FileTranspose(in,out,1);
+    x = DataContainer.io.memmap.serial.FileRead(out);
+    assert(isequal(transpose(imat),x))
+    DataContainer.io.memmap.serial.FileDelete(in);
+    DataContainer.io.memmap.serial.FileDelete(out);
+end
