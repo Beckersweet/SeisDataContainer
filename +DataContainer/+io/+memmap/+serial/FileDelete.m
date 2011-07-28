@@ -9,7 +9,10 @@ function FileDelete(dirname)
 error(nargchk(1, 1, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 
-% Make Directory
+% Read header
+header = DataContainer.io.memmap.serial.HeaderRead(dirname);
+assert(~isfield(header,'directories'),'distributed files must be removed with *.dist.FileDelete')
+% Delete Directory
 if isdir(dirname)
     rmdir(dirname,'s')
 else
