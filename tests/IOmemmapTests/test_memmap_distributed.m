@@ -301,19 +301,19 @@ function test_distributed_fileDistribute
     DataContainer.io.memmap.dist.FileDistribute(ts,td,i);
     x = DataContainer.io.memmap.dist.FileRead(td);
     assert(isequal(x,imat))
-    DataContainer.io.memmap.serial.FileDelete(td);
+    DataContainer.io.memmap.dist.FileDelete(td);
     DataContainer.io.memmap.serial.FileDelete(ts);
 end
 
 function test_distributed_fileGather
 %%
     imat=distributed.rand(2,2,4);
-    ts=DataContainer.io.makeDir();
     td=DataContainer.io.makeDir();
-    DataContainer.io.memmap.dist.FileWrite(ts,imat,1);
-    DataContainer.io.memmap.dist.FileGather(ts,td);
-    x = DataContainer.io.memmap.dist.FileRead(td);
+    ts=DataContainer.io.makeDir();
+    DataContainer.io.memmap.dist.FileWrite(td,imat,1);
+    DataContainer.io.memmap.dist.FileGather(td,ts);
+    x = DataContainer.io.memmap.serial.FileRead(ts);
     assert(isequal(x,imat))
-    DataContainer.io.memmap.serial.FileDelete(td);
+    DataContainer.io.memmap.dist.FileDelete(td);
     DataContainer.io.memmap.serial.FileDelete(ts);
 end
