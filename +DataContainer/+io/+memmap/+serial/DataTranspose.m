@@ -59,7 +59,7 @@ if(filename == 'imag')
         % Write the row to output file
         fwrite(fidw, c, file_precision);        
         fwrite(fidwr, r, file_precision);
-        clear a;
+        clear c;
         clear r;
     end
     fclose(fidwr);
@@ -70,11 +70,11 @@ else
         fseek(fidr, (i-1)*precision, 'bof');
         for j=1:dimensions(2)
             % Read one row
-            a(j) = fread(fidr, 1, file_precision, (dimensions(1)-1)*precision);
+            r(j) = fread(fidr, 1, file_precision, (dimensions(1)-1)*precision);
         end
         % Write the row to output file
-        fwrite(fidw, a, file_precision);
-        clear a;
+        fwrite(fidw, r, file_precision);
+        clear r;
     end
 end
 
