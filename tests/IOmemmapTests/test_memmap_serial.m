@@ -539,7 +539,7 @@ end
 
 function test_serial_file_Transpose_double_real
 %%
-    imat=rand(3,7);
+    imat=rand(13,11);
     header=DataContainer.io.basicHeaderStructFromX(imat);
     in=DataContainer.io.makeDir();
     out=DataContainer.io.makeDir();
@@ -549,4 +549,54 @@ function test_serial_file_Transpose_double_real
     assert(isequal(transpose(imat),x))
     DataContainer.io.memmap.serial.FileDelete(in);
     DataContainer.io.memmap.serial.FileDelete(out);
+    clear
+end
+
+function test_serial_file_Transpose_double_complex
+%%
+    imat=rand(13,11);
+    imat=complex(imat,1);
+    header=DataContainer.io.basicHeaderStructFromX(imat);
+    in=DataContainer.io.makeDir();
+    out=DataContainer.io.makeDir();
+    DataContainer.io.memmap.serial.FileWrite(in,imat,header);
+    DataContainer.io.memmap.serial.FileTranspose(in,out,1);
+    x = DataContainer.io.memmap.serial.FileRead(out);
+    assert(isequal(transpose(imat),x))
+    DataContainer.io.memmap.serial.FileDelete(in);
+    DataContainer.io.memmap.serial.FileDelete(out);
+    clear
+end
+
+function test_serial_file_Transpose_single_real
+%%
+    imat=rand(13,11);
+    header=DataContainer.io.basicHeaderStructFromX(imat);
+    header.precision='single';
+    in=DataContainer.io.makeDir();
+    out=DataContainer.io.makeDir();
+    DataContainer.io.memmap.serial.FileWrite(in,imat,header);
+    DataContainer.io.memmap.serial.FileTranspose(in,out,1);
+    x = DataContainer.io.memmap.serial.FileRead(out,'single');
+    assert(isequal(single(transpose(imat)),x))
+    DataContainer.io.memmap.serial.FileDelete(in);
+    DataContainer.io.memmap.serial.FileDelete(out);
+    clear
+end
+
+function test_serial_file_Transpose_single_complex
+%%
+    imat=rand(13,11);
+    imat=complex(imat,1);
+    header=DataContainer.io.basicHeaderStructFromX(imat);
+    header.precision='single';
+    in=DataContainer.io.makeDir();
+    out=DataContainer.io.makeDir();
+    DataContainer.io.memmap.serial.FileWrite(in,imat,header);
+    DataContainer.io.memmap.serial.FileTranspose(in,out,1);
+    x = DataContainer.io.memmap.serial.FileRead(out,'single');
+    assert(isequal(single(transpose(imat)),x))
+    DataContainer.io.memmap.serial.FileDelete(in);
+    DataContainer.io.memmap.serial.FileDelete(out);
+    clear
 end
