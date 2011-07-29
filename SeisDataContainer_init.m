@@ -12,13 +12,14 @@ function  SeisDataContainer_init(varargin)
 %   SeisDataContainer_init(GLOBTMPDIR,LOCALTMPDIR) will use
 %       GLOBTMPDIR argument instead of GLOBTMPDIR environment and
 %       LOCALTMPDIR argument instead of TMPDIR environment.
-    error(nargchk(0, 2, nargin, 'struct'));
+    error(nargchk(0, 3, nargin, 'struct'));
     global globalSDCTmpDir;
     global localSDCTmpDir;
+    global SDCBufferSize;
 
     % set global temporary directory
     % accessible from every worker
-    if nargin > 0
+    if nargin > 0 & length(varargin{1}) > 1
         globalSDCTmpDir = varargin{1};
     else
         envdir = getenv('GLOBTMPDIR');
@@ -39,7 +40,7 @@ function  SeisDataContainer_init(varargin)
 
     % set local temporary directory
     % might not accessible form every worker
-    if nargin > 1
+    if nargin > 1 & length(varargin{2})>1
         localSDCTmpDir = varargin{2};
     else
         envdir = getenv('TMPDIR');
@@ -67,5 +68,15 @@ function  SeisDataContainer_init(varargin)
     if strcmp(globalSDCTmpDir,localSDCTmpDir)
         warning('Having SAME GLOBAL AND LOCAL TEMPORARY DIRECTORIES might be a BAD IDEA.')
     end
+
+    % set buffer size
+    MBsize = 1024*1024;
+    mfactor = 8*MBsize;
+    if nargin > 2
+        SDCBufferSize = DataContainer.utils.getByteSize('double')*varargin{3};
+    else
+        SDCBufferSize = DataContainer.utils.getByteSize('double')*mfactor;
+    end
+    fprintf('IO buffer size set to %d MB\n',SDCBufferSize/MBsize);
 
 end
