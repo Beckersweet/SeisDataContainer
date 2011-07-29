@@ -19,63 +19,28 @@ assert(ischar(filename), 'output file name/directory should be string')
 assert(isvector(dimensions), 'dimensions must be given as a vector')
 assert(ischar(file_precision), 'file_precision must be a string')
 
+% Set byte size
+bytesize = DataContainer.utils.getByteSize(file_precision);
+
 size = prod(dimensions);
-in = fullfile(dirIn,filename);
-out = fullfile(dirOut,filename);
-
-% Set precision value for double or single
-if(file_precision == 'double')
-    precision = 8;
-elseif(file_precision == 'single')
-    precision = 4;
-end
-
-% Allocating output file
-DataContainer.io.allocFile(out,size,precision);
-
-% If our data is complex we have to allocate another file for the real part
-% and also transpose the real part as well
-if(filename == 'imag')
-    DataContainer.io.allocFile(fullfile(dirOut,'real'),size,precision);
-    fidreal = fopen(fullfile(dirIn,'real'),'r');
-    fidwr = fopen(fullfile(dirOut,'real'),'w');
-end
+in   = fullfile(dirIn,filename);
+out  = fullfile(dirOut,filename);
 
 % Opening input file for reading and output file for writing
 fidr = fopen(in,'r');
 fidw = fopen(out,'w');
 
-% Transpose for complex case
-if(filename == 'imag')
-    for i=1:dimensions(1)
-        % Setting the pointer to the start of each row
-        fseek(fidr, (i-1)*precision, 'bof');
-        fseek(fidreal, (i-1)*precision, 'bof');
-        for j=1:dimensions(2)
-            % Read one row
-            c(j) = fread(fidr, 1, file_precision, (dimensions(1)-1)*precision);
-            r(j) = fread(fidreal, 1, file_precision, (dimensions(1)-1)*precision);
-        end
-        % Write the row to output file
-        fwrite(fidw, c, file_precision);        
-        fwrite(fidwr, r, file_precision);
-        clear c;
-        clear r;
+% Transpose
+for i=1:dimensions(1)
+    % Setting the pointer to the start of each row
+    fseek(fidr, (i-1)*bytesize, 'bof');
+    for j=1:dimensions(2)
+        % Read one row
+        r(j) = fread(fidr, 1, file_precision, (dimensions(1)-1)*bytesize);
     end
-    fclose(fidwr);
-% Transpose for real case    
-else
-    for i=1:dimensions(1)
-        % Setting the pointer to the start of each row
-        fseek(fidr, (i-1)*precision, 'bof');
-        for j=1:dimensions(2)
-            % Read one row
-            r(j) = fread(fidr, 1, file_precision, (dimensions(1)-1)*precision);
-        end
-        % Write the row to output file
-        fwrite(fidw, r, file_precision);
-        clear r;
-    end
+    % Write the row to output file
+    fwrite(fidw, r, file_precision);
+    clear r;
 end
 
 % Closing both input and output files

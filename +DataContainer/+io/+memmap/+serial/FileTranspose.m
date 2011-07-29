@@ -31,12 +31,12 @@ headerOut.label = [headerIn.label(sepDim+1:end) headerIn.label(1:sepDim)];
 DataContainer.io.memmap.serial.HeaderWrite(dirnameOut,headerOut);
 
 % Transpose file
-if(headerOut.complex)
+DataContainer.io.memmap.serial.DataAlloc(dirnameOut,'real',headerOut.size,headerOut.precision);
+DataContainer.io.memmap.serial.DataTranspose(dirnameIn,dirnameOut,'real',...
+    dim2D,headerOut.precision);
+if headerOut.complex
+    DataContainer.io.memmap.serial.DataAlloc(dirnameOut,'imag',headerOut.size,headerOut.precision);
     DataContainer.io.memmap.serial.DataTranspose(dirnameIn,dirnameOut,'imag',...
         dim2D,headerOut.precision);
-else
-    DataContainer.io.memmap.serial.DataTranspose(dirnameIn,dirnameOut,'real',...
-    dim2D,headerOut.precision);
-end % if
-
+end
 end
