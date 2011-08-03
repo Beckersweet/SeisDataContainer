@@ -600,3 +600,119 @@ function test_serial_file_Transpose_single_complex
     DataContainer.io.memmap.serial.FileDelete(out);
     clear
 end
+
+function test_serial_file_Norm_double_real
+%%
+    imat=rand(14,12,5);
+    header=DataContainer.io.basicHeaderStructFromX(imat);
+    in=DataContainer.io.makeDir();
+    DataContainer.io.memmap.serial.FileWrite(in,imat,header);
+    n = DataContainer.io.memmap.serial.FileNorm(in,[14 12 5],0,'double');
+    x = norm(vec(imat),0);
+    assertElementsAlmostEqual(x,n)
+    n = DataContainer.io.memmap.serial.FileNorm(in,[14 12 5],1,'double');
+    x = norm(vec(imat),1);
+    assertElementsAlmostEqual(x,n)
+    n = DataContainer.io.memmap.serial.FileNorm(in,[14 12 5],2,'double');
+    x = norm(vec(imat),2);
+    assertElementsAlmostEqual(x,n)
+    n = DataContainer.io.memmap.serial.FileNorm(in,[14 12 5],inf,'double');
+    x = norm(vec(imat),inf);
+    assertElementsAlmostEqual(x,n)
+    n = DataContainer.io.memmap.serial.FileNorm(in,[14 12 5],-inf,'double');
+    x = norm(vec(imat),-inf);
+    assertElementsAlmostEqual(x,n)
+    n = DataContainer.io.memmap.serial.FileNorm(in,[14 12 5],'fro','double');
+    x = norm(vec(imat),'fro');
+    assertElementsAlmostEqual(x,n)
+    DataContainer.io.memmap.serial.FileDelete(in);
+    clear
+end
+
+function test_serial_file_Norm_double_complex
+%%
+    imat=rand(14,12,5);
+    imat=complex(imat,1);
+    header=DataContainer.io.basicHeaderStructFromX(imat);
+    in=DataContainer.io.makeDir();
+    DataContainer.io.memmap.serial.FileWrite(in,imat,header);
+    n = DataContainer.io.memmap.serial.FileNorm(in,[14 12 5],0,'double');
+    x = norm(vec(imat),0);
+    assertElementsAlmostEqual(x,n)
+    n = DataContainer.io.memmap.serial.FileNorm(in,[14 12 5],1,'double');
+    x = norm(vec(imat),1);
+    assertElementsAlmostEqual(x,n)
+    n = DataContainer.io.memmap.serial.FileNorm(in,[14 12 5],2,'double');
+    x = norm(vec(imat),2);
+    assertElementsAlmostEqual(x,n)
+    n = DataContainer.io.memmap.serial.FileNorm(in,[14 12 5],inf,'double');
+    x = norm(vec(imat),inf);
+    assertElementsAlmostEqual(x,n)
+    n = DataContainer.io.memmap.serial.FileNorm(in,[14 12 5],-inf,'double');
+    x = norm(vec(imat),-inf);
+    assertElementsAlmostEqual(x,n)
+    n = DataContainer.io.memmap.serial.FileNorm(in,[14 12 5],'fro','double');
+    x = norm(vec(imat),'fro');
+    assertElementsAlmostEqual(x,n)
+    DataContainer.io.memmap.serial.FileDelete(in);
+    clear
+end
+
+function test_serial_file_Norm_single_real
+%%
+    imat=rand(14,12,5);
+    header=DataContainer.io.basicHeaderStructFromX(imat);
+    header.precision='single';
+    in=DataContainer.io.makeDir();
+    DataContainer.io.memmap.serial.FileWrite(in,imat,header);
+    n = DataContainer.io.memmap.serial.FileNorm(in,[14 12 5],0,'single');
+    x = norm(vec(imat),0);
+    assertElementsAlmostEqual(x,n)
+    n = DataContainer.io.memmap.serial.FileNorm(in,[14 12 5],1,'single');
+    x = norm(vec(imat),1);
+    assertElementsAlmostEqual(x,n)
+    n = DataContainer.io.memmap.serial.FileNorm(in,[14 12 5],2,'single');
+    x = norm(vec(imat),2);
+    assertElementsAlmostEqual(x,n)
+    n = DataContainer.io.memmap.serial.FileNorm(in,[14 12 5],inf,'single');
+    x = norm(vec(imat),inf);
+    assertElementsAlmostEqual(x,n)
+    n = DataContainer.io.memmap.serial.FileNorm(in,[14 12 5],-inf,'single');
+    x = norm(vec(imat),-inf);
+    assertElementsAlmostEqual(x,n)
+    n = DataContainer.io.memmap.serial.FileNorm(in,[14 12 5],'fro','single');
+    x = norm(vec(imat),'fro');
+    assertElementsAlmostEqual(x,n)
+    DataContainer.io.memmap.serial.FileDelete(in);
+    clear
+end
+
+function test_serial_file_Norm_single_complex
+%%
+    imat=rand(14,12,5);
+    imat=complex(imat,1);
+    header=DataContainer.io.basicHeaderStructFromX(imat);
+    header.precision='single';
+    in=DataContainer.io.makeDir();
+    DataContainer.io.memmap.serial.FileWrite(in,imat,header);
+    n = DataContainer.io.memmap.serial.FileNorm(in,[14 12 5],0,'single');
+    x = norm(vec(imat),0);
+    assertElementsAlmostEqual(x,n)
+    n = DataContainer.io.memmap.serial.FileNorm(in,[14 12 5],1,'single');
+    x = norm(vec(imat),1);
+    assertElementsAlmostEqual(x,n)
+    n = DataContainer.io.memmap.serial.FileNorm(in,[14 12 5],2,'single');
+    x = norm(vec(imat),2);
+    assertElementsAlmostEqual(x,n)
+    n = DataContainer.io.memmap.serial.FileNorm(in,[14 12 5],inf,'single');
+    x = norm(vec(imat),inf);
+    assertElementsAlmostEqual(x,n)
+    n = DataContainer.io.memmap.serial.FileNorm(in,[14 12 5],-inf,'single');
+    x = norm(vec(imat),-inf);
+    assertElementsAlmostEqual(x,n)
+    n = DataContainer.io.memmap.serial.FileNorm(in,[14 12 5],'fro','single');
+    x = norm(vec(imat),'fro');
+    assertElementsAlmostEqual(x,n)
+    DataContainer.io.memmap.serial.FileDelete(in);
+    clear
+end
