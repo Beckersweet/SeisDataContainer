@@ -14,7 +14,7 @@ assert(isdir(dirname),'Fatal error: input directory %s does not exist'...
 hdrin = DataContainer.io.memmap.serial.HeaderRead(dirname);
 sldims = hdrin.size(hdrin.distribution.dim+1:end);
 lngth = length(hdrin.size);
-hdrin.precision
+
 if(norm == 'fro')
     norm = 2;
 end
@@ -37,7 +37,7 @@ if(norm == inf)
         x = max(x,m);
     end
     y = gather(x);
-    
+
 % Negative infinite norm
 elseif(norm == -inf)
     m = inf;
@@ -55,7 +55,7 @@ elseif(norm == -inf)
         end
         x = min(x,m);
     end
-    y = gather(x);    
+    y = gather(x);
 % P-norm
 elseif (isscalar(norm))
     total = 0;
@@ -68,15 +68,13 @@ elseif (isscalar(norm))
                 hdrin.size,hdrin.distribution,slice,hdrin.precision,hdrin.precision);
             x = complex(x,dummy);
         end
-        total = total + sum(abs(x).^norm);    
+        total = total + sum(abs(x).^norm);
     end
 
     total = gather(total);
-
     for i=2:lngth
         total = sum(total);
     end
-
     y = total^(1/norm);
 else
     error('Unsupported norm');
