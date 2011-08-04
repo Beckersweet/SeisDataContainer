@@ -317,3 +317,85 @@ function test_distributed_fileGather
     DataContainer.io.memmap.dist.FileDelete(td);
     DataContainer.io.memmap.serial.FileDelete(ts);
 end
+
+function test_distributed_FileNorm_double_real
+%%
+    imat=distributed.rand(2,2,4);
+    td=DataContainer.io.makeDir();
+    DataContainer.io.memmap.dist.FileWrite(td,imat,1);
+    x = DataContainer.io.memmap.dist.FileNorm(td,0);
+    assertElementsAlmostEqual(x,norm(vec(gather(imat)),0))
+    x = DataContainer.io.memmap.dist.FileNorm(td,1);
+    assertElementsAlmostEqual(x,norm(vec(gather(imat)),1))
+    x = DataContainer.io.memmap.dist.FileNorm(td,2);
+    assertElementsAlmostEqual(x,norm(vec(gather(imat)),2))
+    x = DataContainer.io.memmap.dist.FileNorm(td,inf);
+    assertElementsAlmostEqual(x,norm(vec(gather(imat)),inf))
+    x = DataContainer.io.memmap.dist.FileNorm(td,-inf);
+    assertElementsAlmostEqual(x,norm(vec(gather(imat)),-inf))
+    x = DataContainer.io.memmap.dist.FileNorm(td,'fro');
+    assertElementsAlmostEqual(x,norm(vec(gather(imat)),'fro'))
+    DataContainer.io.memmap.dist.FileDelete(td);
+end
+
+function test_distributed_FileNorm_double_complex
+%%
+    imat=distributed.rand(2,2,4);
+    imat=complex(imat,1);
+    td=DataContainer.io.makeDir();
+    DataContainer.io.memmap.dist.FileWrite(td,imat,1);
+    x = DataContainer.io.memmap.dist.FileNorm(td,0);
+    assertElementsAlmostEqual(x,norm(vec(gather(imat)),0))
+    x = DataContainer.io.memmap.dist.FileNorm(td,1);
+    assertElementsAlmostEqual(x,norm(vec(gather(imat)),1))
+    x = DataContainer.io.memmap.dist.FileNorm(td,2);
+    assertElementsAlmostEqual(x,norm(vec(gather(imat)),2))
+    x = DataContainer.io.memmap.dist.FileNorm(td,inf);
+    assertElementsAlmostEqual(x,norm(vec(gather(imat)),inf))
+    x = DataContainer.io.memmap.dist.FileNorm(td,-inf);
+    assertElementsAlmostEqual(x,norm(vec(gather(imat)),-inf))
+    x = DataContainer.io.memmap.dist.FileNorm(td,'fro');
+    assertElementsAlmostEqual(x,norm(vec(gather(imat)),'fro'))
+    DataContainer.io.memmap.dist.FileDelete(td);
+end
+
+function test_distributed_FileNorm_single_real
+%%
+    imat=distributed.rand(2,2,4);
+    td=DataContainer.io.makeDir();
+    DataContainer.io.memmap.dist.FileWrite(td,imat,1,'single');
+    x = DataContainer.io.memmap.dist.FileNorm(td,0);
+    assertElementsAlmostEqual(x,norm(vec(gather(single(imat))),0))
+    x = DataContainer.io.memmap.dist.FileNorm(td,1);
+    assertElementsAlmostEqual(x,norm(vec(gather(single(imat))),1))
+    x = DataContainer.io.memmap.dist.FileNorm(td,2);
+    assertElementsAlmostEqual(x,norm(vec(gather(single(imat))),2))
+    x = DataContainer.io.memmap.dist.FileNorm(td,inf);
+    assertElementsAlmostEqual(x,norm(vec(gather(single(imat))),inf))
+    x = DataContainer.io.memmap.dist.FileNorm(td,-inf);
+    assertElementsAlmostEqual(x,norm(vec(gather(single(imat))),-inf))
+    x = DataContainer.io.memmap.dist.FileNorm(td,'fro');
+    assertElementsAlmostEqual(x,norm(vec(gather(single(imat))),'fro'))
+    DataContainer.io.memmap.dist.FileDelete(td);
+end
+
+function test_distributed_FileNorm_single_complex
+%%
+    imat=distributed.rand(2,2,4);
+    imat=complex(imat,1);
+    td=DataContainer.io.makeDir();
+    DataContainer.io.memmap.dist.FileWrite(td,imat,1,'single');
+    x = DataContainer.io.memmap.dist.FileNorm(td,0);
+    assertElementsAlmostEqual(x,norm(vec(gather(single(imat))),0))
+    x = DataContainer.io.memmap.dist.FileNorm(td,1);
+    assertElementsAlmostEqual(x,norm(vec(gather(single(imat))),1))
+    x = DataContainer.io.memmap.dist.FileNorm(td,2);
+    assertElementsAlmostEqual(x,norm(vec(gather(single(imat))),2))
+    x = DataContainer.io.memmap.dist.FileNorm(td,inf);
+    assertElementsAlmostEqual(x,norm(vec(gather(single(imat))),inf))
+    x = DataContainer.io.memmap.dist.FileNorm(td,-inf);
+    assertElementsAlmostEqual(x,norm(vec(gather(single(imat))),-inf))
+    x = DataContainer.io.memmap.dist.FileNorm(td,'fro');
+    assertElementsAlmostEqual(x,norm(vec(gather(single(imat))),'fro'))
+    DataContainer.io.memmap.dist.FileDelete(td);
+end

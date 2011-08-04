@@ -1,10 +1,9 @@
-function x = FileNorm( dirname,dimensions,norm,file_precision )
-%FILENORM Calculates the norm of a given data
+function x = FileNorm(dirname,dimensions,norm,file_precision)
+%FILENORM Calculates the norm of the serial data
 %
 %   FileNorm(DIRNAME,FILENAME,DIMENSIONS,NORM,FILE_PRECISION)
 %
 %   DIRNAME        - A string specifying the input directory
-%   FILENAME       - A string specifying the input filename
 %   NORM           - Specifyies the norm type. Supported norms: inf, -inf,
 %                    'fro', p-norm where p is scalar.
 %   DIMENSIONS     - A scalar vector specifying the dimensions
@@ -85,8 +84,8 @@ elseif (isscalar(norm))
         r = DataContainer.io.memmap.serial.DataReadLeftChunk...
             (dirname,'real',dims,[rstart rend],[],file_precision,file_precision);
         if header.complex
-        dummy = DataContainer.io.memmap.serial.DataReadLeftChunk...
-            (dirname,'imag',dims,[rstart rend],[],file_precision,file_precision);
+            dummy = DataContainer.io.memmap.serial.DataReadLeftChunk...
+                (dirname,'imag',dims,[rstart rend],[],file_precision,file_precision);
             r = complex(r,dummy);
         end
         total    = total + sum(abs(r).^norm);
