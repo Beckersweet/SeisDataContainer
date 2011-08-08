@@ -23,7 +23,7 @@ classdef memoCon < outCon
         function x = memoCon(dname,fname,varargin)
             % Constructor for memoCon
             % Process input arguments
-            assert(ischar(dname), 'filename must be a string')
+            assert(ischar(dname), 'directory name must be a string')
             assert(ischar(fname), 'filename must be a string')
             
             % Setup parameters            
