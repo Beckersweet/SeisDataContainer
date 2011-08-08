@@ -1,6 +1,7 @@
 function test_serial()
 disp('Start');
-disp(getenv('TMPDIR'));
+tic;
+SeisDataContainer_init();
 I=13; J=11; K=9;
 imat=rand(I,J,K);
 %for i=1:I
@@ -11,7 +12,7 @@ imat=rand(I,J,K);
 %   end
 %end
 whos imat
-disp(norm(imat(:)))
+%disp(norm(imat(:)))
 
 disp('*****');
 disp('DataContainer.io.memmap.serial.File* single complex');
@@ -159,4 +160,5 @@ DataContainer.io.memmap.serial.FileDelete(td);
 if isdir(td); dir(td); end;
 
 disp('Done');
+disp(toc);
 end

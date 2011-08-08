@@ -24,16 +24,12 @@ filename=fullfile(dirname,filename);
 % Check File
 assert(exist(filename)==2,'Fatal error: file %s does not exist',filename);
 
-% Set bytesize
-bytesize = DataContainer.utils.getByteSize(file_precision);
+% swap file_precision
 x = DataContainer.utils.switchPrecisionIP(x,file_precision);
 
-% Setup memmapfile
-M = memmapfile(filename,...
-        'format',{file_precision,size(x),'x'},...
-        'writable', true);
-        
 % Write local data
-M.data(1).x = x;
-        
+fid = fopen(filename,'r+');
+fwrite(fid,x(:),file_precision);
+fclose(fid);
+
 end

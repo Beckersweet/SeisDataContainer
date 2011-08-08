@@ -11,6 +11,7 @@ assert(ischar(dirname), 'directory name must be a string')
 
 % Read header
 header = DataContainer.io.memmap.serial.HeaderRead(dirname);
+assert(isfield(header,'directories'),'serial files must be removed with *.serial.FileDelete')
 tmpdirs = DataContainer.utils.Cell2Composite(header.directories);
 % Delete Directory
 spmd

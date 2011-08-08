@@ -34,15 +34,15 @@ slice_byte_offset = slice_offset*bytesize;
 % Check File
 assert(exist(filename)==2,'Fatal error: file %s does not exist',filename);
 
-% Setup memmapfile
-M = memmapfile(filename,...
-        'format',{file_precision,slice_dims,'x'},...
-        'offset',slice_byte_offset,...
-        'writable', false);
-        
 % Read local data
-x = M.data(1).x;
-        
+fid = fopen(filename,'r');
+fseek(fid,slice_byte_offset,-1);
+x = fread(fid,prod(slice_dims),file_precision);
+if length(slice_dims)>1
+    x = reshape(x,slice_dims);
+end
+fclose(fid);
+
 % swap x_precision
 x = DataContainer.utils.switchPrecisionIP(x,x_precision);
 

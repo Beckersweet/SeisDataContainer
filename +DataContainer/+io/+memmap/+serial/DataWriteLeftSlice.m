@@ -38,13 +38,10 @@ slice_byte_offset = slice_offset*bytesize;
 % Check File
 assert(exist(filename)==2,'Fatal error: file %s does not exist',filename);
 
-% Setup memmapfile
-M = memmapfile(filename,...
-        'format',{file_precision,size(x),'x'},...
-        'offset',slice_byte_offset,...
-        'writable', true);
-        
 % Write local data
-M.data(1).x = x;
-        
+fid = fopen(filename,'r+');
+fseek(fid,slice_byte_offset,-1);
+fwrite(fid,x(:),file_precision);
+fclose(fid);
+
 end
