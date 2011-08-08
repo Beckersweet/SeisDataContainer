@@ -1,4 +1,4 @@
-classdef outCon < dataContainer
+classdef oCon < dataContainer
     %OUTCON  Out-of-core Data Container class
     %
     %   outCon(FILENAME,SIZE,PARAM1,VALUE1,...)
@@ -17,7 +17,7 @@ classdef outCon < dataContainer
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %   Constructor
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        function x = outCon(type,dims,iscomplex)
+        function x = oCon(type,dims,iscomplex)
             % Constructor for the out-of-core data container class
             % Not supposed to be called by user
             
@@ -42,23 +42,7 @@ classdef outCon < dataContainer
         end % delete
         
     end % protected methods
-    
-    methods(Static)
-    % Static constructors, to be used as the frontend for users
-    % constructing any kind of data container out of a file path
-        
-        % JaveSeiz reader, to be written properly in the near future
-        x = javaSeisOpen(varargin)
-        
-        % Binary reader, which is used to prototype
-        x = binaryOpen(filepath,dims,iscomplex)
-        
-        % Copy constructor, used to instantiate new items after every
-        % iteration
-        x = copy(outconobj);
-        
-    end % Static methods
-    
+       
 end % classdef
 
 
