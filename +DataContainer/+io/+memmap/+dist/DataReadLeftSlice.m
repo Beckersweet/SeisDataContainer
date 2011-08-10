@@ -25,9 +25,11 @@ assert(matlabpool('size')>0,'matlabpool must be open')
 if distributed
     assert(iscell(dirnames), 'directory names must be a cell')
     dirname = DataContainer.utils.Cell2Composite(dirnames);
+    csize = DataContainer.utils.Cell2Composite(distribution.size);
 else
     assert(ischar(dirnames), 'directory name must be a string')
     dirname = dirnames;
+    cindx_rng = DataContainer.utils.Cell2Composite(distribution.indx_rng);
 end
 
 spmd
@@ -36,10 +38,11 @@ spmd
     assert(exist(filecheck)==2,'Fatal error: file %s does not exist',filecheck);
     % read data
     if distributed
-        lx = DataContainer.io.memmap.serial.DataReadLeftSlice(dirname,filename,distribution.size{labindex},slice,file_precision,x_precision);
+        lx = DataContainer.io.memmap.serial.DataReadLeftSlice(dirname,filename,...
+            csize,slice,file_precision,x_precision);
     else
         lx = DataContainer.io.memmap.serial.DataReadLeftChunk(dirname,filename,...
-            dimensions,[distribution.min_indx(labindex) distribution.max_indx(labindex)],slice,file_precision,x_precision);
+            dimensions,cindx_rng,slice,file_precision,x_precision);
     end
     if distribution.dim==1
         codist = codistributor1d(distribution.dim,distribution.partition,[dimensions(1:distribution.dim) 1]);

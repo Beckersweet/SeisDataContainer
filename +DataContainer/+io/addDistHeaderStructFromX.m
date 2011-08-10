@@ -36,14 +36,5 @@ function header = addDistHeaderStructFromX(headerin,x)
 
     dpart = cpart{1};
     header.distribution.partition = dpart;
-
-    min_indx = ones(1,poolsize);
-    max_indx = zeros(1,poolsize);
-    for l=1:poolsize
-       dummy = cindecies{l};
-       min_indx(l) = dummy(1);
-       max_indx(l) = dummy(2);
-    end
-    header.distribution.min_indx = min_indx;
-    header.distribution.max_indx = max_indx;
+    header.distribution.indx_rng = DataContainer.utils.Composite2Cell(cindecies);
 end
