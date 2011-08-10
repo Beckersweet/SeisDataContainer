@@ -22,13 +22,17 @@ assert(ischar(file_precision), 'file_precision must be a string')
 % Set bytesize
 bytesize = DataContainer.utils.getByteSize(file_precision);
 
+% convert to composite
+cdirnames = DataContainer.utils.Cell2Composite(dirnames);
+cdimensions = DataContainer.utils.Cell2Composite(dimensions);
+
 % Preallocate File
 spmd
-    assert(ischar(dirnames{labindex}),'dirnames{%d} is not a string',labindex)
-    assert(isdir(dirnames{labindex}),'dirnames{%d} %s does not exist',labindex,dirnames{labindex})
-    filename=fullfile(dirnames{labindex},filename);
-    assert(isvector(dimensions{labindex}),'dimensions{%d} is not a vector',labindex)
-    DataContainer.io.allocFile(filename,prod(dimensions{labindex}),bytesize);
+    assert(ischar(cdirnames),'dirnames{%d} is not a string',labindex)
+    assert(isdir(cdirnames),'dirnames{%d} %s does not exist',labindex,dirnames{labindex})
+    filename=fullfile(cdirnames,filename);
+    assert(isvector(cdimensions),'dimensions{%d} is not a vector',labindex)
+    DataContainer.io.allocFile(filename,prod(cdimensions),bytesize);
 end
 
 end
