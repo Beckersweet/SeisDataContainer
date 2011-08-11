@@ -1,7 +1,9 @@
 function test_serial()
+if isempty(whos('global','SDCglobalTmpDir'))
+    SeisDataContainer_init();
+end
 disp('Start');
 tic;
-SeisDataContainer_init();
 I=13; J=11; K=9;
 imat=rand(I,J,K);
 %for i=1:I
