@@ -12,60 +12,63 @@ function  SeisDataContainer_init(varargin)
 %   SeisDataContainer_init(GLOBTMPDIR,LOCALTMPDIR) will use
 %       GLOBTMPDIR argument instead of GLOBTMPDIR environment and
 %       LOCALTMPDIR argument instead of TMPDIR environment.
-    error(nargchk(0, 3, nargin, 'struct'));
-    global globalSDCTmpDir;
-    global localSDCTmpDir;
-    global SDCBufferSize;
+    error(nargchk(0, 4, nargin, 'struct'));
+    global SDCglobalTmpDir;
+    global SDClocalTmpDir;
+    global SDCbufferSize;
+    global SDCdebugFlag;
 
     % set global temporary directory
     % accessible from every worker
     if nargin > 0 & length(varargin{1}) > 1
-        globalSDCTmpDir = varargin{1};
+        SDCglobalTmpDir = varargin{1};
     else
         envdir = getenv('GLOBTMPDIR');
         if length(envdir) > 0
-            globalSDCTmpDir = envdir;
+            SDCglobalTmpDir = envdir;
         else
             disp('Warrning: Missing GLOBTMPDIR environment. Using current directory.')
-            globalSDCTmpDir = fullfile(pwd,'SDC.tmp');
+            SDCglobalTmpDir = fullfile(pwd,'SDC.tmp');
         end
     end
-    if ~strcmp(globalSDCTmpDir(1),filesep)
-        globalSDCTmpDir = fullfile(pwd,globalSDCTmpDir);
+    if ~strcmp(SDCglobalTmpDir(1),filesep)
+        SDCglobalTmpDir = fullfile(pwd,SDCglobalTmpDir);
     end
-    if ~isdir(globalSDCTmpDir)
-        mkdir(globalSDCTmpDir)
+    SDCglobalTmpDir = tempname(SDCglobalTmpDir);
+    if ~isdir(SDCglobalTmpDir)
+        mkdir(SDCglobalTmpDir)
     end
-    fprintf('Global temporary directory is %s\n',globalSDCTmpDir);
+    fprintf('Global temporary directory is %s\n',SDCglobalTmpDir);
 
     % set local temporary directory
     % might not accessible form every worker
     if nargin > 1 & length(varargin{2})>1
-        localSDCTmpDir = varargin{2};
+        SDClocalTmpDir = varargin{2};
     else
         envdir = getenv('TMPDIR');
         if length(envdir) > 0
-            localSDCTmpDir = envdir;
+            SDClocalTmpDir = envdir;
         else
-            localSDCTmpDir = '/tmp/SDC.tmp';
+            SDClocalTmpDir = '/tmp/SDC.tmp';
         end
     end
-    if ~strcmp(localSDCTmpDir(1),filesep)
-        localSDCTmpDir = fullfile(pwd,localSDCTmpDir);
+    if ~strcmp(SDClocalTmpDir(1),filesep)
+        SDClocalTmpDir = fullfile(pwd,SDClocalTmpDir);
     end
-    fprintf('Local temporary directory is %s\n',localSDCTmpDir);
+    SDClocalTmpDir = tempname(SDClocalTmpDir);
+    fprintf('Local temporary directory is %s\n',SDClocalTmpDir);
 
     % check gloabl directory on the workers
     % and create local directories
     if matlabpool('size') > 0
         spmd
-            assert(isdir(globalSDCTmpDir),'Global temporary directory %s missing on the worker.')
-            if ~isdir(localSDCTmpDir)
-                mkdir(localSDCTmpDir);
+            assert(isdir(SDCglobalTmpDir),'Global temporary directory %s missing on the worker.')
+            if ~isdir(SDClocalTmpDir)
+                mkdir(SDClocalTmpDir);
             end
         end
     end
-    if strcmp(globalSDCTmpDir,localSDCTmpDir)
+    if strcmp(SDCglobalTmpDir,SDClocalTmpDir)
         warning('Having SAME GLOBAL AND LOCAL TEMPORARY DIRECTORIES might be a BAD IDEA.')
     end
 
@@ -73,10 +76,17 @@ function  SeisDataContainer_init(varargin)
     MBsize = 1024*1024;
     mfactor = 8*MBsize;
     if nargin > 2
-        SDCBufferSize = DataContainer.utils.getByteSize('double')*varargin{3};
+        SDCbufferSize = DataContainer.utils.getByteSize('double')*varargin{3};
     else
-        SDCBufferSize = DataContainer.utils.getByteSize('double')*mfactor;
+        SDCbufferSize = DataContainer.utils.getByteSize('double')*mfactor;
     end
-    fprintf('IO buffer size set to %d MB\n',SDCBufferSize/MBsize);
+    fprintf('IO buffer size set to %d MB\n',SDCbufferSize/MBsize);
 
+    % set debug flag
+    if nargin > 3
+        SDCdebugFlag = varargin{4};
+    else
+        SDCdebugFlag = 0;
+    end
+    fprintf('Debug flag is set to %d\n',SDCdebugFlag);
 end

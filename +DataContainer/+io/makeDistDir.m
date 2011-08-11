@@ -4,7 +4,7 @@ function [tmpdirs, toptmpdir] = makeDistDir(varargin)
 %
 %   TMPDIRS = makeDistDir()
 %       returns new directories created inside of the directory defined by
-%       localSDCTmpDir (see SeisDataContainer_init.m)
+%       SDClocalTmpDir (see SeisDataContainer_init.m)
 %   TMPDIRS = makeDistDir(PARENT)
 %       returns new directories created inside of PARENT directory.
 %
@@ -13,7 +13,7 @@ function [tmpdirs, toptmpdir] = makeDistDir(varargin)
 %
     error(nargchk(0, 1, nargin, 'struct'));
     assert(matlabpool('size')>0,'matlabpool has to open');
-    global localSDCTmpDir;
+    global SDClocalTmpDir;
 
     tmpdirs = Composite();
 
@@ -21,8 +21,8 @@ function [tmpdirs, toptmpdir] = makeDistDir(varargin)
         assert(ischar(varargin{1}),'Fatal error: argument is not a string');
         toptmpdir = varargin{1};
     else
-        assert(~isempty(localSDCTmpDir),'you first need to execute SeisDataContainer_init')
-        toptmpdir = localSDCTmpDir;
+        assert(~isempty(SDClocalTmpDir),'you first need to execute SeisDataContainer_init')
+        toptmpdir = SDClocalTmpDir;
     end
     spmd
         tmpdirs = DataContainer.io.makeDir(toptmpdir);

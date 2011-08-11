@@ -1,7 +1,7 @@
 function test_distributed()
-SeisDataContainer_init();
-global globalSDCTmpDir;
-global localSDCTmpDir;
+if isempty(whos('global','SDCglobalTmpDir'))
+    SeisDataContainer_init();
+end
 disp('Start');
 gstart=tic;
 assert(matlabpool('size')>0,'matlabpool has to be open first')

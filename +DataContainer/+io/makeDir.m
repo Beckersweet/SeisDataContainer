@@ -3,7 +3,7 @@ function [tmpdir, toptmpdir] = makeDir(varargin)
 % 
 %   [TMPDIR, TOPTMPDIR] = makeDir()
 %       returns new directory created inside of the directory defined by
-%       globalSDCTmpDir (see SeisDataContainer_init.m)
+%       SDCglobalTmpDir (see SeisDataContainer_init.m)
 %   [TMPDIR, TOPTMPDIR] = makeDir(PARENT)
 %       returns new directory created inside of PARENT directory.
 %
@@ -12,14 +12,14 @@ function [tmpdir, toptmpdir] = makeDir(varargin)
 %   - TOPTMPDIR: detected parent directory of TMPDIR
 %
     error(nargchk(0, 1, nargin, 'struct'));
-    global globalSDCTmpDir;
+    global SDCglobalTmpDir;
 
     if nargin > 0
         assert(ischar(varargin{1}),'Fatal error: argument is not a string');
         toptmpdir = varargin{1};
     else
-        assert(~isempty(globalSDCTmpDir),'you first need to execute SeisDataContainer_init')
-        toptmpdir = globalSDCTmpDir;
+        assert(~isempty(SDCglobalTmpDir),'you first need to execute SeisDataContainer_init')
+        toptmpdir = SDCglobalTmpDir;
     end
 
     tmpdir = tempname(toptmpdir);
