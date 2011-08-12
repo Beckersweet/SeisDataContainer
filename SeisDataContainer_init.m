@@ -4,9 +4,15 @@ function  SeisDataContainer_init(varargin)
 %
 %   Optional keyword arguments:
 %       'SDCglobalTmpDir' is home for global temorary directories
+%           see notes below
 %       'SDClocalTmpDir' is home for local temporary directories
+%           see notes below
 %       'SDCbufferSize' is size of buffer for some IO operations
+%           size of the buffer in 'double' elements (dafault=8M)
+%       'SDCdefaultIOdist' is defult distribution flag
+%           0=non-distributed (default); 1=distributed
 %       'SDCdebugFlag' is gloabl debug flag
+%           0=off (default); 1=on
 %
 %   Notes:
 %       If either 'SDCglobalTmpDir' or 'SDClocalTmpDir' are not given
