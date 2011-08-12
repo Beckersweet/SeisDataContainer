@@ -21,6 +21,7 @@ function  SeisDataContainer_init(varargin)
     global SDCglobalTmpDir;
     global SDClocalTmpDir;
     global SDCbufferSize;
+    global SDCdefaultIOdist;
     global SDCdebugFlag;
     MBsize = 1024*1024;
     doubleSize = DataContainer.utils.getByteSize('double');
@@ -30,6 +31,7 @@ function  SeisDataContainer_init(varargin)
     p.addParamValue('SDCglobalTmpDir',getenv('GLOBTMPDIR'),@ischar);
     p.addParamValue('SDClocalTmpDir',getenv('TMPDIR'),@ischar);
     p.addParamValue('SDCbufferSize',doubleSize*MBsize,@(x)isnumeric(x)||isscalar(x));
+    p.addParamValue('SDCdefaultIOdist',0,@(x)isnumeric(x)||isscalar(x));
     p.addParamValue('SDCdebugFlag',0,@(x)isnumeric(x)||isscalar(x));
     p.parse(varargin{:});
     %p.Results
@@ -84,5 +86,11 @@ function  SeisDataContainer_init(varargin)
     SDCbufferSize = DataContainer.utils.getByteSize('double')*p.Results.SDCbufferSize;
     fprintf('IO buffer size set to %d MB\n',SDCbufferSize/MBsize);
 
+    % set debug flag
+    SDCdefaultIOdist = p.Results.SDCdefaultIOdist;
+    fprintf('Default IO distribution flag is set to %d\n',SDCdefaultIOdist);
+
+    % set debug flag
+    SDCdebugFlag = p.Results.SDCdebugFlag;
     fprintf('Debug flag is set to %d\n',SDCdebugFlag);
 end
