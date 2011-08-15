@@ -27,7 +27,9 @@ if distribute
 else
     assert(ischar(dirnames), 'directory name must be a string')
     dirname = dirnames;
+    cindx_rng = DataContainer.utils.Cell2Composite(distribution.indx_rng);
 end
+csize = DataContainer.utils.Cell2Composite(distribution.size);
 
 spmd
     % Check File
@@ -35,13 +37,13 @@ spmd
     assert(exist(filecheck)==2,'Fatal error: file %s does not exist',filecheck);
     % write data
     lx = getLocalPart(x);
-    assert(isequal(distribution.size{labindex},size(lx)),'distribution.size does not match the size of LocalPart')
+    assert(isequal(csize,size(lx)),'distribution.size does not match the size of LocalPart')
     if distribute
         DataContainer.io.memmap.serial.DataWrite(dirname,filename,lx,file_precision);
     else
         DataContainer.io.acquireIOlock(dirname);
         DataContainer.io.memmap.serial.DataWriteLeftChunk(dirname,filename,lx,...
-            size(x),[distribution.min_indx(labindex) distribution.max_indx(labindex)],[],file_precision);
+            size(x),cindx_rng,[],file_precision);
         DataContainer.io.releaseIOlock(dirname);
     end
 end

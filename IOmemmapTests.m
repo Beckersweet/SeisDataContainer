@@ -64,7 +64,9 @@ function out = datacontests(varargin)
 if matlabpool('size') == 0
     error('Matlab pool is not on!');
 end
-SeisDataContainer_init()
+if isempty(whos('global','SDCglobalTmpDir'))
+    SeisDataContainer_init();
+end
 
 % Make sure that xUnit is on the path.
 if exist('TestSuite','file')
