@@ -1,7 +1,7 @@
 classdef oMatCon < oCon
-    %MEMOCON  Memory-mapping out-of-core data container for binaries
+    %OMATCON  Memory-mapping out-of-core data container for binaries
     %
-    %   memoCon(DIRNAME,FILENAME,SIZE,PARAM1,VALUE1,...)
+    %   oMatCon(DIRNAME,FILENAME,SIZE,PARAM1,VALUE1,...)
     %
     %   Parameters:
     %   offset, precision, repeat.
@@ -21,7 +21,7 @@ classdef oMatCon < oCon
         %   Constructor
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         function x = oMatCon(dname,fname,varargin)
-            % Constructor for memoCon
+            % Constructor for oMatCon
             % Process input arguments
             assert(ischar(dname), 'directory name must be a string')
             assert(ischar(fname), 'filename must be a string')
