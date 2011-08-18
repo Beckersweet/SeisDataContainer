@@ -1,4 +1,6 @@
 function obj = subsasgn(obj,s,val)
+%SUBSASGN   Subscripted assignment
+%
     switch s(1).type
        case '.'
           obj = builtin('subsasgn',obj,s,val);

@@ -1,6 +1,11 @@
 function y = getData(obj,x)
-%GETDATA Summary of this function goes here
-%   Detailed explanation goes here
+%GETDATA is called whenever we try to access data via subreferencing
+%
+%   setData(OBJ,X)
+%
+%   OBJ - An oMatCon object
+%   X   - Subreferences cell
+%
     i=1;
     while(cell2mat(x(i)) == ':')
         i = i+1;

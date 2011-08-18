@@ -1,6 +1,12 @@
 function setData(obj,x,data)
-%ASSIGNDATA Summary of this function goes here
-%   Detailed explanation goes here
+%SETDATA is called whenever we assign data to an oMatCon
+%
+%   setData(OBJ,X,DATA)
+%
+%   OBJ  - An oMatCon object
+%   X    - Subreferences cell
+%   DATA - The data we want to assign
+%
     i=1;
     while(cell2mat(x(i)) == ':')
         i = i+1;

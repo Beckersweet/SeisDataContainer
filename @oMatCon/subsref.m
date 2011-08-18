@@ -1,4 +1,6 @@
 function sref = subsref(obj,s)
+%SUBSREF   Subscripted reference
+%   
     switch s(1).type
         case '.'
             sref = builtin('subsref',obj,s);
