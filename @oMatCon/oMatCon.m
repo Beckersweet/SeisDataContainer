@@ -12,6 +12,7 @@ classdef oMatCon < oCon
     properties (SetAccess = protected)
         dirname    = ''; % Directory name of data
         filename   = ''; % Filename of data
+        dims = [];
         prec;
         
     end % properties
@@ -20,16 +21,18 @@ classdef oMatCon < oCon
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %   Constructor
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        function x = oMatCon(dname,fname,varargin)
+        function x = oMatCon(dirname,filename,varargin)
             % Constructor for oMatCon
             % Process input arguments
-            assert(ischar(dname), 'directory name must be a string')
-            assert(ischar(fname), 'filename must be a string')
+            assert(ischar(dirname), 'directory name must be a string')
+            assert(ischar(filename), 'directory name must be a string')
+            assert(exist([fullfile(dirname,filename)])==2,...
+                'Fatal error: file %s does not exist',filename)
             
             % Setup parameters            
             offset     = 0;
             precision  = 'double';
-            repeat;
+            repeat     = 0;
             dimensions = [];
             
             % Parse param-value pairs
@@ -48,16 +51,20 @@ classdef oMatCon < oCon
                 end
             end
             
-            % Reads in data and convert to intermediate format? or maybe
-            % just read in data header
+            % Read in data header
+            header       = DataContainer.io.memmap.serial.HeaderRead(dirname);
+            dimensions   = header.size;            
+            iscomplex    = header.complex;
             
             % Construct and set class attributes
             x = x@oCon('serial memmap',dimensions,iscomplex);
-            x.dirname   = dname;
-            x.filename  = fname;
-            x.exdims    = 0; % Explicit dimensions of data
-            x.imdims    = 0;
-            x.iscomplex = false;
+            x.dirname    = dirname;
+            x.filename   = filename;
+            x.exdims     = 0; % Explicit dimensions of data
+            x.imdims     = 0;
+            x.iscomplex  = false;
+            x.dims       = dimensions;
+            x.prec       = precision;
         end % constructor
         
     end % methods

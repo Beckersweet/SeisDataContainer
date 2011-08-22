@@ -11,8 +11,10 @@ function y = getData(obj,x)
         i = i+1;
     end
     chunk = cell2mat(x(i));
-    slice = cell2mat(x(i+1:end));
-    y = DataContainer.io.memmap.serial.FileReadLeftChunk...
-        (obj.dirnameIn,chunk,slice);
+    slice = cell2mat(x(i+1:end));    
+    y = DataContainer.io.memmap.serial.DataReadLeftChunk...
+        (obj.dirname,obj.filename,obj.dims,chunk,slice,obj.prec,obj.prec);
+%     y = DataContainer.io.memmap.serial.FileReadLeftChunk...
+%         (obj.dirnameIn,chunk,slice);
 end
 
