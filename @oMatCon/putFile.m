@@ -1,4 +1,4 @@
-function setData(obj,x,data)
+function putFile(obj,x,data)
 %SETDATA is called whenever we assign data to an oMatCon
 %
 %   setData(OBJ,X,DATA)
@@ -14,5 +14,5 @@ function setData(obj,x,data)
     chunk = cell2mat(x(i));
     slice = cell2mat(x(i+1:end));
     DataContainer.io.memmap.serial.FileWriteLeftChunk...
-        (obj.dirnameIn,data,[chunk(1) chunk(end)],slice);
+        (obj.dirname,data,[chunk(1) chunk(end)],slice);
 end

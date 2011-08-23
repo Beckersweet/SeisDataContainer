@@ -9,7 +9,7 @@ function obj = subsasgn(obj,s,val)
               error('testSub:subsasgn',...
                    'Object must be scalar')
            elseif strcmp(class(val),'double')
-               assignData.setData(s(1).subs,val);
+               obj.putFile(s(1).subs,val);
            end
        otherwise
            error('Not a supported subscripted assignment');
