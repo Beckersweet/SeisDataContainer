@@ -1,5 +1,5 @@
 function disp(x)
-    if(prod(x.dims)<2011)
+    if(prod(x.dimensions)<2011)
         disp(DataContainer.io.memmap.serial.FileRead(x.dirname));
     else
         disp('Dear sir/madam you dont wanna display the entire data!!');

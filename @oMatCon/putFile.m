@@ -7,12 +7,16 @@ function putFile(obj,x,data)
 %   X    - Subreferences cell
 %   DATA - The data we want to assign
 %
-    i=1;
-    while(cell2mat(x(i)) == ':')
-        i = i+1;
+    if(obj.readOnly)
+        error('Epic Fail: Your file is read-only')
+    else
+        i=1;
+        while(cell2mat(x(i)) == ':')
+            i = i+1;
+        end
+        chunk = cell2mat(x(i));
+        slice = cell2mat(x(i+1:end));
+        DataContainer.io.memmap.serial.FileWriteLeftChunk...
+            (obj.dirname,data,[chunk(1) chunk(end)],slice);
     end
-    chunk = cell2mat(x(i));
-    slice = cell2mat(x(i+1:end));
-    DataContainer.io.memmap.serial.FileWriteLeftChunk...
-        (obj.dirname,data,[chunk(1) chunk(end)],slice);
 end

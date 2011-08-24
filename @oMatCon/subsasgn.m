@@ -3,7 +3,7 @@ function obj = subsasgn(obj,s,val)
 %
     switch s(1).type
        case '.'
-          obj = builtin('subsasgn',obj,s,val);
+           obj = builtin('subsasgn',obj,s,val);
        case '()'
            if strcmp(class(val),'testSub')
               error('testSub:subsasgn',...

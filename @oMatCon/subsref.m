@@ -3,6 +3,7 @@ function sref = subsref(obj,s)
 %   
     switch s(1).type
         case '.'
+            display('sadasdasdas')
             if(s(1).subs == 'save')
                 obj.save(s(2).subs)
             else
