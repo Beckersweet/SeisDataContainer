@@ -18,35 +18,40 @@ function DataScatter(filename,dimensions,tempdirname,varargin)
 %   Note: The absolute path to the file must be provided.
 
 % Setup variables
-precision = 'double';
-repeat    = inf;
-offset    = 0;
+precision; % = 'double';
+repeat; %    = inf;
+offset; %    = 0;
 
 % Preprocess input arguments
-error(nargchk(1, nargin, nargin, 'struct'));
-
-if rem(length(varargin), 2) ~= 0
-    error('Param/value pairs must come in pairs.');
-end
-
 assert(ischar(filename), 'filename must be a string')
 assert(isnumeric(dimensions), 'dimensions must be numeric')
 
-% Parse param-value pairs
-for i = 1:2:length(varargin)
-    
-    assert(ischar(varargin{i}),...
-        'Parameter at input %d must be a string.', i);
-    
-    fieldname = lower(varargin{i});
-    switch fieldname
-        case {'offset', 'precision', 'repeat'}
-            eval([fieldname ' = varargin{i+1};']);
-        otherwise
-            error('Parameter "%s" is unrecognized.', ...
-                varargin{i});
-    end
-end
+% Parse inputs with parser
+p = inputParser;
+p.addParamValue('precision','double',@ischar);
+p.addParamValue('repeat',inf,@isscalar);
+p.addParamValue('offset',0,@isscalar);
+p.parse(varargin{:});
+
+% error(nargchk(1, nargin, nargin, 'struct'));
+% if rem(length(varargin), 2) ~= 0
+%     error('Param/value pairs must come in pairs.');
+% end
+% % Parse param-value pairs
+% for i = 1:2:length(varargin)
+%     
+%     assert(ischar(varargin{i}),...
+%         'Parameter at input %d must be a string.', i);
+%     
+%     fieldname = lower(varargin{i});
+%     switch fieldname
+%         case {'offset', 'precision', 'repeat'}
+%             eval([fieldname ' = varargin{i+1};']);
+%         otherwise
+%             error('Parameter "%s" is unrecognized.', ...
+%                 varargin{i});
+%     end
+% end
 
 % Set bytesize
 switch precision
