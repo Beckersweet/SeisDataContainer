@@ -28,10 +28,10 @@ classdef oCon < dataContainer
             % Construct
             x           = x@dataContainer(type,dims,dims);
             x.iscomplex = iscomplex;
-            x.excoddims = length(dims) - 1;
-            x.imcoddims = x.excoddims;
-            x.excodpart = DataContainer.utils.defaultDistribution(dims(end-1));
-            x.imcodpart = x.excodpart;
+%             x.excoddims = length(dims) - 1;
+%             x.imcoddims = x.excoddims;
+%             x.excodpart = DataContainer.utils.defaultDistribution(dims(end-1));
+%             x.imcodpart = x.excodpart;
                         
         end % constructor
         
