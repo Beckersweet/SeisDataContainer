@@ -11,7 +11,7 @@ classdef oMatCon < oCon
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     properties (SetAccess = protected)
         dirname = '';
-        dimensions = 0;
+        dimensions;
         header;
         readOnly = 0;
     end % properties
@@ -23,25 +23,33 @@ classdef oMatCon < oCon
         function x = oMatCon(data,varargin) % Constructor for oMatCon
             
             % Setup parameters
-            offset     = 0;
-            precision  = 'double';
-            repeat     = 0;
+%             offset     = 0;
+%             precision  = 'double';
+%             repeat     = 0;
             copy       = 0;
             readonly   = 0;
-            % Parse param-value pairs
-            for i = 1:2:length(varargin)
-                assert(ischar(varargin{i}),...
-                    'Parameter at input %d must be a string.', i);
-                fieldname = lower(varargin{i});
-                switch fieldname
-                    case {'offset', 'precision', 'repeat',...
-                            'dimensions', 'readonly', 'copy'}
-                        eval([fieldname ' = varargin{i+1};']);
-                    otherwise
-                        error('Parameter "%s" is unrecognized.', ...
-                            varargin{i});
-                end
-            end
+            % Parse param-value pairs using input parser            
+            p = inputParser;
+            p.addParamValue('offset',0,@isscalar);
+            p.addParamValue('precision','double',@ischar);
+            p.addParamValue('repeat',0,@isscalar);
+            p.addParamValue('dimensions',0,@isnumeric);
+            p.addParamValue('readonly',0,@isscalar);
+            p.addParamValue('copy',0,@isscalar);
+            p.parse(varargin{:});
+%             for i = 1:2:length(varargin)
+%                 assert(ischar(varargin{i}),...
+%                     'Parameter at input %d must be a string.', i);
+%                 fieldname = lower(varargin{i});
+%                 switch fieldname
+%                     case {'offset', 'precision', 'repeat',...
+%                             'dimensions', 'readonly', 'copy'}
+%                         eval([fieldname ' = varargin{i+1};']);
+%                     otherwise
+%                         error('Parameter "%s" is unrecognized.', ...
+%                             varargin{i});
+%                 end
+%             end
             
             if (ischar(data)) % Loading file
                 if(copy == 0) % overwrite case
