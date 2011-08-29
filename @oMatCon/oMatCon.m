@@ -1,10 +1,20 @@
 classdef oMatCon < oCon
     %OMATCON  Memory-mapping out-of-core data container for binaries
     %
-    %   oMatCon(DIRNAME,FILENAME,SIZE,PARAM1,VALUE1,...)
+    %   oMatCon(DATA,PARAM1,VALUE1,...)
     %
-    %   Parameters:
-    %   offset, precision, repeat.
+    %
+    %   DATA  - Can either be the size for generating zeros/ones/randn or
+    %   the directory name for loading a file
+    %
+    %   Optional argument is either of:
+    %   OFFSET     - The offset for file
+    %   PRECISION  - Either 'single' or 'double'
+    %   REPEAT     - 1 for repeat and 0 otherwise
+    %   DIMENSIONS - 
+    %   READONLY   -
+    %   COPY       - 
+
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %   PROPERTIES

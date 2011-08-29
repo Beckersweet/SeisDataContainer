@@ -6,9 +6,15 @@ function y = getFile(obj,x)
 %   OBJ - An oMatCon object
 %   X   - Subreferences cell
 %
-    i=2;
-    while(cell2mat(x(i+1)) == ':')
-        i = i+1;
+    if(cell2mat(x(1)) == ':')
+        i=2;
+        while(cell2mat(x(i+1)) == ':')
+            i = i+1;
+        end
+    elseif(length(cell2mat(x(1))) > 1)
+        i = 1;
+    else
+        error('Unsupported indexing: first element should either be a range (i:j where j>i) or a chunk (:) ')
     end
     
     chunk = cell2mat(x(i));
