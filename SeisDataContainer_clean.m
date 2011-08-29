@@ -4,6 +4,7 @@ function  SeisDataContainer_clean()
     global SDCglobalTmpDir;
     global SDClocalTmpDir;
     global SDCbufferSize;
+    global SDCdefaultIOdist;
     global SDCdebugFlag;
 
     if isdir(SDClocalTmpDir)
@@ -22,6 +23,7 @@ function  SeisDataContainer_clean()
     clear global SDCglobalTmpDir;
     clear global SDClocalTmpDir;
     clear global SDCbufferSize;
+    clear global SDCdefaultIOdist;
     clear global SDCdebugFlag;
 
     fprintf('SDC global variables were cleared\n');
