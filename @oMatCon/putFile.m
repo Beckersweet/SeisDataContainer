@@ -1,12 +1,12 @@
 function putFile(obj,x,data)
 %SETDATA is called whenever we assign data to an oMatCon
 %
-%   setData(OBJ,X,DATA)
+%   setData(X,DATA)
 %
-%   OBJ  - An oMatCon object
 %   X    - Subreferences cell
 %   DATA - The data we want to assign
 %
+%   Note that you cannot modify a read-only file!
     if(obj.readOnly)
         error('Epic Fail: Your file is read-only')
     else

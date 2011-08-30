@@ -1,4 +1,19 @@
 function x = randn(varargin)
+%OMATCON.RANDN  Ones array.
+%
+%   oMatCon.randn(N) is an N-by-N matrix containing pseudorandom.
+%
+%   oMatCon.randn(M,N) or iCon.zeros([M,N]) is an M-by-N matrix of pseudorandom.
+%
+%   oMatCon.randn(M,N,P,...) or iCon.zeros([M N P ...]) is an 
+%   M-by-N-by-P-by-... array of pseudorandom.
+%
+%   oMatCon.randn(SIZE(A)) is the same size as A and all pseudorandom.
+%
+%   oMatCon.randn with no arguments is a pseudorandom scalar.
+%
+%   Note: The size inputs M, N, and P... should be nonnegative integers. 
+%   Negative integers are treated as 0.
     x = oMatCon(randn(varargin{:}));
 end
 

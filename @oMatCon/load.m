@@ -1,4 +1,13 @@
 function x = load(dirname,varargin)
-% option=1 is for overwrite and 0 otherwise       
+%OMATCON.LOAD Loads the file as an oMatCon
+%
+%   LOAD(DIRNAME,PARAM1,VALUE1,PARAM2,VALUE2,...)
+%
+%   DIRNAME  - Directory name
+%
+%   Addtional parameters include:
+%   READONLY - 1 makes the data container readonly and 0 otherwise
+%   COPY     - 1 creates a copy of the file when loading, otherwise 
+%                changes will be made on the existing file 
     x = oMatCon(dirname,varargin{:});
 end

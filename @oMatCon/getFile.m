@@ -1,11 +1,10 @@
 function y = getFile(obj,x)
 %GETDATA is called whenever we try to access data via subreferencing
 %
-%   setData(OBJ,X)
+%   getData(OBJ,X)
 %
 %   OBJ - An oMatCon object
 %   X   - Subreferences cell
-%
     if(cell2mat(x(1)) == ':')
         i=2;
         while(cell2mat(x(i+1)) == ':')

@@ -11,9 +11,10 @@ classdef oMatCon < oCon
     %   OFFSET     - The offset for file
     %   PRECISION  - Either 'single' or 'double'
     %   REPEAT     - 1 for repeat and 0 otherwise
-    %   DIMENSIONS - 
-    %   READONLY   -
-    %   COPY       - 
+    %   DIMENSIONS - dimensions of the data container
+    %   READONLY   - 1 makes the data container readonly
+    %   COPY       - 1 creates a copy of the file when loading, otherwise 
+    %                changes will be made on the existing file 
 
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -33,9 +34,6 @@ classdef oMatCon < oCon
         function x = oMatCon(data,varargin) % Constructor for oMatCon
             
             % Setup parameters
-%             offset     = 0;
-%             precision  = 'double';
-%             repeat     = 0;
             copy       = 0;
             readonly   = 0;
             % Parse param-value pairs using input parser            
@@ -47,19 +45,6 @@ classdef oMatCon < oCon
             p.addParamValue('readonly',0,@isscalar);
             p.addParamValue('copy',0,@isscalar);
             p.parse(varargin{:});
-%             for i = 1:2:length(varargin)
-%                 assert(ischar(varargin{i}),...
-%                     'Parameter at input %d must be a string.', i);
-%                 fieldname = lower(varargin{i});
-%                 switch fieldname
-%                     case {'offset', 'precision', 'repeat',...
-%                             'dimensions', 'readonly', 'copy'}
-%                         eval([fieldname ' = varargin{i+1};']);
-%                     otherwise
-%                         error('Parameter "%s" is unrecognized.', ...
-%                             varargin{i});
-%                 end
-%             end
             
             if (ischar(data)) % Loading file
                 if(copy == 0) % overwrite case
