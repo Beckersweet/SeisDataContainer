@@ -72,6 +72,11 @@ classdef oMatCon < oCon
             x.header     = header;
             x.readOnly   = readonly;
         end % constructor
+        
+        % delete function
+        function delete(x)
+            % Amazing deletion happens here            
+        end % delete
     end % methods
     
     methods ( Static )

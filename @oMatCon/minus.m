@@ -1,4 +1,4 @@
-function y = plus(a,b)
+function y = minus(a,b)
     if(~isa(a,'oCon') && ~isa(b,'oCon'))
         error('both parameters should be data containers')
     end
@@ -40,7 +40,7 @@ function y = plus(a,b)
             r2 = complex(r,dummy);
         end
         DataContainer.io.memmap.serial.FileWriteLeftChunk...
-            (y.dirname,r1+r2,[rstart rend],[]);
+            (y.dirname,r1-r2,[rstart rend],[]);
         reminder = reminder - buffer;
         rstart   = rend + 1;
     end
