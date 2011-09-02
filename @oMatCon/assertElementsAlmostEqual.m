@@ -1,20 +1,15 @@
-function y = plus(a,b)
-    if(~isa(a,'oCon') && ~isa(b,'oCon'))
+function assertElementsAlmostEqual(a,b)
+    if(~isa(a,'oCon') && ~isa(b,'iCon'))
         error('both parameters should be data containers')
     end
     
     if(~isequal(a.dimensions,b.dimensions))
-        error('sizes do not match')
+        error('sizes does not match')
     end
     
     global SDCbufferSize;
     % Set byte size
     bytesize  = DataContainer.utils.getByteSize(a.header.precision);
-    
-    y = oMatCon.zeros(a.dimensions);
-    header = a.header;
-    header.size = [1 prod(a.header.size)];
-    DataContainer.io.memmap.serial.HeaderWrite(y.dirname,header);    
     
     % Set the sizes
     dims      = [1 prod(a.dimensions)];
@@ -39,10 +34,9 @@ function y = plus(a,b)
             (b.dirname,'imag',dims,[rstart rend],[],b.header.precision,b.header.precision);
             r2 = complex(r2,dummy);
         end
-        DataContainer.io.memmap.serial.FileWriteLeftChunk...
-            (y.dirname,r1+r2,[rstart rend],[]);
+        assertElementsAlmostEqual(r1,r2)
         reminder = reminder - buffer;
         rstart   = rend + 1;
     end
-    DataContainer.io.memmap.serial.HeaderWrite(y.dirname,a.header);
 end
+

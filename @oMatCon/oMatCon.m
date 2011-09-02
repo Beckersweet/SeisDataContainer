@@ -66,7 +66,7 @@ classdef oMatCon < oCon
             x = x@oCon('serial memmap',dimensions,iscomplex);
             x.exdims     = 0; % Explicit dimensions of data
             x.imdims     = 0;
-            x.iscomplex  = 0;
+            x.iscomplex  = iscomplex;
             x.dirname    = td;
             x.dimensions = dimensions;
             x.header     = header;

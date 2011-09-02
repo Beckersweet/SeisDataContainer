@@ -30,14 +30,14 @@ function y = minus(a,b)
         if a.header.complex
         dummy = DataContainer.io.memmap.serial.DataReadLeftChunk...
             (a.dirname,'imag',dims,[rstart rend],[],a.header.precision,a.header.precision);
-            r1 = complex(r,dummy);
+            r1 = complex(r1,dummy);
         end
         r2 = DataContainer.io.memmap.serial.DataReadLeftChunk...
             (b.dirname,'real',dims,[rstart rend],[],b.header.precision,b.header.precision);
         if b.header.complex
         dummy = DataContainer.io.memmap.serial.DataReadLeftChunk...
             (b.dirname,'imag',dims,[rstart rend],[],b.header.precision,b.header.precision);
-            r2 = complex(r,dummy);
+            r2 = complex(r2,dummy);
         end
         DataContainer.io.memmap.serial.FileWriteLeftChunk...
             (y.dirname,r1-r2,[rstart rend],[]);

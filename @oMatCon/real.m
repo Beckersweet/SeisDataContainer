@@ -26,7 +26,7 @@ function y = real(a)
         if a.header.complex
         dummy = DataContainer.io.memmap.serial.DataReadLeftChunk...
             (a.dirname,'imag',dims,[rstart rend],[],a.header.precision,a.header.precision);
-            r1 = complex(r,dummy);
+            r1 = complex(r1,dummy);
         end        
         DataContainer.io.memmap.serial.FileWriteLeftChunk...
             (y.dirname,real(r1),[rstart rend],[]);
