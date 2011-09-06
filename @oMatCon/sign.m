@@ -8,6 +8,9 @@ function y = sign(a)
     bytesize  = DataContainer.utils.getByteSize(a.header.precision);
     
     y = oMatCon.zeros(a.dimensions);
+    if(a.header.complex)
+        y = complex(y,0);
+    end
     header = a.header;
     header.size = [1 prod(a.header.size)];
     DataContainer.io.memmap.serial.HeaderWrite(y.dirname,header);    
