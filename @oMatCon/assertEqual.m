@@ -58,7 +58,7 @@ function assertEqual(a,b)
                 (a.dirname,'imag',dims,[rstart rend],[],a.header.precision,a.header.precision);
                 r1 = complex(r1,dummy);
             end
-            assert(isequal(r1,b(rstart:rend)),'The datacontainers are not equal')
+            assert(isequal(r1,b(rstart:rend)),'Assertion failed')
             reminder = reminder - buffer;
             rstart   = rend + 1;
         end

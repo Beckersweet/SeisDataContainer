@@ -2,9 +2,30 @@ function test_suite = test_oMatCon
     initTestSuite;
 end
 
+function test_oMatCon_io
+%% norm
+y = oMatCon.randn(3,5,3,6);
+x = zeros(3,5,3,6);
+
+% over first dimension
+x(1:3,5,3,6) = y(1:3,5,3,6);
+assertEqual(x(:,5,3,6),y(:,5,3,6));
+
+% over 3rd dimension
+for i=1:6
+    x(:,:,1:3,i) = y(:,:,1:3,i);
+end
+assertEqual(x,y);
+
+% over last dimension
+x(:,:,:,1:6) = y(:,:,:,1:6);
+assertEqual(x,y);
+end % norm
+
 function test_oMatCon_norm
 %% norm
 y = oMatCon.randn(3,3,3);
+y = complex(y,1);
 x(:,:,1) = y(:,1:3,1);
 x(:,:,2) = y(:,1:3,2);
 x(:,:,3) = y(:,1:3,3);
@@ -81,7 +102,7 @@ end % zeros
 
 function test_oMatCon_ones
 %% ones
-y = oMatCon.zeros(3,3,3);
-x = zeros(3,3,3);
+y = oMatCon.ones(3,3,3);
+x = ones(3,3,3);
 assertEqual(x,y);
 end % ones
