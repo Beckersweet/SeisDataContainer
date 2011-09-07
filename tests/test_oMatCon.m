@@ -11,15 +11,32 @@ x = zeros(3,5,3,6);
 x(1:3,5,3,6) = y(1:3,5,3,6);
 assertEqual(x(:,5,3,6),y(:,5,3,6));
 
+x = zeros(3,5,3,6);
+% over 2nd dimension
+for i=1:6
+    for j=1:3
+        x(:,1:5,j,i) = y(:,1:5,j,i);
+    end
+end
+assertEqual(x,y);
+
+x = zeros(3,5,3,6);
 % over 3rd dimension
 for i=1:6
     x(:,:,1:3,i) = y(:,:,1:3,i);
 end
 assertEqual(x,y);
 
+x = zeros(3,5,3,6);
 % over last dimension
 x(:,:,:,1:6) = y(:,:,:,1:6);
 assertEqual(x,y);
+
+% element by element access
+isequal(x(1,2,3,4),y(1,2,3,4));
+isequal(x(1,1,1,1),y(1,1,1,1));
+isequal(x(3,5,3,6),y(3,5,3,6));
+
 end % norm
 
 function test_oMatCon_norm
