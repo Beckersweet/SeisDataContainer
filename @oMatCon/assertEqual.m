@@ -1,6 +1,6 @@
 function assertEqual(a,b)
     global SDCbufferSize;    
-    if(~isa(a,'oCon') && ~isa(b,'oCon'))
+    if(isa(a,'oCon') && isa(b,'oCon'))
         % Set byte size
         bytesize  = DataContainer.utils.getByteSize(a.header.precision);
         % Set the sizes

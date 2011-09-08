@@ -123,3 +123,17 @@ y = oMatCon.ones(3,3,3);
 x = ones(3,3,3);
 assertEqual(x,y);
 end % ones
+
+function test_oMatCon_save_load
+%% ones
+y = oMatCon.randn(3,3,3);
+y = complex(y,1);
+x(:,:,1) = y(:,1:3,1);
+x(:,:,2) = y(:,1:3,2);
+x(:,:,3) = y(:,1:3,3);
+assertEqual(x,y);
+y.save('~/tmp');
+z = oMatCon.load('~/tmp')
+assertEqual(x,z);
+assertEqual(z,y);
+end % ones
