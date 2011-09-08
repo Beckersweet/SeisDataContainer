@@ -133,7 +133,7 @@ x(:,:,2) = y(:,1:3,2);
 x(:,:,3) = y(:,1:3,3);
 assertEqual(x,y);
 y.save('~/tmp');
-z = oMatCon.load('~/tmp')
+z = oMatCon.load('~/tmp');
 assertEqual(x,z);
 assertEqual(z,y);
 end % ones
