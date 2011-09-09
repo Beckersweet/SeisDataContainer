@@ -3,7 +3,6 @@ classdef oMatCon < oCon
     %
     %   oMatCon(DATA,PARAM1,VALUE1,...)
     %
-    %
     %   DATA  - Can either be the size for generating zeros/ones/randn or
     %   the directory name for loading a file
     %
@@ -15,7 +14,6 @@ classdef oMatCon < oCon
     %   READONLY   - 1 makes the data container readonly
     %   COPY       - 1 creates a copy of the file when loading, otherwise 
     %                changes will be made on the existing file 
-
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %   PROPERTIES
@@ -33,7 +31,7 @@ classdef oMatCon < oCon
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         function x = oMatCon(data,varargin) % Constructor for oMatCon
             
-            % Parse param-value pairs using input parser            
+            % Parse param-value pairs using input parser
             p = inputParser;
             p.addParamValue('offset',0,@isscalar);
             p.addParamValue('precision','double',@ischar);
@@ -70,12 +68,14 @@ classdef oMatCon < oCon
             x.header     = header;
             x.readOnly   = inputs.readonly;
         end % constructor
-        
+    end % protected methods
+    
+    methods
         % delete function
         function delete(x)
-            % Amazing deletion happens here            
+            DataContainer.io.memmap.serial.FileDelete(x.dirname);
         end % delete
-    end % methods
+    end
     
     methods ( Static )
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
