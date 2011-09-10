@@ -7,16 +7,18 @@ function  SeisDataContainer_clean()
     global SDCdefaultIOdist;
     global SDCdebugFlag;
 
-    if isdir(SDClocalTmpDir)
-        rmdir(SDCglobalTmpDir)
-    end
-
     if matlabpool('size') > 0
         spmd
+            pause(rand());
             if isdir(SDClocalTmpDir)
-                rmdir(SDClocalTmpDir);
+                try
+                    rmdir(SDClocalTmpDir,'s');
+                end
             end
         end
+    end
+    if isdir(SDCglobalTmpDir)
+        rmdir(SDCglobalTmpDir,'s')
     end
     fprintf('SDC temporary directories were deleted\n');
 
