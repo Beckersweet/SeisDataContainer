@@ -140,8 +140,9 @@ x(:,:,1) = y(:,1:3,1);
 x(:,:,2) = y(:,1:3,2);
 x(:,:,3) = y(:,1:3,3);
 assertEqual(x,y);
-y.save('~/tmp');
-z = oMatCon.load('~/tmp');
+td = DataContainer.io.makeDir();
+y.save(td);
+z = oMatCon.load(td);
 assertEqual(x,z);
 assertEqual(z,y);
 clear
