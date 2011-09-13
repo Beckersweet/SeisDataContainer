@@ -7,9 +7,8 @@ function y = plus(a,b)
         error('sizes do not match')
     end
     
-    td          = DataContainer.io.makeDir();
-    header      = a.header;
+    td = DataContainer.io.makeDir();
     DataContainer.io.memmap.serial.FilePlus...
-        (a.dirname,a.header,b.dirname,b.header,td,header);
-    y = oMatCon.load(td);
+        (a.dirname,b.dirname,td);
+    y  = oMatCon.load(td);
 end

@@ -1,19 +1,22 @@
-function FileMinus(dirnameA,headerA,dirnameB,headerB,dirnameOut,headerOut)
+function FileMinus(dirnameA,dirnameB,dirnameOut)
 %FILEPLUS Allocates file space and subtracts the two input files
 %   FileOnes(DIRNAMEA,HEADERA,DIRNAMEB,HEADERB,DIRNAMEOUT,HEADEROUT)
 %
 %   DIRNAMEA,DIRNAMEB - A string specifying the directory name of the input
 %                       files
-%   HEADERA, HEADERB  - Input file headers
 %   DIRNAMEOUT        - A string specifying the output directory name
-%   HEADEROUT         - Output header
 %   
     global SDCbufferSize;
-    DataContainer.io.memmap.serial.FileAlloc(dirnameOut,headerOut);
+    
+    % Reading input headers
+    headerA   = DataContainer.io.memmap.serial.HeaderRead(dirnameA);
+    headerB   = DataContainer.io.memmap.serial.HeaderRead(dirnameB);
+    headerOut = headerA;
     
     % Set byte size
     bytesize  = DataContainer.utils.getByteSize(headerOut.precision);
     
+    DataContainer.io.memmap.serial.FileAlloc(dirnameOut,headerOut);
     xsize       = headerOut.size;
     headerOut.size = [1 prod(xsize)];
     DataContainer.io.memmap.serial.HeaderWrite(dirnameOut,headerOut);
