@@ -3,7 +3,6 @@ classdef oMatCon < oCon
     %
     %   oMatCon(DATA,PARAM1,VALUE1,...)
     %
-    %
     %   DATA  - Can either be the size for generating zeros/ones/randn or
     %   the directory name for loading a file
     %
@@ -11,10 +10,10 @@ classdef oMatCon < oCon
     %   OFFSET     - The offset for file
     %   PRECISION  - Either 'single' or 'double'
     %   REPEAT     - 1 for repeat and 0 otherwise
-    %   DIMENSIONS - 
-    %   READONLY   -
-    %   COPY       - 
-
+    %   DIMENSIONS - dimensions of the data container
+    %   READONLY   - 1 makes the data container readonly
+    %   COPY       - 1 creates a copy of the file when loading, otherwise 
+    %                changes will be made on the existing file 
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %   PROPERTIES
@@ -32,13 +31,7 @@ classdef oMatCon < oCon
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         function x = oMatCon(data,varargin) % Constructor for oMatCon
             
-            % Setup parameters
-%             offset     = 0;
-%             precision  = 'double';
-%             repeat     = 0;
-            copy       = 0;
-            readonly   = 0;
-            % Parse param-value pairs using input parser            
+            % Parse param-value pairs using input parser
             p = inputParser;
             p.addParamValue('offset',0,@isscalar);
             p.addParamValue('precision','double',@ischar);
@@ -47,22 +40,10 @@ classdef oMatCon < oCon
             p.addParamValue('readonly',0,@isscalar);
             p.addParamValue('copy',0,@isscalar);
             p.parse(varargin{:});
-%             for i = 1:2:length(varargin)
-%                 assert(ischar(varargin{i}),...
-%                     'Parameter at input %d must be a string.', i);
-%                 fieldname = lower(varargin{i});
-%                 switch fieldname
-%                     case {'offset', 'precision', 'repeat',...
-%                             'dimensions', 'readonly', 'copy'}
-%                         eval([fieldname ' = varargin{i+1};']);
-%                     otherwise
-%                         error('Parameter "%s" is unrecognized.', ...
-%                             varargin{i});
-%                 end
-%             end
+            inputs = p.Results;
             
             if (ischar(data)) % Loading file
-                if(copy == 0) % overwrite case
+                if(inputs.copy == 0) % overwrite case
                     header = DataContainer.io.memmap.serial.HeaderRead(data);
                     td = data;
                 else % no overwrite
@@ -81,13 +62,20 @@ classdef oMatCon < oCon
             x = x@oCon('serial memmap',dimensions,iscomplex);
             x.exdims     = 0; % Explicit dimensions of data
             x.imdims     = 0;
-            x.iscomplex  = 0;
+            x.iscomplex  = iscomplex;
             x.dirname    = td;
             x.dimensions = dimensions;
             x.header     = header;
-            x.readOnly   = readonly;
+            x.readOnly   = inputs.readonly;
         end % constructor
-    end % methods
+    end % protected methods
+    
+    methods
+        % delete function
+        function delete(x)
+            DataContainer.io.memmap.serial.FileDelete(x.dirname);
+        end % delete
+    end
     
     methods ( Static )
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

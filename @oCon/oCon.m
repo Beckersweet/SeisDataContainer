@@ -34,14 +34,14 @@ classdef oCon < dataContainer
 %             x.imcodpart = x.excodpart;
                         
         end % constructor
-        
+    end % protected methods
+    
+    methods
         % delete function
         function delete(x)
-            % Amazing deletion happens here
-            
+            % Amazing deletion happens here            
         end % delete
-        
-    end % protected methods
+    end
        
 end % classdef
 
