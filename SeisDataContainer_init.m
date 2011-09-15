@@ -57,7 +57,7 @@ function  SeisDataContainer_init(varargin)
     if ~isdir(SDCglobalTmpDir)
         mkdir(SDCglobalTmpDir)
     end
-    fprintf('Global temporary directory is %s\n',SDCglobalTmpDir);
+    fprintf('Global temporary home in %s\n',SDCglobalTmpDir);
 
     % set local temporary directories
     % might not accessible form every worker
@@ -71,7 +71,7 @@ function  SeisDataContainer_init(varargin)
         SDClocalTmpDir = fullfile(pwd,SDClocalTmpDir);
     end
     SDClocalTmpDir = tempname(SDClocalTmpDir);
-    fprintf('Local temporary directory is %s\n',SDClocalTmpDir);
+    fprintf('Local temporary home in %s\n',SDClocalTmpDir);
 
     % check gloabl directory on the workers
     % and create local temporary directories
@@ -79,6 +79,7 @@ function  SeisDataContainer_init(varargin)
         spmd
             assert(isdir(SDCglobalTmpDir),...
                 'Global temporary directory missing on the worker %d.',labindex)
+            pause(rand());
             if ~isdir(SDClocalTmpDir)
                 mkdir(SDClocalTmpDir);
             end
