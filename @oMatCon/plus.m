@@ -1,14 +1,12 @@
-function y = plus(a,b)
-    if(~isa(a,'oMatCon') && ~isa(b,'oMatCon'))
-        error('both parameters should be data containers')
+function y = plus(A,B)
+    if(isa(A,'oMatCon'))
+        A = A.dirname;
     end
-    
-    if(~isequal(a.dimensions,b.dimensions))
-        error('sizes do not match')
+    if(isa(B,'oMatCon'))
+        B = B.dirname;
     end
-    
     td = DataContainer.io.makeDir();
     DataContainer.io.memmap.serial.FilePlus...
-        (a.dirname,b.dirname,td);
+        (A,B,td);
     y  = oMatCon.load(td);
 end
