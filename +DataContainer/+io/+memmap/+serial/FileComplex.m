@@ -1,6 +1,6 @@
 function FileComplex(A,B,dirnameOut)
-%FILEPLUS Allocates file space and makes the complex of two input files
-%   FilePlus(A,B,DIRNAMEOUT)
+%FILECOMPLEX Allocates file space and makes the complex of two input files
+%   FileComplex(A,B,DIRNAMEOUT)
 %
 %   A,B        - Either string specifying the directory name of the input
 %                files or a scalar

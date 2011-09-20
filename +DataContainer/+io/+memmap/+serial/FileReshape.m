@@ -20,7 +20,7 @@ headerOut = DataContainer.io.memmap.serial.HeaderRead(dirnameIn);
 
 % Making sure the new shape has the same length
 assert(isequal(prod(shape),prod(headerOut.size)),...
-    'The new shape should have the same length as the original size')
+    'The new shape should have the same length as the original shape')
 
 % Changing shape
 headerOut.size = shape;

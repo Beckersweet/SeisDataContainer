@@ -1,10 +1,10 @@
 function FileMinus(A,B,dirnameOut)
-%FILEPLUS Allocates file space and subtracts the two input files
-%   FileOnes(DIRNAMEA,HEADERA,DIRNAMEB,HEADERB,DIRNAMEOUT,HEADEROUT)
+%FILEMINUS Allocates file space and subtracts the two input files
+%   FileMinus(A,B,DIRNAMEOUT)
 %
-%   DIRNAMEA,DIRNAMEB - A string specifying the directory name of the input
-%                       files
-%   DIRNAMEOUT        - A string specifying the output directory name
+%   A,B        - Either string specifying the directory name of the input
+%                files or a scalar
+%   DIRNAMEOUT - A string specifying the output directory name
 %   
     global SDCbufferSize;
     
@@ -15,6 +15,9 @@ function FileMinus(A,B,dirnameOut)
     end
     
     if(isscalar(A))
+        if(~isdir(B))
+            error('Fail: Wrong input type')
+        end
         % Reading input headers
         headerB   = DataContainer.io.memmap.serial.HeaderRead(B);
         headerOut = headerB;
@@ -53,6 +56,9 @@ function FileMinus(A,B,dirnameOut)
         headerOut.size = xsize;
         DataContainer.io.memmap.serial.HeaderWrite(dirnameOut,headerOut);        
     elseif(isdir(A))
+        if(~isdir(B))
+            error('Fail: Wrong input type')
+        end
         % Reading input headers
         headerA   = DataContainer.io.memmap.serial.HeaderRead(A);
         headerB   = DataContainer.io.memmap.serial.HeaderRead(B);

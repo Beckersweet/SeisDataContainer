@@ -1,4 +1,4 @@
-function y = minus(a,b)
+function y = minus(A,B)
     if(isa(A,'oMatCon'))
         A = A.dirname;
     end
