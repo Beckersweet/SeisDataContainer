@@ -36,6 +36,9 @@ function y = mtimes(A,B,swp)
         sizeOut    = [sizeA(1) sizeB(sepDim:end)];
         y          = oMatCon.zeros(sizeOut);
         prod(sizeB(sepDim+1:end));
+        if(B.header.complex)
+            y = complex(y,0);
+        end
         
         for i=1:prod(sizeB(sepDim+1:end))
             slice = DataContainer.io.memmap.serial.FileReadLeftSlice...
