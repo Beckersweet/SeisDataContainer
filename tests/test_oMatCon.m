@@ -85,10 +85,11 @@ end % minus
 
 function test_oMatCon_mtimes
 %% mtimes
-y = oMatCon.randn(3,3,3);
+y = oMatCon.randn(1,1,3,3,3);
 y = complex(y,1);
 w = opDirac(3);
 z = w*y;
+y = reshape(y,3,3,3);
 assertEqual(z,y);
 clear
 end % mtimes

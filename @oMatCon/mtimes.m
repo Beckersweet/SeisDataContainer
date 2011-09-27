@@ -10,8 +10,8 @@ function y = mtimes(A,B,swp)
 
     % Multiply
     if ~isa(A,'opSpot')
-        error('First input should be an operator')
-    else
+%         error('First input should be an operator')
+%     else
         sizeA = size(A);
         if(length(sizeA) > 2)
             error('Fail: Wrong size for first parameter');
@@ -21,7 +21,7 @@ function y = mtimes(A,B,swp)
         sizeB     = headerB.size;
         
         sepDim = 0;    
-        for i=1:size(sizeB)
+        for i=1:length(sizeB)
             if(prod(sizeB(1:i)) == sizeA(2))
                 sepDim = i+1;
                 break;
@@ -43,6 +43,7 @@ function y = mtimes(A,B,swp)
         for i=1:prod(sizeB(sepDim+1:end))
             slice = DataContainer.io.memmap.serial.FileReadLeftSlice...
                 (B.dirname,i);
+            slice = reshape(slice,sizeA(2),prod(size(slice))/sizeA(2));
             prodz = mtimes(A,slice);
             DataContainer.io.memmap.serial.FileWriteLeftSlice...
                 (y.dirname,prodz,i);
