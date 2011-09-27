@@ -7,7 +7,7 @@ function y = uminus(A)
         A = A.dirname;
     end
     td = DataContainer.io.makeDir();
-    DataContainer.io.memmap.serial.FileMtimes...
+    DataContainer.io.memmap.serial.FileTimes...
         (-1,A,td);
     y  = oMatCon.load(td);
 end
