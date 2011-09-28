@@ -1,6 +1,6 @@
-function FileMinus(A,B,dirnameOut)
-%FILEMINUS Allocates file space and subtracts the two input files
-%   FileMinus(A,B,DIRNAMEOUT)
+function FileRdivide(A,B,dirnameOut)
+%FILERDIVIDE Element-by-element division
+%   FileRdivide(A,B,DIRNAMEOUT)
 %
 %   A,B        - Either string specifying the directory name of the input
 %                files or a scalar
@@ -13,7 +13,7 @@ function FileMinus(A,B,dirnameOut)
         B    = A;
         A    = temp;
     end
-    
+        
     if(isscalar(A))
         if(~isdir(B))
             error('Fail: Wrong input type')
@@ -49,7 +49,7 @@ function FileMinus(A,B,dirnameOut)
                 r2 = complex(r2,dummy);
             end
             DataContainer.io.memmap.serial.FileWriteLeftChunk...
-                (dirnameOut,minus(A,r2),[rstart rend],[]);
+                (dirnameOut,rdivide(r2,A),[rstart rend],[]);
             reminder = reminder - buffer;
             rstart   = rend + 1;
         end
@@ -59,6 +59,7 @@ function FileMinus(A,B,dirnameOut)
         if(~isdir(B))
             error('Fail: Wrong input type')
         end
+        
         % Reading input headers
         headerA   = DataContainer.io.memmap.serial.HeaderRead(A);
         headerB   = DataContainer.io.memmap.serial.HeaderRead(B);
@@ -103,11 +104,11 @@ function FileMinus(A,B,dirnameOut)
                 r2 = complex(r2,dummy);
             end
             DataContainer.io.memmap.serial.FileWriteLeftChunk...
-                (dirnameOut,minus(r1,r2),[rstart rend],[]);
+                (dirnameOut,rdivide(r1,r2),[rstart rend],[]);
             reminder = reminder - buffer;
             rstart   = rend + 1;
         end
         headerOut.size = xsize;
         DataContainer.io.memmap.serial.HeaderWrite(dirnameOut,headerOut);
-    end    
+    end  
 end

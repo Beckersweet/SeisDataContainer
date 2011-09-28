@@ -1,10 +1,10 @@
 function FileComplex(A,B,dirnameOut)
-%FILEPLUS Allocates file space and makes the complex of two input files
-%   FileOnes(DIRNAMEA,HEADERA,DIRNAMEB,HEADERB,DIRNAMEOUT,HEADEROUT)
+%FILECOMPLEX Allocates file space and makes the complex of two input files
+%   FileComplex(A,B,DIRNAMEOUT)
 %
-%   DIRNAMEA,DIRNAMEB - A string specifying the directory name of the input
-%                       files
-%   DIRNAMEOUT        - A string specifying the output directory name
+%   A,B        - Either string specifying the directory name of the input
+%                files or a scalar
+%   DIRNAMEOUT - A string specifying the output directory name
 %   
     global SDCbufferSize;
     
@@ -13,8 +13,7 @@ function FileComplex(A,B,dirnameOut)
         headerA = DataContainer.io.memmap.serial.HeaderRead(A);
         if(headerA.complex)
             error('Epic fail: the firt input is complex')
-        end
-        
+        end        
         % Set byte size
         bytesize       = DataContainer.utils.getByteSize(headerA.precision);
         

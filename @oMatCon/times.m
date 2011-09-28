@@ -1,4 +1,4 @@
-function y = plus(A,B)
+function y = times(A,B)
     if(isa(A,'oMatCon'))
         A = A.dirname;
     end
@@ -6,7 +6,9 @@ function y = plus(A,B)
         B = B.dirname;
     end
     td = DataContainer.io.makeDir();
-    DataContainer.io.memmap.serial.FilePlus...
+    DataContainer.io.memmap.serial.FileTimes...
         (A,B,td);
     y  = oMatCon.load(td);
 end
+
+
