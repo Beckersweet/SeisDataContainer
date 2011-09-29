@@ -10,6 +10,7 @@ classdef oCon < dataContainer
     %   PROPERTIES
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     properties (Access = protected)
+        pathname = '';
         iscomplex; % True if data is complex
     end
     

@@ -4,7 +4,7 @@ function disp(x)
 %   all other ways it's the same as leaving the semicolon off an
 %   expression except that empty arrays don't display.
     if(prod(x.header.size)<2011)
-        disp(DataContainer.io.memmap.serial.FileRead(x.dirname));
+        disp(DataContainer.io.memmap.serial.FileRead(x.pathname));
     else
         disp('Dear sir/madam you dont wanna display the entire data!!');
         disp('The current size limit for displaying data is 2011');

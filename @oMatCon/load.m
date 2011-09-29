@@ -3,7 +3,7 @@ function x = load(dirname,varargin)
 %
 %   LOAD(DIRNAME,PARAM1,VALUE1,PARAM2,VALUE2,...)
 %
-%   DIRNAME  - Directory name
+%   DIRNAME  - Input directory name
 %
 %   Addtional parameters include:
 %   READONLY - 1 makes the data container readonly and 0 otherwise

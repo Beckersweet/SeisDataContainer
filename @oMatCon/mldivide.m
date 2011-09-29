@@ -16,7 +16,7 @@ function y = mldivide(A,B,swp)
         error('Fail: Wrong size for first parameter');
     end
     % Reading input header
-    headerB   = DataContainer.io.memmap.serial.HeaderRead(B.dirname);
+    headerB   = DataContainer.io.memmap.serial.HeaderRead(B.pathname);
     sizeB     = headerB.size;
     
     sepDim = 0;    
@@ -40,10 +40,10 @@ function y = mldivide(A,B,swp)
     end
     for i=1:prod(sizeB(sepDim:end))
         slice = DataContainer.io.memmap.serial.FileReadLeftSlice...
-            (B.dirname,i);
+            (B.pathname,i);
         slice = reshape(slice,sizeA(2),numel(slice)/sizeA(2));
         prodz = mldivide(A,slice);
         DataContainer.io.memmap.serial.FileWriteLeftSlice...
-            (y.dirname,prodz,i);
+            (y.pathname,prodz,i);
     end    
 end

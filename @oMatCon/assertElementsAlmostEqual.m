@@ -17,17 +17,17 @@ function assertElementsAlmostEqual(a,b)
             buffer = min(reminder,maxbuffer);
             rend = rstart + buffer - 1;
             r1 = DataContainer.io.memmap.serial.DataReadLeftChunk...
-                (a.dirname,'real',dims,[rstart rend],[],a.header.precision,a.header.precision);
+                (a.pathname,'real',dims,[rstart rend],[],a.header.precision,a.header.precision);
             if a.header.complex
             dummy = DataContainer.io.memmap.serial.DataReadLeftChunk...
-                (a.dirname,'imag',dims,[rstart rend],[],a.header.precision,a.header.precision);
+                (a.pathname,'imag',dims,[rstart rend],[],a.header.precision,a.header.precision);
                 r1 = complex(r1,dummy);
             end
             r2 = DataContainer.io.memmap.serial.DataReadLeftChunk...
-                (b.dirname,'real',dims,[rstart rend],[],b.header.precision,b.header.precision);
+                (b.pathname,'real',dims,[rstart rend],[],b.header.precision,b.header.precision);
             if b.header.complex
             dummy = DataContainer.io.memmap.serial.DataReadLeftChunk...
-                (b.dirname,'imag',dims,[rstart rend],[],b.header.precision,b.header.precision);
+                (b.pathname,'imag',dims,[rstart rend],[],b.header.precision,b.header.precision);
                 r2 = complex(r2,dummy);
             end
             assertElementsAlmostEqual(r1,r2)
@@ -54,10 +54,10 @@ function assertElementsAlmostEqual(a,b)
             buffer = min(reminder,maxbuffer);
             rend = rstart + buffer - 1;
             r1 = DataContainer.io.memmap.serial.DataReadLeftChunk...
-                (a.dirname,'real',dims,[rstart rend],[],a.header.precision,a.header.precision);
+                (a.pathname,'real',dims,[rstart rend],[],a.header.precision,a.header.precision);
             if a.header.complex
             dummy = DataContainer.io.memmap.serial.DataReadLeftChunk...
-                (a.dirname,'imag',dims,[rstart rend],[],a.header.precision,a.header.precision);
+                (a.pathname,'imag',dims,[rstart rend],[],a.header.precision,a.header.precision);
                 r1 = complex(r1,dummy);
             end
             assertElementsAlmostEqual(r1,b(rstart:rend))

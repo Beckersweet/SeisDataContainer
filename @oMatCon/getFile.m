@@ -20,5 +20,5 @@ function y = getFile(obj,x)
     end
     
     y = DataContainer.io.memmap.serial.FileReadLeftChunk...
-        (obj.dirname,[chunk(1) chunk(end)],slice);
+        (obj.pathname,[chunk(1) chunk(end)],slice);
 end
