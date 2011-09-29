@@ -83,14 +83,34 @@ assertEqual(y-z,x-w);
 clear
 end % minus
 
+function test_oMatCon_mldivide
+%% mldivide
+n1      = randi(10);
+x       = randn(n1,n1) + 1i*randn(n1,n1);
+y       = oMatCon.randn(n1,2);
+y       = complex(y,2);
+z       = zeros(n1,2);
+z(:,1)  = y(:,1);
+z(:,2)  = y(:,2);
+c       = x\y;
+d       = x\z;
+assertElementsAlmostEqual(c,d);
+clear
+end % mldivide
+
 function test_oMatCon_mtimes
 %% mtimes
-y = oMatCon.randn(1,1,3,3,3);
-y = complex(y,1);
-w = opDirac(3);
-z = w*y;
-y = reshape(y,3,3,3);
-assertEqual(z,y);
+n1      = randi(10);
+n2      = randi(10);
+x       = randn(n1,n2) + 1i*randn(n1,n2);
+y       = oMatCon.randn(n2,2);
+y       = complex(y,2);
+z       = zeros(n2,2);
+z(:,1)  = y(:,1);
+z(:,2)  = y(:,2);
+c       = x*y;
+d       = x*z;
+assertElementsAlmostEqual(c,d);
 clear
 end % mtimes
 

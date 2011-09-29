@@ -7,6 +7,6 @@ function x = norm(obj,norm)
 %                    'fro', p-norm where p is scalar.
     norm = cell2mat(norm);
     x = DataContainer.io.memmap.serial.FileNorm...
-        (obj.dirname,obj.dimensions,norm,'double');
+        (obj.dirname,obj.header.size,norm,'double');
 end
 

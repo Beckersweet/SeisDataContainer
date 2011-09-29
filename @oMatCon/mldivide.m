@@ -1,4 +1,4 @@
-function y = mtimes(A,B,swp)
+function y = mldivide(A,B,swp)
     if ~isa(B,'dataContainer')
         error('Second input should be a dataContainer')
     end
@@ -12,7 +12,7 @@ function y = mtimes(A,B,swp)
 
     % Multiply    
     sizeA = size(A);
-    if(length(sizeA) > 2)
+    if(length(sizeA) > 2 || sizeA(1) ~= sizeA(2))
         error('Fail: Wrong size for first parameter');
     end
     % Reading input header
@@ -42,7 +42,7 @@ function y = mtimes(A,B,swp)
         slice = DataContainer.io.memmap.serial.FileReadLeftSlice...
             (B.dirname,i);
         slice = reshape(slice,sizeA(2),numel(slice)/sizeA(2));
-        prodz = mtimes(A,slice);
+        prodz = mldivide(A,slice);
         DataContainer.io.memmap.serial.FileWriteLeftSlice...
             (y.dirname,prodz,i);
     end    

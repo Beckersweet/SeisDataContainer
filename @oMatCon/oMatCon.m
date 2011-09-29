@@ -10,7 +10,6 @@ classdef oMatCon < oCon
     %   OFFSET     - The offset for file
     %   PRECISION  - Either 'single' or 'double'
     %   REPEAT     - 1 for repeat and 0 otherwise
-    %   DIMENSIONS - dimensions of the data container
     %   READONLY   - 1 makes the data container readonly
     %   COPY       - 1 creates a copy of the file when loading, otherwise 
     %                changes will be made on the existing file 
@@ -20,7 +19,6 @@ classdef oMatCon < oCon
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     properties (SetAccess = protected)
         dirname = '';
-        dimensions;
         header;
         readOnly = 0;
     end % properties
@@ -36,7 +34,6 @@ classdef oMatCon < oCon
             p.addParamValue('offset',0,@isscalar);
             p.addParamValue('precision','double',@ischar);
             p.addParamValue('repeat',0,@isscalar);
-            p.addParamValue('dimensions',0,@isnumeric);
             p.addParamValue('readonly',0,@isscalar);
             p.addParamValue('copy',0,@isscalar);
             p.parse(varargin{:});
@@ -44,28 +41,26 @@ classdef oMatCon < oCon
             
             if (ischar(data)) % Loading file
                 if(inputs.copy == 0) % overwrite case
-                    header = DataContainer.io.memmap.serial.HeaderRead(data);
+                    headerIn = DataContainer.io.memmap.serial.HeaderRead(data);
                     td = data;
                 else % no overwrite
                     td = DataContainer.io.makeDir();
                     DataContainer.io.memmap.serial.FileCopy(data,td);
-                    header = DataContainer.io.memmap.serial.HeaderRead(td);
+                    headerIn = DataContainer.io.memmap.serial.HeaderRead(td);
                 end
             else % Generating file with ones/zeros/randn
                 td = DataContainer.io.makeDir();
-                header = DataContainer.io.basicHeaderStructFromX(data);
-                DataContainer.io.memmap.serial.FileWrite(td,data,header);
+                headerIn = DataContainer.io.basicHeaderStructFromX(data);
+                DataContainer.io.memmap.serial.FileWrite(td,data,headerIn);
             end
-            dimensions   = header.size;
-            iscomplex    = header.complex;
+            iscomplex    = headerIn.complex;
             % Construct and set class attributes
-            x = x@oCon('serial memmap',dimensions,iscomplex);
+            x = x@oCon('serial memmap',headerIn.size,iscomplex);
             x.exdims     = 0; % Explicit dimensions of data
             x.imdims     = 0;
             x.iscomplex  = iscomplex;
             x.dirname    = td;
-            x.dimensions = dimensions;
-            x.header     = header;
+            x.header     = headerIn;
             x.readOnly   = inputs.readonly;
         end % constructor
     end % protected methods

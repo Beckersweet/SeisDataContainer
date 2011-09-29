@@ -7,7 +7,7 @@ function y = sign(a)
     % Set byte size
     bytesize  = DataContainer.utils.getByteSize(a.header.precision);
     
-    y = oMatCon.zeros(a.dimensions);
+    y = oMatCon.zeros(a.header.size);
     if(a.header.complex)
         y = complex(y,0);
     end
@@ -16,8 +16,8 @@ function y = sign(a)
     DataContainer.io.memmap.serial.HeaderWrite(y.dirname,header);    
     
     % Set the sizes
-    dims      = [1 prod(a.dimensions)];
-    reminder  = prod(a.dimensions);
+    dims      = [1 prod(a.header.size)];
+    reminder  = prod(a.header.size);
     maxbuffer = SDCbufferSize/bytesize;    
     rstart = 1;
     

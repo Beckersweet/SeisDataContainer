@@ -4,11 +4,11 @@ function assertEqual(a,b)
         % Set byte size
         bytesize  = DataContainer.utils.getByteSize(a.header.precision);
         % Set the sizes
-        dims      = [1 prod(a.dimensions)];
-        reminder  = prod(a.dimensions);
+        dims      = [1 prod(a.header.size)];
+        reminder  = prod(a.header.size);
         maxbuffer = SDCbufferSize/bytesize;    
         rstart    = 1;
-        if(~isequal(a.dimensions,b.dimensions))
+        if(~isequal(a.header.size,b.header.size))
             error('sizes does not match')
         end
         while (reminder > 0)
@@ -41,11 +41,11 @@ function assertEqual(a,b)
         % Set byte size
         bytesize  = DataContainer.utils.getByteSize(a.header.precision);
         % Set the sizes
-        dims      = [1 prod(a.dimensions)];
-        reminder  = prod(a.dimensions);
+        dims      = [1 prod(a.header.size)];
+        reminder  = prod(a.header.size);
         maxbuffer = SDCbufferSize/bytesize;    
         rstart    = 1;
-        if(~isequal(a.dimensions,size(b)))
+        if(~isequal(a.header.size,size(b)))
             error('sizes does not match')
         end
         while (reminder > 0)
