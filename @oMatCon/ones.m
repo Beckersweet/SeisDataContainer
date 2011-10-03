@@ -10,7 +10,7 @@ function x = ones(varargin)
 %
 %   oMatCon.ones(SIZE(A)) is the same size as A and all zeros.
 %
-%   oMatCon.randn(M,N,...,PRECISION) or ZEROS([M,N,...],PRECISION) is an
+%   oMatCon.ones(M,N,...,PRECISION) or ZEROS([M,N,...],PRECISION) is an
 %   M-by-N-by-... array of zeros of PRECISION type.
 %   Supported precisions are 'single' or 'double'   
 %

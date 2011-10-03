@@ -3,8 +3,7 @@ classdef oMatCon < oCon
     %
     %   oMatCon(DATA,PARAM1,VALUE1,...)
     %
-    %   DATA  - Can either be the size for generating zeros/ones/randn or
-    %   the directory name for loading a file
+    %   pathname   - The directory name for loading a file
     %
     %   Optional argument is either of:
     %   OFFSET     - The offset for file
@@ -25,7 +24,7 @@ classdef oMatCon < oCon
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %   Constructor
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        function x = oMatCon(data,varargin) % Constructor for oMatCon
+        function x = oMatCon(pathname,varargin) % Constructor for oMatCon
             
             % Parse param-value pairs using input parser
             p = inputParser;
@@ -36,24 +35,20 @@ classdef oMatCon < oCon
             p.addParamValue('copy',0,@isscalar);
             p.parse(varargin{:});
             
-            if (isdir(data)) % Loading file
+            if (isdir(pathname)) % Loading file
                 if(p.Results.copy == 0) % overwrite case
-                    headerIn = DataContainer.io.memmap.serial.HeaderRead(data);
-                    td = data;
+                    headerIn = DataContainer.io.memmap.serial.HeaderRead(pathname);
+                    td = pathname;
                 else % no overwrite
                     td = DataContainer.io.makeDir();
-                    DataContainer.io.memmap.serial.FileCopy(data,td);
+                    DataContainer.io.memmap.serial.FileCopy(pathname,td);
                     headerIn = DataContainer.io.memmap.serial.HeaderRead(td);
-                end
-            elseif(isvector(data{:})) % Generating file with ones/zeros/randn
-                td = DataContainer.io.makeDir();
-                headerIn = DataContainer.io.basicHeaderStructFromX(data);
-                DataContainer.io.memmap.serial.FileWrite(td,data,headerIn);
+                end            
             else
                 error('Fail: Bad input for oMatCon');
             end
             % Construct and set class attributes
-            x = x@oCon('serial memmap',headerIn.size,headerIn.complex);
+            x = x@oCon('serial memmap',headerIn.dims,headerIn.complex);
             x.exdims     = 0; % Explicit dimensions of data
             x.imdims     = 0;
             x.pathname   = td;
