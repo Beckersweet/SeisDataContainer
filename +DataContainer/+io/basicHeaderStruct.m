@@ -2,6 +2,7 @@ function header = basicHeaderStruct(xsize,xprecision,xcomplex)
     header = struct();
     dims = length(xsize);
 
+    header.variable = 'unknown';
     header.dims = dims;
     header.size = xsize;
     header.offset = zeros(1,dims);
