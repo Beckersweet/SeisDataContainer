@@ -5,6 +5,7 @@ function header = basicHeaderStructFromX(x)
     xcomplex = ~isreal(x);
     dims = length(xsize);
 
+    header.variable = 'unknown';
     header.dims = dims;
     header.size = xsize;
     header.offset = zeros(1,dims);
