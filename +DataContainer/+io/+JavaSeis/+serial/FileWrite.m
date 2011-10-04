@@ -1,5 +1,6 @@
 function FileWrite(dirname,x,varargin)
 %FILEWRITE Writes serial data to binary file
+% TODO: be able to create directory, >3 dims 
 %
 %   FileWrite(DIRNAME,DATA,FILE_PRECISION|HEADER_STRUCT) writes
 %   the real serial array X into DIRNAME/FILENAME.
@@ -19,8 +20,9 @@ function FileWrite(dirname,x,varargin)
 error(nargchk(2, 3, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 assert(isfloat(x), 'data must be float')
-assert(~isdistributed(x), 'data must not be distributed')
+%assert(~isdistributed(x), 'data must not be distributed')
 
+%{
 % Setup variables
 header = DataContainer.io.basicHeaderStructFromX(x);
 f_precision = header.precision;
@@ -40,18 +42,32 @@ end;
 DataContainer.io.verifyHeaderStructWithX(header,x);
 
 % Make Directory
-if isdir(dirname); rmdir(dirname,'s'); end;
-status = mkdir(dirname);
-assert(status,'Fatal error while creating directory %s',dirname);
+% if isdir(dirname); rmdir(dirname,'s'); end;
+% status = mkdir(dirname);
+% assert(status,'Fatal error while creating directory %s',dirname);
+% At this time, the directory must already exist. 
+%}
+
+% Set up the Seisio object
+import beta.javaseis.io.Seisio.*;    
+seisio = beta.javaseis.io.Seisio( dirname );
+seisio.open('rw');
+
+% Get number of dimensions and set position accordingly
+dimensions = seisio.getGridDefinition.getNumDimensions();
+    
+position = zeros(dimensions,1);
 
 % Write file
-DataContainer.io.memmap.serial.DataAlloc(dirname,'real',size(x),f_precision);
-DataContainer.io.memmap.serial.DataWrite(dirname,'real',real(x),f_precision);
-if ~isreal(x)
-    DataContainer.io.memmap.serial.DataAlloc(dirname,'imag',size(x),f_precision);
-    DataContainer.io.memmap.serial.DataWrite(dirname,'imag',imag(x),f_precision);
+for i = 1:size(x,3)
+    position(dimensions)=i-1;
+    data = x(:,:,i);
+    data=data';
+    seisio.setTraceDataArray(data);
+    seisio.setPosition(position);
+    seisio.writeFrame(size(data,1));% writes one 2D "Frame"
 end
-% Write header
-DataContainer.io.memmap.serial.HeaderWrite(dirname,header);
+
+    seisio.close();
 
 end

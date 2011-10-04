@@ -1,6 +1,8 @@
 function [x header] = FileReadLeftSlice(dirname,slice,varargin)
 %FILEREADLEFTSLICE  Read serial left slice data from binary file
 %
+% Edited with JavaSeis by Trisha
+%
 %   [X, HEADER] = FileReadLeftSlice(DIRNAME,SLICE,X_PRECISION) reads
 %   the serial left slice from file DIRNAME/FILENAME.
 %
@@ -24,15 +26,28 @@ if nargin>2
     x_precision = varargin{1};
 end;
 
+% Set up the Seisio object
+import beta.javaseis.io.Seisio.*;    
+seisio = beta.javaseis.io.Seisio( dirname );
+seisio.open('r');
+
 % Read header
-header = DataContainer.io.memmap.serial.HeaderRead(dirname);
+%header = DataContainer.io.memmap.serial.HeaderRead(dirname);
+% header = seisio.readFrameHeaders(); % returns number of traces in the
+% frame, or zero on end-of-file. 
+
+% Get number of dimensions and set position accordingly
+dimensions = seisio.getGridDefinition.getNumDimensions();
+assert(isequal(dimensions,2)|isequal(dimensions,3)|isequal(dimensions,4)|...
+    isequal(dimensions,5), 'Data in js file must have dimensions 2<=n<=5.')
+position = zeros(1,dimensions);
+position(dimensions-length(slice)+1:dimensions) = slice;
+
 % Read file
-x=DataContainer.io.memmap.serial.DataReadLeftSlice(dirname,'real',...
-    header.size,slice,header.precision,x_precision);
-if header.complex
-    dummy=DataContainer.io.memmap.serial.DataReadLeftSlice(dirname,'imag',...
-        header.size,slice,header.precision,x_precision);
-    x=complex(x,dummy);
-end
- 
+
+seisio.readFrame(position); % reads one 2D "Frame", from N-dimensional dataset 
+% this is a problem because we might want to read some N-n dimensions, not
+% nec. 2d...
+x = seisio.getTraceDataArray()';
+
 end
