@@ -5,3 +5,6 @@ doc/html
 demos/html
 *.mex*
 *.orig
+*.mat
+*.tmp
+Job*

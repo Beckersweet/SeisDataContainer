@@ -60,6 +60,7 @@ function out = pspotcontests(varargin)
 %   Steven L. Eddins
 %   Copyright 2009 The MathWorks, Inc.
 
+pSPOT.utils.disableUselessWarnings(1);
 % Make sure that xUnit is on the path.
 if exist('TestSuite','file')
    % Relax. Found it.
@@ -72,7 +73,7 @@ else
 end
       
 if nargin < 1
-    suite = TestSuite.fromName(fullfile(DataContainer.path,'tests','pSpotoContests'));
+    suite = TestSuite.fromName(fullfile(DataContainer.path,'tests','pSpotoConTests'));
 else
     name_list = getInputNames(varargin{:});
     if numel(name_list) == 1

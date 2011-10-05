@@ -121,13 +121,12 @@ y = complex(y,1);
 x(:,:,1) = y(:,1:3,1);
 x(:,:,2) = y(:,1:3,2);
 x(:,:,3) = y(:,1:3,3);
-assertElementsAlmostEqual(y.norm(0),norm(vec(x),0));
-assertElementsAlmostEqual(y.norm(1),norm(vec(x),1));
-assertElementsAlmostEqual(y.norm(2),norm(vec(x),2));
-assertElementsAlmostEqual(y.norm(inf),norm(vec(x),inf));
-assertElementsAlmostEqual(y.norm(-inf),norm(vec(x),-inf));
-assertElementsAlmostEqual(y.norm('fro'),norm(vec(x),'fro'));
-clear
+assertElementsAlmostEqual(y.norm(0),norm(x(:),0));
+assertElementsAlmostEqual(y.norm(1),norm(x(:),1));
+assertElementsAlmostEqual(y.norm(2),norm(x(:),2));
+assertElementsAlmostEqual(y.norm(inf),norm(x(:),inf));
+assertElementsAlmostEqual(y.norm(-inf),norm(x(:),-inf));
+assertElementsAlmostEqual(y.norm('fro'),norm(x(:),'fro'));
 end % norm
 
 function test_oMatCon_ones
