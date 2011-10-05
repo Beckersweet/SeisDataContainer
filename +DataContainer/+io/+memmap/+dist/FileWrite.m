@@ -13,8 +13,8 @@ function FileWrite(dirname,x,distribute,varargin)
 %                    defaults to type of x
 %                    Supported precisions: 'double', 'single'
 %   HEADER_STRUCT  - An optional header struct as created
-%                    by DataContainer.io.basicHeaderStructFromX
-%                    or DataContainer.io.basicHeaderStruct
+%                    by DataContainer.basicHeaderStructFromX
+%                    or DataContainer.basicHeaderStruct
 %
 %   Warning: If the specified dirname already exist,
 %            it will be overwritten.  
@@ -29,8 +29,8 @@ status = mkdir(dirname);
 assert(status,'Fatal error while creating directory %s',dirname);
 
 % Setup variables
-header = DataContainer.io.basicHeaderStructFromX(x);
-header = DataContainer.io.addDistHeaderStructFromX(header,x);
+header = DataContainer.basicHeaderStructFromX(x);
+header = DataContainer.addDistHeaderStructFromX(header,x);
 if distribute
     header=DataContainer.io.addDistFileHeaderStruct(header);
 end

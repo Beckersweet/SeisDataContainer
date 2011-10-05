@@ -20,7 +20,7 @@ disp('*****');
 disp('DataContainer.io.memmap.serial.File* single complex');
 td=DataContainer.io.makeDir();
 orig=complex(imat,1);
-hdr=DataContainer.io.basicHeaderStructFromX(orig);
+hdr=DataContainer.basicHeaderStructFromX(orig);
 hdr.precision='single';
 DataContainer.io.memmap.serial.FileWrite(td,orig,hdr);
 new=DataContainer.io.memmap.serial.FileRead(td,'single');
@@ -33,7 +33,7 @@ disp('*****');
 disp('DataContainer.io.memmap.serial.File* double complex');
 td=DataContainer.io.makeDir();
 orig=complex(imat,1);
-DataContainer.io.memmap.serial.FileWrite(td,orig,DataContainer.io.basicHeaderStructFromX(orig));
+DataContainer.io.memmap.serial.FileWrite(td,orig,DataContainer.basicHeaderStructFromX(orig));
 new=DataContainer.io.memmap.serial.FileRead(td,'double');
 assert(isequal(orig,new))
 ls('-l',td)
@@ -67,7 +67,7 @@ DataContainer.io.memmap.serial.FileWrite(td,imat);
 slice=DataContainer.io.memmap.serial.FileReadLeftSlice(td,[]);
 assert(isequal(imat,slice))
 nmat = imat+1;
-DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.io.basicHeaderStructFromX(nmat));
+DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.basicHeaderStructFromX(nmat));
 DataContainer.io.memmap.serial.FileWriteLeftSlice(td,nmat,[]);
 smat = DataContainer.io.memmap.serial.FileRead(td);
 assert(isequal(smat,nmat))
@@ -85,7 +85,7 @@ for k=1:K
     assert(isequal(orig,slice))
 end
 nmat = imat+1;
-DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.io.basicHeaderStructFromX(nmat));
+DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.basicHeaderStructFromX(nmat));
 for k=1:K
     DataContainer.io.memmap.serial.FileWriteLeftSlice(td,nmat(:,:,k),[k]);
 end
@@ -107,7 +107,7 @@ for k=1:K
     end
 end
 nmat = imat+1;
-DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.io.basicHeaderStructFromX(nmat));
+DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.basicHeaderStructFromX(nmat));
 for k=1:K
     for j=1:J
     DataContainer.io.memmap.serial.FileWriteLeftSlice(td,nmat(:,j,k),[j,k]);
@@ -129,7 +129,7 @@ for k=1:K-2
     assert(isequal(orig,slice))
 end
 nmat = imat+1;
-DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.io.basicHeaderStructFromX(nmat));
+DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.basicHeaderStructFromX(nmat));
 DataContainer.io.memmap.serial.FileWriteLeftChunk(td,nmat(:,:,1:2),[1 2],[]);
 DataContainer.io.memmap.serial.FileWriteLeftChunk(td,nmat(:,:,3:K),[3 K],[]);
 smat = DataContainer.io.memmap.serial.FileRead(td);
@@ -150,7 +150,7 @@ for k=1:K
     end
 end
 nmat = imat+1;
-DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.io.basicHeaderStructFromX(nmat));
+DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.basicHeaderStructFromX(nmat));
 for k=1:K
     DataContainer.io.memmap.serial.FileWriteLeftChunk(td,nmat(:,1:2,k),[1 2],[k]);
     DataContainer.io.memmap.serial.FileWriteLeftChunk(td,nmat(:,3:J,k),[3 J],[k]);

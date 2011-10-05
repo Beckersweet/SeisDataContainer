@@ -25,7 +25,7 @@ function test_HeaderReadWrite
     x = randi(100)+1;
     y = randi(50);
     n1 = randi(x,[1,y]);   
-    n1 = DataContainer.io.basicHeaderStructFromX(n1);
+    n1 = DataContainer.basicHeaderStructFromX(n1);
     DataContainer.io.memmap.HeaderWrite('test',n1);
     n2 = DataContainer.io.memmap.HeaderRead('test');
     delete test.xml;
