@@ -13,8 +13,8 @@ function FileWrite(dirname,x,varargin)
 %                    defaults to type of x
 %                    Supported precisions: 'double', 'single'
 %   HEADER_STRUCT  - An optional header struct as created
-%                    by DataContainer.io.basicHeaderStructFromX
-%                    or DataContainer.io.basicHeaderStruct
+%                    by DataContainer.basicHeaderStructFromX
+%                    or DataContainer.basicHeaderStruct
 %
 %   Warning: If the specified dirname exists, it will be removed.
 error(nargchk(2, 3, nargin, 'struct'));
@@ -24,7 +24,7 @@ assert(isfloat(x), 'data must be float')
 
 %{
 % Setup variables
-header = DataContainer.io.basicHeaderStructFromX(x);
+header = DataContainer.basicHeaderStructFromX(x);
 f_precision = header.precision;
 
 % Preprocess input arguments
