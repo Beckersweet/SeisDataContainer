@@ -27,7 +27,7 @@ function x = zeros(varargin)
     end
     
     td = DataContainer.io.makeDir();
-    header = DataContainer.io.basicHeaderStruct...
+    header = DataContainer.basicHeaderStruct...
         (xsize,xprecision,0);
     DataContainer.io.memmap.serial.FileAlloc(td,header);
     x = oMatCon.load(td,'precision',xprecision);
