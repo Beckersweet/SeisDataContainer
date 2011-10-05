@@ -22,9 +22,9 @@ fprintf('tdo:%s\n',tdo);
 
 disp('distributed header')
 tic
-hdrb=DataContainer.io.basicHeaderStructFromX(imat3);
-hdrx=DataContainer.io.addDistHeaderStructFromX(hdrb,imat3);
-hdrd=DataContainer.io.addDistHeaderStruct(hdrb,hdrx.distribution.dim,[]);
+hdrb=DataContainer.basicHeaderStructFromX(imat3);
+hdrx=DataContainer.addDistHeaderStructFromX(hdrb,imat3);
+hdrd=DataContainer.addDistHeaderStruct(hdrb,hdrx.distribution.dim,[]);
 assert(isequal(hdrx,hdrd),'distributions do not match')
 toc
 
@@ -49,7 +49,7 @@ DataContainer.io.memmap.serial.FileDelete(td);
 
 disp('global alloc')
 tic
-hdrs=DataContainer.io.basicHeaderStructFromX(imat3);
+hdrs=DataContainer.basicHeaderStructFromX(imat3);
 DataContainer.io.memmap.serial.FileAlloc(td,hdrs);
 toc
 disp('global write slice')
@@ -103,8 +103,8 @@ DataContainer.io.memmap.dist.FileDelete(td);
 
 disp('distributed alloc')
 tic
-hdrs=DataContainer.io.basicHeaderStructFromX(imat3);
-hdrs=DataContainer.io.addDistHeaderStruct(hdrs,hdrs.dims-1,[]);
+hdrs=DataContainer.basicHeaderStructFromX(imat3);
+hdrs=DataContainer.addDistHeaderStruct(hdrs,hdrs.dims-1,[]);
 hdrs=DataContainer.io.addDistFileHeaderStruct(hdrs);
 DataContainer.io.memmap.dist.FileAlloc(td,hdrs);
 toc

@@ -5,9 +5,9 @@ end
 function test_distributed_basicHeaderStruct_real
 %%
     imat=distributed.rand(2,2,4);
-    hdrb=DataContainer.io.basicHeaderStructFromX(imat);
-    hdrx=DataContainer.io.addDistHeaderStructFromX(hdrb,imat);
-    hdrd=DataContainer.io.addDistHeaderStruct(hdrb,hdrx.distribution.dim,hdrx.distribution.partition);
+    hdrb=DataContainer.basicHeaderStructFromX(imat);
+    hdrx=DataContainer.addDistHeaderStructFromX(hdrb,imat);
+    hdrd=DataContainer.addDistHeaderStruct(hdrb,hdrx.distribution.dim,hdrx.distribution.partition);
     assert(isequal(hdrx,hdrd),'distributions do not match')
 end
 
@@ -15,9 +15,9 @@ function test_distributed_basicHeaderStruct_complex
 %%
     imat=distributed.rand(2,2,4);
     imat=complex(imat,imat);
-    hdrb=DataContainer.io.basicHeaderStructFromX(imat);
-    hdrx=DataContainer.io.addDistHeaderStructFromX(hdrb,imat);
-    hdrd=DataContainer.io.addDistHeaderStruct(hdrb,hdrx.distribution.dim,hdrx.distribution.partition);
+    hdrb=DataContainer.basicHeaderStructFromX(imat);
+    hdrx=DataContainer.addDistHeaderStructFromX(hdrb,imat);
+    hdrd=DataContainer.addDistHeaderStruct(hdrb,hdrx.distribution.dim,hdrx.distribution.partition);
     assert(isequal(hdrx,hdrd),'distributions do not match')
 end
 
