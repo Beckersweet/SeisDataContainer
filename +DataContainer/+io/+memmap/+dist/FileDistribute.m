@@ -26,7 +26,7 @@ status = mkdir(dirout);
 assert(status,'Fatal error while creating directory %s',dirout);
 % update headers
 partition = DataContainer.utils.defaultDistribution(hdrin.size(distdim));
-hdrin = DataContainer.io.addDistHeaderStruct(hdrin,distdim,partition);
+hdrin = DataContainer.addDistHeaderStruct(hdrin,distdim,partition);
 hdrout = DataContainer.io.addDistFileHeaderStruct(hdrin);
 sldims = hdrin.size(distdim+1:end);
 % Allocate file

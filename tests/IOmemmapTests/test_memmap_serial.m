@@ -5,8 +5,8 @@ end
 function test_serial_basicHeaderStruct
 %%
     imat=rand(13,11,9);
-    hdrx=DataContainer.io.basicHeaderStructFromX(imat);
-    hdrb=DataContainer.io.basicHeaderStruct(hdrx.size,hdrx.precision,hdrx.complex);
+    hdrx=DataContainer.basicHeaderStructFromX(imat);
+    hdrb=DataContainer.basicHeaderStruct(hdrx.size,hdrx.precision,hdrx.complex);
     assert(isequal(hdrx,hdrb))
 end
 
@@ -15,7 +15,7 @@ function test_serial_file_single_complex
     imat=rand(13,11,9);
     td=DataContainer.io.makeDir();
     orig=complex(imat,1);
-    hdr=DataContainer.io.basicHeaderStructFromX(orig);
+    hdr=DataContainer.basicHeaderStructFromX(orig);
     hdr.precision='single';
     DataContainer.io.memmap.serial.FileWrite(td,orig,hdr);
     new=DataContainer.io.memmap.serial.FileRead(td,'single');
@@ -29,7 +29,7 @@ function test_serial_file_double_complex
     imat=rand(13,11,9);
     td=DataContainer.io.makeDir();
     orig=complex(imat,1);
-    DataContainer.io.memmap.serial.FileWrite(td,orig,DataContainer.io.basicHeaderStructFromX(orig));
+    DataContainer.io.memmap.serial.FileWrite(td,orig,DataContainer.basicHeaderStructFromX(orig));
     new=DataContainer.io.memmap.serial.FileRead(td,'double');
     assert(isequal(orig,new))
     DataContainer.io.memmap.serial.FileDelete(td);
@@ -63,13 +63,13 @@ function test_serial_file_LeftSlice_lastNone_single_complex
     imat=rand(13,11,9);
     td=DataContainer.io.makeDir();
     orig=complex(imat,1);
-    hdr=DataContainer.io.basicHeaderStructFromX(orig);
+    hdr=DataContainer.basicHeaderStructFromX(orig);
     hdr.precision='single';
     DataContainer.io.memmap.serial.FileWrite(td,orig,hdr);
     slice=DataContainer.io.memmap.serial.FileReadLeftSlice(td,[]);
     assert(isequal(single(orig),slice))
     nmat = imat+1;
-    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.io.basicHeaderStructFromX(nmat));
+    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.basicHeaderStructFromX(nmat));
     DataContainer.io.memmap.serial.FileWriteLeftSlice(td,nmat,[]);
     smat = DataContainer.io.memmap.serial.FileRead(td,'single');
     assert(isequal(smat,single(nmat)))
@@ -82,11 +82,11 @@ function test_serial_file_LeftSlice_lastNone_double_complex
     imat=rand(13,11,9);
     td=DataContainer.io.makeDir();
     orig=complex(imat,1);
-    DataContainer.io.memmap.serial.FileWrite(td,orig,DataContainer.io.basicHeaderStructFromX(orig));
+    DataContainer.io.memmap.serial.FileWrite(td,orig,DataContainer.basicHeaderStructFromX(orig));
     slice=DataContainer.io.memmap.serial.FileReadLeftSlice(td,[]);
     assert(isequal(orig,slice))
     nmat = imat+1;
-    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.io.basicHeaderStructFromX(nmat));
+    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.basicHeaderStructFromX(nmat));
     DataContainer.io.memmap.serial.FileWriteLeftSlice(td,nmat,[]);
     smat = DataContainer.io.memmap.serial.FileRead(td);
     assert(isequal(smat,nmat))
@@ -98,13 +98,13 @@ function test_serial_file_LeftSlice_lastNone_single_real
 %%
     imat=rand(13,11,9);
     td=DataContainer.io.makeDir();
-    hdr=DataContainer.io.basicHeaderStructFromX(imat);
+    hdr=DataContainer.basicHeaderStructFromX(imat);
     hdr.precision='single';
     DataContainer.io.memmap.serial.FileWrite(td,imat,hdr);
     slice=DataContainer.io.memmap.serial.FileReadLeftSlice(td,[]);
     assert(isequal(single(imat),slice))
     nmat = imat+1;
-    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.io.basicHeaderStructFromX(nmat));
+    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.basicHeaderStructFromX(nmat));
     DataContainer.io.memmap.serial.FileWriteLeftSlice(td,nmat,[]);
     smat = DataContainer.io.memmap.serial.FileRead(td,'single');
     assert(isequal(smat,single(nmat)))
@@ -120,7 +120,7 @@ function test_serial_file_LeftSlice_lastNone_double_real
     slice=DataContainer.io.memmap.serial.FileReadLeftSlice(td,[]);
     assert(isequal(imat,slice))
     nmat = imat+1;
-    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.io.basicHeaderStructFromX(nmat));
+    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.basicHeaderStructFromX(nmat));
     DataContainer.io.memmap.serial.FileWriteLeftSlice(td,nmat,[]);
     smat = DataContainer.io.memmap.serial.FileRead(td);
     assert(isequal(smat,nmat))
@@ -134,7 +134,7 @@ function test_serial_file_LeftSlice_lastOne_single_complex
     K=9;
     td=DataContainer.io.makeDir();
     origc=complex(imat,1);
-    hdr=DataContainer.io.basicHeaderStructFromX(origc);
+    hdr=DataContainer.basicHeaderStructFromX(origc);
     hdr.precision='single';
     DataContainer.io.memmap.serial.FileWrite(td,origc,hdr);
     for k=1:K
@@ -143,7 +143,7 @@ function test_serial_file_LeftSlice_lastOne_single_complex
         assert(isequal(single(orig),slice))
     end
     nmat = imat+1;
-    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.io.basicHeaderStructFromX(nmat));
+    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.basicHeaderStructFromX(nmat));
     for k=1:K
         DataContainer.io.memmap.serial.FileWriteLeftSlice(td,nmat(:,:,k),[k]);
     end
@@ -160,14 +160,14 @@ function test_serial_file_LeftSlice_lastOne_double_complex
     K=9;
     td=DataContainer.io.makeDir();
     origc=complex(imat,1);
-    DataContainer.io.memmap.serial.FileWrite(td,origc,DataContainer.io.basicHeaderStructFromX(origc));
+    DataContainer.io.memmap.serial.FileWrite(td,origc,DataContainer.basicHeaderStructFromX(origc));
     for k=1:K
         slice=DataContainer.io.memmap.serial.FileReadLeftSlice(td,[k]);
         orig = complex(imat(:,:,k),1);
         assert(isequal(orig,slice))
     end
     nmat = imat+1;
-    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.io.basicHeaderStructFromX(nmat));
+    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.basicHeaderStructFromX(nmat));
     for k=1:K
         DataContainer.io.memmap.serial.FileWriteLeftSlice(td,nmat(:,:,k),[k]);
     end
@@ -182,7 +182,7 @@ function test_serial_file_LeftSlice_lastOne_single_real
     imat=rand(13,11,9);
     K=9;
     td=DataContainer.io.makeDir();
-    hdr=DataContainer.io.basicHeaderStructFromX(imat);
+    hdr=DataContainer.basicHeaderStructFromX(imat);
     hdr.precision='single';
     DataContainer.io.memmap.serial.FileWrite(td,imat,hdr);
     for k=1:K
@@ -191,7 +191,7 @@ function test_serial_file_LeftSlice_lastOne_single_real
         assert(isequal(single(orig),slice))
     end
     nmat = imat+1;
-    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.io.basicHeaderStructFromX(nmat));
+    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.basicHeaderStructFromX(nmat));
     for k=1:K
         DataContainer.io.memmap.serial.FileWriteLeftSlice(td,nmat(:,:,k),[k]);
     end
@@ -213,7 +213,7 @@ function test_serial_file_LeftSlice_lastOne_double_real
         assert(isequal(orig,slice))
     end
     nmat = imat+1;
-    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.io.basicHeaderStructFromX(nmat));
+    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.basicHeaderStructFromX(nmat));
     for k=1:K
         DataContainer.io.memmap.serial.FileWriteLeftSlice(td,nmat(:,:,k),[k]);
     end
@@ -230,7 +230,7 @@ function test_serial_file_LeftSlice_lastTwo_single_complex
     K=9;
     td=DataContainer.io.makeDir();
     origc=complex(imat,1);
-    hdr=DataContainer.io.basicHeaderStructFromX(origc);
+    hdr=DataContainer.basicHeaderStructFromX(origc);
     hdr.precision='single';
     DataContainer.io.memmap.serial.FileWrite(td,origc,hdr);
     for k=1:K
@@ -241,7 +241,7 @@ function test_serial_file_LeftSlice_lastTwo_single_complex
         end
     end
     nmat = imat+1;
-    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.io.basicHeaderStructFromX(nmat));
+    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.basicHeaderStructFromX(nmat));
     for k=1:K
         for j=1:J
         DataContainer.io.memmap.serial.FileWriteLeftSlice(td,nmat(:,j,k),[j,k]);
@@ -260,7 +260,7 @@ function test_serial_file_LeftSlice_lastTwo_double_complex
     K=9;
     td=DataContainer.io.makeDir();
     origc=complex(imat,1);
-    DataContainer.io.memmap.serial.FileWrite(td,origc,DataContainer.io.basicHeaderStructFromX(origc));
+    DataContainer.io.memmap.serial.FileWrite(td,origc,DataContainer.basicHeaderStructFromX(origc));
     for k=1:K
         for j=1:J
         slice=DataContainer.io.memmap.serial.FileReadLeftSlice(td,[j,k]);
@@ -269,7 +269,7 @@ function test_serial_file_LeftSlice_lastTwo_double_complex
         end
     end
     nmat = imat+1;
-    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.io.basicHeaderStructFromX(nmat));
+    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.basicHeaderStructFromX(nmat));
     for k=1:K
         for j=1:J
         DataContainer.io.memmap.serial.FileWriteLeftSlice(td,nmat(:,j,k),[j,k]);
@@ -287,7 +287,7 @@ function test_serial_file_LeftSlice_lastTwo_single_real
     J=11;
     K=9;
     td=DataContainer.io.makeDir();
-    hdr=DataContainer.io.basicHeaderStructFromX(imat);
+    hdr=DataContainer.basicHeaderStructFromX(imat);
     hdr.precision='single';
     DataContainer.io.memmap.serial.FileWrite(td,imat,hdr);
     for k=1:K
@@ -298,7 +298,7 @@ function test_serial_file_LeftSlice_lastTwo_single_real
         end
     end
     nmat = imat+1;
-    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.io.basicHeaderStructFromX(nmat));
+    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.basicHeaderStructFromX(nmat));
     for k=1:K
         for j=1:J
         DataContainer.io.memmap.serial.FileWriteLeftSlice(td,nmat(:,j,k),[j,k]);
@@ -325,7 +325,7 @@ function test_serial_file_LeftSlice_lastTwo_double_real
         end
     end
     nmat = imat+1;
-    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.io.basicHeaderStructFromX(nmat));
+    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.basicHeaderStructFromX(nmat));
     for k=1:K
         for j=1:J
         DataContainer.io.memmap.serial.FileWriteLeftSlice(td,nmat(:,j,k),[j,k]);
@@ -343,7 +343,7 @@ function test_serial_file_LeftChunk_lastNone_single_complex
     K=9;
     td=DataContainer.io.makeDir();
     origc=complex(imat,1);
-    hdr=DataContainer.io.basicHeaderStructFromX(origc);
+    hdr=DataContainer.basicHeaderStructFromX(origc);
     hdr.precision='single';
     DataContainer.io.memmap.serial.FileWrite(td,origc,hdr);
     for k=1:K-2
@@ -352,7 +352,7 @@ function test_serial_file_LeftChunk_lastNone_single_complex
         assert(isequal(single(orig),slice))
     end
     nmat = imat+1;
-    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.io.basicHeaderStructFromX(nmat));
+    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.basicHeaderStructFromX(nmat));
     DataContainer.io.memmap.serial.FileWriteLeftChunk(td,nmat(:,:,1:2),[1 2],[]);
     DataContainer.io.memmap.serial.FileWriteLeftChunk(td,nmat(:,:,3:K),[3 K],[]);
     smat = DataContainer.io.memmap.serial.FileRead(td,'single');
@@ -367,14 +367,14 @@ function test_serial_file_LeftChunk_lastNone_double_complex
     K=9;
     td=DataContainer.io.makeDir();
     origc=complex(imat,1);
-    DataContainer.io.memmap.serial.FileWrite(td,origc,DataContainer.io.basicHeaderStructFromX(origc));
+    DataContainer.io.memmap.serial.FileWrite(td,origc,DataContainer.basicHeaderStructFromX(origc));
     for k=1:K-2
         slice=DataContainer.io.memmap.serial.FileReadLeftChunk(td,[k k+2],[]);
         orig=complex(imat(:,:,k:k+2),1);
         assert(isequal(orig,slice))
     end
     nmat = imat+1;
-    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.io.basicHeaderStructFromX(nmat));
+    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.basicHeaderStructFromX(nmat));
     DataContainer.io.memmap.serial.FileWriteLeftChunk(td,nmat(:,:,1:2),[1 2],[]);
     DataContainer.io.memmap.serial.FileWriteLeftChunk(td,nmat(:,:,3:K),[3 K],[]);
     smat = DataContainer.io.memmap.serial.FileRead(td);
@@ -388,7 +388,7 @@ function test_serial_file_LeftChunk_lastNone_single_real
     imat=rand(13,11,9);
     K=9;
     td=DataContainer.io.makeDir();
-    hdr=DataContainer.io.basicHeaderStructFromX(imat);
+    hdr=DataContainer.basicHeaderStructFromX(imat);
     hdr.precision='single';
     DataContainer.io.memmap.serial.FileWrite(td,imat,hdr);
     for k=1:K-2
@@ -397,7 +397,7 @@ function test_serial_file_LeftChunk_lastNone_single_real
         assert(isequal(single(orig),slice))
     end
     nmat = imat+1;
-    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.io.basicHeaderStructFromX(nmat));
+    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.basicHeaderStructFromX(nmat));
     DataContainer.io.memmap.serial.FileWriteLeftChunk(td,nmat(:,:,1:2),[1 2],[]);
     DataContainer.io.memmap.serial.FileWriteLeftChunk(td,nmat(:,:,3:K),[3 K],[]);
     smat = DataContainer.io.memmap.serial.FileRead(td,'single');
@@ -418,7 +418,7 @@ function test_serial_file_LeftChunk_lastNone_double_real
         assert(isequal(orig,slice))
     end
     nmat = imat+1;
-    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.io.basicHeaderStructFromX(nmat));
+    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.basicHeaderStructFromX(nmat));
     DataContainer.io.memmap.serial.FileWriteLeftChunk(td,nmat(:,:,1:2),[1 2],[]);
     DataContainer.io.memmap.serial.FileWriteLeftChunk(td,nmat(:,:,3:K),[3 K],[]);
     smat = DataContainer.io.memmap.serial.FileRead(td);
@@ -434,7 +434,7 @@ function test_serial_file_LeftChunk_lastOne_single_complex
     K=9;
     td=DataContainer.io.makeDir();
     origc=complex(imat,1);
-    hdr=DataContainer.io.basicHeaderStructFromX(origc);
+    hdr=DataContainer.basicHeaderStructFromX(origc);
     hdr.precision='single';
     DataContainer.io.memmap.serial.FileWrite(td,origc,hdr);
     for k=1:K
@@ -445,7 +445,7 @@ function test_serial_file_LeftChunk_lastOne_single_complex
         end
     end
     nmat = imat+1;
-    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.io.basicHeaderStructFromX(nmat));
+    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.basicHeaderStructFromX(nmat));
     for k=1:K
         DataContainer.io.memmap.serial.FileWriteLeftChunk(td,nmat(:,1:2,k),[1 2],[k]);
         DataContainer.io.memmap.serial.FileWriteLeftChunk(td,nmat(:,3:J,k),[3 J],[k]);
@@ -463,7 +463,7 @@ function test_serial_file_LeftChunk_lastOne_double_complex
     K=9;
     td=DataContainer.io.makeDir();
     origc=complex(imat,1);
-    DataContainer.io.memmap.serial.FileWrite(td,origc,DataContainer.io.basicHeaderStructFromX(origc));
+    DataContainer.io.memmap.serial.FileWrite(td,origc,DataContainer.basicHeaderStructFromX(origc));
     for k=1:K
         for j=1:J-2
             slice=DataContainer.io.memmap.serial.FileReadLeftChunk(td,[j j+2],[k]);
@@ -472,7 +472,7 @@ function test_serial_file_LeftChunk_lastOne_double_complex
         end
     end
     nmat = imat+1;
-    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.io.basicHeaderStructFromX(nmat));
+    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.basicHeaderStructFromX(nmat));
     for k=1:K
         DataContainer.io.memmap.serial.FileWriteLeftChunk(td,nmat(:,1:2,k),[1 2],[k]);
         DataContainer.io.memmap.serial.FileWriteLeftChunk(td,nmat(:,3:J,k),[3 J],[k]);
@@ -489,7 +489,7 @@ function test_serial_file_LeftChunk_lastOne_single_real
     J=11;
     K=9;
     td=DataContainer.io.makeDir();
-    hdr=DataContainer.io.basicHeaderStructFromX(imat);
+    hdr=DataContainer.basicHeaderStructFromX(imat);
     hdr.precision='single';
     DataContainer.io.memmap.serial.FileWrite(td,imat,hdr);
     for k=1:K
@@ -500,7 +500,7 @@ function test_serial_file_LeftChunk_lastOne_single_real
         end
     end
     nmat = imat+1;
-    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.io.basicHeaderStructFromX(nmat));
+    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.basicHeaderStructFromX(nmat));
     for k=1:K
         DataContainer.io.memmap.serial.FileWriteLeftChunk(td,nmat(:,1:2,k),[1 2],[k]);
         DataContainer.io.memmap.serial.FileWriteLeftChunk(td,nmat(:,3:J,k),[3 J],[k]);
@@ -526,7 +526,7 @@ function test_serial_file_LeftChunk_lastOne_double_real
         end
     end
     nmat = imat+1;
-    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.io.basicHeaderStructFromX(nmat));
+    DataContainer.io.memmap.serial.FileAlloc(td,DataContainer.basicHeaderStructFromX(nmat));
     for k=1:K
         DataContainer.io.memmap.serial.FileWriteLeftChunk(td,nmat(:,1:2,k),[1 2],[k]);
         DataContainer.io.memmap.serial.FileWriteLeftChunk(td,nmat(:,3:J,k),[3 J],[k]);
@@ -540,7 +540,7 @@ end
 function test_serial_file_Transpose_double_real
 %%
     imat=rand(13,11);
-    header=DataContainer.io.basicHeaderStructFromX(imat);
+    header=DataContainer.basicHeaderStructFromX(imat);
     in=DataContainer.io.makeDir();
     out=DataContainer.io.makeDir();
     DataContainer.io.memmap.serial.FileWrite(in,imat,header);
@@ -556,7 +556,7 @@ function test_serial_file_Transpose_double_complex
 %%
     imat=rand(13,11);
     imat=complex(imat,1);
-    header=DataContainer.io.basicHeaderStructFromX(imat);
+    header=DataContainer.basicHeaderStructFromX(imat);
     in=DataContainer.io.makeDir();
     out=DataContainer.io.makeDir();
     DataContainer.io.memmap.serial.FileWrite(in,imat,header);
@@ -571,7 +571,7 @@ end
 function test_serial_file_Transpose_single_real
 %%
     imat=rand(13,11);
-    header=DataContainer.io.basicHeaderStructFromX(imat);
+    header=DataContainer.basicHeaderStructFromX(imat);
     header.precision='single';
     in=DataContainer.io.makeDir();
     out=DataContainer.io.makeDir();
@@ -588,7 +588,7 @@ function test_serial_file_Transpose_single_complex
 %%
     imat=rand(13,11);
     imat=complex(imat,1);
-    header=DataContainer.io.basicHeaderStructFromX(imat);
+    header=DataContainer.basicHeaderStructFromX(imat);
     header.precision='single';
     in=DataContainer.io.makeDir();
     out=DataContainer.io.makeDir();
