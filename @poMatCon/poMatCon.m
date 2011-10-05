@@ -1,9 +1,9 @@
-classdef oMatCon < oCon
-    %OMATCON  Memory-mapping out-of-core data container for binaries
+classdef poMatCon < oCon
+    %POMATCON  Memory-mapping out-of-core data container for binaries
     %
-    %   oMatCon(DATA,PARAM1,VALUE1,...)
+    %   poMatCon(PATHNAME,PARAM1,VALUE1,...)
     %
-    %   pathname   - The directory name for loading a file
+    %   PATHNAME   - The directory name for loading a file
     %
     %   Optional argument is either of:
     %   OFFSET     - The offset for file
@@ -24,7 +24,7 @@ classdef oMatCon < oCon
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %   Constructor
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        function x = oMatCon(pathname,varargin) % Constructor for oMatCon
+        function x = poMatCon(pathname,varargin) % Constructor for oMatCon
             
             % Parse param-value pairs using input parser
             p = inputParser;
@@ -45,10 +45,10 @@ classdef oMatCon < oCon
                     headerIn = DataContainer.io.memmap.serial.HeaderRead(td);
                 end            
             else
-                error('Fail: Bad input for oMatCon');
+                error('Fail: Bad input for poMatCon');
             end
             % Construct and set class attributes
-            x = x@oCon('serial memmap',headerIn.dims,headerIn.complex);
+            x = x@oCon('parallel memmap',headerIn.size,headerIn.complex);
             x.exdims     = 0; % Explicit dimensions of data
             x.imdims     = 0;
             x.pathname   = td;

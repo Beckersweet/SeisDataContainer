@@ -1,7 +1,7 @@
 classdef oCon < dataContainer
-    %OUTCON  Out-of-core Data Container class
+    %OCON  Out-of-core Data Container class
     %
-    %   outCon(FILENAME,SIZE,PARAM1,VALUE1,...)
+    %   oCon(TYPE,DIMS,ISCOMPLEX)
     %
     %   Parameters:
     %   format - The precision of the data file. default 'double'
@@ -10,6 +10,7 @@ classdef oCon < dataContainer
     %   PROPERTIES
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     properties (Access = protected)
+        pathname = '';
         iscomplex; % True if data is complex
     end
     

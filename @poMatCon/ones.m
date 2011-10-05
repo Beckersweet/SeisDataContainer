@@ -1,20 +1,20 @@
 function x = ones(varargin)
-%OMATCON.ONES  Ones array.
+%POMATCON.ONES  Ones array.
 %
-%   oMatCon.ones(N) is an N-by-N matrix of zeros.
+%   poMatCon.ones(N) is an N-by-N matrix of zeros.
 %
-%   oMatCon.ones(M,N) or iCon.zeros([M,N]) is an M-by-N matrix of zeros.
+%   poMatCon.ones(M,N) or iCon.zeros([M,N]) is an M-by-N matrix of zeros.
 %
-%   oMatCon.ones(M,N,P,...) or iCon.zeros([M N P ...]) is an 
+%   poMatCon.ones(M,N,P,...) or poMatCon.zeros([M N P ...]) is an 
 %   M-by-N-by-P-by-... array of zeros.
 %
 %   oMatCon.ones(SIZE(A)) is the same size as A and all zeros.
 %
-%   oMatCon.ones(M,N,...,PRECISION) or ZEROS([M,N,...],PRECISION) is an
+%   poMatCon.randn(M,N,...,PRECISION) or ZEROS([M,N,...],PRECISION) is an
 %   M-by-N-by-... array of zeros of PRECISION type.
 %   Supported precisions are 'single' or 'double'   
 %
-%   oMatCon.ones with no arguments is the scalar 0.
+%   poMatCon.ones with no arguments is the scalar 0.
 %
 %   Note: The size inputs M, N, and P... should be nonnegative integers. 
 %   Negative integers are treated as 0.
@@ -29,6 +29,8 @@ function x = ones(varargin)
     td = DataContainer.io.makeDir();
     header = DataContainer.basicHeaderStruct...
         (xsize,xprecision,0);
+    header = DataContainer.io.addDistHeaderStruct...
+        (header,header.dims,[]);
     DataContainer.io.memmap.serial.FileOnes(td,header);
-    x = oMatCon.load(td,'precision',xprecision);
+    x = poMatCon.load(td,'precision',xprecision);
 end

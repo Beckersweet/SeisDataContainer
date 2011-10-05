@@ -604,7 +604,7 @@ end
 function test_serial_file_Norm_double_real
 %%
     imat=rand(14,12,5);
-    header=DataContainer.io.basicHeaderStructFromX(imat);
+    header=DataContainer.basicHeaderStructFromX(imat);
     in=DataContainer.io.makeDir();
     DataContainer.io.memmap.serial.FileWrite(in,imat,header);
     n = DataContainer.io.memmap.serial.FileNorm(in,[14 12 5],0,'double');
@@ -633,7 +633,7 @@ function test_serial_file_Norm_double_complex
 %%
     imat=rand(14,12,5);
     imat=complex(imat,1);
-    header=DataContainer.io.basicHeaderStructFromX(imat);
+    header=DataContainer.basicHeaderStructFromX(imat);
     in=DataContainer.io.makeDir();
     DataContainer.io.memmap.serial.FileWrite(in,imat,header);
     n = DataContainer.io.memmap.serial.FileNorm(in,[14 12 5],0,'double');
@@ -661,7 +661,7 @@ end
 function test_serial_file_Norm_single_real
 %%
     imat=rand(14,12,5);
-    header=DataContainer.io.basicHeaderStructFromX(imat);
+    header=DataContainer.basicHeaderStructFromX(imat);
     header.precision='single';
     in=DataContainer.io.makeDir();
     DataContainer.io.memmap.serial.FileWrite(in,imat,header);
@@ -691,7 +691,7 @@ function test_serial_file_Norm_single_complex
 %%
     imat=rand(14,12,5);
     imat=complex(imat,1);
-    header=DataContainer.io.basicHeaderStructFromX(imat);
+    header=DataContainer.basicHeaderStructFromX(imat);
     header.precision='single';
     in=DataContainer.io.makeDir();
     DataContainer.io.memmap.serial.FileWrite(in,imat,header);

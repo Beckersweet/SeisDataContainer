@@ -6,5 +6,5 @@ function transpose(obj,dirnameOut,sepDim)
 %   DIRNAMEOUT - The output directory
 %   SEPDIM     - Separation dimension for transpose
     DataContainer.io.memmap.serial.FileTranspose...
-        (obj.dirname,dirnameOut,sepDim);
+        (obj.pathname,dirnameOut,sepDim);
 end

@@ -16,7 +16,7 @@ assert(isvector(dimensions), 'dimensions must be a vector')
 assert(isdir(dirname),'Fatal error: input directory %s does not exist'...
     ,dirname)
 
-global SDCBufferSize;
+global SDCbufferSize;
 
 % Reading the header
 hdrin = DataContainer.io.memmap.serial.HeaderRead(dirname);
@@ -24,7 +24,7 @@ hdrin = DataContainer.io.memmap.serial.HeaderRead(dirname);
 % Set byte size
 bytesize  = DataContainer.utils.getByteSize(file_precision);
 
-maxbuffer = SDCBufferSize/bytesize;
+maxbuffer = SDCbufferSize/bytesize;
 
 if(norm == 'fro')
     norm = 2;

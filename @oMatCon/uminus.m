@@ -4,7 +4,7 @@ function y = uminus(A)
 %   -A negates the elements of A.
 
     if(isa(A,'oMatCon'))
-        A = A.dirname;
+        A = A.pathname;
     end
     td = DataContainer.io.makeDir();
     DataContainer.io.memmap.serial.FileTimes...

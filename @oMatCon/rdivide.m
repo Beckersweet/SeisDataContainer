@@ -1,9 +1,9 @@
 function y = rdivide(A,B)
     if(isa(A,'oMatCon'))
-        A = A.dirname;
+        A = A.pathname;
     end
     if(isa(B,'oMatCon'))
-        B = B.dirname;
+        B = B.pathname;
     end
     td = DataContainer.io.makeDir();
     DataContainer.io.memmap.serial.FileRdivide...

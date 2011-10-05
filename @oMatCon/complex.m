@@ -1,9 +1,9 @@
 function y = complex(a,b)    
     if(isa(a,'oMatCon'))
-        a = a.dirname;
+        a = a.pathname;
     end
     if(isa(b,'oMatCon'))
-        b = b.dirname;
+        b = b.pathname;
     end
     td = DataContainer.io.makeDir();
     DataContainer.io.memmap.serial.FileComplex...

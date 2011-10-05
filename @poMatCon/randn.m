@@ -1,20 +1,20 @@
 function x = randn(varargin)
-%OMATCON.RANDN  Ones array.
+%POMATCON.RANDN  Ones array.
 %
-%   oMatCon.randn(N) is an N-by-N matrix containing pseudorandom.
+%   poMatCon.randn(N) is an N-by-N distributed matrix containing pseudorandom.
 %
-%   oMatCon.randn(M,N) or iCon.zeros([M,N]) is an M-by-N matrix of pseudorandom.
+%   poMatCon.randn(M,N) or poMatCon.zeros([M,N]) is an M-by-N matrix of pseudorandom.
 %
-%   oMatCon.randn(M,N,P,...) or iCon.zeros([M N P ...]) is an 
+%   poMatCon.randn(M,N,P,...) or poMatCon.zeros([M N P ...]) is an 
 %   M-by-N-by-P-by-... array of pseudorandom.
 %
-%   oMatCon.randn(SIZE(A)) is the same size as A and all pseudorandom.
+%   poMatCon.randn(SIZE(A)) is the same size as A and all pseudorandom.
 %
-%   oMatCon.randn(M,N,...,PRECISION) or ZEROS([M,N,...],PRECISION) is an
+%   poMatCon.randn(M,N,...,PRECISION) or ZEROS([M,N,...],PRECISION) is an
 %   M-by-N-by-... array of zeros of PRECISION type.
 %   Supported precisions are 'single' or 'double'   
 %
-%   oMatCon.randn with no arguments is a pseudorandom scalar.
+%   poMatCon.randn with no arguments is a pseudorandom scalar.
 %
 %   Note: The size inputs M, N, and P... should be nonnegative integers. 
 %   Negative integers are treated as 0.
@@ -29,8 +29,10 @@ function x = randn(varargin)
     td = DataContainer.io.makeDir();
     header = DataContainer.basicHeaderStruct...
         (xsize,xprecision,0);
+    header = DataContainer.io.addDistHeaderStruct...
+        (header,header.dims,[]);
     DataContainer.io.memmap.serial.FileRandn(td,header);
-    x = oMatCon.load(td,'precision',xprecision);
+    x = poMatCon.load(td,'precision',xprecision);
 end
 
 
