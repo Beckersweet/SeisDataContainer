@@ -18,17 +18,26 @@ function x = zeros(varargin)
 %
 %   Note: The size inputs M, N, and P... should be nonnegative integers. 
 %   Negative integers are treated as 0.
-    if(ischar(varargin{end}))
-        xprecision = varargin{end};
-        xsize      = cell2mat(varargin(1:end-1));
+    stringIndex = DataContainer.utils.getFirstStringIndex(varargin{:});    
+    if(stringIndex)
+        xsize = cell2mat(varargin(1:stringIndex-1));
+        p = inputParser;
+        p.addParamValue('precision','double',@ischar);
+        p.KeepUnmatched = true;
+        p.parse(varargin{stringIndex:end});
+        xprecision = p.Results.precision;
     else
+        xsize = cell2mat(varargin);
         xprecision = 'double';
-        xsize      = cell2mat(varargin);
     end
     
     td = DataContainer.io.makeDir();
     header = DataContainer.basicHeaderStruct...
         (xsize,xprecision,0);
     DataContainer.io.memmap.serial.FileAlloc(td,header);
-    x = oMatCon.load(td,'precision',xprecision);
+    if(stringIndex)
+        x = oMatCon.load(td,p.Unmatched);
+    else
+        x = oMatCon.load(td);
+    end
 end
