@@ -32,7 +32,7 @@ classdef dataContainer
     % Properties
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     properties (SetAccess = protected)
-        header; % header for dataContainer
+        header = struct(); % header struct for dataContainer
         exdims = []; % Explicit dimensions of data
         imdims = {}; % Implicit dimensions of data
         perm   = {}; % Permutation of data (since original construction)
