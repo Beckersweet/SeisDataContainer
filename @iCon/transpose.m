@@ -9,5 +9,5 @@ function result = transpose(x)
 % Transpose
 result        = dataCon(transpose(double(x)));
 result        = metacopy(x,result);
-result.imdims = fliplr(x.imdims);
+result.header.size = fliplr(x.header.size);
 result.perm   = fliplr(x.perm);

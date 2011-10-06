@@ -15,10 +15,10 @@ function y = reshape(x,varargin)
 
 % Check for the collapsibility of reshape
 % Do the calculation
-imdims  = [x.imdims{:}];
+imdims  = [x.header.size{:}];
 perm    = [x.perm{:}];
-while(imdims(end) == 1) % Strip singleton dimensions
-    imdims(end) = [];
+while (imdims(end) == 1) % Strip singleton dimensions
+   imdims(end) = [];
 end
 redims          = [varargin{:}];
 j               = 1;
@@ -46,5 +46,5 @@ end
 
 % Reshape
 y        = iCon(reshape(x.data,redims));
-y.imdims = collapsed_dims;
+y.header.size = collapsed_dims;
 y.perm   = collapsed_perms;

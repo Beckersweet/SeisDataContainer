@@ -1,13 +1,13 @@
 classdef dataContainer
 %DATACONTAINER  The Data Container Mother Class
 %
-%   x = dataContainer(TYPE,EXDIMS,IMDIMS) is the abstract parent class for
+%   x = dataContainer(TYPE,EXSIZE,IMSIZE) is the abstract parent class for
 %   all data container classes.
 %
 %   TYPE   is a string that specifies the type of the data container that 
 %          is being created
-%   EXDIMS is the explicit dimensions of the contained data
-%   IMDIMS is the implicit dimensions of the contained data
+%   EXSIZE is the explicit dimensions of the contained data
+%   IMSIZE is the implicit dimensions of the contained data
 %
 %   Data Container Flags:
 %   strict If true, all elementary operations must be performed on data
@@ -26,15 +26,14 @@ classdef dataContainer
 %   norm, rdivide, subsref, end, isnumeric, le, mtimes, normest%   
 %
 %   Extra methods not found in Matlab:
-%   invvec, invpermute, setImDims, vec
+%   invvec, invpermute, setImSize, vec
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Properties
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     properties (SetAccess = protected)
         header = struct(); % header struct for dataContainer
-        exdims = []; % Explicit dimensions of data
-        imdims = {}; % Implicit dimensions of data
+        exsize = []; % Explicit dimensions of data
         perm   = {}; % Permutation of data (since original construction)
         type   = ''; % Type of data container
         strict = false; % Strict flag for elementary operations
@@ -50,15 +49,15 @@ classdef dataContainer
     methods
         
         % DataCon Constructor
-        function x = dataContainer(type,exdims,imdims)
+        function x = dataContainer(type,exsize,imsize)
             
             % Check number of arguments
             assert(nargin == 3,'There must be exactly 3 input arguments')
             
             % Set attributes
             x.type   = type;
-            x.exdims = exdims;
-            x.imdims = imdims;
+            x.exsize = exsize;
+            x.header = DataContainer.basicHeaderStruct(imsize,'double',false);
             
         end % Constructor
         
@@ -67,12 +66,12 @@ classdef dataContainer
             value = x.type;
         end
         
-        function value = get.exdims(x)
-            value = x.exdims;
+        function value = get.exsize(x)
+            value = x.exsize;
         end
         
-        function value = get.imdims(x)
-            value = x.imdims;
+        function value = getHeaderSize(x)
+            value = x.header.size;
         end
         
         function value = get.data(x)
@@ -84,12 +83,12 @@ classdef dataContainer
             x.type   = value;
         end
         
-        function x = set.exdims(x,value)
-            x.exdims = value;
+        function x = set.exsize(x,value)
+            x.exsize = value;
         end
         
-        function x = set.imdims(x,value)
-            x.imdims = value;
+        function x = setHeaderSize(x,value)
+            x.header.size = value;
         end
         
         function x = set.data(x,value)

@@ -5,11 +5,11 @@ function y = metacopy(x,y)
 %   return y.
 
 if ~isa(y,'piCon')
-    y.imdims    = x.imdims;
+    y.header.size    = x.header.size;
     y.perm      = x.perm;
     y.strict    = x.strict;
 else
-    y.imdims    = x.imdims;
+    y.header.size    = x.header.size;
     y.perm      = x.perm;
     y.strict    = x.strict;
     y.imcoddims = x.imcoddims;

@@ -15,7 +15,7 @@ function varargout = size(x,dim)
 %   http://www.cs.ubc.ca/labs/scl/spot
 
 % Setup variables
-dims = x.exdims;
+dims = x.exsize;
 
 if nargin == 0
    error('Not enough input arguments');

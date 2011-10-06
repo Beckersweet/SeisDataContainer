@@ -29,5 +29,5 @@ y = iCon(permute(x.data,perm));
 
 % Set variables
 y.perm   = toperm;
-y.exdims = tgsize;
-y.imdims = tgisize;
+y.exsize = tgsize;
+y.header.size = tgisize;

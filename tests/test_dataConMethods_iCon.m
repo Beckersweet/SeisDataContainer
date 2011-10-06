@@ -68,7 +68,7 @@ end
 
 function test_dataConMethods_iCon_setImDims(x)
 %% setImDims
-    setImDims(x,isize(x));
+    setImSize(x,isize(x));
 end
 
 function test_dataConMethods_iCon_size(x)

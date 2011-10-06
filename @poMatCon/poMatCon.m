@@ -49,7 +49,7 @@ classdef poMatCon < oCon
             end
             % Construct and set class attributes
             x = x@oCon('parallel memmap',headerIn.size,headerIn.complex);
-            x.exdims     = 0; % Explicit dimensions of data
+            x.exsize     = 0; % Explicit dimensions of data
             x.imdims     = 0;
             x.pathname   = td;
             x.header     = headerIn;

@@ -9,4 +9,4 @@ function y = extract(x)
 
 y        = x;
 y.data   = [];
-y.exdims = [0 0];
+y.exsize = [0 0];

@@ -26,7 +26,7 @@ classdef (InferiorClasses = {?distributed,?codistributed}) piCon < iCon
 %   Extra methods not found in Matlab:
 %   opMatrix                   assertElementsAlmostEqual  invpermute
 %   assertEqual                invvec                     isize
-%   setImDims                  extract                    vec
+%   setImSize                  extract                    vec
 %   inject                     codistInfo
 %
 %   Static methods:

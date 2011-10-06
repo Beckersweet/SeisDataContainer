@@ -66,7 +66,7 @@ function test_dataConMethods_piCon_invvec(x)
 end
 
 function test_dataConMethods_piCon_setImDims(x)
-    setImDims(x,isize(x));
+    setImSize(x,isize(x));
 end
 
 function test_dataConMethods_piCon_size(x)
