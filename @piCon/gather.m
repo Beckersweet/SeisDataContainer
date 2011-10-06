@@ -5,4 +5,6 @@ function y = gather(x)
 %   of the distributed data container D.
 
 y = iCon(gather(double(x)));
-y.header.size = x.header.size;
+yheader      = y.header;
+yheader.size = x.header.size;
+y.header     = yheader;
