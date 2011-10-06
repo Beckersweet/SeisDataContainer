@@ -5,6 +5,11 @@ function disp(x)
 %   expression except that empty arrays don't display.
     if(dims(x)<20)
         fprintf('oMatCon dataContainer\n\n');
+        fprintf('Variable:    ');
+        fprintf('%c',variable(x));
+        fprintf('\n');
+        fprintf('Dims:       ');
+        fprintf(' %d\n',dims(x));
         fprintf('Size:        [');
         fprintf(' %d',size(x));
         fprintf(' ]\n');
@@ -31,13 +36,8 @@ function disp(x)
         fprintf('Precision:   ');
         fprintf('%c',precision(x));
         fprintf('\n');
-        fprintf('Variable:    ');
-        fprintf('%c',variable(x));
-        fprintf('\n');
-        fprintf('Dims:       ');
-        fprintf(' %d\n',dims(x));
         fprintf('Complex:     ');
-        if(iscomplex(x))
+        if(~isreal(x))
             fprintf('Yes\n');
         else
             fprintf('No\n');
