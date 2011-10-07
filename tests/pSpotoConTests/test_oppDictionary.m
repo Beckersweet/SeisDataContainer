@@ -46,7 +46,7 @@ x2 = piCon(S1.rrandn);
 y1 = S1*x1;
 y2 = S2*gather(x1);
 z1 = S1'*x2;
-z2 = S2'*x2;
+z2 = S2'*gather(x2);
 assertElementsAlmostEqual(y1,y2);
 assertElementsAlmostEqual(z1,z2);
 end % Repeating
