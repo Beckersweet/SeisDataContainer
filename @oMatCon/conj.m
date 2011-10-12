@@ -1,18 +1,17 @@
 function y = conj(a)
     global SDCbufferSize;
     % Set byte size
-    bytesize  = DataContainer.utils.getByteSize(a.header.precision);
-    a.header.complex
-    y = oMatCon.zeros(a.dimensions);
+    bytesize  = DataContainer.utils.getByteSize(precision(a));
+    y = oMatCon.zeros(size(a));
     header = a.header;
     header.complex = 1;
     DataContainer.io.memmap.serial.FileAlloc(y.pathname,header);
-    header.size = [1 prod(a.header.size)];
+    header.size = [1 prod(size(a))];
     DataContainer.io.memmap.serial.HeaderWrite(y.pathname,header);
     
     % Set the sizes
-    dims      = [1 prod(a.dimensions)];
-    reminder  = prod(a.dimensions);
+    sizez      = [1 prod(size(a))];
+    reminder  = prod(size(a));
     maxbuffer = SDCbufferSize/bytesize;    
     rstart = 1;
     
@@ -20,10 +19,10 @@ function y = conj(a)
         buffer = min(reminder,maxbuffer);
         rend = rstart + buffer - 1;
         r1 = DataContainer.io.memmap.serial.DataReadLeftChunk...
-            (a.pathname,'real',dims,[rstart rend],[],a.header.precision,a.header.precision);
-        if a.header.complex
+            (a.pathname,'real',sizez,[rstart rend],[],precision(a),precision(a));
+        if ~isreal(a)
         dummy = DataContainer.io.memmap.serial.DataReadLeftChunk...
-            (a.pathname,'imag',dims,[rstart rend],[],a.header.precision,a.header.precision);
+            (a.pathname,'imag',sizez,[rstart rend],[],precision(a),precision(a));
             r1 = complex(r1,dummy);
         end
         DataContainer.io.memmap.serial.FileWriteLeftChunk...

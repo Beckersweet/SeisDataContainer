@@ -8,13 +8,13 @@ function FilePlus(A,B,dirnameOut)
 %    
     global SDCbufferSize;
     
-    if(isscalar(B))
+    if(isnumeric(B))
         temp = B;
         B    = A;
         A    = temp;
     end
     
-    if(isscalar(A))
+    if(isnumeric(A))
         if(~isdir(B))
             error('Fail: Wrong input type')
         end
@@ -49,7 +49,7 @@ function FilePlus(A,B,dirnameOut)
                 r2 = complex(r2,dummy);
             end
             DataContainer.io.memmap.serial.FileWriteLeftChunk...
-                (dirnameOut,plus(A,r2),[rstart rend],[]);
+                (dirnameOut,plus(A(rstart:rend),r2),[rstart rend],[]);
             reminder = reminder - buffer;
             rstart   = rend + 1;
         end

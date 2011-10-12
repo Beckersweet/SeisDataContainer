@@ -92,6 +92,20 @@ d       = x\z;
 assertElementsAlmostEqual(c,d);
 end % mldivide
 
+function test_oMatCon_mrdivide
+%% mrdivide
+n1      = 2;
+x       = randn(n1,n1) + 1i*randn(n1,n1);
+y       = oMatCon.randn(n1,2);
+y       = complex(y,2);
+z       = zeros(n1,2);
+z(:,1)  = y(:,1);
+z(:,2)  = y(:,2);
+c       = y/x;
+d       = z/x;
+assertElementsAlmostEqual(c,d);
+end % mrdivide
+
 function test_oMatCon_mtimes
 %% mtimes
 n1      = randi(10);
@@ -203,6 +217,15 @@ y = y.*t;
 x = x*t;
 assertEqual(x,y);
 end % times
+
+function test_oMatCon_transpose
+%% transpose
+y = oMatCon.randn(3,3);
+y = complex(y,1);
+y = y + 1i*randn(3,3);
+x(:,1:3) = y(:,1:3);
+assertEqual( y.', x.' );
+end % transpose
 
 function test_oMatCon_zeros
 %% zeros
