@@ -11,7 +11,9 @@ function y = reshape(x,varargin)
         end
     end
     shape = shape(1:actualEnd);
-    DataContainer.io.memmap.serial.FileReshape(x.pathname,x.pathname,shape);
-    y = oMatCon.load(x.pathname);
+    td = DataContainer.io.makeDir();
+    DataContainer.io.memmap.serial.FileCopy(x.pathname,td)
+    DataContainer.io.memmap.serial.FileReshape(td,td,shape);
+    y = oMatCon.load(td);
 end
 
