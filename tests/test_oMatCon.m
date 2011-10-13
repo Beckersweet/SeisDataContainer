@@ -7,27 +7,52 @@ function test_oMatCon_complex
 y = oMatCon.randn(3,3,3);
 y = complex(y,0);
 y = y + 1i*randn(3,3,3);
-x(:,:,1) = y(:,1:3,1);
-x(:,:,2) = y(:,1:3,2);
-x(:,:,3) = y(:,1:3,3);
+x = randn(3,3,3);
+for i=1:3
+    x(:,:,i) = y(:,1:3,i);
+end
 assertEqual(imag(x),imag(y));
 y = oMatCon.randn(3,3,3);
 z = oMatCon.randn(3,3,3);
 y = complex(y,z);
-x(:,:,1) = y(:,1:3,1);
-x(:,:,2) = y(:,1:3,2);
-x(:,:,3) = y(:,1:3,3);
+x = randn(3,3,3);
+for i=1:3
+    x(:,:,i) = y(:,1:3,i);
+end
 assertEqual(imag(x),imag(y));
 end % complex
+
+function test_oMatCon_conj
+%% conj
+y = oMatCon.randn(3,3,3);
+y = complex(y,0);
+y = y + 1i*randn(3,3,3);
+x = randn(3,3,3);
+for i=1:3
+    x(:,:,i) = y(:,1:3,i);
+end
+assertEqual(conj(x),conj(y));
+end % conj
+
+function test_oMatCon_ctranspose
+%% ctranspose
+y = oMatCon.randn(3,3);
+y = complex(y,0);
+y = y + 1i*randn(3,3);
+x = randn(3,3);
+x(:,1:3) = y(:,1:3);
+assertEqual(x',y');
+end % ctranspose
 
 function test_oMatCon_imag
 %% imag
 y = oMatCon.randn(3,3,3);
 y = complex(y,0);
 y = y + 1i*randn(3,3,3);
-x(:,:,1) = y(:,1:3,1);
-x(:,:,2) = y(:,1:3,2);
-x(:,:,3) = y(:,1:3,3);
+x = randn(3,3,3);
+for i=1:3
+    x(:,:,i) = y(:,1:3,i);
+end
 assertEqual(imag(x),imag(y));
 end % imag
 
@@ -72,62 +97,55 @@ function test_oMatCon_minus
 y = oMatCon.randn(3,3,3);
 y = complex(y,0);
 y = y + 1i*randn(3,3,3);
-x(:,:,1) = y(:,1:3,1);
-x(:,:,2) = y(:,1:3,2);
-x(:,:,3) = y(:,1:3,3);
+x = randn(3,3,3);
+for i=1:3
+    x(:,:,i) = y(:,1:3,i);
+end
 z = oMatCon.randn(3,3,3);
 z = complex(z,0);
 z = y + 1i*randn(3,3,3);
-w(:,:,1) = z(:,1:3,1);
-w(:,:,2) = z(:,1:3,2);
-w(:,:,3) = z(:,1:3,3);
+w = randn(3,3,3);
+for i=1:3
+    w(:,:,i) = z(:,1:3,i);
+end
 assertEqual(y-z,x-w);
 end % minus
 
 function test_oMatCon_mldivide
 %% mldivide
-n1      = randi(10);
-x       = randn(n1,n1) + 1i*randn(n1,n1);
-y       = oMatCon.randn(n1,2);
-y       = complex(y,0);
-y       = y + 1i*randn(n1,2);
-z       = zeros(n1,2);
-z(:,1)  = y(:,1);
-z(:,2)  = y(:,2);
-c       = x\y;
-d       = x\z;
-assertElementsAlmostEqual(c,d);
+n1       = randi(10);
+x        = randn(n1,n1) + 1i*randn(n1,n1);
+y        = oMatCon.randn(n1,2);
+y        = complex(y,0);
+y        = y + 1i*randn(n1,2);
+z        = zeros(n1,2);
+z(:,1:2) = y(:,1:2);
+assertElementsAlmostEqual(x\y,x\z);
 end % mldivide
 
 function test_oMatCon_mrdivide
 %% mrdivide
-n1      = 2;
-x       = randn(n1,n1) + 1i*randn(n1,n1);
-y       = oMatCon.randn(n1,2);
-y       = complex(y,0);
-y       = y + 1i*randn(n1,2);
-z       = zeros(n1,2);
-z(:,1)  = y(:,1);
-z(:,2)  = y(:,2);
-c       = y/x;
-d       = z/x;
-assertElementsAlmostEqual(c,d);
+n1       = 2;
+x        = randn(n1,n1) + 1i*randn(n1,n1);
+y        = oMatCon.randn(n1,2);
+y        = complex(y,0);
+y        = y + 1i*randn(n1,2);
+z        = zeros(n1,2);
+z(:,1:2) = y(:,1:2);
+assertElementsAlmostEqual(y/x,z/x);
 end % mrdivide
 
 function test_oMatCon_mtimes
 %% mtimes
-n1      = randi(10);
-n2      = randi(10);
-x       = randn(n1,n2) + 1i*randn(n1,n2);
-y       = oMatCon.randn(n2,2);
-y       = complex(y,0);
-y       = y + 1i*randn(n2,2);
-z       = zeros(n2,2);
-z(:,1)  = y(:,1);
-z(:,2)  = y(:,2);
-c       = x*y;
-d       = x*z;
-assertElementsAlmostEqual(c,d);
+n1       = randi(10);
+n2       = randi(10);
+x        = randn(n1,n2) + 1i*randn(n1,n2);
+y        = oMatCon.randn(n2,2);
+y        = complex(y,0);
+y        = y + 1i*randn(n2,2);
+z        = zeros(n2,2);
+z(:,1:2) = y(:,1:2);
+assertElementsAlmostEqual(x*y,x*z);
 end % mtimes
 
 function test_oMatCon_norm
@@ -135,9 +153,10 @@ function test_oMatCon_norm
 y = oMatCon.randn(3,3,3);
 y = complex(y,0);
 y = y + 1i*randn(3,3,3);
-x(:,:,1) = y(:,1:3,1);
-x(:,:,2) = y(:,1:3,2);
-x(:,:,3) = y(:,1:3,3);
+x = randn(3,3,3);
+for i=1:3
+    x(:,:,i) = y(:,1:3,i);
+end
 x        = x(:);
 assertElementsAlmostEqual(y.norm(0),norm(x,0));
 assertElementsAlmostEqual(y.norm(1),norm(x,1));
@@ -159,37 +178,82 @@ function test_oMatCon_plus
 y = oMatCon.randn(3,3,3);
 y = complex(y,0);
 y = y + 1i*randn(3,3,3);
-x(:,:,1) = y(:,1:3,1);
-x(:,:,2) = y(:,1:3,2);
-x(:,:,3) = y(:,1:3,3);
+x = randn(3,3,3);
+for i=1:3
+    x(:,:,i) = y(:,1:3,i);
+end
 z = oMatCon.randn(3,3,3);
 z = complex(z,0);
 z = z + 1i*randn(3,3,3);
-w(:,:,1) = z(:,1:3,1);
-w(:,:,2) = z(:,1:3,2);
-w(:,:,3) = z(:,1:3,3);
+w = randn(3,3,3);
+for i=1:3
+    w(:,:,i) = z(:,1:3,i);
+end
 assertEqual(y-z,x-w);
 end % plus
+
+function test_oMatCon_power
+%% power
+y = oMatCon.randn(3,3,3);
+y = complex(y,0);
+y = y + 1i*randn(3,3,3);
+x = randn(3,3,3);
+for i=1:3
+    x(:,:,i) = y(:,1:3,i);
+end
+t = randn(1);
+assertEqual(x.^t,y.^t);
+end % power
+
+function test_oMatCon_rdivide
+%% rdivide
+y = oMatCon.randn(3,3,3);
+y = complex(y,0);
+y = y + 1i*randn(3,3,3);
+x = randn(3,3,3);
+for i=1:3
+    x(:,:,i) = y(:,1:3,i);
+end
+t = randn(1);
+assertEqual(x/t,y./t);
+end % rdivide
 
 function test_oMatCon_real
 %% real
 y = oMatCon.randn(3,3,3);
 y = complex(y,0);
 y = y + 1i*randn(3,3,3);
-x(:,:,1) = y(:,1:3,1);
-x(:,:,2) = y(:,1:3,2);
-x(:,:,3) = y(:,1:3,3);
+x = randn(3,3,3);
+for i=1:3
+    x(:,:,i) = y(:,1:3,i);
+end
 assertEqual(real(x),real(y));
 end % real
+
+function test_oMatCon_reshape
+%% reshape
+y = oMatCon.randn(3,3,3);
+y = complex(y,0);
+y = y + 1i*randn(3,3,3);
+x = randn(3,3,3);
+for i=1:3
+    x(:,:,i) = y(:,1:3,i);
+end
+assertEqual(reshape(x,[27 1 1 1]),reshape(y,[27 1 1 1]));
+assertEqual(reshape(x,[27 1]),reshape(y,[27 1]));
+assertEqual(reshape(x,[9 3]),reshape(y,[9 3]));
+assertEqual(reshape(x,[3 3 3]),reshape(y,[3 3 3]));
+end % reshape
 
 function test_oMatCon_save_load
 %% save and load
 y = oMatCon.randn(3,3,3);
 y = complex(y,0);
 y = y + 1i*randn(3,3,3);
-x(:,:,1) = y(:,1:3,1);
-x(:,:,2) = y(:,1:3,2);
-x(:,:,3) = y(:,1:3,3);
+x = randn(3,3,3);
+for i=1:3
+    x(:,:,i) = y(:,1:3,i);
+end
 assertEqual(x,y);
 td = DataContainer.io.makeDir();
 y.save(td);
@@ -198,28 +262,15 @@ assertEqual(x,z);
 assertEqual(z,y);
 end % save and load
 
-function test_oMatCon_power
-%% power
-y = oMatCon.randn(3,3,3);
-y = complex(y,0);
-y = y + 1i*randn(3,3,3);
-x(:,:,1) = y(:,1:3,1);
-x(:,:,2) = y(:,1:3,2);
-x(:,:,3) = y(:,1:3,3);
-t = randn(1);
-y = y.^t;
-x = x.^t;
-assertEqual(x,y);
-end % power
-
 function test_oMatCon_sign
 %% sign
 y = oMatCon.randn(3,3,3);
 y = complex(y,0);
 y = y + 1i*randn(3,3,3);
-x(:,:,1) = y(:,1:3,1);
-x(:,:,2) = y(:,1:3,2);
-x(:,:,3) = y(:,1:3,3);
+x = randn(3,3,3);
+for i=1:3
+    x(:,:,i) = y(:,1:3,i);
+end
 assertEqual(sign(x),sign(y));
 end % sign
 
@@ -228,13 +279,12 @@ function test_oMatCon_times
 y = oMatCon.randn(3,3,3);
 y = complex(y,0);
 y = y + 1i*randn(3,3,3);
-x(:,:,1) = y(:,1:3,1);
-x(:,:,2) = y(:,1:3,2);
-x(:,:,3) = y(:,1:3,3);
+x = randn(3,3,3);
+for i=1:3
+    x(:,:,i) = y(:,1:3,i);
+end
 t = randn(1);
-y = y.*t;
-x = x*t;
-assertEqual(x,y);
+assertEqual(x*t,y.*t);
 end % times
 
 function test_oMatCon_transpose
@@ -245,6 +295,30 @@ y = y + 1i*randn(3,3);
 x(:,1:3) = y(:,1:3);
 assertEqual( y.', x.' );
 end % transpose
+
+function test_oMatCon_uminus
+%% uminus
+y = oMatCon.randn(3,3,3);
+y = complex(y,0);
+y = y + 1i*randn(3,3,3);
+x = randn(3,3,3);
+for i=1:3
+    x(:,:,i) = y(:,1:3,i);
+end
+assertEqual(-x,-y);
+end % uminus
+
+function test_oMatCon_vec
+%% vec
+y = oMatCon.randn(3,3,3);
+y = complex(y,0);
+y = y + 1i*randn(3,3,3);
+x = randn(3,3,3);
+for i=1:3
+    x(:,:,i) = y(:,1:3,i);
+end
+assertEqual(x(:),y(:));
+end % vec
 
 function test_oMatCon_zeros
 %% zeros
