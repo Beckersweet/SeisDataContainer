@@ -399,3 +399,174 @@ function test_distributed_FileNorm_single_complex
     assertElementsAlmostEqual(x,norm(vec(gather(imat)),'fro'))
     DataContainer.io.memmap.dist.FileDelete(td);
 end
+
+function test_distributed_FileTranspose_double_real
+%%
+    n1   = 3;
+    n2   = 4;
+    n3   = 5;
+    n4   = 8;
+    tin  = DataContainer.io.makeDir();
+    tout = DataContainer.io.makeDir();
+    
+    % 2D transpose
+    imat = distributed.rand(n1,n2);
+    DataContainer.io.memmap.dist.FileWrite(tin,imat,1);
+    DataContainer.io.memmap.dist.FileTranspose(tin,tout,1);
+    x    = DataContainer.io.memmap.dist.FileRead(tout);
+    assertEqual(x,transpose(imat));
+    
+    % 3D transpose with sepDim == 1
+    imat = distributed.rand(n1,n2,n3);
+    DataContainer.io.memmap.dist.FileWrite(tin,imat,1);
+    DataContainer.io.memmap.dist.FileTranspose(tin,tout,1);
+    x    = DataContainer.io.memmap.dist.FileRead(tout);
+    assertEqual(x,reshape(transpose(reshape(imat,n1,n2*n3)),n2,n3,n1));
+    
+    % 3D transpose with sepDim == 2
+    imat = distributed.rand(n1,n2,n3);
+    DataContainer.io.memmap.dist.FileWrite(tin,imat,1);
+    DataContainer.io.memmap.dist.FileTranspose(tin,tout,2);
+    x    = DataContainer.io.memmap.dist.FileRead(tout);
+    assertEqual(x,reshape(transpose(reshape(imat,n1*n2,n3)),n3,n1,n2));
+    
+    % 4D transpose with sepDim == 3
+    imat = distributed.rand(n1,n2,n3,n4);
+    DataContainer.io.memmap.dist.FileWrite(tin,imat,1);
+    DataContainer.io.memmap.dist.FileTranspose(tin,tout,3);
+    x    = DataContainer.io.memmap.dist.FileRead(tout);
+    assertEqual(x,reshape(transpose(reshape(imat,n1*n2*n3,n4)),n4,n1,n2,n3));
+
+%     DataContainer.io.memmap.dist.FileDelete(td);
+end
+
+function test_distributed_FileTranspose_double_complex
+%%
+    n1   = 3;
+    n2   = 4;
+    n3   = 5;
+    n4   = 8;
+    tin  = DataContainer.io.makeDir();
+    tout = DataContainer.io.makeDir();
+    
+    % 2D transpose
+    imat = distributed.rand(n1,n2);
+    imat = complex(imat,1);
+    DataContainer.io.memmap.dist.FileWrite(tin,imat,1);
+    DataContainer.io.memmap.dist.FileTranspose(tin,tout,1);
+    x    = DataContainer.io.memmap.dist.FileRead(tout);
+    assertEqual(x,transpose(imat));
+    
+    % 3D transpose with sepDim == 1
+    imat = distributed.rand(n1,n2,n3);
+    imat=complex(imat,1);
+    DataContainer.io.memmap.dist.FileWrite(tin,imat,1);
+    DataContainer.io.memmap.dist.FileTranspose(tin,tout,1);
+    x    = DataContainer.io.memmap.dist.FileRead(tout);
+    assertEqual(x,reshape(transpose(reshape(imat,n1,n2*n3)),n2,n3,n1));
+    
+    % 3D transpose with sepDim == 2
+    imat = distributed.rand(n1,n2,n3);
+    imat=complex(imat,1);
+    DataContainer.io.memmap.dist.FileWrite(tin,imat,1);
+    DataContainer.io.memmap.dist.FileTranspose(tin,tout,2);
+    x    = DataContainer.io.memmap.dist.FileRead(tout);
+    assertEqual(x,reshape(transpose(reshape(imat,n1*n2,n3)),n3,n1,n2));
+    
+    % 4D transpose with sepDim == 3
+    imat = distributed.rand(n1,n2,n3,n4);
+    imat=complex(imat,1);
+    DataContainer.io.memmap.dist.FileWrite(tin,imat,1);
+    DataContainer.io.memmap.dist.FileTranspose(tin,tout,3);
+    x    = DataContainer.io.memmap.dist.FileRead(tout);
+    assertEqual(x,reshape(transpose(reshape(imat,n1*n2*n3,n4)),n4,n1,n2,n3));
+
+    DataContainer.io.memmap.dist.FileDelete(tin);
+    DataContainer.io.memmap.dist.FileDelete(tout);
+end
+
+function test_distributed_FileTranspose_single_real
+%%
+    n1   = 3;
+    n2   = 4;
+    n3   = 5;
+    n4   = 8;
+    tin  = DataContainer.io.makeDir();
+    tout = DataContainer.io.makeDir();
+    
+    % 2D transpose
+    imat = distributed.rand(n1,n2);
+    DataContainer.io.memmap.dist.FileWrite(tin,imat,1,'single');
+    DataContainer.io.memmap.dist.FileTranspose(tin,tout,1);
+    x    = DataContainer.io.memmap.dist.FileRead(tout,'single');
+    assertEqual(x,single(transpose(imat)));
+    
+    % 3D transpose with sepDim == 1
+    imat = distributed.rand(n1,n2,n3);
+    DataContainer.io.memmap.dist.FileWrite(tin,imat,1,'single');
+    DataContainer.io.memmap.dist.FileTranspose(tin,tout,1);
+    x    = DataContainer.io.memmap.dist.FileRead(tout,'single');
+    assertEqual(x,single(reshape(transpose(reshape(imat,n1,n2*n3)),n2,n3,n1)));
+    
+    % 3D transpose with sepDim == 2
+    imat = distributed.rand(n1,n2,n3);
+    DataContainer.io.memmap.dist.FileWrite(tin,imat,1,'single');
+    DataContainer.io.memmap.dist.FileTranspose(tin,tout,2);
+    x    = DataContainer.io.memmap.dist.FileRead(tout,'single');
+    assertEqual(x,single(reshape(transpose(reshape(imat,n1*n2,n3)),n3,n1,n2)));
+    
+    % 4D transpose with sepDim == 3
+    imat = distributed.rand(n1,n2,n3,n4);
+    DataContainer.io.memmap.dist.FileWrite(tin,imat,1,'single');
+    DataContainer.io.memmap.dist.FileTranspose(tin,tout,3);
+    x    = DataContainer.io.memmap.dist.FileRead(tout,'single');
+    assertEqual(x,single(reshape(transpose(reshape(imat,n1*n2*n3,n4)),n4,n1,n2,n3)));
+
+    DataContainer.io.memmap.dist.FileDelete(tin);
+    DataContainer.io.memmap.dist.FileDelete(tout);
+end
+
+function test_distributed_FileTranspose_single_complex
+%%
+    n1   = 3;
+    n2   = 4;
+    n3   = 5;
+    n4   = 8;
+    tin  = DataContainer.io.makeDir();
+    tout = DataContainer.io.makeDir();
+    
+    % 2D transpose
+    imat = distributed.rand(n1,n2);
+    imat = complex(imat,1);
+    DataContainer.io.memmap.dist.FileWrite(tin,imat,1,'single');
+    DataContainer.io.memmap.dist.FileTranspose(tin,tout,1);
+    x    = DataContainer.io.memmap.dist.FileRead(tout,'single');
+    assertEqual(x,single(transpose(imat)));
+    
+    % 3D transpose with sepDim == 1
+    imat = distributed.rand(n1,n2,n3);
+    imat = complex(imat,1);
+    DataContainer.io.memmap.dist.FileWrite(tin,imat,1,'single');
+    DataContainer.io.memmap.dist.FileTranspose(tin,tout,1);
+    x    = DataContainer.io.memmap.dist.FileRead(tout,'single');
+    assertEqual(x,single(reshape(transpose(reshape(imat,n1,n2*n3)),n2,n3,n1)));
+    
+    % 3D transpose with sepDim == 2
+    imat = distributed.rand(n1,n2,n3);
+    imat = complex(imat,1);
+    DataContainer.io.memmap.dist.FileWrite(tin,imat,1,'single');
+    DataContainer.io.memmap.dist.FileTranspose(tin,tout,2);
+    x    = DataContainer.io.memmap.dist.FileRead(tout,'single');
+    assertEqual(x,single(reshape(transpose(reshape(imat,n1*n2,n3)),n3,n1,n2)));
+    
+    % 4D transpose with sepDim == 3
+    imat = distributed.rand(n1,n2,n3,n4);
+    imat = complex(imat,1);
+    DataContainer.io.memmap.dist.FileWrite(tin,imat,1,'single');
+    DataContainer.io.memmap.dist.FileTranspose(tin,tout,3);
+    x    = DataContainer.io.memmap.dist.FileRead(tout,'single');
+    assertEqual(x,single(reshape(transpose(reshape(imat,n1*n2*n3,n4)),n4,n1,n2,n3)));
+
+    DataContainer.io.memmap.dist.FileDelete(tin);
+    DataContainer.io.memmap.dist.FileDelete(tout);
+end
