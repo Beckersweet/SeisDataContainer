@@ -4,14 +4,14 @@ function y = size(x,dim)
             y = x.header.size(dim);
             y = cell2mat(y);
         else
-            y = x.header.size(dim);
+            y = x.exsize(dim);
         end
     else
         if(isequal(class(x.header.size),'cell'))
             y = x.header.size;
             y = cell2mat(y);
         else
-            y = x.header.size;
+            y = x.exsize;
         end
     end
 end
