@@ -239,10 +239,10 @@ x = randn(3,3,3);
 for i=1:3
     x(:,:,i) = y(:,1:3,i);
 end
-assertEqual(reshape(x,[27 1 1 1]),reshape(y,[27 1 1 1]));
-assertEqual(reshape(x,[27 1]),reshape(y,[27 1]));
-assertEqual(reshape(x,[9 3]),reshape(y,[9 3]));
-assertEqual(reshape(x,[3 3 3]),reshape(y,[3 3 3]));
+assertEqual(size(reshape(x,[27 1 1 1])),exsize(reshape(y,[27 1 1 1])));
+assertEqual(size(reshape(x,[27 1])),exsize(reshape(y,[27 1])));
+assertEqual(size(reshape(x,[9 3])),exsize(reshape(y,[9 3])));
+assertEqual(size(reshape(x,[3 3 3])),exsize(reshape(y,[3 3 3])));
 end % reshape
 
 function test_oMatCon_save_load
@@ -313,11 +313,8 @@ function test_oMatCon_vec
 y = oMatCon.randn(3,3,3);
 y = complex(y,0);
 y = y + 1i*randn(3,3,3);
-x = randn(3,3,3);
-for i=1:3
-    x(:,:,i) = y(:,1:3,i);
-end
-assertEqual(x(:),y(:));
+y = y(:);
+assertEqual(y.exsize,[27 1]);
 end % vec
 
 function test_oMatCon_zeros
