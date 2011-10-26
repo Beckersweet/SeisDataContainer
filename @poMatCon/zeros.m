@@ -20,25 +20,34 @@ function x = zeros(varargin)
 %   Negative integers are treated as 0.
 %     global SDCdefaultIOdist;
     
-    if(ischar(varargin{end}))
-        xprecision = varargin{end};
-        xsize      = cell2mat(varargin(1:end-1));
+    stringIndex = DataContainer.utils.getFirstStringIndex(varargin{:});    
+    if(stringIndex)
+        xsize = cell2mat(varargin(1:stringIndex-1));
+        p = inputParser;
+        p.addParamValue('precision','double',@ischar);
+        p.KeepUnmatched = true;
+        p.parse(varargin{stringIndex:end});
+        xprecision = p.Results.precision;
     else
+        xsize = cell2mat(varargin);
         xprecision = 'double';
-        xsize      = cell2mat(varargin);
     end
     
     td = DataContainer.io.makeDir();
     header = DataContainer.basicHeaderStruct...
         (xsize,xprecision,0);
-    header = DataContainer.io.addDistHeaderStruct...
+    header = DataContainer.addDistHeaderStruct...
         (header,header.dims,[]);
+    DataContainer.io.memmap.serial.FileAlloc(td,header);
+    if(stringIndex)
+        x = oMatCon.load(td,p.Unmatched);
+    else
+        x = oMatCon.load(td);
+    end
+end
 %     if SDCdefaultIOdist
 %         %header = addDistFile
 %         DataContainer.io.memmap.dist.FileAlloc(td,header);
 %     else
 %         DataContainer.io.memmap.serial.FileAlloc(td,header);
 %     end
-    DataContainer.io.memmap.serial.FileAlloc(td,header);
-    x = poMatCon.load(td,'precision',xprecision);
-end

@@ -239,10 +239,10 @@ x = randn(3,3,3);
 for i=1:3
     x(:,:,i) = y(:,1:3,i);
 end
-assertEqual(size(reshape(x,[27 1 1 1])),exsize(reshape(y,[27 1 1 1])));
-assertEqual(size(reshape(x,[27 1])),exsize(reshape(y,[27 1])));
-assertEqual(size(reshape(x,[9 3])),exsize(reshape(y,[9 3])));
-assertEqual(size(reshape(x,[3 3 3])),exsize(reshape(y,[3 3 3])));
+assertEqual(size(reshape(x,[27 1 1 1])),size(reshape(y,[27 1 1 1])));
+assertEqual(size(reshape(x,[27 1])),size(reshape(y,[27 1])));
+assertEqual(size(reshape(x,[9 3])),size(reshape(y,[9 3])));
+assertEqual(size(reshape(x,[3 3 3])),size(reshape(y,[3 3 3])));
 end % reshape
 
 function test_oMatCon_save_load
