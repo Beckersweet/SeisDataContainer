@@ -70,6 +70,9 @@ classdef iCon < dataContainer
         % zeros
         x = zeros(varargin);
         
+        % load
+        x = load(pathname,varargin)
+        
     end % Static methods
         
 end % classdef
