@@ -89,6 +89,9 @@ classdef (InferiorClasses = {?distributed,?codistributed}) piCon < iCon
         % Serial to distributed converter
         x = distributed(data)
         
+        % load
+        x = load(pathname,varargin)
+        
     end % Static methods
     
 end % Classdef
