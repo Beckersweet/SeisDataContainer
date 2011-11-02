@@ -199,6 +199,18 @@ assertEqual( double(reshape(iCon(x),n1*n2,n3*n4)), reshape(x,n1*n2,n3*n4) );
 
 end
 
+function test_iCon_save_load
+%% save & load
+n1 = randi(10);
+n2 = randi(10);
+td = DataContainer.io.makeDir();
+A  = randn(n1,n2) + 1i*randn(n1,n2);
+B  = iCon(A);
+B.save(td);
+C  = iCon.load(td); 
+assertEqual( double(C), A );
+end % save & load
+
 function test_iCon_sign
 %% sign
 n1 = randi(10);

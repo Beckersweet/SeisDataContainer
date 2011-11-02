@@ -12,7 +12,7 @@ function FileReshape(dirnameIn,dirnameOut,shape)
 error(nargchk(3, 3, nargin, 'struct'));
 assert(ischar(dirnameIn), 'input directory name must be a string')
 assert(isdir(dirnameIn),'Fatal error: input directory %s does not exist',dirnameIn);
-assert(ischar(dirnameOut), 'output directory name must be a string')
+assert(isdir(dirnameOut), 'output directory name must be a string')
 assert(isvector(shape), 'shape must be a vector')
 
 % Read header

@@ -1,5 +1,4 @@
-function result = isreal(x)
-%ISREAL  Returns true if underlying data is real
+function y = isreal(x)
+    y = ~x.header.complex;
+end
 
-% Get size information
-result = isreal(double(x));

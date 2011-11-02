@@ -1,4 +1,4 @@
-classdef poMatCon < oCon
+classdef poMatCon < poCon
     %POMATCON  Memory-mapping out-of-core data container for binaries
     %
     %   poMatCon(PATHNAME,PARAM1,VALUE1,...)
@@ -11,7 +11,8 @@ classdef poMatCon < oCon
     %   REPEAT     - 1 for repeat and 0 otherwise
     %   READONLY   - 1 makes the data container readonly
     %   COPY       - 1 creates a copy of the file when loading, otherwise 
-    %                changes will be made on the existing file 
+    %                changes will be made on the existing file
+    %   DISTRIBUTE - 1 for distributed files and 0 otherwise
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %   PROPERTIES
@@ -27,12 +28,13 @@ classdef poMatCon < oCon
         function x = poMatCon(pathname,varargin) % Constructor for oMatCon
             
             % Parse param-value pairs using input parser
-            p = inputParser;
-            p.addParamValue('offset',0,@isscalar);
+            p = inputParser;            
             p.addParamValue('precision','double',@ischar);
             p.addParamValue('repeat',0,@isscalar);
             p.addParamValue('readonly',0,@isscalar);
+            p.addParamValue('distribute',0,@ isscalar);
             p.addParamValue('copy',0,@isscalar);
+            p.KeepUnmatched = true;
             p.parse(varargin{:});
             
             if (isdir(pathname)) % Loading file
@@ -45,12 +47,41 @@ classdef poMatCon < oCon
                     headerIn = DataContainer.io.memmap.serial.HeaderRead(td);
                 end            
             else
-                error('Fail: Bad input for poMatCon');
+                error('Fail: Path does not exist');
             end
+            
+            p.addParamValue('variable',headerIn.variable,@ischar);
+            p.addParamValue('label',headerIn.label,@iscell);
+            p.addParamValue('unit',headerIn.unit,@iscell);
+            p.addParamValue('offset',headerIn.offset,@isvector);
+            p.addParamValue('interval',headerIn.interval,@isvector);
+            p.parse(varargin{:});
+            headerIn.variable = p.Results.variable;
+            if(numel(p.Results.label) == headerIn.dims)
+                headerIn.label = p.Results.label;
+            else
+                error('Wrong number of labels');
+            end
+            if(numel(p.Results.unit) == headerIn.dims)
+                headerIn.unit = p.Results.unit;
+            else
+                error('Wrong number of units');
+            end
+            if(numel(p.Results.offset) == headerIn.dims)
+                headerIn.offset = p.Results.offset;
+            else
+                error('Wrong size for offset');
+            end
+            if(numel(p.Results.interval) == headerIn.dims)
+                headerIn.interval = p.Results.interval;
+            else
+                error('Wrong size for interval');
+            end
+            DataContainer.io.memmap.serial.HeaderWrite...
+                (pathname,headerIn);
+            
             % Construct and set class attributes
-            x = x@oCon('parallel memmap',headerIn.size,headerIn.complex);
-            x.exsize     = 0; % Explicit dimensions of data
-            x.header.size     = 0;
+            x = x@poCon('parallel memmap',headerIn.size,headerIn.complex);
             x.pathname   = td;
             x.header     = headerIn;
             x.readOnly   = p.Results.readonly;

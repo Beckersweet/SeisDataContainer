@@ -58,6 +58,7 @@ function assertEqual(a,b)
                 (a.pathname,'imag',dims,[rstart rend],[],a.header.precision,a.header.precision);
                 r1 = complex(r1,dummy);
             end
+            r1 = reshape(r1,size(b(rstart:rend)));
             assert(isequal(r1,b(rstart:rend)),'Assertion failed')
             reminder = reminder - buffer;
             rstart   = rend + 1;

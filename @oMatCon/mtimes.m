@@ -15,9 +15,8 @@ function y = mtimes(A,B,swp)
     if(length(sizeA) > 2)
         error('Fail: Wrong size for first parameter');
     end
-    % Reading input header
-    headerB   = DataContainer.io.memmap.serial.HeaderRead(B.pathname);
-    sizeB     = headerB.size;
+    % Reading size
+    sizeB     = size(B);
     
     sepDim = 0;    
     for i=1:length(sizeB)
@@ -35,7 +34,7 @@ function y = mtimes(A,B,swp)
     sizeOut    = [sizeA(1) sizeB(sepDim:end)];
     y          = oMatCon.zeros(sizeOut);
     prod(sizeB(sepDim+1:end));
-    if(B.header.complex)
+    if(~isreal(B))
         y = complex(y,0);
     end
     for i=1:prod(sizeB(sepDim:end))
