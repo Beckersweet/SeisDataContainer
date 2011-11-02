@@ -17,10 +17,11 @@ function  SeisDataContainer_clean()
             end
         end
     end
+    fprintf('Deleted local temporary home %s\n',SDClocalTmpDir);
     if isdir(SDCglobalTmpDir)
         rmdir(SDCglobalTmpDir,'s')
     end
-    fprintf('SDC temporary directories were deleted\n');
+    fprintf('Deleted global temporary home in %s\n',SDCglobalTmpDir);
 
     clear global SDCglobalTmpDir;
     clear global SDClocalTmpDir;
