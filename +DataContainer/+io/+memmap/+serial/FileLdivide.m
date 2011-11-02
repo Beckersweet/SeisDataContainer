@@ -1,6 +1,7 @@
-function FilePlus(A,B,dirnameOut)
-%FILEPLUS Allocates file space and adds up the two input files
-%   FilePlus(A,B,DIRNAMEOUT)
+function FileLdivide(A,B,dirnameOut)
+%FILELDIVIDE Allocates file space and does the element-by-element division
+%            of the two input files
+%   FileLdivide(A,B,DIRNAMEOUT)
 %
 %   A,B        - Either string specifying the directory name of the input
 %                files or a scalar
@@ -53,7 +54,7 @@ function FilePlus(A,B,dirnameOut)
                 r2 = complex(r2,dummy);
             end
             DataContainer.io.memmap.serial.FileWriteLeftChunk...
-                (dirnameOut,plus(A(rstart:rend),r2),[rstart rend],[]);
+                (dirnameOut,minus(A(rstart:rend),r2),[rstart rend],[]);
             reminder = reminder - buffer;
             rstart   = rend + 1;
         end
@@ -107,7 +108,7 @@ function FilePlus(A,B,dirnameOut)
                 r2 = complex(r2,dummy);
             end
             DataContainer.io.memmap.serial.FileWriteLeftChunk...
-                (dirnameOut,plus(r1,r2),[rstart rend],[]);
+                (dirnameOut,ldivide(r1,r2),[rstart rend],[]);
             reminder = reminder - buffer;
             rstart   = rend + 1;
         end

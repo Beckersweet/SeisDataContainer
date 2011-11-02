@@ -1,5 +1,5 @@
 function FileMinus(A,B,dirnameOut)
-%FILEPLUS Allocates file space and subtracts the two input files
+%FILEMINUS Allocates file space and subtracts the two input files
 %   FileMinus(A,B,DIRNAMEOUT)
 %
 %   A,B        - Either string specifying the directory name of the input
@@ -12,6 +12,10 @@ function FileMinus(A,B,dirnameOut)
         temp = B;
         B    = A;
         A    = temp;
+    end
+    
+    if isscalar(A)
+        A = A*ones(size(B));
     end
     
     if(isnumeric(A))
