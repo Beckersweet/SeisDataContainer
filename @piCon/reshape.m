@@ -34,10 +34,10 @@ sizes   = [varargin{2:end}];
 
 % Check for the collapsibility of reshape
 % Do the calculation
-imdims  = [x.imdims{:}];
+imdims  = [x.header.size{:}];
 perm    = [x.perm{:}];
 while(imdims(end) == 1) % Strip singleton dimensions
-    imdims(end) = [];
+   imdims(end) = [];
 end
 redims  = [varargin{2:end}];
 j       = 1;
@@ -121,5 +121,5 @@ y           = piCon(data);
 cod         = cod{1};
 y.imcoddims = cod.Dimension; % Old distribution is obsolete
 y.imcodpart = cod.Partition; % Old distribution is obsolete
-y.imdims    = collapsed_dims;
+y.header.size    = collapsed_dims;
 y.perm      = collapsed_perms;

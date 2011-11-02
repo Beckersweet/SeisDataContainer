@@ -192,6 +192,18 @@ assertEqual( gather( double(reshape(piCon(x),n1*n2,n3*n4)) ),...
     reshape(x,n1*n2,n3*n4) );
 end % reshape
 
+function test_iCon_save_load
+%% save & load
+n1 = randi(10);
+n2 = randi(10);
+td = DataContainer.io.makeDir();
+A  = distributed( randn(n1,n2) + 1i*randn(n1,n2) );
+B  = piCon(A);
+B.save(td);
+C  = piCon.load(td); 
+assertEqual( double(C), A );
+end % save & load
+
 function test_piCon_sign
 %% sign
 n1 = randi(10);

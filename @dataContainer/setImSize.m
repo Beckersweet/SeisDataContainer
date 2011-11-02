@@ -1,4 +1,4 @@
-function y = setImDims(x,varargin)
+function y = setImSize(x,varargin)
 %SETIMDIMS  Setting implicit dimensions of data container
 %
 %   setImDims(x,{IMPLICIT_SIZE}) will return a *new* object with the same
@@ -17,11 +17,11 @@ function y = setImDims(x,varargin)
 imdims = [varargin{:}];
 assert(iscell(imdims),'Implicit dimensions must be stored in cell');
 while(iscell(imdims))
-    imdims = [imdims{:}];
+   imdims = [imdims{:}];
 end
 
 % Check for number of elements
 assert(prod(size(x)) == prod(imdims),...
     'Number of elements must be conserved');
 y        = x;
-y.imdims = [varargin{:}];
+y.header.size = [varargin{:}];

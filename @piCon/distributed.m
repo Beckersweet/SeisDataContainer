@@ -6,7 +6,7 @@ function y = distributed(data)
 
 if isa(data,'iCon')
     y = piCon(distributed(double(data)));
-    y.imdims = data.imdims;
+    y.header.size = data.header.size;
 else
     y = piCon(distributed(data));
 end

@@ -72,7 +72,7 @@ else
 end
       
 if nargin < 1
-    suite = TestSuite.fromName(fullfile(DataContainer.path,'tests','SpotoContests'));
+    suite = TestSuite.fromName(fullfile(DataContainer.path,'tests','SpotoConTests'));
 else
     name_list = getInputNames(varargin{:});
     if numel(name_list) == 1

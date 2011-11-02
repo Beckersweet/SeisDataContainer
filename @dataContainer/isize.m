@@ -17,7 +17,7 @@ function d = isize(x,dim)
 %   http://www.cs.ubc.ca/labs/scl/spot
 
 % Setup variables
-dims = x.imdims;
+dims = x.header.size;
 
 if nargin == 0
    error('Not enough input arguments');

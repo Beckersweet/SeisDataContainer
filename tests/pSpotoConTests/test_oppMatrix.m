@@ -25,12 +25,12 @@ A2 = oppMatrix(distributed(A1));
 x1 = iCon([A2.drandn A2.drandn]);
 y1 = A1*x1;
 y2 = A2*x1;
-assertElementsAlmostEqual(y1,y2);
+assertElementsAlmostEqual(y1,gather(y2));
 
 x2 = iCon([A2.rrandn A2.rrandn]);
 z1 = A1'*x2;
 z2 = A2'*x2;
-assertElementsAlmostEqual(z1,z2);
+assertElementsAlmostEqual(z1,gather(z2));
 
 end % multiply
 
@@ -41,7 +41,7 @@ A1 = iCon.randn(m,n);
 A2 = oppMatrix(distributed(A1));
 x  = eye(n);
 
-assertEqual(A2*x,A1);
+assertEqual(gather(A2*x),A1);
 end % basis
 
 function test_oppMatrix_divide

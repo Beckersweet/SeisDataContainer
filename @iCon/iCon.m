@@ -24,7 +24,7 @@ classdef iCon < dataContainer
 %   Extra methods not found in Matlab:
 %   opMatrix                   assertElementsAlmostEqual  invpermute
 %   assertEqual                invvec                     isize
-%   setImDims                  extract                    vec
+%   setImSize                  extract                    vec
 %   inject
 %
 %   Static methods:
@@ -53,6 +53,8 @@ classdef iCon < dataContainer
             x      = x@dataContainer('InCore',dims,num2cell(dims));
             x.data = data;
             x.perm = num2cell(1:length(size(data)));
+            x.header.precision = DataContainer.utils.getPrecision(data);
+            x.header.complex   = ~isreal(data);
         end
         
     end % Public methods
@@ -67,6 +69,9 @@ classdef iCon < dataContainer
         
         % zeros
         x = zeros(varargin);
+        
+        % load
+        x = load(pathname,varargin)
         
     end % Static methods
         

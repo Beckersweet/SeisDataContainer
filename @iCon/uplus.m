@@ -3,4 +3,4 @@ function y = uplus(x)
 %   +A for numeric arrays is A. 
 
 y = iCon(uplus(double(x)));
-y.imdims = x.imdims;
+y.header.size = x.header.size;

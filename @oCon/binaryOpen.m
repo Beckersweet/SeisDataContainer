@@ -12,7 +12,7 @@ if nargin < 4, iscomplex = false; end
 if nargin < 3, precision = 'double'; end
 
 % Construct parent class
-x = outCon('Binary Parallel OutCon',dims,iscomplex);
+x = oCon('Binary Parallel OutCon',dims,iscomplex);
 
 % Convert file to binary file with precision double
 binaryfilepath = DataCon.io.binaryConverter(filepath,precision);

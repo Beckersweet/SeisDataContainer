@@ -6,5 +6,5 @@ function y = inv(x)
 
 y        = dataCon(inv(double(x)));
 y        = metacopy(x,y);
-y.imdims = fliplr(x.imdims);
+y.header.size = fliplr(x.header.size);
 y.perm   = fliplr(x.perm);

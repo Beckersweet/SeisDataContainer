@@ -18,11 +18,11 @@ if ~isa(A,'dataContainer') % Right multiply
     y = metacopy(B,y);
     
     % Extract collapsed dimensions & permutation
-    y.imdims = { size(A,1) B.imdims{2} };
+    y.header.size = { size(A,1) B.header.size{2} };
     
     % Check for spot ms and ns
     if isa(A,'opSpot')
-        y.imdims{1} = A.ms;
+        y.header.size{1} = A.ms;
     end
     
 elseif ~isa(B,'dataContainer') % Left multiply
@@ -30,11 +30,11 @@ elseif ~isa(B,'dataContainer') % Left multiply
     y = metacopy(A,y);
     
     % Extract collapsed dimensions & permutation
-    y.imdims = { A.imdims{1} size(B,2) };
+    y.header.size = { A.header.size{1} size(B,2) };
     
     % Check for spot ms and ns
     if isa(A,'opSpot')
-        y.imdims{2} = A.ns;
+        y.header.size{2} = A.ns;
     end
     
 else % Both data containers
@@ -42,7 +42,7 @@ else % Both data containers
     y = metacopy(A,y);
     
     % Extract collapsed dimensions
-    y.imdims = { A.imdims{1} B.imdims{2} };
+    y.header.size = { A.header.size{1} B.header.size{2} };
     y.perm   = 1:ndims(y); % Old perm is void
 end
 

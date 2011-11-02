@@ -41,7 +41,7 @@ else % Both data containers
     
     % Check for strict flag
     if A.strict || B.strict
-       assert(all(A.imdims == B.imdims),...
+       assert(all(A.header.size == B.header.size),...
            'Strict flag enforced. Implicit dimensions much match.')
     end
 end
