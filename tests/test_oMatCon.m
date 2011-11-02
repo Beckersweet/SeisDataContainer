@@ -327,6 +327,18 @@ end
 assertEqual(-x,-y);
 end % uminus
 
+function test_oMatCon_uplus
+%% uplus
+y = oMatCon.randn(3,3,3);
+y = complex(y,0);
+y = y + 1i*randn(3,3,3);
+x = randn(3,3,3);
+for i=1:3
+    x(:,:,i) = y(:,1:3,i);
+end
+assertEqual(+x,+y);
+end % uplus
+
 function test_oMatCon_vec
 %% vec
 y = oMatCon.randn(3,3,3);
