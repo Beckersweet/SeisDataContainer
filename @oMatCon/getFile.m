@@ -21,8 +21,12 @@ function y = getFile(obj,x)
         else
             slice = [];
         end
-
+        
+        % this gives us Matlab array
         y = DataContainer.io.memmap.serial.FileReadLeftChunk...
             (obj.pathname,[chunk(1) chunk(end)],slice);
+        
+        % returning the result as iCon
+        y = iCon(y);
     end
 end
