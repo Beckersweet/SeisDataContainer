@@ -311,7 +311,7 @@ function test_oMatCon_transpose
 y = oMatCon.randn(3,3);
 y = complex(y,0);
 y = y + 1i*randn(3,3);
-x(:,1:3) = y(:,1:3);
+x(:,1:3) = double(y(:,1:3));
 assertEqual( y.', x.' );
 end % transpose
 
@@ -345,7 +345,7 @@ y = oMatCon.randn(3,3,3);
 y = complex(y,0);
 y = y + 1i*randn(3,3,3);
 y = y(:);
-assertEqual(y.exsize,[27 1]);
+assertEqual(size(y),[27 1]);
 end % vec
 
 function test_oMatCon_zeros
