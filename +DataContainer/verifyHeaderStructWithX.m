@@ -5,8 +5,8 @@ function verifyHeaderStructWithX(header,x)
 
     assert(header.dims==dims,'Fatal error: wrong header.dims')
     assert(norm(header.size-xsize)==0,'Fatal error: wrong header.size')
-    assert(length(header.offset)==dims,'Fatal error: wrong header.offset')
-    assert(length(header.interval)==dims,'Fatal error: wrong header.interval');
+    assert(length(header.origin)==dims,'Fatal error: wrong header.origin')
+    assert(length(header.delta)==dims,'Fatal error: wrong header.delta');
 
     assert(strcmp(header.precision,'single')|...
            strcmp(header.precision,'double'),'Fatal error: wrong header.precision');

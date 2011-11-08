@@ -8,8 +8,8 @@ function header = basicHeaderStructFromX(x)
     header.variable = 'unknown';
     header.dims = dims;
     header.size = xsize;
-    header.offset = zeros(1,dims);
-    header.interval = ones(1,dims);
+    header.origin = zeros(1,dims);
+    header.delta = ones(1,dims);
 
     header.precision = xprecision;
     header.complex = xcomplex;
