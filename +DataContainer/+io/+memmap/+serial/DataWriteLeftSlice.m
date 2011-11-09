@@ -23,7 +23,7 @@ assert(isvector(slice)|isequal(slice,[]), 'slice index must be a vector')
 assert(ischar(file_precision), 'file_precision must be a string')
 
 % Setup variables
-[slice_dims, slice_offset] =...
+[slice_dims, slice_origin] =...
     DataContainer.utils.getLeftSliceInfo(dimensions,slice);
 assert(prod(slice_dims)==prod(size(x)))
 
@@ -33,14 +33,14 @@ filename=fullfile(dirname,filename);
 % Set bytesize
 bytesize = DataContainer.utils.getByteSize(file_precision);
 x = DataContainer.utils.switchPrecisionIP(x,file_precision);
-slice_byte_offset = slice_offset*bytesize;
+slice_byte_origin = slice_origin*bytesize;
 
 % Check File
 assert(exist(filename)==2,'Fatal error: file %s does not exist',filename);
 
 % Write local data
 fid = fopen(filename,'r+');
-fseek(fid,slice_byte_offset,-1);
+fseek(fid,slice_byte_origin,-1);
 fwrite(fid,x(:),file_precision);
 fclose(fid);
 

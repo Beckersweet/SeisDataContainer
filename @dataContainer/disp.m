@@ -13,8 +13,8 @@ function disp(x)
         fprintf('Size:        [');
         fprintf(' %d',size(x));
         fprintf(' ]\n');
-        fprintf('Offset:      [');
-        fprintf(' %d',offset(x));
+        fprintf('Origin:      [');
+        fprintf(' %d',origin(x));
         fprintf(' ]\n');
         fprintf('Interval:    [');
         fprintf(' %d',interval(x));

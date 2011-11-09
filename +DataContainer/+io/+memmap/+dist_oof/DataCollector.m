@@ -4,7 +4,7 @@ function DataCollector( filename,dimensions,dirname,varargin )
 %   DataCollector(FILENAME,DIMENSIONS,DIRNAME,PARAM1,VALUE1,PARAM2,VALUE2,...)
 %   reads the real binary files in the specified directory and merges them
 %   into a single binary file. Addtional parameters include:
-%   OFFSET    - An integer specifying the number of bits to skip from the 
+%   ORIGIN    - An integer specifying the number of bits to skip from the 
 %               start of file before actual reading occurs, defaults to 0
 %   PRECISION - A string specifying the precision of one unit of data, 
 %               defaults to 'double' (8 bits)
@@ -18,7 +18,7 @@ function DataCollector( filename,dimensions,dirname,varargin )
 % Setup variables
 precision; % = 'double';
 repeat; %    = inf;
-offset; %    = 0;
+origin; %    = 0;
 
 % Preprocess input arguments
 assert(ischar(filename), 'filename must be a string')
@@ -28,7 +28,7 @@ assert(isnumeric(dimensions), 'dimensions must be numeric')
 p = inputParser;
 p.addParamValue('precision','double',@ischar);
 p.addParamValue('repeat',inf,@isscalar);
-p.addParamValue('offset',0,@isscalar);
+p.addParamValue('origin',0,@isscalar);
 p.parse(varargin{:});
 
 % error(nargchk(1, nargin, nargin, 'struct'));
@@ -43,7 +43,7 @@ p.parse(varargin{:});
 %     
 %     fieldname = lower(varargin{i});
 %     switch fieldname
-%         case {'offset', 'precision', 'repeat'}
+%         case {'origin', 'precision', 'repeat'}
 %             eval([fieldname ' = varargin{i+1};']);
 %         otherwise
 %             error('Parameter "%s" is unrecognized.', ...
@@ -72,17 +72,17 @@ spmd
     
     for o=1:dimensions(end)
         % Setup global memmapfile
-        outcoreoffset = offset + prod(dimensions(1:end-1))*(o-1)*bytesize;
-        paroffset     = dimensions(1:end-2)*sum(labwidth(1:labindex-1))...
+        outcoreorigin = origin + prod(dimensions(1:end-1))*(o-1)*bytesize;
+        parorigin     = dimensions(1:end-2)*sum(labwidth(1:labindex-1))...
                          *bytesize;
         M = memmapfile(fullfile(dirname,int2str(labindex),'real'),...
             'format',{precision,local_size,'x'},...
-            'offset',outcoreoffset+paroffset,'repeat',repeat);
+            'origin',outcoreorigin+parorigin,'repeat',repeat);
              
         % Setup memmap of local file
-        locoffset     = prod(local_size(1:end-1))*(o-1)*8;
+        locorigin     = prod(local_size(1:end-1))*(o-1)*8;
         MW = memmapfile(fullfile(dirname,filename),'format',...
-            {'double',local_size,'x'},'offset',locoffset,'writable',...
+            {'double',local_size,'x'},'origin',locorigin,'writable',...
             true,'repeat',repeat);
         
         % Read global data and Write local data

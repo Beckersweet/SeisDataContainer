@@ -6,7 +6,7 @@ classdef poMatCon < poCon
     %   PATHNAME   - The directory name for loading a file
     %
     %   Optional argument is either of:
-    %   OFFSET     - The offset for file
+    %   ORIGIN     - The offset for file
     %   PRECISION  - Either 'single' or 'double'
     %   REPEAT     - 1 for repeat and 0 otherwise
     %   READONLY   - 1 makes the data container readonly
@@ -53,8 +53,8 @@ classdef poMatCon < poCon
             p.addParamValue('variable',headerIn.variable,@ischar);
             p.addParamValue('label',headerIn.label,@iscell);
             p.addParamValue('unit',headerIn.unit,@iscell);
-            p.addParamValue('offset',headerIn.offset,@isvector);
-            p.addParamValue('interval',headerIn.interval,@isvector);
+            p.addParamValue('origin',headerIn.origin,@isvector);
+            p.addParamValue('delta',headerIn.delta,@isvector);
             p.parse(varargin{:});
             headerIn.variable = p.Results.variable;
             if(numel(p.Results.label) == headerIn.dims)
@@ -67,15 +67,15 @@ classdef poMatCon < poCon
             else
                 error('Wrong number of units');
             end
-            if(numel(p.Results.offset) == headerIn.dims)
-                headerIn.offset = p.Results.offset;
+            if(numel(p.Results.origin) == headerIn.dims)
+                headerIn.origin = p.Results.origin;
             else
-                error('Wrong size for offset');
+                error('Wrong size for origin');
             end
-            if(numel(p.Results.interval) == headerIn.dims)
-                headerIn.interval = p.Results.interval;
+            if(numel(p.Results.delta) == headerIn.dims)
+                headerIn.delta = p.Results.delta;
             else
-                error('Wrong size for interval');
+                error('Wrong size for delta');
             end
             DataContainer.io.memmap.serial.HeaderWrite...
                 (pathname,headerIn);

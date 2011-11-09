@@ -22,7 +22,7 @@ assert(ischar(file_precision), 'file_precision name must be a string')
 assert(ischar(x_precision), 'x_precision name must be a string')
 
 % Setup variables
-[chunk_dims, chunk_offset] =...
+[chunk_dims, chunk_origin] =...
     DataContainer.utils.getLeftChunkInfo(dimensions,range,slice);
 
 % Preprocess input arguments
@@ -30,14 +30,14 @@ filename=fullfile(dirname,filename);
 
 % Set bytesize
 bytesize = DataContainer.utils.getByteSize(file_precision);
-chunk_byte_offset = chunk_offset*bytesize;
+chunk_byte_origin = chunk_origin*bytesize;
 
 % Check File
 assert(exist(filename)==2,'Fatal error: file %s does not exist',filename);
 
 % Read local data
 fid = fopen(filename,'r');
-fseek(fid,chunk_byte_offset,-1);
+fseek(fid,chunk_byte_origin,-1);
 x = fread(fid,prod(chunk_dims),file_precision);
 if length(chunk_dims)>1
     x = reshape(x,chunk_dims);

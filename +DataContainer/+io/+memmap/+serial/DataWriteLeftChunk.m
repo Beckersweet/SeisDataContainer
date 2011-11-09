@@ -25,7 +25,7 @@ assert(isvector(slice)|isequal(slice,[]), 'slice index must be a vector')
 assert(ischar(file_precision), 'file_precision must be a string')
 
 % Setup variables
-[chunk_dims, chunk_offset] =...
+[chunk_dims, chunk_origin] =...
     DataContainer.utils.getLeftChunkInfo(dimensions,range,slice);
 assert(prod(chunk_dims)==prod(size(x)),'X array does not match the given dimensions')
 
@@ -35,14 +35,14 @@ filename=fullfile(dirname,filename);
 % Set bytesize
 bytesize = DataContainer.utils.getByteSize(file_precision);
 x = DataContainer.utils.switchPrecisionIP(x,file_precision);
-chunk_byte_offset = chunk_offset*bytesize;
+chunk_byte_origin = chunk_origin*bytesize;
 
 % Check File
 assert(exist(filename)==2,'Fatal error: file %s does not exist',filename);
 
 % Write local data
 fid = fopen(filename,'r+');
-fseek(fid,chunk_byte_offset,-1);
+fseek(fid,chunk_byte_origin,-1);
 fwrite(fid,x(:),file_precision);
 fclose(fid);
 

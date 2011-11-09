@@ -34,7 +34,7 @@ distributed = eval(char(xDoc.getElementsByTagName('distributed').item(0).getFirs
 header = DataContainer.basicHeaderStruct(n, precision, complex);
 header.label       = l;
 header.unit        = u;
-header.offset      = o;
+header.origin      = o;
 header.interval    = d;
 header.distributed = distributed;
 

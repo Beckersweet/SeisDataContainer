@@ -20,10 +20,8 @@ if length(s) > 1
 %         varargout{1} = feval(subs{1},x,subs{2:end});        
 %     else
 %         varargout = builtin('subsref',x,s);
-       if strcmp(s(1).type,'.')
-           if(strcmp(s(1).subs,'save'))
-               x.save(cell2mat(s(2).subs))
-           end
+       if (strcmp(s(1).type,'.') && strcmp(s(1).subs,'save'))
+           x.save(cell2mat(s(2).subs))
            return;
        end
        result = x;
