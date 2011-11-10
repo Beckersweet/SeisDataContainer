@@ -49,7 +49,7 @@ if nargin>3
         f_precision = header.precision;
     end
 end;
-DataContainer.io.verifyHeaderStructWithX(header,x);
+DataContainer.verifyHeaderStructWithX(header,x);
 
 % Write file
 if distribute
