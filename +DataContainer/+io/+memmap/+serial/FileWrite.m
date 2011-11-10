@@ -37,7 +37,7 @@ if nargin>2
         f_precision = header.precision;
     end
 end;
-DataContainer.io.verifyHeaderStructWithX(header,x);
+DataContainer.verifyHeaderStructWithX(header,x);
 
 % Make Directory
 if isdir(dirname); rmdir(dirname,'s'); end;
