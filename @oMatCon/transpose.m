@@ -8,8 +8,8 @@ function y = transpose(x,sepDim)
     if(nargin == 1)
         sepDim = 1;
     end
-    td = DataContainer.io.makeDir();
+    td = ConDir();
     DataContainer.io.memmap.serial.FileTranspose...
-        (x.pathname,td,sepDim);
+        (path(x.pathname),path(td),sepDim);
     y  = oMatCon.load(td);
 end

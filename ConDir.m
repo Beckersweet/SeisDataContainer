@@ -35,7 +35,7 @@ classdef ConDir < handle
             end
             %if td.verbose; disp(['ConDir in constructor for ' td.Path]); end;
         end
-        function e = exist(td);
+        function e = exist(td)
             e = isdir(td.Path);
         end
         function p = path(td)

@@ -13,7 +13,7 @@ function y = sign(a)
     end
     header = a.header;
     header.size = [1 prod(size(a))];
-    DataContainer.io.memmap.serial.HeaderWrite(y.pathname,header);    
+    DataContainer.io.memmap.serial.HeaderWrite(path(y.pathname),header);    
     
     % Set the sizes
     dims      = [1 prod(size(a))];
@@ -25,16 +25,16 @@ function y = sign(a)
         buffer = min(reminder,maxbuffer);
         rend = rstart + buffer - 1;
         r1 = DataContainer.io.memmap.serial.DataReadLeftChunk...
-            (a.pathname,'real',dims,[rstart rend],[],precision(a),precision(a));
+            (path(a.pathname),'real',dims,[rstart rend],[],precision(a),precision(a));
         if ~isreal(a)
         dummy = DataContainer.io.memmap.serial.DataReadLeftChunk...
-            (a.pathname,'imag',dims,[rstart rend],[],precision(a),precision(a));
+            (path(a.pathname),'imag',dims,[rstart rend],[],precision(a),precision(a));
             r1 = complex(r1,dummy);
         end        
         DataContainer.io.memmap.serial.FileWriteLeftChunk...
-            (y.pathname,sign(r1),[rstart rend],[]);
+            (path(y.pathname),sign(r1),[rstart rend],[]);
         reminder = reminder - buffer;
         rstart   = rend + 1;
     end
-    DataContainer.io.memmap.serial.HeaderWrite(y.pathname,a.header);
+    DataContainer.io.memmap.serial.HeaderWrite(path(y.pathname),a.header);
 end

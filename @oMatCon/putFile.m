@@ -17,6 +17,6 @@ function putFile(obj,x,data)
         chunk = cell2mat(x(i));
         slice = cell2mat(x(i+1:end));
         DataContainer.io.memmap.serial.FileWriteLeftChunk...
-            (obj.pathname,data,[chunk(1) chunk(end)],slice);
+            (path(obj.pathname),data,[chunk(1) chunk(end)],slice);
     end
 end

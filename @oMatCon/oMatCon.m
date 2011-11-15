@@ -35,14 +35,14 @@ classdef oMatCon < oCon
             p.KeepUnmatched = true;
             p.parse(varargin{:});
             
-            if (isdir(pathname)) % Loading file
+            if (isa(pathname,'ConDir') && exist(pathname)) % Loading file
                 if(p.Results.copy == 0) % overwrite case
-                    headerIn = DataContainer.io.memmap.serial.HeaderRead(pathname);
+                    headerIn = DataContainer.io.memmap.serial.HeaderRead(path(pathname));
                     td = pathname;
                 else % no overwrite
-                    td = DataContainer.io.makeDir();
-                    DataContainer.io.memmap.serial.FileCopy(pathname,td);
-                    headerIn = DataContainer.io.memmap.serial.HeaderRead(td);
+                    td = ConDir();
+                    DataContainer.io.memmap.serial.FileCopy(path(pathname),path(td));
+                    headerIn = DataContainer.io.memmap.serial.HeaderRead(path(td));
                 end            
             else
                 error('Fail: Path does not exist');
@@ -76,7 +76,7 @@ classdef oMatCon < oCon
                 error('Wrong size for delta');
             end
             DataContainer.io.memmap.serial.HeaderWrite...
-                (pathname,headerIn);
+                (path(pathname),headerIn);
             
             % Construct and set class attributes
             x = x@oCon('serial memmap',headerIn.size,headerIn.complex);
@@ -86,11 +86,7 @@ classdef oMatCon < oCon
         end % constructor
     end % protected methods
     
-    methods
-        % delete function
-        function delete(x)
-            DataContainer.io.memmap.serial.FileDelete(x.pathname);
-        end % delete
+    methods        
     end
     
     methods ( Static )

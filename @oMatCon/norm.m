@@ -5,8 +5,8 @@ function x = norm(obj,norm)
 %
 %   NORM - Specifies the norm type. Supported norms: inf, -inf,
 %                    'fro', p-norm where p is scalar.
-    norm = cell2mat(norm);
+    norms = cell2mat(norm);
     x = DataContainer.io.memmap.serial.FileNorm...
-        (obj.pathname,size(obj),norm,'double');
+        (path(obj.pathname),size(obj),norms,'double');
 end
 
