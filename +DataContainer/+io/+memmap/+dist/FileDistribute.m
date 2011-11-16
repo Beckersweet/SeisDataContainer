@@ -1,4 +1,4 @@
-function FileDistribute(dirin,dirout,distdim)
+function FileDistribute(dirin,dirout,dirsout,distdim)
 % FILEDISTRIBUTE copies serial file into distributed
 %
 %   FileDistribute(DIRIN,DIROUT,DISTDIM)
@@ -8,9 +8,10 @@ function FileDistribute(dirin,dirout,distdim)
 %   DIROUT  - A string specifying the output file directory
 %   DISTDIM - A scalar specifying the distribution dimension
 %
-error(nargchk(3, 3, nargin, 'struct'));
+error(nargchk(4, 4, nargin, 'struct'));
 assert(ischar(dirin), 'input directory name must be a string')
 assert(ischar(dirout), 'output directory name must be a string')
+assert(iscell(dirsout), 'distributed output directories names must form cell')
 assert(isscalar(distdim),'distribution dimension must be a scalar')
 assert(distdim>0,'distribution dimension must be bigger than 0')
 assert(isdir(dirin),'Fatal error: input directory %s does not exist',dirin);
@@ -27,7 +28,7 @@ assert(status,'Fatal error while creating directory %s',dirout);
 % update headers
 partition = DataContainer.utils.defaultDistribution(hdrin.size(distdim));
 hdrin = DataContainer.addDistHeaderStruct(hdrin,distdim,partition);
-hdrout = DataContainer.io.addDistFileHeaderStruct(hdrin);
+hdrout = DataContainer.io.addDistFileHeaderStruct(hdrin,dirsout);
 sldims = hdrin.size(distdim+1:end);
 % Allocate file
 DataContainer.io.memmap.dist.DataAlloc(hdrout.directories,'real',...

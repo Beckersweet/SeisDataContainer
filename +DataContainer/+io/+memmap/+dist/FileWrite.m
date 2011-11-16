@@ -18,7 +18,7 @@ function FileWrite(dirname,x,distribute,varargin)
 %
 %   Warning: If the specified dirname already exist,
 %            it will be overwritten.  
-error(nargchk(3, 4, nargin, 'struct'));
+error(nargchk(3, 5, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 assert(isdistributed(x), 'data must not be distributed')
 assert(isscalar(distribute),'distribute flag must be a scalar')
@@ -32,20 +32,21 @@ assert(status,'Fatal error while creating directory %s',dirname);
 header = DataContainer.basicHeaderStructFromX(x);
 header = DataContainer.addDistHeaderStructFromX(header,x);
 if distribute
-    header=DataContainer.io.addDistFileHeaderStruct(header);
+    assert(iscell(varargin{1}), 'distributed output directories names must form cell')
+    header=DataContainer.io.addDistFileHeaderStruct(header,varargin{1});
 end
 f_precision = header.precision;
 assert(header.dims==header.distribution.dim,'x must be distributed over the last dimension')
 
 % Preprocess input arguments
-if nargin>3
-    assert(ischar(varargin{1})|isstruct(varargin{1}),...
+if nargin>4
+    assert(ischar(varargin{1+distribute})|isstruct(varargin{1+distribute}),...
         'argument mast be either file_precision string or header struct')
-    if ischar(varargin{1})
-        f_precision = varargin{1};
+    if ischar(varargin{1+distribute})
+        f_precision = varargin{1+distribute};
         header.precision = f_precision;
-    elseif isstruct(varargin{1})
-        header = varargin{1};
+    elseif isstruct(varargin{1+distribute})
+        header = varargin{1+distribute};
         f_precision = header.precision;
     end
 end;

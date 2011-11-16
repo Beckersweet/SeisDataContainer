@@ -93,7 +93,7 @@ isequal(x(1,1,1,1),y(1,1,1,1));
 isequal(x(3,5,3,6),y(3,5,3,6));
 end % io
 
-function test_iCon_ldivide
+function test_oMatCon_ldivide
 %% ldivide
 y = oMatCon.randn(3,3,3);
 y = complex(y,0);
