@@ -1,4 +1,4 @@
-classdef ConDistDirs < handle
+classdef (Sealed=true) ConDistDirs < handle
 %   ConDistDirs(varargin) handle object holding unique temporary directory
 % 
 %   obj = ConDistDirs()

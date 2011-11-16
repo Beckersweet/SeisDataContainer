@@ -1,14 +1,10 @@
-function header = addDistFileHeaderStruct(headerin,varargin)
-    error(nargchk(1, 2, nargin, 'struct'));
+function header = addDistFileHeaderStruct(headerin,dirsout)
+    error(nargchk(2, 2, nargin, 'struct'));
     assert(isstruct(headerin),'headerin has to be a header struct');
+    assert(iscell(dirsout), 'distributed output directories names must form cell')
 
     header = headerin;
     header.distributed = 1;
-    if nargin>1
-        assert(ischar(varargin{1}), 'directory name must be a string')
-        header.directories = DataContainer.io.makeDistDir(varargin{1});
-    else
-        header.directories = DataContainer.io.makeDistDir();
-    end
+    header.directories = dirsout;
 
 end
