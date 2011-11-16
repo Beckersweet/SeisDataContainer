@@ -1,4 +1,4 @@
-function FileTranspose(dirnameIn,dirnameOut,sepDim)
+function FileTranspose(dirnameIn,dirnameOut,distdirnameOut,sepDim)
 %DATATRANSPOSE Transposes input data and writes it to output file
 %
 %   FileTranspose(DIRNAMEIN,DIRNAMEOUT,SEPDIM)
@@ -9,10 +9,11 @@ function FileTranspose(dirnameIn,dirnameOut,sepDim)
 %   SEPDIM     - A scalar specifying the separation dimension
 %
 %   Warning: If the specified output file already exists, it will be overwritten.
-error(nargchk(3, 3, nargin, 'struct'));
+error(nargchk(4, 4, nargin, 'struct'));
 assert(ischar(dirnameIn), 'input directory name must be a string')
 assert(isdir(dirnameIn),'Fatal error: input directory %s does not exist',dirnameIn);
 assert(ischar(dirnameOut), 'output directory name must be a string')
+assert(iscell(distdirnameOut), 'distributed output directories names must form cell')
 assert(isscalar(sepDim), 'dimensions must be given as a vector')
 
 % Read header
@@ -26,7 +27,7 @@ end
 % Setting up the output header
 distdim            = headerOut.size(headerOut.distribution.dim+1:end);
 headerOut.size     = [headerOut.size(sepDim+1:end) headerOut.size(1:sepDim)];
-headerOut          = DataContainer.io.addDistFileHeaderStruct(headerOut);
+headerOut          = DataContainer.io.addDistFileHeaderStruct(headerOut,distdirnameOut);
 headerOut.offset   = [headerOut.offset(sepDim+1:end) headerOut.offset(1:sepDim)];
 headerOut.interval = [headerOut.interval(sepDim+1:end) headerOut.interval(1:sepDim)];
 headerOut.unit     = [headerOut.unit(sepDim+1:end) headerOut.unit(1:sepDim)];
