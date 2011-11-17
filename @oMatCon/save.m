@@ -6,7 +6,7 @@ function save(obj,dirname)
 %   DIRNAME - The output directory name
 %
 %   Note that you cannot save in the same directory
-    dirname = cell2mat(dirname);
-    DataContainer.io.memmap.serial.FileCopy(obj.pathname,dirname); 
+    DataContainer.io.memmap.serial.FileCopy...
+        (path(obj.pathname),cell2mat(dirname)); 
 end
 

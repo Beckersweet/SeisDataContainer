@@ -24,7 +24,7 @@ function y = reshape(x,varargin)
     end
     
     % making sure that we have the good input shape
-    if(prod(shape) ~= prod(size(x)))
+    if(prod(shape) ~= numel(x))
         error('bad input shape: the number of elements should be preserved')
     end
     

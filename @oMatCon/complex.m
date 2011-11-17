@@ -1,12 +1,14 @@
-function y = complex(a,b)    
+function y = complex(a,b)
+    aa=a;
+    bb=b;
     if(isa(a,'oMatCon'))
-        a = a.pathname;
+        aa = path(a.pathname);
     end
     if(isa(b,'oMatCon'))
-        b = b.pathname;
+        bb = path(b.pathname);
     end
-    td = DataContainer.io.makeDir();
+    td = ConDir();
     DataContainer.io.memmap.serial.FileComplex...
-        (a,b,td);
+        (aa,bb,path(td));
     y  = oMatCon.load(td);
 end

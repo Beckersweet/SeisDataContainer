@@ -4,7 +4,8 @@ function disp(x)
 %   all other ways it's the same as leaving the semicolon off an
 %   expression except that empty arrays don't display.
     if(dims(x)<20)
-        fprintf('oMatCon dataContainer\n\n');
+        fprintf(class(x));
+        fprintf(' dataContainer\n\n');
         fprintf('Variable:    ');
         fprintf('%c',variable(x));
         fprintf('\n');
@@ -13,11 +14,11 @@ function disp(x)
         fprintf('Size:        [');
         fprintf(' %d',size(x));
         fprintf(' ]\n');
-        fprintf('Offset:      [');
-        fprintf(' %d',offset(x));
+        fprintf('Origin:      [');
+        fprintf(' %d',origin(x));
         fprintf(' ]\n');
         fprintf('Interval:    [');
-        fprintf(' %d',interval(x));
+        fprintf(' %d',delta(x));
         fprintf(' ]\n');
         fprintf('Label:       [ ');
         labels = label(x);

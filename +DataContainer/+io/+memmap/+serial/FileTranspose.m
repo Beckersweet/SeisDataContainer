@@ -24,8 +24,8 @@ dim2D = [prod(headerIn.size(1:sepDim)) prod(headerIn.size(sepDim+1:end))];
 % Setting up the output header
 headerOut = headerIn;
 headerOut.size = [headerIn.size(sepDim+1:end) headerIn.size(1:sepDim)];
-headerOut.offset = [headerIn.offset(sepDim+1:end) headerIn.offset(1:sepDim)];
-headerOut.interval = [headerIn.interval(sepDim+1:end) headerIn.interval(1:sepDim)];
+headerOut.origin = [headerIn.origin(sepDim+1:end) headerIn.origin(1:sepDim)];
+headerOut.delta = [headerIn.delta(sepDim+1:end) headerIn.delta(1:sepDim)];
 headerOut.unit = [headerIn.unit(sepDim+1:end) headerIn.unit(1:sepDim)];
 headerOut.label = [headerIn.label(sepDim+1:end) headerIn.label(1:sepDim)];
 DataContainer.io.memmap.serial.HeaderWrite(dirnameOut,headerOut);

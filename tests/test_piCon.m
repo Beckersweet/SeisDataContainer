@@ -196,11 +196,11 @@ function test_iCon_save_load
 %% save & load
 n1 = randi(10);
 n2 = randi(10);
-td = DataContainer.io.makeDir();
+td = ConDir();
 A  = distributed( randn(n1,n2) + 1i*randn(n1,n2) );
 B  = piCon(A);
-B.save(td);
-C  = piCon.load(td); 
+B.save(path(td));
+C  = piCon.load(path(td)); 
 assertEqual( double(C), A );
 end % save & load
 

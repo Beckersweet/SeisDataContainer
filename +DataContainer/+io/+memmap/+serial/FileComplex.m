@@ -12,7 +12,7 @@ function FileComplex(A,B,dirnameOut)
     if(isscalar(B))
         headerA = DataContainer.io.memmap.serial.HeaderRead(A);
         if(headerA.complex)
-            error('Epic fail: the firt input is complex')
+            error('Epic fail: the first input is complex')
         end        
         % Set byte size
         bytesize       = DataContainer.utils.getByteSize(headerA.precision);

@@ -1,7 +1,7 @@
-function [cdims, offset] = getLeftChunkInfo(dimensions,range,slice)
+function [cdims, origin] = getLeftChunkInfo(dimensions,range,slice)
 % getSliceInfo returns slice information
 %
-%   [CHUNK_DIMS, CHUNK_OFFSET] = getLeftChunkInfo(dimensions,range,slice)
+%   [CHUNK_DIMS, CHUNK_ORIGIN] = getLeftChunkInfo(dimensions,range,slice)
 %   where:
 %        dimensions - file data dimensiosn
 %        range - chunk's index range
@@ -23,13 +23,13 @@ function [cdims, offset] = getLeftChunkInfo(dimensions,range,slice)
     csize = range(2)-range(1)+1;
     cdims = [sdims csize];
     rdims = dimensions(end-l_s+1:end);
-    offset=0;
+    origin=0;
 
-    % chunk offset
+    % chunk origin
     for i=1:l_s
         assert(0<cslice(i)&cslice(i)<=rdims(i),...
         'Fatal error: slice index %d out of range(1,%d)',cslice(i),rdims(i))
         ldims = dimensions(1:l_sd+i-1);
-        offset = offset + prod(ldims)*(cslice(i)-1);
+        origin = origin + prod(ldims)*(cslice(i)-1);
     end
 end

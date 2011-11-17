@@ -1,13 +1,15 @@
-function y = rdivide(A,B)
-    if(isa(A,'oMatCon'))
-        A = A.pathname;
+function y = rdivide(a,b)
+    aa = a;
+    bb = b;
+    if(isa(a,'oMatCon'))
+        aa = path(a.pathname);
     end
-    if(isa(B,'oMatCon'))
-        B = B.pathname;
+    if(isa(b,'oMatCon'))
+        bb = path(b.pathname);
     end
-    td = DataContainer.io.makeDir();
+    td = ConDir();
     DataContainer.io.memmap.serial.FileRdivide...
-        (A,B,td);
+        (aa,bb,path(td));
     y  = oMatCon.load(td);
 end
 

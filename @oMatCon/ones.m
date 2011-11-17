@@ -31,10 +31,10 @@ function x = ones(varargin)
         xprecision = 'double';
     end
     
-    td = DataContainer.io.makeDir();
+    td     = ConDir();
     header = DataContainer.basicHeaderStruct...
         (xsize,xprecision,0);
-    DataContainer.io.memmap.serial.FileOnes(td,header);
+    DataContainer.io.memmap.serial.FileOnes(path(td),header);
     if(stringIndex)
         x = oMatCon.load(td,p.Unmatched);
     else
