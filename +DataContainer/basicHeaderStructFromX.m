@@ -8,8 +8,8 @@ function header = basicHeaderStructFromX(x,varargin)
 %       'variable' - string holding the name of variable
 %       'origin' - row vector holding the origin coordinate for ach axis
 %       'delta' - row vector holding the delta of coordinate value for each axis
-%       'unit' - cell of sctrings with units for each axis
-%       'label' - cell of strings with label for each axis
+%       'unit' - cell array of strings with units for each axis
+%       'label' - cell array of strings with label for each axis
 %
 %   EXAMPLE:
 %       DataContainer.basicHeaderStructFromX(rand(10),...
