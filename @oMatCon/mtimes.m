@@ -39,10 +39,10 @@ function y = mtimes(A,B,swp)
     end
     for i=1:prod(sizeB(sepDim:end))
         slice = DataContainer.io.memmap.serial.FileReadLeftSlice...
-            (B.pathname,i);
+            (path(B.pathname),i);
         slice = reshape(slice,sizeA(2),numel(slice)/sizeA(2));
         prodz = mtimes(A,slice);
         DataContainer.io.memmap.serial.FileWriteLeftSlice...
-            (y.pathname,prodz,i);
+            (path(y.pathname),prodz,i);
     end    
 end

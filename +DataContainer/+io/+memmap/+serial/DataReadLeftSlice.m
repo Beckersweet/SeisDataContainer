@@ -21,7 +21,7 @@ assert(ischar(x_precision), 'x_precision name must be a string')
 
 % Setup variables
 x_precision = 'double';
-[slice_dims, slice_offset] =...
+[slice_dims, slice_origin] =...
     DataContainer.utils.getLeftSliceInfo(dimensions,slice);
 
 % Preprocess input arguments
@@ -29,14 +29,14 @@ filename=fullfile(dirname,filename);
 
 % Set bytesize
 bytesize = DataContainer.utils.getByteSize(file_precision);
-slice_byte_offset = slice_offset*bytesize;
+slice_byte_origin = slice_origin*bytesize;
 
 % Check File
 assert(exist(filename)==2,'Fatal error: file %s does not exist',filename);
 
 % Read local data
 fid = fopen(filename,'r');
-fseek(fid,slice_byte_offset,-1);
+fseek(fid,slice_byte_origin,-1);
 x = fread(fid,prod(slice_dims),file_precision);
 if length(slice_dims)>1
     x = reshape(x,slice_dims);

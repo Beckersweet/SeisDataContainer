@@ -6,7 +6,7 @@ classdef oMatCon < oCon
     %   pathname   - The directory name for loading a file
     %
     %   Optional argument is either of:
-    %   OFFSET     - The offset for file
+    %   ORIGIN     - The offset for file
     %   PRECISION  - Either 'single' or 'double'
     %   REPEAT     - 1 for repeat and 0 otherwise
     %   READONLY   - 1 makes the data container readonly
@@ -35,14 +35,14 @@ classdef oMatCon < oCon
             p.KeepUnmatched = true;
             p.parse(varargin{:});
             
-            if (isdir(pathname)) % Loading file
+            if (isa(pathname,'ConDir') && exist(pathname)) % Loading file
                 if(p.Results.copy == 0) % overwrite case
-                    headerIn = DataContainer.io.memmap.serial.HeaderRead(pathname);
+                    headerIn = DataContainer.io.memmap.serial.HeaderRead(path(pathname));
                     td = pathname;
                 else % no overwrite
-                    td = DataContainer.io.makeDir();
-                    DataContainer.io.memmap.serial.FileCopy(pathname,td);
-                    headerIn = DataContainer.io.memmap.serial.HeaderRead(td);
+                    td = ConDir();
+                    DataContainer.io.memmap.serial.FileCopy(path(pathname),path(td));
+                    headerIn = DataContainer.io.memmap.serial.HeaderRead(path(td));
                 end            
             else
                 error('Fail: Path does not exist');
@@ -51,8 +51,8 @@ classdef oMatCon < oCon
             p.addParamValue('variable',headerIn.variable,@ischar);
             p.addParamValue('label',headerIn.label,@iscell);
             p.addParamValue('unit',headerIn.unit,@iscell);
-            p.addParamValue('offset',headerIn.offset,@isvector);
-            p.addParamValue('interval',headerIn.interval,@isvector);
+            p.addParamValue('origin',headerIn.origin,@isvector);
+            p.addParamValue('delta',headerIn.delta,@isvector);
             p.parse(varargin{:});
             headerIn.variable = p.Results.variable;
             if(numel(p.Results.label) == headerIn.dims)
@@ -65,18 +65,18 @@ classdef oMatCon < oCon
             else
                 error('Wrong number of units');
             end
-            if(numel(p.Results.offset) == headerIn.dims)
-                headerIn.offset = p.Results.offset;
+            if(numel(p.Results.origin) == headerIn.dims)
+                headerIn.origin = p.Results.origin;
             else
-                error('Wrong size for offset');
+                error('Wrong size for origin');
             end
-            if(numel(p.Results.interval) == headerIn.dims)
-                headerIn.interval = p.Results.interval;
+            if(numel(p.Results.delta) == headerIn.dims)
+                headerIn.delta = p.Results.delta;
             else
-                error('Wrong size for interval');
+                error('Wrong size for delta');
             end
             DataContainer.io.memmap.serial.HeaderWrite...
-                (pathname,headerIn);
+                (path(pathname),headerIn);
             
             % Construct and set class attributes
             x = x@oCon('serial memmap',headerIn.size,headerIn.complex);
@@ -86,11 +86,7 @@ classdef oMatCon < oCon
         end % constructor
     end % protected methods
     
-    methods
-        % delete function
-        function delete(x)
-            DataContainer.io.memmap.serial.FileDelete(x.pathname);
-        end % delete
+    methods        
     end
     
     methods ( Static )

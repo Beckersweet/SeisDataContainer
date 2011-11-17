@@ -1,11 +1,13 @@
-function y = power(A,B)
-    if(isa(A,'oMatCon'))
-        A = A.pathname;
+function y = power(a,b)
+    aa = a;
+    bb = b;
+    if(isa(a,'oMatCon'))
+        aa = path(a.pathname);
     end
-    if(isa(B,'oMatCon'))
-        B = B.pathname;
+    if(isa(b,'oMatCon'))
+        bb = path(b.pathname);
     end
-    td = DataContainer.io.makeDir();
-    DataContainer.io.memmap.serial.FilePower(A,B,td);    
+    td = ConDir();
+    DataContainer.io.memmap.serial.FilePower(aa,bb,path(td));    
     y = oMatCon.load(td);
 end

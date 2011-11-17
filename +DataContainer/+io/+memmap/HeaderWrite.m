@@ -10,7 +10,7 @@ assert(ischar(file_name), 'file_name must be a string');
 dims        = header.dims;
 n           = header.size;
 d           = header.interval;
-o           = header.offset;
+o           = header.origin;
 l           = header.label;
 u           = header.unit;
 precision   = header.precision;

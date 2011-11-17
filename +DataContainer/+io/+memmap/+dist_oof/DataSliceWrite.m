@@ -5,7 +5,7 @@ function DataSliceWrite(dirname,dimensions,sliceIndex,varargin)
 %   reads the binary file specified by FILENAME and stores the real data in 
 %   seperate directories depending on the number of labs. 
 %   Addtional parameters include:
-%   OFFSET    - An integer specifying the number of bits to skip from the 
+%   ORIGIN    - An integer specifying the number of bits to skip from the 
 %               start of file before actual reading occurs, defaults to 0
 %   PRECISION - A string specifying the precision of one unit of data, 
 %               defaults to 'double' (8 bits)
@@ -19,7 +19,7 @@ function DataSliceWrite(dirname,dimensions,sliceIndex,varargin)
 % Setup variables
 precision; % = 'double';
 repeat; %    = inf;
-offset; %    = 0;
+origin; %    = 0;
 name      = ['slice' int2str(sliceIndex)];
 
 % Preprocess input arguments
@@ -30,7 +30,7 @@ assert(isnumeric(dimensions), 'dimensions must be numeric')
 p = inputParser;
 p.addParamValue('precision','double',@ischar);
 p.addParamValue('repeat',inf,@isscalar);
-p.addParamValue('offset',0,@isscalar);
+p.addParamValue('origin',0,@isscalar);
 p.parse(varargin{:});
 
 % error(nargchk(1, nargin, nargin, 'struct'));
@@ -45,7 +45,7 @@ p.parse(varargin{:});
 %     
 %     fieldname = lower(varargin{i});
 %     switch fieldname
-%         case {'offset', 'precision', 'repeat'}
+%         case {'origin', 'precision', 'repeat'}
 %             eval([fieldname ' = varargin{i+1};']);
 %         otherwise
 %             error('Parameter "%s" is unrecognized.', ...
@@ -71,14 +71,14 @@ spmd
     local_size  = [dimensions(1:end-2) loclabwidth];
     DataContainer.io.allocFile(dirname,prod(dimensions(1:end))*8,8);
     % Setup global memmapfile
-    outcoreoffset = offset + prod(dimensions(1:end-1))*(sliceIndex-1)*bytesize;
-    paroffset     = prod(dimensions(1:end-2))*sum(labwidth(1:labindex-1))*bytesize;
-    locoffset     = prod(local_size(1:end-1))*8-(8*dimensions(end));
+    outcoreorigin = origin + prod(dimensions(1:end-1))*(sliceIndex-1)*bytesize;
+    parorigin     = prod(dimensions(1:end-2))*sum(labwidth(1:labindex-1))*bytesize;
+    locorigin     = prod(local_size(1:end-1))*8-(8*dimensions(end));
     M = memmapfile([int2str(labindex) filesep name],'format',...
-        {precision,local_size,'x'},'offset',locoffset,'repeat',repeat);
+        {precision,local_size,'x'},'origin',locorigin,'repeat',repeat);
     % Setup memmap of local file
     MW = memmapfile(dirname,'format',{'double',local_size,'x'},...
-        'offset',outcoreoffset + paroffset,'writable',true,'repeat',repeat);
+        'origin',outcoreorigin + parorigin,'writable',true,'repeat',repeat);
     % Read global data and Write local data
     MW.data(1).x  = double(M.data(1).x);
 end % spmd

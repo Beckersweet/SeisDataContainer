@@ -20,7 +20,7 @@ function y = mldivide(A,B,swp)
             error('Error: First parameter should be 2D and n-by-n');
         end
         % Reading input header
-        headerB   = DataContainer.io.memmap.serial.HeaderRead(B.pathname);
+        headerB   = DataContainer.io.memmap.serial.HeaderRead(path(B.pathname));
         sizeB     = headerB.size;
         
         if(sizeA(2) == sizeB(1))
@@ -48,11 +48,11 @@ function y = mldivide(A,B,swp)
         end
         for i=1:prod(sizeB(sepDim:end))
             slice = DataContainer.io.memmap.serial.FileReadLeftSlice...
-                (B.pathname,i);
+                (path(B.pathname),i);
             slice = reshape(slice,sizeA(2),numel(slice)/sizeA(2));
             prodz = mldivide(double(A),slice);
             DataContainer.io.memmap.serial.FileWriteLeftSlice...
-                (y.pathname,prodz,i);
+                (path(y.pathname),prodz,i);
         end    
     end
 end
