@@ -4,7 +4,8 @@ function disp(x)
 %   all other ways it's the same as leaving the semicolon off an
 %   expression except that empty arrays don't display.
     if(dims(x)<20)
-        fprintf('oMatCon dataContainer\n\n');
+        fprintf(class(x));
+        fprintf(' dataContainer\n\n');
         fprintf('Variable:    ');
         fprintf('%c',variable(x));
         fprintf('\n');
