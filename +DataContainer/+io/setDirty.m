@@ -11,7 +11,7 @@ function status = setDirty(dirname,varargin)
 
     lockfile = fullfile(dirname,lockname);
     assert(~DataContainer.io.isFile(lockfile),...
-        'File is dirty: either operation in progress or using leftovers from crashed process')
+        'File %s\n\tis dirty: either operation in progress or using leftovers from crashed process',dirname)
     DataContainer.io.allocFile(lockfile,1,1);
     
 end

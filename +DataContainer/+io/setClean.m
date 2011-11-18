@@ -10,7 +10,7 @@ function status = setClean(dirname,varargin)
 
     lockfile = fullfile(dirname,lockname);
     assert(DataContainer.io.isFile(lockfile),...
-        'File seems to be already clean: probably missing prior setDirty?')
+        'File %s\n\tseems to be already clean: probably missing prior setDirty?',dirname)
     delete(lockfile);
 
 end
