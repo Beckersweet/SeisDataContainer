@@ -17,7 +17,7 @@ function disp(x)
         fprintf('Origin:      [');
         fprintf(' %d',origin(x));
         fprintf(' ]\n');
-        fprintf('Interval:    [');
+        fprintf('Delta:       [');
         fprintf(' %d',delta(x));
         fprintf(' ]\n');
         fprintf('Label:       [ ');
