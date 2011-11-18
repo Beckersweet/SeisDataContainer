@@ -11,6 +11,8 @@ function x = load(dirname,varargin)
 %                changes will be made on the existing file 
     if(~isa(dirname,'ConDir'))
         pathname = ConDir(dirname,'keep',true);
+    else
+        pathname = dirname;
     end
     x = oMatCon(pathname,varargin{:});
 end
