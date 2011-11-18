@@ -3,5 +3,9 @@ function y = load(dirname)
     y        = DataContainer.io.memmap.serial.FileRead(dirname);
     y        = distributed(y);
     y        = piCon(y);
-    y.header = DataContainer.io.memmap.serial.HeaderRead(dirname);
+    header   = DataContainer.io.memmap.serial.HeaderRead(dirname);
+    if(~iscell(header.size))
+        header.size = mat2cell(header.size);
+    end
+    y.header = header;    
 end
