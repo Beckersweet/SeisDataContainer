@@ -9,6 +9,9 @@ function FileWriteLeftSlice(dirname,x,slice)
 %   SLICE    - A vector specifying the slice index
 %
 %   Warning: If the specified dirname exists, it will be removed
+
+DataContainer.io.isFileClean(dirname);
+DataContainer.io.setFileDirty(dirname);
 error(nargchk(3, 3, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 assert(isfloat(x), 'data must be float')
@@ -25,5 +28,5 @@ if ~isreal(x)
     DataContainer.io.memmap.serial.DataWriteLeftSlice(dirname,'imag',imag(x),...
         header.size,slice,header.precision);
 end
-
+DataContainer.io.setFileClean(dirname);
 end

@@ -9,6 +9,9 @@ function FileTranspose(dirnameIn,dirnameOut,sepDim)
 %   SEPDIM     - A scalar specifying the separation dimension
 %
 %   Warning: If the specified output file already exists, it will be overwritten.
+
+DataContainer.io.isFileClean(dirnameIn);
+DataContainer.io.isFileClean(dirnameOut);
 error(nargchk(3, 3, nargin, 'struct'));
 assert(ischar(dirnameIn), 'input directory name must be a string')
 assert(isdir(dirnameIn),'Fatal error: input directory %s does not exist',dirnameIn);

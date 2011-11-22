@@ -4,7 +4,7 @@ function y = load(dirname)
     y        = iCon(y);
     header   = DataContainer.io.memmap.serial.HeaderRead(dirname);
     if(~iscell(header.size))
-        header.size = mat2cell(header.size);
+        header.size = {header.size};
     end
     y.header = header;
 end

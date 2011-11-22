@@ -11,11 +11,14 @@ function [x header] = FileReadLeftChunk(dirname,range,slice,varargin)
 %                 defaults to 'double' (8 bits)
 %                 Supported precisions: 'double', 'single'
 %
+
+DataContainer.io.isFileClean(dirname);
 error(nargchk(3, 4, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 assert(isdir(dirname),'Fatal error: directory %s does not exist',dirname);
 assert(isvector(range)&length(range)==2, 'range index must be a vector with 2 elements')
 assert(isvector(slice)|isequal(slice,[]), 'slice index must be a vector')
+assert(DataContainer.io.isFileClean(dirname));
 
 % Setup variables
 x_precision = 'double';
@@ -35,6 +38,5 @@ if header.complex
     dummy=DataContainer.io.memmap.serial.DataReadLeftChunk(dirname,'imag',...
         header.size,range,slice,header.precision,x_precision);
     x=complex(x,dummy);
-end
- 
+end 
 end

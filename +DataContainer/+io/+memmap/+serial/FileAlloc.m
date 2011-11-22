@@ -7,15 +7,15 @@ function FileAlloc(dirname,header)
 %   HEADER  - A header struct specifying the distribution
 %
 
+DataContainer.io.isFileClean(dirname);
+DataContainer.io.setFileDirty(dirname);
 error(nargchk(2, 2, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 assert(isstruct(header), 'header must be a header struct')
 assert(header.distributed==0,'header have file distribution for serial file alloc?')
 
-% Make Directory
-if isdir(dirname); rmdir(dirname,'s'); end;
-status = mkdir(dirname);
-assert(status,'Fatal error while creating directory %s',dirname);
+% Check Directory
+assert(isdir(dirname),'Fatal error: directory %s does not exist',dirname);
 
 % Write file
 DataContainer.io.memmap.serial.DataAlloc(dirname,'real',header.size,header.precision);
@@ -25,4 +25,5 @@ end
 % Write header
 DataContainer.io.memmap.serial.HeaderWrite(dirname,header);
 
+DataContainer.io.setFileClean(dirname);
 end

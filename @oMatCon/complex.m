@@ -7,7 +7,7 @@ function y = complex(a,b)
     if(isa(b,'oMatCon'))
         bb = path(b.pathname);
     end
-    td = ConDir();
+    td = ConDir();    
     DataContainer.io.memmap.serial.FileComplex...
         (aa,bb,path(td));
     y  = oMatCon.load(td);
