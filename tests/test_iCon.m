@@ -201,13 +201,26 @@ end
 
 function test_iCon_save_load
 %% save & load
+% No overwrite case
 n1 = randi(10);
 n2 = randi(10);
 td = ConDir();
-rmdir(path(td));
+rmdir(path(td),'s');
 A  = randn(n1,n2) + 1i*randn(n1,n2);
 B  = iCon(A);
 B.save(path(td));
+C  = iCon.load(path(td)); 
+assertEqual( double(C), A );
+
+% Overwrite case
+n1 = randi(10);
+n2 = randi(10);
+td = ConDir();
+A  = randn(n1,n2) + 1i*randn(n1,n2);
+B  = iCon(A);
+B.save(path(td),1);
+% save fails if we try the following since the directory already exists
+% B.save(path(td));
 C  = iCon.load(path(td)); 
 assertEqual( double(C), A );
 end % save & load
