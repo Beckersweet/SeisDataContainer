@@ -204,6 +204,7 @@ function test_iCon_save_load
 n1 = randi(10);
 n2 = randi(10);
 td = ConDir();
+rmdir(path(td));
 A  = randn(n1,n2) + 1i*randn(n1,n2);
 B  = iCon(A);
 B.save(path(td));
