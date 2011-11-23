@@ -36,7 +36,7 @@ classdef iCon < dataContainer
     methods
         
         % iCon Constructor
-        function x = iCon(data)
+        function x = iCon(data,varargin)
             
             % Check for data
             if isdistributed(data)
@@ -50,7 +50,7 @@ classdef iCon < dataContainer
             dims = size(data);
             
             % Construct class
-            x      = x@dataContainer('InCore',dims,num2cell(dims));
+            x      = x@dataContainer('InCore',dims,num2cell(dims),varargin{:});
             x.data = data;
             x.perm = num2cell(1:length(size(data)));
             x.header.precision = DataContainer.utils.getPrecision(data);

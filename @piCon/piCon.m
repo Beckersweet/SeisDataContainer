@@ -47,7 +47,7 @@ classdef (InferiorClasses = {?distributed,?codistributed}) piCon < iCon
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     methods
         
-        function x = piCon(data)
+        function x = piCon(data,varargin)
             
             % Distribute data if not distributed
             if ~isdistributed(data), data = distributed(data); end
@@ -64,7 +64,7 @@ classdef (InferiorClasses = {?distributed,?codistributed}) piCon < iCon
             end
             
             % Construct iCon
-            x           = x@iCon(data);
+            x           = x@iCon(data,varargin{:});
             cod         = cod{1};
             x.excoddims = cod.Dimension;
             x.excodpart = cod.Partition;
