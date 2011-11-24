@@ -16,7 +16,7 @@ function header = basicHeaderStruct(xsize,xprecision,xcomplex,varargin)
 %
 %   EXAMPLE:
 %       DataContainer.basicHeaderStruct([10 10],'double',1,...
-%           'varName','test','varUnits','m/s','origin',[1 2],'delta',[7 7],'unit',{'m','m'},'label',{'x','y'})
+%           'varName','velocity','varUnits','m/s','origin',[1 2],'delta',[7 7],'unit',{'m','m'},'label',{'x','y'})
 %
     header = struct();
     dims = length(xsize);

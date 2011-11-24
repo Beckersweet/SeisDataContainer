@@ -14,7 +14,7 @@ function header = basicHeaderStructFromX(x,varargin)
 %
 %   EXAMPLE:
 %       DataContainer.basicHeaderStructFromX(rand(10),...
-%           'varName','test','varUnits','m/s','origin',[1 2],'delta',[7 7],'unit',{'m','m'},'label',{'x','y'})
+%           'varName','velocity','varUnits','m/s','origin',[1 2],'delta',[7 7],'unit',{'m','m'},'label',{'x','y'})
 %
     header = struct();
     xsize = size(x);
