@@ -48,13 +48,15 @@ classdef oMatCon < oCon
                 error('Fail: Path does not exist');
             end
             
-            p.addParamValue('variable',headerIn.variable,@ischar);
+            p.addParamValue('varName',headerIn.varName,@ischar);
+            p.addParamValue('varUnits',headerIn.varUnits,@ischar);
             p.addParamValue('label',headerIn.label,@iscell);
             p.addParamValue('unit',headerIn.unit,@iscell);
             p.addParamValue('origin',headerIn.origin,@isvector);
             p.addParamValue('delta',headerIn.delta,@isvector);
             p.parse(varargin{:});
-            headerIn.variable = p.Results.variable;
+            headerIn.varName = p.Results.varName;
+            headerIn.varUnits = p.Results.varUnits;
             if(numel(p.Results.label) == headerIn.dims)
                 headerIn.label = p.Results.label;
             else

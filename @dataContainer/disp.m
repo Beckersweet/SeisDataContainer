@@ -7,58 +7,62 @@ function disp(x)
 %
 %   iCon dataContainer
 %
-%   Variable:    unknown
-%   Dims:        2
-%   Size:        [ 1 2 3 4 5 ...]
-%   Origin:      [ 0 0 0 0 0 ...]
-%   Delta:       [ 1 1 1 1 1 ...]
-%   Label:       [ l1 l2 l3 l4 l5 ...]
-%   Unit:        [ u1 u2 u3 u4 u5 ...]
-%   Precision:   double
-%   Complex:     No
-%   Distributed: No
+%   Variable Name:     unknown
+%   Variable Units:    unknown
+%   Dims:              2
+%   Size:              [ 1 2 3 4 5 ...]
+%   Origin:            [ 0 0 0 0 0 ...]
+%   Delta:             [ 1 1 1 1 1 ...]
+%   Label:             [ l1 l2 l3 l4 l5 ...]
+%   Unit:              [ u1 u2 u3 u4 u5 ...]
+%   Precision:         double
+%   Complex:           No
+%   Distributed:       No
 
 if(dims(x)<20)
     fprintf(class(x));
     fprintf(' dataContainer\n\n');
-    fprintf('Variable:    ');
-    fprintf('%c',variable(x));
+    fprintf('Variable Name:     ');
+    fprintf('%c',varName(x));
     fprintf('\n');
-    fprintf('Dims:       ');
+    fprintf('Variable Units:    ');
+    fprintf('%c',varUnits(x));
+    fprintf('\n');
+    fprintf('Dims:             ');
     fprintf(' %d\n',dims(x));
-    fprintf('Size:        [');
+    fprintf('Size:              [');
     fprintf(' %d',size(x));
     fprintf(' ]\n');
-    fprintf('Origin:      [');
+    fprintf('Origin:            [');
     fprintf(' %d',origin(x));
     fprintf(' ]\n');
-    fprintf('Delta:       [');
+    fprintf('Delta:             [');
     fprintf(' %d',delta(x));
     fprintf(' ]\n');
-    fprintf('Label:       [ ');
+    fprintf('Label:             [ ');
     labels = label(x);
     for i=1:dims(x)
         fprintf('%c',labels{i});
         fprintf(' ');
     end
     fprintf(']\n');
-    fprintf('Unit:        [ ');
+    fprintf('Unit:              [ ');
     units = unit(x);
     for i=1:dims(x)
         fprintf('%c',units{i});
         fprintf(' ');
     end
     fprintf(']\n');
-    fprintf('Precision:   ');
+    fprintf('Precision:         ');
     fprintf('%c',precision(x));
     fprintf('\n');
-    fprintf('Complex:     ');
+    fprintf('Complex:           ');
     if(~isreal(x))
         fprintf('Yes\n');
     else
         fprintf('No\n');
     end
-    fprintf('Distributed: ');
+    fprintf('Distributed:       ');
     if(isdistributed(x))
         fprintf('Yes\n');
     else

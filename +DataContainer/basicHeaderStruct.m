@@ -7,8 +7,8 @@ function header = basicHeaderStruct(xsize,xprecision,xcomplex,varargin)
 %       XCOMPLEX   - scalar flag for complex X (0 for real or 1 for complex)
 %
 %   Optional keyword arguments:
-%       'varname' - string holding the name of variable
-%       'varunits' - string holding the units of variable
+%       'varName' - string holding the name of variable
+%       'varUnits' - string holding the units of variable
 %       'origin' - row vector holding the origin coordinate for ach axis
 %       'delta' - row vector holding the delta of coordinate value for each axis
 %       'unit' - cell array of strings with units for each axis
@@ -16,13 +16,13 @@ function header = basicHeaderStruct(xsize,xprecision,xcomplex,varargin)
 %
 %   EXAMPLE:
 %       DataContainer.basicHeaderStruct([10 10],'double',1,...
-%           'varname','test','varunits','m/s','origin',[1 2],'delta',[7 7],'unit',{'m','m'},'label',{'x','y'})
+%           'varName','test','varUnits','m/s','origin',[1 2],'delta',[7 7],'unit',{'m','m'},'label',{'x','y'})
 %
     header = struct();
     dims = length(xsize);
 
-    header.varname = 'unknown';
-    header.varunits = 'unknown';
+    header.varName = 'unknown';
+    header.varUnits = 'unknown';
     header.dims = dims;
     header.size = xsize;
     header.origin = zeros(1,dims);
@@ -43,16 +43,16 @@ function header = basicHeaderStruct(xsize,xprecision,xcomplex,varargin)
     header.distributed = 0;
 
     p = inputParser;
-    p.addParamValue('varname',header.varname,@ischar);
-    p.addParamValue('varunits',header.varunits,@ischar);
+    p.addParamValue('varName',header.varName,@ischar);
+    p.addParamValue('varUnits',header.varUnits,@ischar);
     p.addParamValue('origin',header.origin,@(x)isrow(x)&&length(x)==dims);
     p.addParamValue('delta',header.delta,@(x)isrow(x)&&length(x)==dims);
     p.addParamValue('unit',header.unit,@(x)iscell(x)&&length(x)==dims);
     p.addParamValue('label',header.label,@(x)iscell(x)&&length(x)==dims);
     p.parse(varargin{:});
 
-    header.varname = p.Results.varname;
-    header.varunits = p.Results.varunits;
+    header.varName = p.Results.varName;
+    header.varUnits = p.Results.varUnits;
     header.origin = p.Results.origin;
     header.delta = p.Results.delta;
     header.unit = p.Results.unit;
