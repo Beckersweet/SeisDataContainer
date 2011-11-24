@@ -1,6 +1,6 @@
 function save(obj,dirname,overwrite)
 %PICON.SAVE Saves piCon to file
-%
+% piCon.save(DIRNAME, OVERWRITE) saves our piCon to DIRNAME
 % Optional argument:
 % overwrite is 1 for overwrite and 0 otherwise
 

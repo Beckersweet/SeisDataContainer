@@ -1,8 +1,8 @@
 function save(obj,dirname,overwrite)
-%SAVE Saves iCon to file
-%
+% ICON.SAVE Saves piCon to file
+% iCon.save(DIRNAME, OVERWRITE) saves our iCon to DIRNAME
 % Optional argument:
-% OVERWRITE: 1 for overwrite case and 0 otherwise
+% overwrite is 1 for overwrite and 0 otherwise
 
 if(nargin == 2)
     overwrite = 0;
