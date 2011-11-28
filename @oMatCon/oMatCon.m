@@ -1,14 +1,14 @@
 classdef oMatCon < oCon
     %OMATCON  Memory-mapping out-of-core data container for binaries
     %
-    %   oMatCon(DATA,PARAM1,VALUE1,...)
+    %   oMatCon(PATHNAME,PARAM1,VALUE1,PARAM2,VALUE2...)
     %
     %   pathname   - The directory name for loading a file
     %
     %   Optional argument is either of:
-    %   ORIGIN     - The offset for file
+    %   ORIGIN     - The offset for data
+    %   DELTA      - The interval for data
     %   PRECISION  - Either 'single' or 'double'
-    %   REPEAT     - 1 for repeat and 0 otherwise
     %   READONLY   - 1 makes the data container readonly
     %   COPY       - 1 creates a copy of the file when loading, otherwise 
     %                changes will be made on the existing file 
@@ -29,7 +29,6 @@ classdef oMatCon < oCon
             % Parse param-value pairs using input parser
             p = inputParser;            
             p.addParamValue('precision','double',@ischar);
-            p.addParamValue('repeat',0,@isscalar);
             p.addParamValue('readonly',0,@isscalar);
             p.addParamValue('copy',0,@isscalar);
             p.KeepUnmatched = true;
