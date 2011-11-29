@@ -52,9 +52,13 @@ classdef oMatCon < oCon
             x.pathname           = td;
             x.readOnly           = p.Results.readonly;
             
+            % devide wether the container is basic or not
             if isempty(fieldnames(p.Unmatched))
+                % this means that we are actually loading a previously
+                % saved dataContainer and it's not basic
                 x.header             = headerIn;
             else 
+                % basic case
                 x.header.size        = headerIn.size;
                 x.header.dims        = headerIn.dims;
                 x.header.complex     = headerIn.complex;
