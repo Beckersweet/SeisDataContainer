@@ -18,7 +18,7 @@ classdef oCon < dataContainer
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %   Constructor
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        function x = oCon(type,dims,iscomplex)
+        function x = oCon(type,dims,iscomplex,varargin)
             % Constructor for the out-of-core data container class
             % Not supposed to be called by user
             
@@ -27,7 +27,7 @@ classdef oCon < dataContainer
             assert(isvector(dims), 'Dimensions must be a vector')
             
             % Construct
-            x           = x@dataContainer(type,dims,dims);
+            x           = x@dataContainer(type,dims,dims,varargin{:});
             x.iscomplex = iscomplex;
 %             x.excoddims = length(dims) - 1;
 %             x.imcoddims = x.excoddims;

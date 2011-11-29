@@ -48,7 +48,7 @@ classdef oMatCon < oCon
             end
                     
             % Construct and set class attributes
-            x                    = x@oCon('serial memmap',headerIn.size,headerIn.complex);
+            x                    = x@oCon('serial memmap',headerIn.size,headerIn.complex,varargin{:});
             x.pathname           = td;
             x.header.size        = headerIn.size;
             x.header.dims        = headerIn.dims;
