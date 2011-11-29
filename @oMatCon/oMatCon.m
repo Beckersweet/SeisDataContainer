@@ -30,10 +30,10 @@ classdef oMatCon < oCon
             p = inputParser;            
             p.addParamValue('precision','double',@ischar);
             p.addParamValue('readonly',0,@isscalar);
-            p.addParamValue('copy',0,@isscalar);
+            p.addParamValue('copy',0,@isscalar);            
             p.KeepUnmatched = true;
             p.parse(varargin{:});
-            
+                        
             if (isa(pathname,'ConDir') && exist(pathname)) % Loading file
                 if(p.Results.copy == 0) % overwrite case
                     headerIn = DataContainer.io.memmap.serial.HeaderRead(path(pathname));
@@ -48,13 +48,18 @@ classdef oMatCon < oCon
             end
                     
             % Construct and set class attributes
-            x                    = x@oCon('serial memmap',headerIn.size,headerIn.complex,varargin{:});
+            x                    = x@oCon('serial memmap',headerIn.size,headerIn.complex,p.Unmatched);
             x.pathname           = td;
-            x.header.size        = headerIn.size;
-            x.header.dims        = headerIn.dims;
-            x.header.complex     = headerIn.complex;
-            x.header.distributed = headerIn.distributed;
             x.readOnly           = p.Results.readonly;
+            
+            if isempty(fieldnames(p.Unmatched))
+                x.header             = headerIn;
+            else 
+                x.header.size        = headerIn.size;
+                x.header.dims        = headerIn.dims;
+                x.header.complex     = headerIn.complex;
+                x.header.distributed = headerIn.distributed;
+            end
             
             % Writing header on disk
             DataContainer.io.memmap.serial.HeaderWrite...

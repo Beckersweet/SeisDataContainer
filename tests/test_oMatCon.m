@@ -57,6 +57,71 @@ end
 assertEqual(imag(x),imag(y));
 end % imag
 
+function test_oMatCon_inputParser
+%% inputParser
+y = oMatCon.randn(3,3,3,'varName','Velocity','varUnits','m/s','label',...
+    {'source1' 'source1' 'source1'},'unit',{'m/s' 'm/s^2' 'm/s'});
+y = complex(y,0);
+y = y + 1i*randn(3,3,3);
+assertEqual(varName(y),'Velocity');
+assertEqual(varUnits(y),'m/s');
+assertEqual(label(y),{'source1' 'source1' 'source1'});
+assertEqual(unit(y),{'m/s' 'm/s^2' 'm/s'});
+
+% saving the dataContainer
+td = ConDir();
+y.save(path(td));
+
+% testing different load modes and making sure the arguments match
+w = oMatCon.load(path(td),'copy',0);
+assertEqual(varName(y),varName(w));
+assertEqual(varUnits(y),varUnits(w));
+assertEqual(label(y),label(w));
+assertEqual(unit(y),unit(w));
+
+w = oMatCon.load(path(td),'copy',1);
+assertEqual(varName(y),varName(w));
+assertEqual(varUnits(y),varUnits(w));
+assertEqual(label(y),label(w));
+assertEqual(unit(y),unit(w));
+
+w = oMatCon.load(path(td),'readonly',0);
+assertEqual(varName(y),varName(w));
+assertEqual(varUnits(y),varUnits(w));
+assertEqual(label(y),label(w));
+assertEqual(unit(y),unit(w));
+
+w = oMatCon.load(path(td),'readonly',1);
+assertEqual(varName(y),varName(w));
+assertEqual(varUnits(y),varUnits(w));
+assertEqual(label(y),label(w));
+assertEqual(unit(y),unit(w));
+
+w = oMatCon.load(path(td),'copy',0,'readonly',0);
+assertEqual(varName(y),varName(w));
+assertEqual(varUnits(y),varUnits(w));
+assertEqual(label(y),label(w));
+assertEqual(unit(y),unit(w));
+
+w = oMatCon.load(path(td),'copy',0,'readonly',1);
+assertEqual(varName(y),varName(w));
+assertEqual(varUnits(y),varUnits(w));
+assertEqual(label(y),label(w));
+assertEqual(unit(y),unit(w));
+
+w = oMatCon.load(path(td),'copy',1,'readonly',0);
+assertEqual(varName(y),varName(w));
+assertEqual(varUnits(y),varUnits(w));
+assertEqual(label(y),label(w));
+assertEqual(unit(y),unit(w));
+
+w = oMatCon.load(path(td),'copy',1,'readonly',1);
+assertEqual(varName(y),varName(w));
+assertEqual(varUnits(y),varUnits(w));
+assertEqual(label(y),label(w));
+assertEqual(unit(y),unit(w));
+end % inputParser
+
 function test_oMatCon_io
 %% io
 y = oMatCon.randn(3,5,3,6);
