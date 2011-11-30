@@ -6,7 +6,6 @@ function test_oMatCon_complex
 %% complex
 y = oMatCon.randn(3,3,3);
 y = complex(y,0);
-return
 y = y + 1i*randn(3,3,3);
 x = randn(3,3,3);
 for i=1:3
@@ -70,7 +69,7 @@ assertEqual(unit(y),{'m/s' 'm/s^2' 'm/s'});
 
 % saving the dataContainer
 td = ConDir();
-y.save(path(td));
+y.save(path(td),1);
 
 % testing different load modes and making sure the arguments match
 w = oMatCon.load(path(td),'copy',0);
@@ -341,7 +340,7 @@ for i=1:3
 end
 assertEqual(x,y);
 td = ConDir();
-y.save(path(td));
+y.save(path(td),1);
 z = oMatCon.load(td);
 assertEqual(x,z);
 assertEqual(z,y);

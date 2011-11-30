@@ -19,4 +19,3 @@ assert(status,'Fatal error while creating directory %s',dirname);
 DataContainer.io.memmap.serial.FileWrite(dirname,double(obj));
 DataContainer.io.memmap.serial.HeaderWrite(dirname,header);
 end
-
