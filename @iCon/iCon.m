@@ -50,7 +50,7 @@ classdef iCon < dataContainer
             dims = size(data);
             
             % Construct class
-            x      = x@dataContainer('InCore',dims,num2cell(dims),varargin{:});
+            x      = x@dataContainer('InCore',dims,num2cell(dims),struct(),varargin{:});
             x.data = data;
             x.perm = num2cell(1:length(size(data)));
             x.header.precision = DataContainer.utils.getPrecision(data);

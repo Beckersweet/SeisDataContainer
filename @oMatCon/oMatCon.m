@@ -48,22 +48,9 @@ classdef oMatCon < oCon
             end
                     
             % Construct and set class attributes
-            x                    = x@oCon('serial memmap',headerIn.size,headerIn.complex,p.Unmatched);
+            x                    = x@oCon('serial memmap',headerIn,p.Unmatched);
             x.pathname           = td;
             x.readOnly           = p.Results.readonly;
-            
-            % devide wether the container is basic or not
-            if isempty(fieldnames(p.Unmatched))
-                % this means that we are actually loading a previously
-                % saved dataContainer and it's not basic
-                x.header             = headerIn;
-            else 
-                % basic case
-                x.header.size        = headerIn.size;
-                x.header.dims        = headerIn.dims;
-                x.header.complex     = headerIn.complex;
-                x.header.distributed = headerIn.distributed;
-            end
             
             % Writing header on disk
             DataContainer.io.memmap.serial.HeaderWrite...
