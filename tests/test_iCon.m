@@ -47,6 +47,28 @@ B  = iCon(A);
 assertEqual( imag(A), double( imag(B) ) );
 end % horzcat
 
+function test_oMatCon_inputParser
+%% inputParser
+y = iCon.randn(3,3,3,'varName','Velocity','varUnits','m/s','label',...
+    {'source1' 'source1' 'source1'},'unit',{'m/s' 'm/s^2' 'm/s'});
+
+assertEqual(varName(y),'Velocity');
+assertEqual(varUnits(y),'m/s');
+assertEqual(label(y),{'source1' 'source1' 'source1'});
+assertEqual(unit(y),{'m/s' 'm/s^2' 'm/s'});
+
+% saving the dataContainer
+td = ConDir();
+y.save(path(td),1);
+
+% testing the header attributes after loading
+w = iCon.load(path(td));
+assertEqual(varName(y),varName(w));
+assertEqual(varUnits(y),varUnits(w));
+assertEqual(label(y),label(w));
+assertEqual(unit(y),unit(w));
+end % inputParser
+
 function test_iCon_inv
 %% inv
 n1 = randi(10);
