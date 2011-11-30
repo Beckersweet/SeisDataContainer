@@ -127,6 +127,13 @@ assertEqual( double( A * iCon(B) ), C);
 assertEqual( double( iCon(A) * iCon(B) ), C);
 end % mtimes
 
+function test_iCon_ones
+%% ones
+n1 = randi(10);
+n2 = randi(10);
+assertEqual( double(iCon.ones(n1,n2)), ones(n1,n2) );
+end % ones
+
 function test_iCon_opMatrix
 %% opMatrix
 n1 = randi(10);

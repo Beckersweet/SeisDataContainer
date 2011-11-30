@@ -64,6 +64,9 @@ classdef iCon < dataContainer
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     methods ( Static )
         
+        % ones
+        x = ones(varargin);
+        
         % randn
         x = randn(varargin);
         
