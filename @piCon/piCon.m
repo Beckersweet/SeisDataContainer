@@ -81,6 +81,9 @@ classdef (InferiorClasses = {?distributed,?codistributed}) piCon < iCon
     methods ( Static )
         
         % randn
+        x = ones(varargin)
+        
+        % randn
         x = randn(varargin)
         
         % zeros

@@ -128,6 +128,13 @@ assertEqual( gather(double( A * piCon(B) )), C);
 assertEqual( gather(double( piCon(A) * piCon(B) )), C);
 end % mtimes
 
+function test_piCon_ones
+%% ones
+n1 = randi(10);
+n2 = randi(10);
+assertEqual( double(piCon.ones(n1,n2)), distributed.ones(n1,n2) );
+end % ones
+
 function test_piCon_permute
 %% Testing permute and invpermute
 n1 = randi([2,10]);

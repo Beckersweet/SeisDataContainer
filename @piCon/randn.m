@@ -13,4 +13,9 @@ function x = randn(varargin)
 %   Negative integers are treated as 0.
 %   - The data is always distributed to the last dimension
 
-x = piCon(distributed.randn(varargin{:}));
+stringIndex = DataContainer.utils.getFirstStringIndex(varargin{:});
+if(stringIndex)
+    x = piCon(distributed.randn(varargin{1:stringIndex-1}),varargin{stringIndex:end});
+else
+    x = piCon(distributed.randn(varargin{:}));
+end
