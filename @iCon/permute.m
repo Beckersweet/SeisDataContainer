@@ -28,6 +28,7 @@ end
 y = iCon(permute(x.data,perm));
 
 % Set variables
+y.header = DataContainer.permuteHeaderStruct(x.header,perm);
 y.perm   = toperm;
 y.exsize = tgsize;
 y.header.size = tgisize;
