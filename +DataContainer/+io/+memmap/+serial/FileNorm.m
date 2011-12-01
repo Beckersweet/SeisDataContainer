@@ -10,6 +10,8 @@ function x = FileNorm( dirname,dimensions,norm,file_precision )
 %   DIMENSIONS     - A scalar vector specifying the dimensions
 %   FILE_PRECISION - An string specifying the file_precision of one unit of 
 %                    data, Supported precisions: 'double' or 'single'
+
+DataContainer.io.isFileClean(dirname);
 error(nargchk(4, 4, nargin, 'struct'));
 assert(ischar(dirname), 'input directory name must be a string')
 assert(isvector(dimensions), 'dimensions must be a vector')

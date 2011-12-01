@@ -49,15 +49,34 @@ classdef dataContainer
     methods
         
         % DataCon Constructor
-        function x = dataContainer(type,exsize,imsize)
-            
+        function x = dataContainer(type,exsize,imsize,headerIn,varargin)
+            x.header = headerIn;
             % Check number of arguments
-            assert(nargin == 3,'There must be exactly 3 input arguments')
+            assert(nargin >= 3,'There must be at least 3 input arguments')
             
             % Set attributes
             x.type   = type;
             x.exsize = exsize;
-            x.header = DataContainer.basicHeaderStruct(imsize,'double',false);
+            if isempty(fieldnames(x.header))
+                x.header = DataContainer.basicHeaderStruct(imsize,'double',false);
+            end
+
+            % parse extra arguments
+            ldims = length(imsize);
+            p = inputParser;
+            p.addParamValue('varName',x.header.varName,@ischar);
+            p.addParamValue('varUnits',x.header.varUnits,@ischar);
+            p.addParamValue('origin',x.header.origin,@(x)isrow(x)&&length(x)==ldims);
+            p.addParamValue('delta',x.header.delta,@(x)isrow(x)&&length(x)==ldims);
+            p.addParamValue('unit',x.header.unit,@(x)iscell(x)&&length(x)==ldims);
+            p.addParamValue('label',x.header.label,@(x)iscell(x)&&length(x)==ldims);
+            p.parse(varargin{:});
+            x.header.varName  = p.Results.varName;
+            x.header.varUnits = p.Results.varUnits;
+            x.header.origin   = p.Results.origin;
+            x.header.delta    = p.Results.delta;
+            x.header.unit     = p.Results.unit;
+            x.header.label    = p.Results.label;
             
         end % Constructor
         

@@ -18,21 +18,13 @@ classdef oCon < dataContainer
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %   Constructor
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        function x = oCon(type,dims,iscomplex)
+        function x = oCon(type,headerIn,varargin)
             % Constructor for the out-of-core data container class
             % Not supposed to be called by user
             
-            % Preprocess input arguments
-            assert(isnumeric(dims),'Dimensions must be a numeric')
-            assert(isvector(dims), 'Dimensions must be a vector')
-            
-            % Construct
-            x           = x@dataContainer(type,dims,dims);
-            x.iscomplex = iscomplex;
-%             x.excoddims = length(dims) - 1;
-%             x.imcoddims = x.excoddims;
-%             x.excodpart = DataContainer.utils.defaultDistribution(dims(end-1));
-%             x.imcodpart = x.excodpart;
+            % Construct            
+            x           = x@dataContainer(type,headerIn.size,headerIn.size,headerIn,varargin{:});
+            x.iscomplex = headerIn.complex;
                         
         end % constructor
     end % protected methods

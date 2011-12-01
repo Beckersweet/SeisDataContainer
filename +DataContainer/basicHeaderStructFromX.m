@@ -5,7 +5,8 @@ function header = basicHeaderStructFromX(x,varargin)
 %       X - MATLAB array
 %
 %   Optional keyword arguments:
-%       'variable' - string holding the name of variable
+%       'varName' - string holding the name of variable
+%       'varUnits' - string holding the units of variable
 %       'origin' - row vector holding the origin coordinate for ach axis
 %       'delta' - row vector holding the delta of coordinate value for each axis
 %       'unit' - cell array of strings with units for each axis
@@ -13,7 +14,7 @@ function header = basicHeaderStructFromX(x,varargin)
 %
 %   EXAMPLE:
 %       DataContainer.basicHeaderStructFromX(rand(10),...
-%           'variable','test','origin',[1 2],'delta',[7 7],'unit',{'m','m'},'label',{'x','y'})
+%           'varName','velocity','varUnits','m/s','origin',[1 2],'delta',[7 7],'unit',{'m','m'},'label',{'x','y'})
 %
     header = struct();
     xsize = size(x);
@@ -21,7 +22,8 @@ function header = basicHeaderStructFromX(x,varargin)
     xcomplex = ~isreal(x);
     dims = length(xsize);
 
-    header.variable = 'unknown';
+    header.varName = 'unknown';
+    header.varUnits = 'unknown';
     header.dims = dims;
     header.size = xsize;
     header.origin = zeros(1,dims);
@@ -42,14 +44,16 @@ function header = basicHeaderStructFromX(x,varargin)
     header.distributed = 0;
 
     p = inputParser;
-    p.addParamValue('variable',header.variable,@ischar);
+    p.addParamValue('varName',header.varName,@ischar);
+    p.addParamValue('varUnits',header.varUnits,@ischar);
     p.addParamValue('origin',header.origin,@(x)isrow(x)&&length(x)==dims);
     p.addParamValue('delta',header.delta,@(x)isrow(x)&&length(x)==dims);
     p.addParamValue('unit',header.unit,@(x)iscell(x)&&length(x)==dims);
     p.addParamValue('label',header.label,@(x)iscell(x)&&length(x)==dims);
     p.parse(varargin{:});
 
-    header.variable = p.Results.variable;
+    header.varName = p.Results.varName;
+    header.varUnits = p.Results.varUnits;
     header.origin = p.Results.origin;
     header.delta = p.Results.delta;
     header.unit = p.Results.unit;

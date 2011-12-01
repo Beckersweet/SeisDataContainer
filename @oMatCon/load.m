@@ -14,5 +14,5 @@ function x = load(dirname,varargin)
     else
         pathname = dirname;
     end
-    x = oMatCon(pathname,varargin{:});
+    x = oMatCon(pathname,varargin{:});    
 end

@@ -6,9 +6,9 @@ function obj = subsasgn(obj,s,val)
            obj = builtin('subsasgn',obj,s,val);
        case '()'
            if strcmp(class(val),'testSub')
-              error('testSub:subsasgn',...
+               error('testSub:subsasgn',...
                    'Object must be scalar')
-           elseif strcmp(class(val),'double')
+           elseif (strcmp(class(val),'iCon') || strcmp(class(val),'double'))
                obj.putFile(s(1).subs,val);
            end
        otherwise

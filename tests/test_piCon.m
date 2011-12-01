@@ -41,6 +41,28 @@ B  = piCon(A);
 assertEqual( imag(A), double( imag(B) ) );
 end % horzcat
 
+function test_oMatCon_inputParser
+%% inputParser
+y = piCon.randn(3,3,3,'varName','Velocity','varUnits','m/s','label',...
+    {'source1' 'source1' 'source1'},'unit',{'m/s' 'm/s^2' 'm/s'});
+
+assertEqual(varName(y),'Velocity');
+assertEqual(varUnits(y),'m/s');
+assertEqual(label(y),{'source1' 'source1' 'source1'});
+assertEqual(unit(y),{'m/s' 'm/s^2' 'm/s'});
+
+% saving the dataContainer
+td = ConDir();
+y.save(path(td),1);
+
+% testing the header attributes after loading
+w = piCon.load(path(td));
+assertEqual(varName(y),varName(w));
+assertEqual(varUnits(y),varUnits(w));
+assertEqual(label(y),label(w));
+assertEqual(unit(y),unit(w));
+end % inputParser
+
 % function test_piCon_inv
 % %% inv
 % n1 = randi(10);
@@ -128,6 +150,13 @@ assertEqual( gather(double( A * piCon(B) )), C);
 assertEqual( gather(double( piCon(A) * piCon(B) )), C);
 end % mtimes
 
+function test_piCon_ones
+%% ones
+n1 = randi(10);
+n2 = randi(10);
+assertEqual( double(piCon.ones(n1,n2)), distributed.ones(n1,n2) );
+end % ones
+
 function test_piCon_permute
 %% Testing permute and invpermute
 n1 = randi([2,10]);
@@ -192,14 +221,28 @@ assertEqual( gather( double(reshape(piCon(x),n1*n2,n3*n4)) ),...
     reshape(x,n1*n2,n3*n4) );
 end % reshape
 
-function test_iCon_save_load
+function test_piCon_save_load
 %% save & load
+% No overwrite case
+n1 = randi(10);
+n2 = randi(10);
+td = ConDir();
+rmdir(path(td));
+A  = distributed( randn(n1,n2) + 1i*randn(n1,n2) );
+B  = piCon(A);
+B.save(path(td));
+C  = piCon.load(path(td)); 
+assertEqual( double(C), A );
+
+% Overwrite case
 n1 = randi(10);
 n2 = randi(10);
 td = ConDir();
 A  = distributed( randn(n1,n2) + 1i*randn(n1,n2) );
 B  = piCon(A);
-B.save(path(td));
+B.save(path(td),1);
+% save fails if we try the following since the directory already exists
+% B.save(path(td));
 C  = piCon.load(path(td)); 
 assertEqual( double(C), A );
 end % save & load

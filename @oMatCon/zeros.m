@@ -21,6 +21,9 @@ function x = zeros(varargin)
     stringIndex = DataContainer.utils.getFirstStringIndex(varargin{:});    
     if(stringIndex)
         xsize = cell2mat(varargin(1:stringIndex-1));
+        if(length(xsize) == 1)
+            xsize(2) = xsize;           
+        end
         p = inputParser;
         p.addParamValue('precision','double',@ischar);
         p.KeepUnmatched = true;
@@ -28,6 +31,9 @@ function x = zeros(varargin)
         xprecision = p.Results.precision;
     else
         xsize = cell2mat(varargin);
+        if(length(xsize) == 1)
+            xsize(2) = xsize;           
+        end
         xprecision = 'double';
     end
     

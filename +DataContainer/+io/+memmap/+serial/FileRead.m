@@ -9,9 +9,12 @@ function [x header] = FileRead(dirname,varargin)
 %                 defaults to 'double' (8 bits)
 %                 Supported precisions: 'double', 'single'
 %
+
+DataContainer.io.isFileClean(dirname);
 error(nargchk(1, 2, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 assert(isdir(dirname),'Fatal error: directory %s does not exist',dirname);
+assert(DataContainer.io.isFileClean(dirname));
 
 % Setup variables
 x_precision = 'double';
@@ -31,6 +34,5 @@ if header.complex
     dummy=DataContainer.io.memmap.serial.DataRead(dirname,'imag',...
         header.size,header.precision,x_precision);
     x=complex(x,dummy);
-end
- 
+end 
 end

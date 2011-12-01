@@ -9,6 +9,8 @@ function FileReshape(dirnameIn,dirnameOut,shape)
 %   DIRNAMEOUT - A string specifying the output directory
 %   SHAPE      - A vector specifying the new shape size
 
+DataContainer.io.isFileClean(dirnameIn);
+DataContainer.io.isFileClean(dirnameOut);
 error(nargchk(3, 3, nargin, 'struct'));
 assert(ischar(dirnameIn), 'input directory name must be a string')
 assert(isdir(dirnameIn),'Fatal error: input directory %s does not exist',dirnameIn);

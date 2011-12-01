@@ -16,6 +16,9 @@ function FileWrite(dirname,x,varargin)
 %                    or DataContainer.basicHeaderStruct
 %
 %   Warning: If the specified dirname exists, it will be removed.
+
+DataContainer.io.isFileClean(dirname);
+DataContainer.io.setFileDirty(dirname);
 error(nargchk(2, 3, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 assert(isfloat(x), 'data must be float')
@@ -39,10 +42,8 @@ if nargin>2
 end;
 DataContainer.verifyHeaderStructWithX(header,x);
 
-% Make Directory
-if isdir(dirname); rmdir(dirname,'s'); end;
-status = mkdir(dirname);
-assert(status,'Fatal error while creating directory %s',dirname);
+% Check Directory
+assert(isdir(dirname),'Fatal error: directory %s does not exist',dirname);
 
 % Write file
 DataContainer.io.memmap.serial.DataAlloc(dirname,'real',size(x),f_precision);
@@ -53,5 +54,5 @@ if ~isreal(x)
 end
 % Write header
 DataContainer.io.memmap.serial.HeaderWrite(dirname,header);
-
+DataContainer.io.setFileClean(dirname);
 end

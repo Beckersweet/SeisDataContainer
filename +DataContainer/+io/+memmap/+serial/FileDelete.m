@@ -6,6 +6,8 @@ function FileDelete(dirname)
 %   DIRNAME - A string specifying the directory name
 %
 %   Warning: The specified directory must exist.
+
+DataContainer.io.isFileClean(dirname);
 error(nargchk(1, 1, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 
@@ -18,5 +20,4 @@ if isdir(dirname)
 else
     warning('SeisDataContainer:memmap:serial:FileDelete','directory %s does not exist',dirname);
 end
-
 end
