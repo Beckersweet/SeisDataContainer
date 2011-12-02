@@ -1,20 +1,19 @@
 function disp(x)
 %DISP Display function for all dataContainers.
 %   DISP(X) displays the header of our dataContainer and not the data
-%   itself. Displaying a dataContainer with default header values looks
-%   like:
-%
+%   itself. Displaying a dataContainer with default header values for double
+%   real serial array looks like:
 %
 %   iCon dataContainer
 %
 %   Variable Name:     unknown
 %   Variable Units:    unknown
-%   Dims:              2
-%   Size:              [ 1 2 3 4 5 ...]
-%   Origin:            [ 0 0 0 0 0 ...]
-%   Delta:             [ 1 1 1 1 1 ...]
-%   Label:             [ l1 l2 l3 l4 l5 ...]
-%   Unit:              [ u1 u2 u3 u4 u5 ...]
+%   Dims:              n
+%   Size:              [ S1 S2 ... Sn]
+%   Origin:            [ O1 O2 ... On]
+%   Delta:             [ D1 D2 ... Dn]
+%   Label:             [ L1 L2 ... Ln]
+%   Unit:              [ U1 U2 ... Un]
 %   Precision:         double
 %   Complex:           No
 %   Distributed:       No
