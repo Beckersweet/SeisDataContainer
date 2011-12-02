@@ -28,6 +28,10 @@ if length(s) > 1
            end
            return;
        end
+       if (strcmp(s(1).type,'.') && strcmp(s(1).subs,'modifyHeader'))
+           varargout = x.modifyHeader(s(2).subs);
+           return;
+       end
        result = x;
        for i=1:length(s)
           if iscell(result)

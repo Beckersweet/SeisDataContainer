@@ -38,6 +38,11 @@ classdef iCon < dataContainer
         % iCon Constructor
         function x = iCon(data,varargin)
             
+            p = inputParser;
+            p.addParamValue('header',struct(),@isstruct);
+            p.KeepUnmatched = true;
+            p.parse(varargin{:});
+            
             % Check for data
             if isdistributed(data)
                 assert(strcmp(classUnderlying(data),'double'),...
@@ -50,7 +55,7 @@ classdef iCon < dataContainer
             dims = size(data);
             
             % Construct class
-            x      = x@dataContainer('InCore',dims,num2cell(dims),struct(),varargin{:});
+            x      = x@dataContainer('InCore',dims,num2cell(dims),p.Results.header,p.Unmatched);                
             x.data = data;
             x.perm = num2cell(1:length(size(data)));
             x.header.precision = DataContainer.utils.getPrecision(data);
