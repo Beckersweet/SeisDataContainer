@@ -1,8 +1,8 @@
 function FileConj(dirnameIn,dirnameOut)
 %FILECONJ
 %
-%   FileConj(A,TD) allocates file and calculates the complex conjugate of
-%   the input file. 
+%   FileConj(DIRNAMEIN,DIRNAMEOUT) allocates file and calculates the 
+%   complex conjugate of the input file. 
 %
 %   DIRNAMEIN   - A string specifying the input directory name
 %   DIRNAMEOUT  - A string specifying the output directory name

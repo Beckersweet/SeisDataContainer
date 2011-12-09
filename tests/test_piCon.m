@@ -41,7 +41,7 @@ B  = piCon(A);
 assertEqual( imag(A), double( imag(B) ) );
 end % horzcat
 
-function test_oMatCon_inputParser
+function test_piCon_inputParser
 %% inputParser
 y = piCon.randn(3,3,3,'varName','Velocity','varUnits','m/s','label',...
     {'source1' 'source1' 'source1'},'unit',{'m/s' 'm/s^2' 'm/s'});

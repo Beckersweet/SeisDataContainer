@@ -1,4 +1,6 @@
 function y = ldivide(a,b)
+    aa = a;
+    bb = b;
     if(isa(a,'oMatCon'))
         aa = path(a.pathname);
     end
