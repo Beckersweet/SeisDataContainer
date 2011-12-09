@@ -5,30 +5,30 @@ function y = getFile(obj,x)
 %
 %   OBJ - An oMatCon object
 %   X   - Subreferences cell
-    if (length(x) == 1 && isnumeric(cell2mat(x(1))))
-        error('Error: Single emelent indexing is not allowed in oMatCon')
-    elseif (length(x) == 1 && cell2mat(x(1)) == ':')
-        y = vec(obj);
-    else
-        i = 0;
-        while(cell2mat(x(i+1)) == ':')
-            i = i+1;
-        end
-
-        chunk = cell2mat(x(i+1));
-        chunk = [chunk(1) chunk(end)];
-
-        if(length(x)>=i+2)
-            slice = cell2mat(x(i+2:end));
-        else
-            slice = [];
-        end
-        
-        % this gives us Matlab array
-        y = DataContainer.io.memmap.serial.FileReadLeftChunk...
-            (path(obj.pathname),[chunk(1) chunk(end)],slice);
-        
-        % returning the result as iCon
-        y = iCon(y);
+if (length(x) == 1 && isnumeric(cell2mat(x(1))))
+    error('Error: Single emelent indexing is not allowed in oMatCon')
+elseif (length(x) == 1 && cell2mat(x(1)) == ':')
+    y = vec(obj);
+else
+    i = 0;
+    while(cell2mat(x(i+1)) == ':')
+        i = i+1;
     end
+
+    chunk = cell2mat(x(i+1));
+    chunk = [chunk(1) chunk(end)];
+
+    if(length(x)>=i+2)
+        slice = cell2mat(x(i+2:end));
+    else
+        slice = [];
+    end
+
+    % this gives us Matlab array
+    y = DataContainer.io.memmap.serial.FileReadLeftChunk...
+        (path(obj.pathname),[chunk(1) chunk(end)],slice);
+
+    % returning the result as iCon
+    y = iCon(y);
+end
 end

@@ -1,4 +1,6 @@
 function y = uplus(x)
-    y = x;
+%UMINUS 
+%  Unary plus
+y = x;
 end
 

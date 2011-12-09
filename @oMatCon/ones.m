@@ -18,32 +18,32 @@ function x = ones(varargin)
 %
 %   Note: The size inputs M, N, and P... should be nonnegative integers. 
 %   Negative integers are treated as 0.
-    stringIndex = DataContainer.utils.getFirstStringIndex(varargin{:});    
-    if(stringIndex)
-        xsize = cell2mat(varargin(1:stringIndex-1));
-        if(length(xsize) == 1)
-            xsize(2) = xsize;           
-        end
-        p = inputParser;
-        p.addParamValue('precision','double',@ischar);
-        p.KeepUnmatched = true;
-        p.parse(varargin{stringIndex:end});
-        xprecision = p.Results.precision;
-    else
-        xsize = cell2mat(varargin);
-        if(length(xsize) == 1)
-            xsize(2) = xsize;           
-        end
-        xprecision = 'double';
+stringIndex = DataContainer.utils.getFirstStringIndex(varargin{:});    
+if(stringIndex)
+    xsize = cell2mat(varargin(1:stringIndex-1));
+    if(length(xsize) == 1)
+        xsize(2) = xsize;           
     end
-    
-    td     = ConDir();
-    header = DataContainer.basicHeaderStruct...
-        (xsize,xprecision,0);
-    DataContainer.io.memmap.serial.FileOnes(path(td),header);
-    if(stringIndex)
-        x = oMatCon.load(td,p.Unmatched);
-    else
-        x = oMatCon.load(td);
+    p = inputParser;
+    p.addParamValue('precision','double',@ischar);
+    p.KeepUnmatched = true;
+    p.parse(varargin{stringIndex:end});
+    xprecision = p.Results.precision;
+else
+    xsize = cell2mat(varargin);
+    if(length(xsize) == 1)
+        xsize(2) = xsize;           
     end
+    xprecision = 'double';
+end
+
+td     = ConDir();
+header = DataContainer.basicHeaderStruct...
+    (xsize,xprecision,0);
+DataContainer.io.memmap.serial.FileOnes(path(td),header);
+if(stringIndex)
+    x = oMatCon.load(td,p.Unmatched);
+else
+    x = oMatCon.load(td);
+end
 end

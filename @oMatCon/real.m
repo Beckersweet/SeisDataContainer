@@ -1,8 +1,10 @@
 function y = real(a)
-    if(~isa(a,'oMatCon'))
-        error('Input parameter should be data container')
-    end
-    td = ConDir();
-    DataContainer.io.memmap.serial.FileReal(path(a.pathname),path(td));    
-    y = oMatCon.load(td);
+%REAL Gives the real part of the input oMatCon
+%
+if(~isa(a,'oMatCon'))
+    error('Input parameter should be data container')
+end
+td = ConDir();
+DataContainer.io.memmap.serial.FileReal(path(a.pathname),path(td));    
+y = oMatCon.load(td);
 end
