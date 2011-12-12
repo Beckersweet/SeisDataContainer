@@ -207,6 +207,40 @@ z(:,1:2) = y(:,1:2);
 assertElementsAlmostEqual(x\y,x\z);
 end % mldivide
 
+function test_oMatCon_modifyHeader
+%% modifyHeader
+y = oMatCon.randn(3,3,3,'varName','Velocity','varUnits','m/s','label',...
+    {'source1' 'source1' 'source1'},'unit',{'m/s^2' 'm/s^2' 'm/s^2'});
+y = complex(y,0);
+y = y + 1i*randn(3,3,3);
+
+% modifying one header field
+y = y.modifyHeader('unit',{'m/s' 'm/s' 'm/s'});
+assertEqual(varName(y),'Velocity');
+assertEqual(varUnits(y),'m/s');
+assertEqual(label(y),{'source1' 'source1' 'source1'});
+assertEqual(unit(y),{'m/s' 'm/s' 'm/s'});
+
+% modifying all of header fields
+y = y.modifyHeader('varName','Force','varUnits','N','label',...
+    {'source#1' 'source#2' 'source#3'},'unit',{'N' 'N' 'N'});
+assertEqual(varName(y),'Force');
+assertEqual(varUnits(y),'N');
+assertEqual(label(y),{'source#1' 'source#2' 'source#3'});
+assertEqual(unit(y),{'N' 'N' 'N'});
+
+% saving the dataContainer
+td = ConDir();
+y.save(path(td),1);
+
+% testing the header attributes after loading
+w = oMatCon.load(path(td));
+assertEqual(varName(y),varName(w));
+assertEqual(varUnits(y),varUnits(w));
+assertEqual(label(y),label(w));
+assertEqual(unit(y),unit(w));
+end % modifyHeader
+
 function test_oMatCon_mrdivide
 %% mrdivide
 n1       = 2;

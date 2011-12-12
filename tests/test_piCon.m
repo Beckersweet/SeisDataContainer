@@ -150,6 +150,38 @@ assertEqual( gather(double( A * piCon(B) )), C);
 assertEqual( gather(double( piCon(A) * piCon(B) )), C);
 end % mtimes
 
+function test_piCon_modifyHeader
+%% modifyHeader
+y = piCon.randn(3,3,3,'varName','Velocity','varUnits','m/s','label',...
+    {'source1' 'source1' 'source1'},'unit',{'m/s' 'm/s^2' 'm/s'});
+
+% modifying one header field
+y = y.modifyHeader('unit',{'m/s' 'm/s' 'm/s'});
+assertEqual(varName(y),'Velocity');
+assertEqual(varUnits(y),'m/s');
+assertEqual(label(y),{'source1' 'source1' 'source1'});
+assertEqual(unit(y),{'m/s' 'm/s' 'm/s'});
+
+% modifying all of header fields
+y = y.modifyHeader('varName','Force','varUnits','N','label',...
+    {'source#1' 'source#2' 'source#3'},'unit',{'N' 'N' 'N'});
+assertEqual(varName(y),'Force');
+assertEqual(varUnits(y),'N');
+assertEqual(label(y),{'source#1' 'source#2' 'source#3'});
+assertEqual(unit(y),{'N' 'N' 'N'});
+
+% saving the dataContainer
+td = ConDir();
+y.save(path(td),1);
+
+% testing the header attributes after loading
+w = piCon.load(path(td));
+assertEqual(varName(y),varName(w));
+assertEqual(varUnits(y),varUnits(w));
+assertEqual(label(y),label(w));
+assertEqual(unit(y),unit(w));
+end % modifyHeader
+
 function test_piCon_ones
 %% ones
 n1 = randi(10);
