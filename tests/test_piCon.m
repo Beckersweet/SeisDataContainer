@@ -57,10 +57,7 @@ y.save(path(td),1);
 
 % testing the header attributes after loading
 w = piCon.load(path(td));
-assertEqual(varName(y),varName(w));
-assertEqual(varUnits(y),varUnits(w));
-assertEqual(label(y),label(w));
-assertEqual(unit(y),unit(w));
+DataContainer.isequalHeaderStruct(y.header,w.header)
 end % inputParser
 
 % function test_piCon_inv

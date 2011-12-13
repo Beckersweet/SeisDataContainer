@@ -6,8 +6,11 @@ function y = invvec(x)
 %   dimensions of X can be found by calling isize(x).
 %
 %   See also: dataContainer.vec, isize
-
-redims = [x.header.size{:}];
+if(isa(x,'oCon'))
+    redims = x.header.size(:);
+else
+    redims = [x.header.size{:}];
+end
 while(redims(end) == 1 && length(redims) > 2) % Strip singleton dimensions
     redims(end) = [];
 end

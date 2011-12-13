@@ -63,10 +63,8 @@ y.save(path(td),1);
 
 % testing the header attributes after loading
 w = iCon.load(path(td));
-assertEqual(varName(y),varName(w));
-assertEqual(varUnits(y),varUnits(w));
-assertEqual(label(y),label(w));
-assertEqual(unit(y),unit(w));
+assertEqual(y,w);
+DataContainer.isequalHeaderStruct(y.header,w.header)
 end % inputParser
 
 function test_iCon_inv
@@ -139,10 +137,8 @@ y.save(path(td),1);
 
 % testing the header attributes after loading
 w = iCon.load(path(td));
-assertEqual(varName(y),varName(w));
-assertEqual(varUnits(y),varUnits(w));
-assertEqual(label(y),label(w));
-assertEqual(unit(y),unit(w));
+assertEqual(y,w);
+DataContainer.isequalHeaderStruct(y.header,w.header)
 end % modifyHeader
 
 function test_iCon_mrdivide
@@ -280,8 +276,8 @@ td = ConDir();
 A  = randn(n1,n2) + 1i*randn(n1,n2);
 B  = iCon(A);
 B.save(path(td),1);
-% save fails if we try the following since the directory already exists
-% B.save(path(td));
+
+% save fails if we try B.save(path(td)) since the directory already exists
 C  = iCon.load(path(td)); 
 assertEqual( double(C), A );
 end % save & load
