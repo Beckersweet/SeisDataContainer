@@ -45,6 +45,8 @@ function x = zeros(varargin)
         x = oMatCon.load(td);
     end
 end
+
+% this fuction should be improved to something like:
 %     if SDCdefaultIOdist
 %         %header = addDistFile
 %         DataContainer.io.memmap.dist.FileAlloc(td,header);

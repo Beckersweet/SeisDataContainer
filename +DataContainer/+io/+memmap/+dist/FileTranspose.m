@@ -4,9 +4,10 @@ function FileTranspose(dirnameIn,dirnameOut,distdirnameOut,sepDim)
 %   FileTranspose(DIRNAMEIN,DIRNAMEOUT,SEPDIM)
 %   allocates binary file for serial data writing.
 %
-%   DIRNAMEIN  - A string specifying the input directory
-%   DIRNAMEOUT - A string specifying the output directory
-%   SEPDIM     - A scalar specifying the separation dimension
+%   DIRNAMEIN      - A string specifying the input directory
+%   DIRNAMEOUT     - A string specifying the output directory
+%   DISTDIRNAMEOUT - A cell specifying the distributed output directories
+%   SEPDIM         - A scalar specifying the separation dimension
 %
 %   Warning: If the specified output file already exists, it will be overwritten.
 error(nargchk(4, 4, nargin, 'struct'));

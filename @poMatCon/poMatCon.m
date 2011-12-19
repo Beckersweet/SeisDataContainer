@@ -49,39 +49,8 @@ classdef poMatCon < poCon
             else
                 error('Fail: Path does not exist');
             end
-            
-            p.addParamValue('variable',headerIn.variable,@ischar);
-            p.addParamValue('label',headerIn.label,@iscell);
-            p.addParamValue('unit',headerIn.unit,@iscell);
-            p.addParamValue('origin',headerIn.origin,@isvector);
-            p.addParamValue('delta',headerIn.delta,@isvector);
-            p.parse(varargin{:});
-            headerIn.variable = p.Results.variable;
-            if(numel(p.Results.label) == headerIn.dims)
-                headerIn.label = p.Results.label;
-            else
-                error('Wrong number of labels');
-            end
-            if(numel(p.Results.unit) == headerIn.dims)
-                headerIn.unit = p.Results.unit;
-            else
-                error('Wrong number of units');
-            end
-            if(numel(p.Results.origin) == headerIn.dims)
-                headerIn.origin = p.Results.origin;
-            else
-                error('Wrong size for origin');
-            end
-            if(numel(p.Results.delta) == headerIn.dims)
-                headerIn.delta = p.Results.delta;
-            else
-                error('Wrong size for delta');
-            end
-            DataContainer.io.memmap.serial.HeaderWrite...
-                (pathname,headerIn);
-            
             % Construct and set class attributes
-            x = x@poCon('parallel memmap',headerIn.size,headerIn.complex);
+            x = x@poCon('parallel memmap',headerIn,p.Unmatched);
             x.pathname   = td;
             x.header     = headerIn;
             x.readOnly   = p.Results.readonly;
