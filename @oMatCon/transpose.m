@@ -1,10 +1,11 @@
 function y = transpose(x,sepDim)
 %TRANSPOSE Transposes the datacontainer
 %
-%   transpose(dirnameOut,sepDim)
+%   transpose(x,sepDim)
 %
-%   DIRNAMEOUT - The output directory
-%   SEPDIM     - Separation dimension for transpose
+%   X      - The input dataContainer
+%   SEPDIM - Separation dimension for transpose
+%
 if(nargin == 1)
     sepDim = 1;
 end

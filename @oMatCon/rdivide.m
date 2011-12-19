@@ -14,4 +14,3 @@ DataContainer.io.memmap.serial.FileRdivide...
     (aa,bb,path(td));
 y  = oMatCon.load(td);
 end
-

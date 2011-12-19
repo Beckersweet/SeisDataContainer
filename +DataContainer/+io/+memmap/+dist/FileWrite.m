@@ -17,7 +17,8 @@ function FileWrite(dirname,x,distribute,varargin)
 %                    or DataContainer.basicHeaderStruct
 %
 %   Warning: If the specified dirname already exist,
-%            it will be overwritten.  
+%            it will be overwritten.
+%
 error(nargchk(3, 5, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 assert(isdistributed(x), 'data must not be distributed')
@@ -81,5 +82,4 @@ if ~distribute
     header = DataContainer.io.deleteDistHeaderStruct(header);
 end
 DataContainer.io.memmap.serial.HeaderWrite(dirname,header);
-
 end

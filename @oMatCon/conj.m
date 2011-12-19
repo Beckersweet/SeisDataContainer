@@ -1,5 +1,5 @@
 function y = conj(a)
-%CONJ
+%CONJ   Complex conjugate
 %
 %   conj(A) Creates a new oMatCon which is the complex conjugate of input
 %   oMatCon a

@@ -14,5 +14,3 @@ DataContainer.io.memmap.serial.FileTimes...
     (aa,bb,path(td));
 y  = oMatCon.load(td);
 end
-
-

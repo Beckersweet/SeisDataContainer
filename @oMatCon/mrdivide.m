@@ -12,4 +12,3 @@ else
     y = (B'\A')';   
 end
 end
-

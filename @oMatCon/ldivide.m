@@ -1,5 +1,6 @@
 function y = ldivide(a,b)
-%LDIVIDE    Calculates th ldivide where at least on of a or b are oMatCon
+%LDIVIDE   Calculates th ldivide where at least on of a or b are oMatCon
+%
 aa = a;
 bb = b;
 if(isa(a,'oMatCon'))

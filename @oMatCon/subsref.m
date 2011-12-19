@@ -1,6 +1,6 @@
 function sref = subsref(obj,s)
 %SUBSREF   Subscripted reference
-%   
+%
 switch s(1).type
     case '.'
         if(strcmp(s(1).subs,'save'))

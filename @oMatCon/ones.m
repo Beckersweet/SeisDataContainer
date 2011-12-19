@@ -18,6 +18,7 @@ function x = ones(varargin)
 %
 %   Note: The size inputs M, N, and P... should be nonnegative integers. 
 %   Negative integers are treated as 0.
+%
 stringIndex = DataContainer.utils.getFirstStringIndex(varargin{:});    
 if(stringIndex)
     xsize = cell2mat(varargin(1:stringIndex-1));

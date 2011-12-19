@@ -1,6 +1,7 @@
 function assertEqual(a,b)
 % ASSERTEQUAL    assert equals the two inputs. Note that at least one input
 % should be an oCon
+%
 global SDCbufferSize;    
 if(isa(a,'oCon') && isa(b,'oCon'))
     % Set byte size

@@ -1,5 +1,5 @@
 function y = sign(a)
-%SIGN Finds the sign of the input oMatCon
+%SIGN   Returns an oMatCon that contains the signs of the input oMatCon
 %
 td = ConDir();
 DataContainer.io.memmap.serial.FileSign(path(a.pathname),path(td));

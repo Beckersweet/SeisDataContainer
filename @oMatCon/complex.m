@@ -1,5 +1,5 @@
 function y = complex(a,b)
-%POWER Construct complex result from real and imaginary parts. If b is
+%POWER   Construct complex result from real and imaginary parts. If b is
 %complex, the result will be an oMatCon with real part of a and complex
 %part of b
 %

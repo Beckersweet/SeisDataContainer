@@ -7,6 +7,7 @@ function putFile(obj,x,data)
 %   DATA - The data we want to assign
 %
 %   Note that you cannot modify a read-only file!
+%
 if(obj.readOnly)
     error('Epic Fail: Your file is read-only')
 else

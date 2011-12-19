@@ -7,6 +7,7 @@ function save(obj,dirname,overwrite)
 %
 %   Optional argument:
 %   OVERWRITE - is 1 for overwrite and 0 otherwise
+%
 if(nargin == 2)
     overwrite = 0;
 end
@@ -20,4 +21,3 @@ assert(status,'Fatal error while creating directory %s',dirname);
 DataContainer.io.memmap.serial.FileCopy...
     (path(obj.pathname),dirname); 
 end
-

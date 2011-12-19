@@ -12,7 +12,7 @@ classdef oMatCon < oCon
 %   READONLY   - 1 makes the data container readonly
 %   COPY       - 1 creates a copy of the file when loading, otherwise 
 %                changes will be made on the existing file 
-
+%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %   PROPERTIES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
