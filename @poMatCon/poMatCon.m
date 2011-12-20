@@ -1,5 +1,5 @@
 classdef poMatCon < poCon
-    %POMATCON  Memory-mapping out-of-core data container for binaries
+    %POMATCON  Memory-mapping distributed out-of-core data container for binaries
     %
     %   poMatCon(PATHNAME,PARAM1,VALUE1,...)
     %
@@ -25,7 +25,7 @@ classdef poMatCon < poCon
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %   Constructor
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        function x = poMatCon(pathname,varargin) % Constructor for oMatCon
+        function x = poMatCon(pathname,varargin) % Constructor for poMatCon
             
             % Parse param-value pairs using input parser
             p = inputParser;            
@@ -56,13 +56,6 @@ classdef poMatCon < poCon
             x.readOnly   = p.Results.readonly;
         end % constructor
     end % protected methods
-    
-    methods
-        % delete function
-        function delete(x)
-            DataContainer.io.memmap.serial.FileDelete(x.pathname);
-        end % delete
-    end
     
     methods ( Static )
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

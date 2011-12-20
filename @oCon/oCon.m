@@ -11,7 +11,6 @@ classdef oCon < dataContainer
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     properties (Access = protected)
         pathname = '';
-        iscomplex; % True if data is complex
     end
     
     methods (Access = protected)
@@ -23,19 +22,10 @@ classdef oCon < dataContainer
             % Not supposed to be called by user
             
             % Construct            
-            x           = x@dataContainer(type,headerIn.size,headerIn.size,headerIn,varargin{:});
-            x.iscomplex = headerIn.complex;
-                        
+            x = x@dataContainer(type,headerIn.size,headerIn.size,...
+                headerIn,varargin{:});
         end % constructor
     end % protected methods
-    
-    methods
-        % delete function
-        function delete(x)
-            % Amazing deletion happens here            
-        end % delete
-    end
-       
 end % classdef
 
 
