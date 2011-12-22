@@ -1,7 +1,7 @@
-classdef dataContainer
-%DATACONTAINER  The Data Container Mother Class
+classdef SeisDataContainer
+%SEISDATACONTAINER  The Data Container Mother Class
 %
-%   x = dataContainer(TYPE,EXSIZE,IMSIZE) is the abstract parent class for
+%   x = SeisDataContainer(TYPE,EXSIZE,IMSIZE) is the abstract parent class for
 %   all data container classes.
 %
 %   TYPE   is a string that specifies the type of the data container that 
@@ -49,20 +49,14 @@ classdef dataContainer
     methods
         
         % DataCon Constructor
-        function x = dataContainer(type,exsize,imsize,headerIn,varargin)
-            x.header = headerIn;
-            % Check number of arguments
-            assert(nargin >= 3,'There must be at least 3 input arguments')
-            
+        function x = SeisDataContainer(headerIn,varargin)
+                                               
             % Set attributes
-            x.type   = type;
-            x.exsize = exsize;
-            if isempty(fieldnames(x.header))
-                x.header = DataContainer.basicHeaderStruct(imsize,'double',false);
-            end
+            x.header = headerIn;
+            x.exsize = x.header.size;
 
             % parse extra arguments
-            ldims = length(imsize);
+            ldims = length(x.header.size);
             p = inputParser;
             p.addParamValue('varName',x.header.varName,@ischar);
             p.addParamValue('varUnits',x.header.varUnits,@ischar);

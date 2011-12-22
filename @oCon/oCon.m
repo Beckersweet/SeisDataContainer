@@ -1,4 +1,4 @@
-classdef oCon < dataContainer
+classdef oCon < SeisDataContainer
     %OCON  Out-of-core Data Container class
     %
     %   oCon(TYPE,DIMS,ISCOMPLEX)
@@ -17,13 +17,12 @@ classdef oCon < dataContainer
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %   Constructor
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        function x = oCon(type,headerIn,varargin)
+        function x = oCon(headerIn,varargin)
             % Constructor for the out-of-core data container class
             % Not supposed to be called by user
             
             % Construct            
-            x = x@dataContainer(type,headerIn.size,headerIn.size,...
-                headerIn,varargin{:});
+            x = x@SeisDataContainer(headerIn,varargin{:});
         end % constructor
     end % protected methods
 end % classdef

@@ -13,7 +13,7 @@ if nargin == 3 && strcmp(swp,'swap')
 end
 
 % Multiply
-if ~isa(A,'dataContainer') % Right multiply
+if ~isa(A,'SeisDataContainer') % Right multiply
     y = dataCon(double( A*double(B) ));
     y = metacopy(B,y);
     
@@ -25,7 +25,7 @@ if ~isa(A,'dataContainer') % Right multiply
         y.header.size{1} = A.ms;
     end
     
-elseif ~isa(B,'dataContainer') % Left multiply
+elseif ~isa(B,'SeisDataContainer') % Left multiply
     y = dataCon(double( double(A)*B ));
     y = metacopy(A,y);
     

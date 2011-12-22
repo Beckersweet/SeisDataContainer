@@ -48,7 +48,7 @@ methods (Access = protected)
         end
 
         % Construct and set class attributes
-        x          = x@oCon('serial memmap',headerIn,p.Unmatched);
+        x          = x@oCon(headerIn,p.Unmatched);
         x.pathname = td;
         x.readOnly = p.Results.readonly;
 
