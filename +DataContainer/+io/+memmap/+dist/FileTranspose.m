@@ -9,7 +9,10 @@ function FileTranspose(dirnameIn,dirnameOut,distdirnameOut,sepDim)
 %   DISTDIRNAMEOUT - A cell specifying the distributed output directories
 %   SEPDIM         - A scalar specifying the separation dimension
 %
-%   Warning: If the specified output file already exists, it will be overwritten.
+%   Warning: For now this function only works for distributed data that 
+%   has matlab default distribution
+%
+
 error(nargchk(4, 4, nargin, 'struct'));
 assert(ischar(dirnameIn), 'input directory name must be a string')
 assert(isdir(dirnameIn),'Fatal error: input directory %s does not exist',dirnameIn);

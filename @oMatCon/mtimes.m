@@ -1,4 +1,4 @@
-function y = mtimes(A,B,swp)
+function y = mtimes(A,B)
 %MTIMES Calculates the mtimes of the two input oMatCons
 %
 if isscalar(A) && isscalar(B)

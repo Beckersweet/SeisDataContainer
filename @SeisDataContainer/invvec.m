@@ -7,7 +7,7 @@ function y = invvec(x)
 %
 %   See also: dataContainer.vec, isize
 if(isa(x,'oCon'))
-    redims = x.header.size(:);
+    redims = x.header.size;
 else
     redims = [x.header.size{:}];
 end
