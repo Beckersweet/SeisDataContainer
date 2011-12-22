@@ -386,6 +386,7 @@ end
 
 function test_distributed_FileTranspose_double_real
 %%
+    display('  Warning: DataContainer.io.memmap.dist.FileTranspose is not fully implemented')
     n1      = 3;
     n2      = 4;
     n3      = 5;
@@ -438,6 +439,7 @@ end
 
 function test_distributed_FileTranspose_double_complex
 %%
+    display('  Warning: DataContainer.io.memmap.dist.FileTranspose is not fully implemented')
     n1      = 3;
     n2      = 4;
     n3      = 5;
@@ -494,6 +496,7 @@ end
 
 function test_distributed_FileTranspose_single_real
 %%
+    display('  Warning: DataContainer.io.memmap.dist.FileTranspose is not fully implemented')
     n1   = 3;
     n2   = 4;
     n3   = 5;
@@ -546,6 +549,7 @@ end
 
 function test_distributed_FileTranspose_single_complex
 %%
+    display('  Warning: DataContainer.io.memmap.dist.FileTranspose is not fully implemented')
     n1   = 3;
     n2   = 4;
     n3   = 5;
