@@ -2,5 +2,5 @@ function y = uplus(x)
 %+  Unary plus.
 %   +A for numeric arrays is A. 
 
-y = iCon(uplus(double(x)));
-y.header.size = x.header.size;
+y      = x;
+y.data = uplus(double(x));

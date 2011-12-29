@@ -225,7 +225,7 @@ B  = distributed( randn(n1,n2) + 1i*randn(n1,n2) );
 C  = A ./ B;
 assertEqual( double( piCon(A) ./ B ), C);
 assertEqual( double( A ./ piCon(B) ), C);
-assertEqual( double( iCon(A) ./ piCon(B) ), C);
+assertEqual( double( piCon(A) ./ piCon(B) ), C);
 end % rdivide
 
 function test_piCon_real
@@ -290,7 +290,7 @@ B  = distributed( randn(n1,n2) + 1i*randn(n1,n2) );
 C  = A .* B;
 assertEqual( double( piCon(A) .* B ), C);
 assertEqual( double( A .* piCon(B) ), C);
-assertEqual( double( iCon(A) .* piCon(B) ), C);
+assertEqual( double( piCon(A) .* piCon(B) ), C);
 end % times
 
 function test_piCon_transpose

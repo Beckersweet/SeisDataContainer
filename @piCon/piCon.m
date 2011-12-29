@@ -47,29 +47,42 @@ classdef (InferiorClasses = {?distributed,?codistributed}) piCon < iCon
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     methods
         
-        function x = piCon(data,varargin)
+        function x = piCon(doh,varargin)
             
-            % Distribute data if not distributed
-            if ~isdistributed(data), data = distributed(data); end
-            
-            % Check for input data type
-            assert( isdistributed(data) && ...
-                strcmp(classUnderlying(data),'double'),...
-                ['Parallel In-Core Data Container '...
-                'can only be created with distributed numeric data'] )
-            
-            % Extract distribution dimension
-            spmd
-                cod  = getCodistributor(data);
+            if ~isstruct(doh)
+                data   = doh;
+                header = DataContainer.basicHeaderStructFromX(data);
+                % Distribute data if not distributed
+                if ~isdistributed(data)
+                    data = distributed(data);                    
+                end
+
+                % Check for input data type
+                assert( isdistributed(data) && ...
+                    strcmp(classUnderlying(data),'double'),...
+                    ['Parallel In-Core Data Container '...
+                    'can only be created with distributed numeric data'] )
+
+                % Extract distribution dimension
+                spmd
+                    cod  = getCodistributor(data);
+                end
+            else
+                header = doh;
             end
             
             % Construct iCon
-            x           = x@iCon(data,varargin{:});
-            cod         = cod{1};
-            x.excoddims = cod.Dimension;
-            x.excodpart = cod.Partition;
-            x.imcoddims = cod.Dimension;
-            x.imcodpart = cod.Partition;
+            x               = x@iCon(header,varargin{:});
+            if ~isstruct(doh)
+                x.exsize    = size(data);
+                x.perm      = num2cell(1:length(size(data)));
+                x.data      = data;
+                cod         = cod{1};
+                x.excoddims = cod.Dimension;
+                x.excodpart = cod.Partition;
+                x.imcoddims = cod.Dimension;
+                x.imcodpart = cod.Partition;
+            end
             
         end % Constructor
         
