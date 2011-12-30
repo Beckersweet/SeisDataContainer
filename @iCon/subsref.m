@@ -37,7 +37,7 @@ else
         case {'{}'}
             error('Cell-indexing is not supported.');
             
-        case {'()'}
+        case {'()'} %This is where all the magic happens
             varargout{1} = subsref(double(x),s);
             
     end
