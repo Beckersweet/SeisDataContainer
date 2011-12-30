@@ -14,54 +14,21 @@ function varargout = subsref(x,s)
 %   See also: iCon.vec, invvec, iCon.subsasgn
 
 if length(s) > 1
-%     % Check for extended function calls
-%     if strcmp(s(1).type,'.')
-%         subs = [s.subs];
-%         varargout{1} = feval(subs{1},x,subs{2:end});        
-%     else
-%         varargout = builtin('subsref',x,s);
-       if (strcmp(s(1).type,'.') && strcmp(s(1).subs,'save'))
-           if(length(s(2).subs) == 2)
-               x.save(cell2mat(s(2).subs(1)),cell2mat(s(2).subs(2)));
-           else
-               x.save(cell2mat(s(2).subs));
-           end
-           return;
-       end
-       if (strcmp(s(1).type,'.') && strcmp(s(1).subs,'modifyHeader'))
-           varargout = x.modifyHeader(s(2).subs);
-           return;
-       end
-       result = x;
-       for i=1:length(s)
-          if iscell(result)
-             if strcmp(s(i).type,'{}')
-                result = builtin('subsref',result,s(i));
-             else
-                % Apply the subsref to each element
-                newresult = cell(1,length(result));
-                for j=1:length(result)
-                   newresult{j} = subsref(result{j},s(i));
-                end
-                result = newresult;
-             end
-          else
-             result = subsref(result,s(i));
-          end
-       end
-    
-       if nargout > 1
-          for i=2:nargout
-             varargout{i} = [];
-          end
-       end
-       varargout{1} = result;
-    
-       return;
-%     end
+    switch s(1).type
+        case {'.'}
+            % attributes references and function calls
+            [output,done] = DataContainer.utils.subsrefFunctionCall(x,s);
+            if done, return; end % For functions that don't return anything
+            varargout{1}  = output;
+
+        case {'{}'}
+            error('Cell-indexing is not supported.');
+
+        case {'()'}
+            varargout{1} = subsref(double(x),s);
+    end
     
 else
-    
     switch s.type
         case {'.'}            
             % Set properties and flags

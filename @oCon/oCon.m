@@ -1,7 +1,7 @@
 classdef oCon < SeisDataContainer
     %OCON  Out-of-core Data Container class
     %
-    %   oCon(TYPE,DIMS,ISCOMPLEX)
+    %   oCon(HEADER,PARAMETERS...)
     %
     %   Parameters:
     %   format - The precision of the data file. default 'double'
