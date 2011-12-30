@@ -25,7 +25,7 @@ if length(s) > 1
             error('Cell-indexing is not supported.');
 
         case {'()'}
-            varargout{1} = subsref(double(x),s);
+            error('What youre doing now doesnt make any sense.');
     end
     
 else
