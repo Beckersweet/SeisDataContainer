@@ -1,4 +1,4 @@
-classdef iCon < dataContainer
+classdef iCon < SeisDataContainer
 %ICON   The In-Core Data Container Class
 %
 %   x = iCon(DATA) returns a serial in-core data container containing DATA.
@@ -36,25 +36,24 @@ classdef iCon < dataContainer
     methods
         
         % iCon Constructor
-        function x = iCon(data,varargin)
-            
-            % Check for data
-            if isdistributed(data)
-                assert(strcmp(classUnderlying(data),'double'),...
-                    'Input data must be numeric')
+        function x = iCon(doh,varargin)
+            if ~isstruct(doh)
+                assert(isnumeric(doh));
+                header = DataContainer.basicHeaderStructFromX(doh);
             else
-                assert(isnumeric(data),'Input data must be numeric')
+                header = doh;
             end
             
-            % Get sizes
-            dims = size(data);
+            header.size = num2cell(header.size);
             
             % Construct class
-            x      = x@dataContainer('InCore',dims,num2cell(dims),struct(),varargin{:});
-            x.data = data;
-            x.perm = num2cell(1:length(size(data)));
-            x.header.precision = DataContainer.utils.getPrecision(data);
-            x.header.complex   = ~isreal(data);
+            x      = x@SeisDataContainer(header,varargin{:});
+            
+            if ~isstruct(doh) 
+                x.exsize = size(doh);
+                x.perm   = num2cell(1:length(size(doh)));
+                x.data   = doh;
+            end
         end
         
     end % Public methods

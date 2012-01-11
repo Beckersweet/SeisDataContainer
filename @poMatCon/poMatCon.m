@@ -1,5 +1,5 @@
 classdef poMatCon < poCon
-    %POMATCON  Memory-mapping out-of-core data container for binaries
+    %POMATCON  Memory-mapping distributed out-of-core data container for binaries
     %
     %   poMatCon(PATHNAME,PARAM1,VALUE1,...)
     %
@@ -25,7 +25,7 @@ classdef poMatCon < poCon
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %   Constructor
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        function x = poMatCon(pathname,varargin) % Constructor for oMatCon
+        function x = poMatCon(pathname,varargin) % Constructor for poMatCon
             
             % Parse param-value pairs using input parser
             p = inputParser;            
@@ -49,51 +49,13 @@ classdef poMatCon < poCon
             else
                 error('Fail: Path does not exist');
             end
-            
-            p.addParamValue('variable',headerIn.variable,@ischar);
-            p.addParamValue('label',headerIn.label,@iscell);
-            p.addParamValue('unit',headerIn.unit,@iscell);
-            p.addParamValue('origin',headerIn.origin,@isvector);
-            p.addParamValue('delta',headerIn.delta,@isvector);
-            p.parse(varargin{:});
-            headerIn.variable = p.Results.variable;
-            if(numel(p.Results.label) == headerIn.dims)
-                headerIn.label = p.Results.label;
-            else
-                error('Wrong number of labels');
-            end
-            if(numel(p.Results.unit) == headerIn.dims)
-                headerIn.unit = p.Results.unit;
-            else
-                error('Wrong number of units');
-            end
-            if(numel(p.Results.origin) == headerIn.dims)
-                headerIn.origin = p.Results.origin;
-            else
-                error('Wrong size for origin');
-            end
-            if(numel(p.Results.delta) == headerIn.dims)
-                headerIn.delta = p.Results.delta;
-            else
-                error('Wrong size for delta');
-            end
-            DataContainer.io.memmap.serial.HeaderWrite...
-                (pathname,headerIn);
-            
             % Construct and set class attributes
-            x = x@poCon('parallel memmap',headerIn.size,headerIn.complex);
+            x = x@poCon('parallel memmap',headerIn,p.Unmatched);
             x.pathname   = td;
             x.header     = headerIn;
             x.readOnly   = p.Results.readonly;
         end % constructor
     end % protected methods
-    
-    methods
-        % delete function
-        function delete(x)
-            DataContainer.io.memmap.serial.FileDelete(x.pathname);
-        end % delete
-    end
     
     methods ( Static )
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

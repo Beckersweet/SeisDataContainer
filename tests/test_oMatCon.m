@@ -73,53 +73,38 @@ y.save(path(td),1);
 
 % testing different load modes and making sure the arguments match
 w = oMatCon.load(path(td),'copy',0);
-assertEqual(varName(y),varName(w));
-assertEqual(varUnits(y),varUnits(w));
-assertEqual(label(y),label(w));
-assertEqual(unit(y),unit(w));
+DataContainer.isequalHeaderStruct(y.header,w.header)
 
 w = oMatCon.load(path(td),'copy',1);
-assertEqual(varName(y),varName(w));
-assertEqual(varUnits(y),varUnits(w));
-assertEqual(label(y),label(w));
-assertEqual(unit(y),unit(w));
+DataContainer.isequalHeaderStruct(y.header,w.header)
 
 w = oMatCon.load(path(td),'readonly',0);
-assertEqual(varName(y),varName(w));
-assertEqual(varUnits(y),varUnits(w));
-assertEqual(label(y),label(w));
-assertEqual(unit(y),unit(w));
+DataContainer.isequalHeaderStruct(y.header,w.header)
 
 w = oMatCon.load(path(td),'readonly',1);
-assertEqual(varName(y),varName(w));
-assertEqual(varUnits(y),varUnits(w));
-assertEqual(label(y),label(w));
-assertEqual(unit(y),unit(w));
+DataContainer.isequalHeaderStruct(y.header,w.header)
 
 w = oMatCon.load(path(td),'copy',0,'readonly',0);
-assertEqual(varName(y),varName(w));
-assertEqual(varUnits(y),varUnits(w));
-assertEqual(label(y),label(w));
-assertEqual(unit(y),unit(w));
+DataContainer.isequalHeaderStruct(y.header,w.header)
 
 w = oMatCon.load(path(td),'copy',0,'readonly',1);
-assertEqual(varName(y),varName(w));
-assertEqual(varUnits(y),varUnits(w));
-assertEqual(label(y),label(w));
-assertEqual(unit(y),unit(w));
+DataContainer.isequalHeaderStruct(y.header,w.header)
 
 w = oMatCon.load(path(td),'copy',1,'readonly',0);
-assertEqual(varName(y),varName(w));
-assertEqual(varUnits(y),varUnits(w));
-assertEqual(label(y),label(w));
-assertEqual(unit(y),unit(w));
+DataContainer.isequalHeaderStruct(y.header,w.header)
 
 w = oMatCon.load(path(td),'copy',1,'readonly',1);
-assertEqual(varName(y),varName(w));
-assertEqual(varUnits(y),varUnits(w));
-assertEqual(label(y),label(w));
-assertEqual(unit(y),unit(w));
+DataContainer.isequalHeaderStruct(y.header,w.header)
 end % inputParser
+
+function test_oMatCon_invvec
+%% invvec
+y = oMatCon.randn(3,4,3);
+y = complex(y,0);
+y = y + 1i*randn(3,4,3);
+x = vec(y);
+assertEqual(y,invvec(x));
+end % invvec
 
 function test_oMatCon_io
 %% io
@@ -207,6 +192,49 @@ z(:,1:2) = y(:,1:2);
 assertElementsAlmostEqual(x\y,x\z);
 end % mldivide
 
+function test_oMatCon_modifyHeader
+%% modifyHeader
+y = oMatCon.randn(3,3,3,'varName','Velocity','varUnits','m/s','label',...
+    {'source1' 'source1' 'source1'},'unit',{'m/s^2' 'm/s^2' 'm/s^2'});
+y = complex(y,0);
+y = y + 1i*randn(3,3,3);
+
+% backup the original dataContainer
+tr = ConDir();
+y.save(path(tr),1);
+z = oMatCon.load(path(tr));
+
+% modifying one header field
+y = y.modifyHeader('unit',{'m/s' 'm/s' 'm/s'});
+assertEqual(varName(y),'Velocity');
+assertEqual(varUnits(y),'m/s');
+assertEqual(label(y),{'source1' 'source1' 'source1'});
+assertEqual(unit(y),{'m/s' 'm/s' 'm/s'});
+
+% Checking if the data itself is still untouched
+assertEqual(y,z);
+
+% modifying all of header fields
+y = y.modifyHeader('varName','Force','varUnits','N','label',...
+    {'source#1' 'source#2' 'source#3'},'unit',{'N' 'N' 'N'});
+assertEqual(varName(y),'Force');
+assertEqual(varUnits(y),'N');
+assertEqual(label(y),{'source#1' 'source#2' 'source#3'});
+assertEqual(unit(y),{'N' 'N' 'N'});
+
+% Checking if the data itself is still untouched
+assertEqual(y,z);
+
+% saving the dataContainer
+td = ConDir();
+y.save(path(td),1);
+
+% testing the header attributes after loading
+w = oMatCon.load(path(td));
+assertEqual(y,w);
+DataContainer.isequalHeaderStruct(y.header,w.header)
+end % modifyHeader
+
 function test_oMatCon_mrdivide
 %% mrdivide
 n1       = 2;
@@ -241,7 +269,7 @@ x = randn(3,3,3);
 for i=1:3
     x(:,:,i) = y(:,1:3,i);
 end
-x        = x(:);
+x = x(:);
 assertElementsAlmostEqual(y.norm(0),norm(x,0));
 assertElementsAlmostEqual(y.norm(1),norm(x,1));
 assertElementsAlmostEqual(y.norm(2),norm(x,2));
@@ -344,6 +372,7 @@ y.save(path(td),1);
 z = oMatCon.load(td);
 assertEqual(x,z);
 assertEqual(z,y);
+DataContainer.isequalHeaderStruct(y.header,z.header)
 end % save and load
 
 function test_oMatCon_sign

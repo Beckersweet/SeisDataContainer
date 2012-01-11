@@ -5,7 +5,7 @@ function y = load(dirname)
     y        = piCon(y);
     header   = DataContainer.io.memmap.serial.HeaderRead(dirname);
     if(~iscell(header.size))
-        header.size = {header.size};
+        header.size = num2cell(header.size);
     end
     y.header = header;    
 end

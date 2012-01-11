@@ -47,7 +47,7 @@ B  = iCon(A);
 assertEqual( imag(A), double( imag(B) ) );
 end % horzcat
 
-function test_oMatCon_inputParser
+function test_iCon_inputParser
 %% inputParser
 y = iCon.randn(3,3,3,'varName','Velocity','varUnits','m/s','label',...
     {'source1' 'source1' 'source1'},'unit',{'m/s' 'm/s^2' 'm/s'});
@@ -63,10 +63,8 @@ y.save(path(td),1);
 
 % testing the header attributes after loading
 w = iCon.load(path(td));
-assertEqual(varName(y),varName(w));
-assertEqual(varUnits(y),varUnits(w));
-assertEqual(label(y),label(w));
-assertEqual(unit(y),unit(w));
+assertEqual(y,w);
+DataContainer.isequalHeaderStruct(y.header,w.header)
 end % inputParser
 
 function test_iCon_inv
@@ -112,6 +110,36 @@ assertElementsAlmostEqual( double( iCon(A) \ y ), x);
 assertElementsAlmostEqual( double( A \ iCon(y) ), x);
 assertElementsAlmostEqual( double( iCon(A) \ iCon(y) ), x);
 end % mldivide
+
+function test_iCon_modifyHeader
+%% modifyHeader
+y = iCon.randn(3,3,3,'varName','Velocity','varUnits','m/s','label',...
+    {'source1' 'source1' 'source1'},'unit',{'m/s' 'm/s^2' 'm/s'});
+
+% modifying one header field
+y = y.modifyHeader('unit',{'m/s' 'm/s' 'm/s'});
+assertEqual(varName(y),'Velocity');
+assertEqual(varUnits(y),'m/s');
+assertEqual(label(y),{'source1' 'source1' 'source1'});
+assertEqual(unit(y),{'m/s' 'm/s' 'm/s'});
+
+% modifying all of header fields
+y = y.modifyHeader('varName','Force','varUnits','N','label',...
+    {'source#1' 'source#2' 'source#3'},'unit',{'N' 'N' 'N'});
+assertEqual(varName(y),'Force');
+assertEqual(varUnits(y),'N');
+assertEqual(label(y),{'source#1' 'source#2' 'source#3'});
+assertEqual(unit(y),{'N' 'N' 'N'});
+
+% saving the dataContainer
+td = ConDir();
+y.save(path(td),1);
+
+% testing the header attributes after loading
+w = iCon.load(path(td));
+assertEqual(y,w);
+DataContainer.isequalHeaderStruct(y.header,w.header)
+end % modifyHeader
 
 function test_iCon_mrdivide
 %% mrdivide
@@ -248,8 +276,8 @@ td = ConDir();
 A  = randn(n1,n2) + 1i*randn(n1,n2);
 B  = iCon(A);
 B.save(path(td),1);
-% save fails if we try the following since the directory already exists
-% B.save(path(td));
+
+% save fails if we try B.save(path(td)) since the directory already exists
 C  = iCon.load(path(td)); 
 assertEqual( double(C), A );
 end % save & load

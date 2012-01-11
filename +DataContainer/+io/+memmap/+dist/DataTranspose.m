@@ -72,5 +72,4 @@ end
 for i=1:matlabpool('size')
     fclose(fidw(i));
 end
-
 end
