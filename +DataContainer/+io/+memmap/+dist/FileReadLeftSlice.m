@@ -29,7 +29,7 @@ header = DataContainer.io.memmap.serial.HeaderRead(dirname);
 distdim = header.dims - length(slice);
 assert(distdim>0,'invalid distributed diemnsion; too many indecies in the slice?')
 partition = DataContainer.utils.defaultDistribution(header.size(distdim));
-if ~header.distributed
+if ~header.distributedIO
     header = DataContainer.addDistHeaderStruct(header,distdim,partition);
 else
     assert(distdim==header.distribution.dim,...
@@ -37,7 +37,7 @@ else
     assert(isequal(partition,header.distribution.partition),'partitioning of reading request does not match stored file')
 end
 % Read file
-if header.distributed
+if header.distributedIO
     x=DataContainer.io.memmap.dist.DataReadLeftSlice(1,header.directories,'real',...
         header.size,header.distribution,slice,header.precision,x_precision);
     if header.complex

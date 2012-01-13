@@ -12,6 +12,6 @@ assertEqual(header1.label,header2.label)
 assertEqual(header1.unit,header2.unit)
 assertEqual(header1.precision,header2.precision)
 assertEqual(header1.complex,header2.complex)
-assertEqual(header1.distributed,header2.distributed)
+assertEqual(header1.distributedIO,header2.distributedIO)
 
 end

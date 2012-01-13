@@ -308,17 +308,17 @@ function test_distributed_FileNorm_double_real
     td   = ConDistDirs();
     DataContainer.io.memmap.dist.FileWrite(path(ts),imat,1,path(td));
     x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],0,'double');
-    assertElementsAlmostEqual(x,norm(vec(gather(imat)),0))
+    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),0))
     x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],1,'double');
-    assertElementsAlmostEqual(x,norm(vec(gather(imat)),1))
+    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),1))
     x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],2,'double');
-    assertElementsAlmostEqual(x,norm(vec(gather(imat)),2))
+    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),2))
     x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],-inf,'double');
-    assertElementsAlmostEqual(x,norm(vec(gather(imat)),-inf))
+    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),-inf))
     x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],inf,'double');
-    assertElementsAlmostEqual(x,norm(vec(gather(imat)),inf))
+    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),inf))
     x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],'fro','double');
-    assertElementsAlmostEqual(x,norm(vec(gather(imat)),'fro'))
+    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),'fro'))
 end
 
 function test_distributed_FileNorm_double_complex
@@ -329,17 +329,17 @@ function test_distributed_FileNorm_double_complex
     td   = ConDistDirs();
     DataContainer.io.memmap.dist.FileWrite(path(ts),imat,1,path(td));
     x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],0,'double');
-    assertElementsAlmostEqual(x,norm(vec(gather(imat)),0))
+    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),0))
     x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],1,'double');
-    assertElementsAlmostEqual(x,norm(vec(gather(imat)),1))
+    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),1))
     x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],2,'double');
-    assertElementsAlmostEqual(x,norm(vec(gather(imat)),2))
+    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),2))
     x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],-inf,'double');
-    assertElementsAlmostEqual(x,norm(vec(gather(imat)),-inf))
+    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),-inf))
     x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],inf,'double');
-    assertElementsAlmostEqual(x,norm(vec(gather(imat)),inf))
+    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),inf))
     x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],'fro','double');
-    assertElementsAlmostEqual(x,norm(vec(gather(imat)),'fro'))
+    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),'fro'))
 end
 
 function test_distributed_FileNorm_single_real
@@ -350,17 +350,17 @@ function test_distributed_FileNorm_single_real
     td   = ConDistDirs();
     DataContainer.io.memmap.dist.FileWrite(path(ts),imat,1,path(td),'single');
     x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],0,'single');
-    assertElementsAlmostEqual(x,norm(vec(gather(imat)),0))
+    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),0))
     x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],1,'single');
-    assertElementsAlmostEqual(x,norm(vec(gather(imat)),1))
+    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),1))
     x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],2,'single');
-    assertElementsAlmostEqual(x,norm(vec(gather(imat)),2))
+    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),2))
     x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],-inf,'single');
-    assertElementsAlmostEqual(x,norm(vec(gather(imat)),-inf))
+    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),-inf))
     x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],inf,'single');
-    assertElementsAlmostEqual(x,norm(vec(gather(imat)),inf))
+    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),inf))
     x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],'fro','single');
-    assertElementsAlmostEqual(x,norm(vec(gather(imat)),'fro'))
+    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),'fro'))
 end
 
 function test_distributed_FileNorm_single_complex
@@ -371,17 +371,17 @@ function test_distributed_FileNorm_single_complex
     td   = ConDistDirs();
     DataContainer.io.memmap.dist.FileWrite(path(ts),imat,1,path(td),'single');
     x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],0,'single');
-    assertElementsAlmostEqual(x,norm(vec(gather(imat)),0))
+    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),0))
     x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],1,'single');
-    assertElementsAlmostEqual(x,norm(vec(gather(imat)),1))
+    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),1))
     x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],2,'single');
-    assertElementsAlmostEqual(x,norm(vec(gather(imat)),2))
+    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),2))
     x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],-inf,'single');
-    assertElementsAlmostEqual(x,norm(vec(gather(imat)),-inf))
+    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),-inf))
     x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],inf,'single');
-    assertElementsAlmostEqual(x,norm(vec(gather(imat)),inf))
+    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),inf))
     x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],'fro','single');
-    assertElementsAlmostEqual(x,norm(vec(gather(imat)),'fro'))
+    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),'fro'))
 end
 
 function test_distributed_FileTranspose_double_real

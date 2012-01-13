@@ -13,7 +13,7 @@ function FileAlloc(dirname,header)
 error(nargchk(2, 2, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 assert(isstruct(header), 'header must be a header struct')
-assert(header.distributed==1,'header is missing file distribution')
+assert(header.distributedIO==1,'header is missing file distribution')
 
 % Make Directory
 if isdir(dirname); rmdir(dirname,'s'); end;

@@ -15,7 +15,7 @@ l           = header.label;
 u           = header.unit;
 precision   = header.precision;
 complex     = header.complex;
-distributed = header.distributed;
+distributedIO = header.distributedIO;
 
 % Check complex
 assert(complex == 0 || complex == 1,'complex should be either 0 or 1');
@@ -90,10 +90,10 @@ thisElement.appendChild...
     (docNode.createTextNode(sprintf('%s',precision)));
 docRootNode.appendChild(thisElement);
 
-% Writing distributed to xml
-thisElement = docNode.createElement('distributed');
+% Writing distributedIO to xml
+thisElement = docNode.createElement('distributedIO');
 thisElement.appendChild... 
-    (docNode.createTextNode(sprintf('%i',distributed)));
+    (docNode.createTextNode(sprintf('%i',distributedIO)));
 docRootNode.appendChild(thisElement);
 
 

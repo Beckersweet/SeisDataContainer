@@ -15,7 +15,7 @@ assert(matlabpool('size')>0,'matlabpool must be open')
 
 % Read header
 hdrin = DataContainer.io.memmap.serial.HeaderRead(dirin);
-assert(hdrin.distributed==1,'input file must be distributed')
+assert(hdrin.distributedIO==1,'input file must be distributed')
 % Make Directory
 if isdir(dirout); rmdir(dirout,'s'); end;
 status = mkdir(dirout);
