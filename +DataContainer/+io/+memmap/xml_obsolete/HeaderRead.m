@@ -28,14 +28,14 @@ precision = char(xDoc.getElementsByTagName('precision').item(0).getFirstChild.ge
 % complex
 complex = eval(char(xDoc.getElementsByTagName('complex').item(0).getFirstChild.getData));
 
-% distributed
-distributed = eval(char(xDoc.getElementsByTagName('distributed').item(0).getFirstChild.getData));
+% distributedIO
+distributedIO = eval(char(xDoc.getElementsByTagName('distributedIO').item(0).getFirstChild.getData));
 
 header = DataContainer.basicHeaderStruct(n, precision, complex);
 header.label       = l;
 header.unit        = u;
 header.origin      = o;
 header.interval    = d;
-header.distributed = distributed;
+header.distributedIO = distributedIO;
 
 end

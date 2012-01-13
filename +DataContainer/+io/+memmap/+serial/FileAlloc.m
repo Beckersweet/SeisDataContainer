@@ -12,7 +12,7 @@ DataContainer.io.setFileDirty(dirname);
 error(nargchk(2, 2, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 assert(isstruct(header), 'header must be a header struct')
-assert(header.distributed==0,'header have file distribution for serial file alloc?')
+assert(header.distributedIO==0,'header have file distribution for serial file alloc?')
 
 % Check Directory
 assert(isdir(dirname),'Fatal error: directory %s does not exist',dirname);

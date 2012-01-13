@@ -40,7 +40,7 @@ function header = basicHeaderStruct(xsize,xprecision,xcomplex,varargin)
     end
     header.label = l;
 
-    header.distributed = 0;
+    header.distributedIO = 0;
 
     p = inputParser;
     p.addParamValue('varName',header.varName,@ischar);

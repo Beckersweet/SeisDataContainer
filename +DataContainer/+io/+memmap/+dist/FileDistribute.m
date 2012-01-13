@@ -19,7 +19,7 @@ assert(matlabpool('size')>0,'matlabpool must be open')
 
 % Read header
 hdrin = DataContainer.io.memmap.serial.HeaderRead(dirin);
-assert(hdrin.distributed==0,'input file must be serial')
+assert(hdrin.distributedIO==0,'input file must be serial')
 assert(distdim<=hdrin.dims,'distributin dimension bigger than input diemsions')
 % Make Directory
 if isdir(dirout); rmdir(dirout,'s'); end;

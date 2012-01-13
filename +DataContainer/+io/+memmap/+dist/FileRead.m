@@ -27,7 +27,7 @@ end;
 % Read header
 header = DataContainer.io.memmap.serial.HeaderRead(dirname);
 % Read file
-if header.distributed
+if header.distributedIO
     x=DataContainer.io.memmap.dist.DataRead(1,header.directories,'real',...
         header.size,header.distribution,header.precision,x_precision);
     if header.complex
