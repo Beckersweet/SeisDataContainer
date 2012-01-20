@@ -25,10 +25,10 @@ if length(s) > 1
             error('Cell-indexing is not supported.');
 
         case {'()'}
-            error('What youre doing now doesnt make any sense.');
+            error('Referencing from subsreffed components is not allowed');
     end
     
-else
+else % length(s) == 1
     switch s.type
         case {'.'}            
             % Set properties and flags
@@ -38,7 +38,7 @@ else
             error('Cell-indexing is not supported.');
             
         case {'()'} %This is where all the magic happens
-            varargout{1} = subsref(double(x),s);
+            varargout{1} = subsrefHelper(x,s);
             
     end
 end
