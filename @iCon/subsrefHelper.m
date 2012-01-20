@@ -6,7 +6,8 @@ function y = subsrefHelper(x,s)
 %
 
 % Checking indices
-tempsubs = s.subs;
+indices  = s.subs;
+tempsubs = indices;
 while strcmp(tempsubs{1},':')
     tempsubs = tempsubs(2:end);
 end
@@ -14,13 +15,18 @@ for i=1:length(tempsubs)
     assert(~strcmp(tempsubs{i},':'),...
         'Colon indexing only allowed on contiguous fast dimensions');
 end
+assert(length(indices) == length(size(x))),...
+    'length of indices must match explicit size');
 
 % Data processing
 data = subsref(x.data,s);
 
 % Header processing
 xheader   = x.header;
-neworigin = xheader.origin; % NEEDS TO CALCULATE NEW ORIGIN
+neworigin = xheader.origin;
+for j = 1:length(indices)
+    neworigin(j) = xheader.origin(j) + (indices(j)-1)*xheader.delta(j);
+end
 
 % Repackage and export
 y                      = construct(x,data);
