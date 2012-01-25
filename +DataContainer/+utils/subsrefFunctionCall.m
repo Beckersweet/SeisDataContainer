@@ -17,6 +17,10 @@ switch s(1).subs
         args   = s(2).subs;
         output = modifyHeader(x,args{:});
         
+    case 'header'
+        header = x.header;
+        output = subsref(header,s(2:end));
+        
     otherwise
         error('Function not supported with dot notation');
 end

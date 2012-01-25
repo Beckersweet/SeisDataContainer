@@ -3,13 +3,9 @@ function varargout = subsref(x,s)
 %
 %   X(a,b,..) - where a,b,.. are indices returns the explicit
 %               elements stored within the data container as if it is a
-%               Matlab array. Actually this level of subreferencing is
-%               absolutely transparent. So don't expect a data container to
-%               come out of this.
+%               Matlab array.
 %
-%   X(:)      - Returns a vectorized X. Note that doing this operation will
-%               explicitly change all references to this object, including
-%               the original, the copies and whatnot.
+%   X(:)      - Returns a vectorized X. 
 %
 %   See also: iCon.vec, invvec, iCon.subsasgn
 
