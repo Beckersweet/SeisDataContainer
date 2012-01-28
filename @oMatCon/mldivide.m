@@ -6,7 +6,7 @@ if isscalar(A) && isscalar(B)
     y.putFile({1},A.getFile({1})\B.getFile({1}));
 else
     td = ConDir();
-    SeisDataContainer.io.memmap.serial.FileMldivide...
+    SeisDataContainer.io.NativeBin.serial.FileMldivide...
         (A,path(B.pathname),path(td));
     y = oMatCon.load(td);
 end

@@ -26,7 +26,7 @@ else
     end
 
     % this gives us Matlab array
-    y = SeisDataContainer.io.memmap.serial.FileReadLeftChunk...
+    y = SeisDataContainer.io.NativeBin.serial.FileReadLeftChunk...
         (path(obj.pathname),[chunk(1) chunk(end)],slice);
 
     % returning the result as iCon

@@ -10,7 +10,7 @@ if(nargin == 1)
     sepDim = 1;
 end
 td = ConDir();
-SeisDataContainer.io.memmap.serial.FileTranspose...
+SeisDataContainer.io.NativeBin.serial.FileTranspose...
     (path(x.pathname),path(td),sepDim);
 y  = oMatCon.load(td);
 end

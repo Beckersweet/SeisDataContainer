@@ -41,7 +41,7 @@ end
 td     = ConDir();
 header = SeisDataContainer.basicHeaderStruct...
     (xsize,xprecision,0);
-SeisDataContainer.io.memmap.serial.FileRandn(path(td),header);
+SeisDataContainer.io.NativeBin.serial.FileRandn(path(td),header);
 if(stringIndex)
     x = oMatCon.load(td,p.Unmatched);
 else

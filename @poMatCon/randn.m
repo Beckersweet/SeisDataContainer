@@ -34,7 +34,7 @@ function x = randn(varargin)
     td = SeisDataContainer.io.makeDir();
     header = SeisDataContainer.basicHeaderStruct...
         (xsize,xprecision,0);
-    SeisDataContainer.io.memmap.serial.FileRandn(td,header);
+    SeisDataContainer.io.NativeBin.serial.FileRandn(td,header);
     if(stringIndex)
         x = oMatCon.load(td,p.Unmatched);
     else

@@ -38,7 +38,7 @@ function x = zeros(varargin)
         (xsize,xprecision,0);
     header = SeisDataContainer.addDistHeaderStruct...
         (header,header.dims,[]);
-    SeisDataContainer.io.memmap.serial.FileAlloc(td,header);
+    SeisDataContainer.io.NativeBin.serial.FileAlloc(td,header);
     if(stringIndex)
         x = oMatCon.load(td,p.Unmatched);
     else
@@ -49,7 +49,7 @@ end
 % this fuction should be improved to something like:
 %     if SDCdefaultIOdist
 %         %header = addDistFile
-%         SeisDataContainer.io.memmap.dist.FileAlloc(td,header);
+%         SeisDataContainer.io.NativeBin.dist.FileAlloc(td,header);
 %     else
-%         SeisDataContainer.io.memmap.serial.FileAlloc(td,header);
+%         SeisDataContainer.io.NativeBin.serial.FileAlloc(td,header);
 %     end

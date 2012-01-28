@@ -36,7 +36,7 @@ function x = ones(varargin)
         (xsize,xprecision,0);
     header = SeisDataContainer.addDistHeaderStruct...
         (header,header.dims,[]);
-    SeisDataContainer.io.memmap.serial.FileOnes(td,header);
+    SeisDataContainer.io.NativeBin.serial.FileOnes(td,header);
     if(stringIndex)
         x = oMatCon.load(td,p.Unmatched);
     else
