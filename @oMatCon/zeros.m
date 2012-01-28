@@ -19,7 +19,7 @@ function x = zeros(varargin)
 %   Note: The size inputs M, N, and P... should be nonnegative integers. 
 %   Negative integers are treated as 0.
 %
-stringIndex = DataContainer.utils.getFirstStringIndex(varargin{:});    
+stringIndex = SeisDataContainer.utils.getFirstStringIndex(varargin{:});    
 if(stringIndex)
     xsize = cell2mat(varargin(1:stringIndex-1));
     if(length(xsize) == 1)
@@ -39,9 +39,9 @@ else
 end
 
 td     = ConDir();
-header = DataContainer.basicHeaderStruct...
+header = SeisDataContainer.basicHeaderStruct...
     (xsize,xprecision,0);
-DataContainer.io.memmap.serial.FileAlloc(path(td),header);
+SeisDataContainer.io.NativeBin.serial.FileAlloc(path(td),header);
 if(stringIndex)
     x = oMatCon.load(td,p.Unmatched);
 else

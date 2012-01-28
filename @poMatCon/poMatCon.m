@@ -39,18 +39,18 @@ classdef poMatCon < poCon
             
             if (isdir(pathname)) % Loading file
                 if(p.Results.copy == 0) % overwrite case
-                    headerIn = DataContainer.io.memmap.serial.HeaderRead(pathname);
+                    headerIn = SeisDataContainer.io.NativeBin.serial.HeaderRead(pathname);
                     td = pathname;
                 else % no overwrite
-                    td = DataContainer.io.makeDir();
-                    DataContainer.io.memmap.serial.FileCopy(pathname,td);
-                    headerIn = DataContainer.io.memmap.serial.HeaderRead(td);
+                    td = SeisDataContainer.io.makeDir();
+                    SeisDataContainer.io.NativeBin.serial.FileCopy(pathname,td);
+                    headerIn = SeisDataContainer.io.NativeBin.serial.HeaderRead(td);
                 end            
             else
                 error('Fail: Path does not exist');
             end
             % Construct and set class attributes
-            x = x@poCon('parallel memmap',headerIn,p.Unmatched);
+            x = x@poCon('parallel NativeBin',headerIn,p.Unmatched);
             x.pathname   = td;
             x.header     = headerIn;
             x.readOnly   = p.Results.readonly;

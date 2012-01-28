@@ -66,14 +66,14 @@ if exist('TestSuite','file')
    % Relax. Found it.
 else
    try
-      addpath(fullfile(DataContainer.path,'tests','xunit'))
+      addpath(fullfile(SeisDataContainer.path,'tests','xunit'))
    catch ME
       error('Can''t find xunit toolbox.')
    end
 end
       
 if nargin < 1
-    suite = TestSuite.fromName(fullfile(DataContainer.path,'tests','pSpotoConTests'));
+    suite = TestSuite.fromName(fullfile(SeisDataContainer.path,'tests','pSpotoConTests'));
 else
     name_list = getInputNames(varargin{:});
     if numel(name_list) == 1
