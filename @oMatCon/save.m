@@ -18,6 +18,6 @@ else
 end
 status = mkdir(dirname);
 assert(status,'Fatal error while creating directory %s',dirname);
-DataContainer.io.memmap.serial.FileCopy...
+SeisDataContainer.io.memmap.serial.FileCopy...
     (path(obj.pathname),dirname); 
 end

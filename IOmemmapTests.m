@@ -73,14 +73,14 @@ if exist('TestSuite','file')
    % Relax. Found it.
 else
    try
-      addpath(fullfile(DataContainer.path,'tests','xunit'))
+      addpath(fullfile(SeisDataContainer.path,'tests','xunit'))
    catch ME
       error('Can''t find xunit toolbox.')
    end
 end
       
 if nargin < 1
-    suite = TestSuite.fromName(fullfile(DataContainer.path,'tests','IOmemmapTests'));
+    suite = TestSuite.fromName(fullfile(SeisDataContainer.path,'tests','IOmemmapTests'));
 else
     name_list = getInputNames(varargin{:});
     if numel(name_list) == 1
@@ -93,7 +93,7 @@ else
     end
 end
 
-did_pass = suite.run(DataContainer.utils.DataContainerTestRunDisplay());
+did_pass = suite.run(SeisDataContainer.utils.DataContainerTestRunDisplay());
 
 if nargout > 0
     out = did_pass;

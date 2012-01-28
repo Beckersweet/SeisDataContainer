@@ -8,6 +8,6 @@ function y = conj(a)
 %
 aa = path(a.pathname);
 td = ConDir();    
-DataContainer.io.memmap.serial.FileConj(aa,path(td));
+SeisDataContainer.io.memmap.serial.FileConj(aa,path(td));
 y  = oMatCon.load(td);
 end

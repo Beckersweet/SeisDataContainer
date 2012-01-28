@@ -64,7 +64,7 @@ y.save(path(td),1);
 % testing the header attributes after loading
 w = iCon.load(path(td));
 assertEqual(y,w);
-DataContainer.isequalHeaderStruct(y.header,w.header)
+SeisDataContainer.isequalHeaderStruct(y.header,w.header)
 end % inputParser
 
 function test_iCon_inv
@@ -138,7 +138,7 @@ y.save(path(td),1);
 % testing the header attributes after loading
 w = iCon.load(path(td));
 assertEqual(y,w);
-DataContainer.isequalHeaderStruct(y.header,w.header)
+SeisDataContainer.isequalHeaderStruct(y.header,w.header)
 end % modifyHeader
 
 function test_iCon_mrdivide

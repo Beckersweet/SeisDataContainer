@@ -5,9 +5,9 @@ end
 function test_distributed_basicHeaderStruct_real
 %%
     imat = distributed.rand(2,2,4);
-    hdrb = DataContainer.basicHeaderStructFromX(imat);
-    hdrx = DataContainer.addDistHeaderStructFromX(hdrb,imat);
-    hdrd = DataContainer.addDistHeaderStruct(hdrb,hdrx.distribution.dim,hdrx.distribution.partition);
+    hdrb = SeisDataContainer.basicHeaderStructFromX(imat);
+    hdrx = SeisDataContainer.addDistHeaderStructFromX(hdrb,imat);
+    hdrd = SeisDataContainer.addDistHeaderStruct(hdrb,hdrx.distribution.dim,hdrx.distribution.partition);
     assert(isequal(hdrx,hdrd),'distributions do not match')
 end
 
@@ -15,9 +15,9 @@ function test_distributed_basicHeaderStruct_complex
 %%
     imat = distributed.rand(2,2,4);
     imat = complex(imat,imat);
-    hdrb = DataContainer.basicHeaderStructFromX(imat);
-    hdrx = DataContainer.addDistHeaderStructFromX(hdrb,imat);
-    hdrd = DataContainer.addDistHeaderStruct(hdrb,hdrx.distribution.dim,hdrx.distribution.partition);
+    hdrb = SeisDataContainer.basicHeaderStructFromX(imat);
+    hdrx = SeisDataContainer.addDistHeaderStructFromX(hdrb,imat);
+    hdrd = SeisDataContainer.addDistHeaderStruct(hdrb,hdrx.distribution.dim,hdrx.distribution.partition);
     assert(isequal(hdrx,hdrd),'distributions do not match')
 end
 
@@ -25,8 +25,8 @@ function test_distributed_dataReadWrite_noDistribute_double_real
 %%
     imat = distributed.rand(2,2,4);
     td   = ConDir();
-    DataContainer.io.memmap.dist.FileWrite(path(td),imat,0);
-    x    = DataContainer.io.memmap.dist.FileRead(path(td));
+    SeisDataContainer.io.memmap.dist.FileWrite(path(td),imat,0);
+    x    = SeisDataContainer.io.memmap.dist.FileRead(path(td));
     assert(isequal(x,imat))
 end
 
@@ -34,10 +34,10 @@ function test_distributed_dataReadWrite_noDistribute_double_complex
 %%
     imat = distributed.rand(2,2,4);
     imat = complex(imat,imat);
-    td   = DataContainer.io.makeDir();
-    DataContainer.io.memmap.dist.FileWrite(td,imat,0);
-    x    = DataContainer.io.memmap.dist.FileRead(td);
-    DataContainer.io.memmap.serial.FileDelete(td);
+    td   = SeisDataContainer.io.makeDir();
+    SeisDataContainer.io.memmap.dist.FileWrite(td,imat,0);
+    x    = SeisDataContainer.io.memmap.dist.FileRead(td);
+    SeisDataContainer.io.memmap.serial.FileDelete(td);
     assert(isequal(x,imat))
 end
 
@@ -45,8 +45,8 @@ function test_distributed_dataReadWrite_noDistribute_single_real
 %%
     imat = distributed.rand(2,2,4);
     td   = ConDir();
-    DataContainer.io.memmap.dist.FileWrite(path(td),imat,0,'single');
-    x    = DataContainer.io.memmap.dist.FileRead(path(td),'single');
+    SeisDataContainer.io.memmap.dist.FileWrite(path(td),imat,0,'single');
+    x    = SeisDataContainer.io.memmap.dist.FileRead(path(td),'single');
     assert(isequal(x,single(imat)))
 end
 
@@ -55,8 +55,8 @@ function test_distributed_dataReadWrite_noDistribute_single_complex
     imat = distributed.rand(2,2,4);
     imat = complex(imat,imat);
     td   = ConDir();
-    DataContainer.io.memmap.dist.FileWrite(path(td),imat,0,'single');
-    x    = DataContainer.io.memmap.dist.FileRead(path(td),'single');
+    SeisDataContainer.io.memmap.dist.FileWrite(path(td),imat,0,'single');
+    x    = SeisDataContainer.io.memmap.dist.FileRead(path(td),'single');
     assert(isequal(x,single(imat)))
 end
 
@@ -65,8 +65,8 @@ function test_distributed_dataReadWrite_distribute_double_real
     imat = distributed.rand(2,2,4);
     ts   = ConDir();
     td   = ConDistDirs();
-    DataContainer.io.memmap.dist.FileWrite(path(ts),imat,1,path(td));
-    x    = DataContainer.io.memmap.dist.FileRead(path(ts));
+    SeisDataContainer.io.memmap.dist.FileWrite(path(ts),imat,1,path(td));
+    x    = SeisDataContainer.io.memmap.dist.FileRead(path(ts));
     assert(isequal(x,imat))
 end
 
@@ -76,8 +76,8 @@ function test_distributed_dataReadWrite_distribute_double_complex
     imat = complex(imat,imat);
     ts   = ConDir();
     td   = ConDistDirs();
-    DataContainer.io.memmap.dist.FileWrite(path(ts),imat,1,path(td));
-    x    = DataContainer.io.memmap.dist.FileRead(path(ts));
+    SeisDataContainer.io.memmap.dist.FileWrite(path(ts),imat,1,path(td));
+    x    = SeisDataContainer.io.memmap.dist.FileRead(path(ts));
     assert(isequal(x,imat))
 end
 
@@ -86,8 +86,8 @@ function test_distributed_dataReadWrite_distribute_single_real
     imat = distributed.rand(2,2,4);
     ts   = ConDir();
     td   = ConDistDirs();
-    DataContainer.io.memmap.dist.FileWrite(path(ts),imat,1,path(td),'single');
-    x    = DataContainer.io.memmap.dist.FileRead(path(ts),'single');
+    SeisDataContainer.io.memmap.dist.FileWrite(path(ts),imat,1,path(td),'single');
+    x    = SeisDataContainer.io.memmap.dist.FileRead(path(ts),'single');
     assert(isequal(x,single(imat)))
 end
 
@@ -97,8 +97,8 @@ function test_distributed_dataReadWrite_distribute_single_complex
     imat = complex(imat,imat);
     ts   = ConDir();
     td   = ConDistDirs();
-    DataContainer.io.memmap.dist.FileWrite(path(ts),imat,1,path(td),'single');
-    x    = DataContainer.io.memmap.dist.FileRead(path(ts),'single');
+    SeisDataContainer.io.memmap.dist.FileWrite(path(ts),imat,1,path(td),'single');
+    x    = SeisDataContainer.io.memmap.dist.FileRead(path(ts),'single');
     assert(isequal(x,single(imat)))
 end
 
@@ -106,8 +106,8 @@ function test_distributed_fileReadWrite_noDistribute_double_real
 %%
     imat = distributed.rand(2,2,4);
     td   = ConDir();
-    DataContainer.io.memmap.dist.FileWrite(path(td),imat,0);
-    x    = DataContainer.io.memmap.dist.FileRead(path(td));
+    SeisDataContainer.io.memmap.dist.FileWrite(path(td),imat,0);
+    x    = SeisDataContainer.io.memmap.dist.FileRead(path(td));
     assert(isequal(x,imat))
 end
 
@@ -116,8 +116,8 @@ function test_distributed_fileReadWrite_noDistribute_double_complex
     imat = distributed.rand(2,2,4);
     imat = complex(imat,imat);
     td   = ConDir();
-    DataContainer.io.memmap.dist.FileWrite(path(td),imat,0);
-    x = DataContainer.io.memmap.dist.FileRead(path(td));
+    SeisDataContainer.io.memmap.dist.FileWrite(path(td),imat,0);
+    x = SeisDataContainer.io.memmap.dist.FileRead(path(td));
     assert(isequal(x,imat))
 end
 
@@ -125,8 +125,8 @@ function test_distributed_fileReadWrite_noDistribute_single_real
 %%
     imat = distributed.rand(2,2,4);
     td   = ConDir();
-    DataContainer.io.memmap.dist.FileWrite(path(td),imat,0,'single');
-    x = DataContainer.io.memmap.dist.FileRead(path(td),'single');
+    SeisDataContainer.io.memmap.dist.FileWrite(path(td),imat,0,'single');
+    x = SeisDataContainer.io.memmap.dist.FileRead(path(td),'single');
     assert(isequal(x,single(imat)))
 end
 
@@ -135,8 +135,8 @@ function test_distributed_fileReadWrite_noDistribute_single_complex
     imat = distributed.rand(2,2,4);
     imat = complex(imat,imat);
     td   = ConDir();
-    DataContainer.io.memmap.dist.FileWrite(path(td),imat,0,'single');
-    x = DataContainer.io.memmap.dist.FileRead(path(td),'single');
+    SeisDataContainer.io.memmap.dist.FileWrite(path(td),imat,0,'single');
+    x = SeisDataContainer.io.memmap.dist.FileRead(path(td),'single');
     assert(isequal(x,single(imat)))
 end
 
@@ -145,8 +145,8 @@ function test_distributed_fileReadWrite_distribute_double_real
     imat = distributed.rand(2,2,4);
     ts   = ConDir();
     td   = ConDistDirs();
-    DataContainer.io.memmap.dist.FileWrite(path(ts),imat,1,path(td));
-    x = DataContainer.io.memmap.dist.FileRead(path(ts));
+    SeisDataContainer.io.memmap.dist.FileWrite(path(ts),imat,1,path(td));
+    x = SeisDataContainer.io.memmap.dist.FileRead(path(ts));
     assert(isequal(x,imat))
 end
 
@@ -156,8 +156,8 @@ function test_distributed_fileReadWrite_distribute_double_complex
     imat = complex(imat,imat);
     ts   = ConDir();
     td   = ConDistDirs();
-    DataContainer.io.memmap.dist.FileWrite(path(ts),imat,1,path(td));
-    x = DataContainer.io.memmap.dist.FileRead(path(ts));
+    SeisDataContainer.io.memmap.dist.FileWrite(path(ts),imat,1,path(td));
+    x = SeisDataContainer.io.memmap.dist.FileRead(path(ts));
     assert(isequal(x,imat))
 end
 
@@ -166,8 +166,8 @@ function test_distributed_fileReadWrite_distribute_single_real
     imat = distributed.rand(2,2,4);
     ts   = ConDir();
     td   = ConDistDirs();
-    DataContainer.io.memmap.dist.FileWrite(path(ts),imat,1,path(td),'single');
-    x = DataContainer.io.memmap.dist.FileRead(path(ts),'single');
+    SeisDataContainer.io.memmap.dist.FileWrite(path(ts),imat,1,path(td),'single');
+    x = SeisDataContainer.io.memmap.dist.FileRead(path(ts),'single');
     assert(isequal(x,single(imat)))
 end
 
@@ -177,8 +177,8 @@ function test_distributed_fileReadWrite_distribute_single_complex
     imat = complex(imat,imat);
     ts   = ConDir();
     td   = ConDistDirs();
-    DataContainer.io.memmap.dist.FileWrite(path(ts),imat,1,path(td),'single');
-    x = DataContainer.io.memmap.dist.FileRead(path(ts),'single');
+    SeisDataContainer.io.memmap.dist.FileWrite(path(ts),imat,1,path(td),'single');
+    x = SeisDataContainer.io.memmap.dist.FileRead(path(ts),'single');
     assert(isequal(x,single(imat)))
 end
 
@@ -186,9 +186,9 @@ function test_distributed_fileReadLeftSlice_double_real
 %%
     imat = distributed.rand(2,2,4);
     td   = ConDir();
-    DataContainer.io.memmap.dist.FileWrite(path(td),imat,0);
+    SeisDataContainer.io.memmap.dist.FileWrite(path(td),imat,0);
     i    = randi(4);
-    x    = DataContainer.io.memmap.dist.FileReadLeftSlice(path(td),i);
+    x    = SeisDataContainer.io.memmap.dist.FileReadLeftSlice(path(td),i);
     assert(isequal(x,imat(:,:,i)))
 end
 
@@ -197,9 +197,9 @@ function test_distributed_fileReadLeftSlice_double_complex
     imat = distributed.rand(2,2,4);
     imat = complex(imat,imat);
     td   = ConDir();
-    DataContainer.io.memmap.dist.FileWrite(path(td),imat,0);
+    SeisDataContainer.io.memmap.dist.FileWrite(path(td),imat,0);
     i    = randi(4);
-    x    = DataContainer.io.memmap.dist.FileReadLeftSlice(path(td),i);
+    x    = SeisDataContainer.io.memmap.dist.FileReadLeftSlice(path(td),i);
     assert(isequal(x,imat(:,:,i)))
 end
 
@@ -207,9 +207,9 @@ function test_distributed_fileReadLeftSlice_single_real
 %%
     imat = distributed.rand(2,2,4);
     td   = ConDir();
-    DataContainer.io.memmap.dist.FileWrite(path(td),imat,0,'single');
+    SeisDataContainer.io.memmap.dist.FileWrite(path(td),imat,0,'single');
     i    = randi(4);
-    x    = DataContainer.io.memmap.dist.FileReadLeftSlice(path(td),i,'single');
+    x    = SeisDataContainer.io.memmap.dist.FileReadLeftSlice(path(td),i,'single');
     assert(isequal(x,single(imat(:,:,i))))
 end
 
@@ -218,9 +218,9 @@ function test_distributed_fileReadLeftSlice_single_complex
     imat = distributed.rand(2,2,4);
     imat = complex(imat,imat);
     td   = ConDir();
-    DataContainer.io.memmap.dist.FileWrite(path(td),imat,0,'single');
+    SeisDataContainer.io.memmap.dist.FileWrite(path(td),imat,0,'single');
     i    = randi(4);
-    x    = DataContainer.io.memmap.dist.FileReadLeftSlice(path(td),i,'single');
+    x    = SeisDataContainer.io.memmap.dist.FileReadLeftSlice(path(td),i,'single');
     assert(isequal(x,single(imat(:,:,i))))
 end
 
@@ -229,10 +229,10 @@ function test_distributed_fileWriteLeftSlice_double_real
     imat = distributed.rand(2,2,4);
     dmat = distributed.rand(2,2);
     td   = ConDir();
-    DataContainer.io.memmap.dist.FileWrite(path(td),imat,0);
+    SeisDataContainer.io.memmap.dist.FileWrite(path(td),imat,0);
     i    = randi(4);
-    DataContainer.io.memmap.dist.FileWriteLeftSlice(path(td),dmat,[i]);
-    x    = DataContainer.io.memmap.dist.FileReadLeftSlice(path(td),[i]);
+    SeisDataContainer.io.memmap.dist.FileWriteLeftSlice(path(td),dmat,[i]);
+    x    = SeisDataContainer.io.memmap.dist.FileReadLeftSlice(path(td),[i]);
     assert(isequal(x,dmat))
 end
 
@@ -243,10 +243,10 @@ function test_distributed_fileWriteLeftSlice_double_complex
     dmat = distributed.rand(2,2);
     dmat = complex(dmat,dmat);
     td   = ConDir();
-    DataContainer.io.memmap.dist.FileWrite(path(td),imat,0);
+    SeisDataContainer.io.memmap.dist.FileWrite(path(td),imat,0);
     i    = randi(4);
-    DataContainer.io.memmap.dist.FileWriteLeftSlice(path(td),dmat,[i]);
-    x    = DataContainer.io.memmap.dist.FileReadLeftSlice(path(td),[i]);
+    SeisDataContainer.io.memmap.dist.FileWriteLeftSlice(path(td),dmat,[i]);
+    x    = SeisDataContainer.io.memmap.dist.FileReadLeftSlice(path(td),[i]);
     assert(isequal(x,dmat))
 end
 
@@ -255,10 +255,10 @@ function test_distributed_fileWriteLeftSlice_single_real
     imat = distributed.rand(2,2,4);
     dmat = distributed.rand(2,2);
     td   = ConDir();
-    DataContainer.io.memmap.dist.FileWrite(path(td),imat,0,'single');
+    SeisDataContainer.io.memmap.dist.FileWrite(path(td),imat,0,'single');
     i    = randi(4);
-    DataContainer.io.memmap.dist.FileWriteLeftSlice(path(td),dmat,[i]);
-    x    = DataContainer.io.memmap.dist.FileReadLeftSlice(path(td),[i],'single');
+    SeisDataContainer.io.memmap.dist.FileWriteLeftSlice(path(td),dmat,[i]);
+    x    = SeisDataContainer.io.memmap.dist.FileReadLeftSlice(path(td),[i],'single');
     assert(isequal(x,single(dmat)))
 end
 
@@ -269,10 +269,10 @@ function test_distributed_fileWriteLeftSlice_single_complex
     dmat = distributed.rand(2,2);
     dmat = complex(dmat,dmat);
     td   = ConDir();
-    DataContainer.io.memmap.dist.FileWrite(path(td),imat,0,'single');
+    SeisDataContainer.io.memmap.dist.FileWrite(path(td),imat,0,'single');
     i    = randi(4);
-    DataContainer.io.memmap.dist.FileWriteLeftSlice(path(td),dmat,[i]);
-    x    = DataContainer.io.memmap.dist.FileReadLeftSlice(path(td),[i],'single');
+    SeisDataContainer.io.memmap.dist.FileWriteLeftSlice(path(td),dmat,[i]);
+    x    = SeisDataContainer.io.memmap.dist.FileReadLeftSlice(path(td),[i],'single');
     assert(isequal(x,single(dmat)))
 end
 
@@ -282,10 +282,10 @@ function test_distributed_fileDistribute
     ts    = ConDir();
     td    = ConDir();
     tdist = ConDistDirs();
-    DataContainer.io.memmap.serial.FileWrite(path(ts),imat);
+    SeisDataContainer.io.memmap.serial.FileWrite(path(ts),imat);
     i     = randi(3);
-    DataContainer.io.memmap.dist.FileDistribute(path(ts),path(td),path(tdist),i);
-    x     = DataContainer.io.memmap.dist.FileRead(path(td));
+    SeisDataContainer.io.memmap.dist.FileDistribute(path(ts),path(td),path(tdist),i);
+    x     = SeisDataContainer.io.memmap.dist.FileRead(path(td));
     assert(isequal(x,imat))
 end
 
@@ -295,9 +295,9 @@ function test_distributed_fileGather
     ts    = ConDir();
     td    = ConDir();
     tdist = ConDistDirs();
-    DataContainer.io.memmap.dist.FileWrite(path(td),imat,1,path(tdist));
-    DataContainer.io.memmap.dist.FileGather(path(td),path(ts));
-    x     = DataContainer.io.memmap.serial.FileRead(path(ts));
+    SeisDataContainer.io.memmap.dist.FileWrite(path(td),imat,1,path(tdist));
+    SeisDataContainer.io.memmap.dist.FileGather(path(td),path(ts));
+    x     = SeisDataContainer.io.memmap.serial.FileRead(path(ts));
     assert(isequal(x,imat))
 end
 
@@ -306,19 +306,19 @@ function test_distributed_FileNorm_double_real
     imat = distributed.rand(2,2,4,5,6);
     ts   = ConDir();
     td   = ConDistDirs();
-    DataContainer.io.memmap.dist.FileWrite(path(ts),imat,1,path(td));
-    x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],0,'double');
-    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),0))
-    x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],1,'double');
-    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),1))
-    x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],2,'double');
-    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),2))
-    x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],-inf,'double');
-    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),-inf))
-    x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],inf,'double');
-    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),inf))
-    x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],'fro','double');
-    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),'fro'))
+    SeisDataContainer.io.memmap.dist.FileWrite(path(ts),imat,1,path(td));
+    x    = SeisDataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],0,'double');
+    assertElementsAlmostEqual(x,norm(SeisDataContainer.utils.vecNativeSerial(gather(imat)),0))
+    x    = SeisDataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],1,'double');
+    assertElementsAlmostEqual(x,norm(SeisDataContainer.utils.vecNativeSerial(gather(imat)),1))
+    x    = SeisDataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],2,'double');
+    assertElementsAlmostEqual(x,norm(SeisDataContainer.utils.vecNativeSerial(gather(imat)),2))
+    x    = SeisDataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],-inf,'double');
+    assertElementsAlmostEqual(x,norm(SeisDataContainer.utils.vecNativeSerial(gather(imat)),-inf))
+    x    = SeisDataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],inf,'double');
+    assertElementsAlmostEqual(x,norm(SeisDataContainer.utils.vecNativeSerial(gather(imat)),inf))
+    x    = SeisDataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],'fro','double');
+    assertElementsAlmostEqual(x,norm(SeisDataContainer.utils.vecNativeSerial(gather(imat)),'fro'))
 end
 
 function test_distributed_FileNorm_double_complex
@@ -327,19 +327,19 @@ function test_distributed_FileNorm_double_complex
     imat = complex(imat,imat);
     ts   = ConDir();
     td   = ConDistDirs();
-    DataContainer.io.memmap.dist.FileWrite(path(ts),imat,1,path(td));
-    x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],0,'double');
-    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),0))
-    x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],1,'double');
-    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),1))
-    x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],2,'double');
-    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),2))
-    x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],-inf,'double');
-    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),-inf))
-    x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],inf,'double');
-    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),inf))
-    x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],'fro','double');
-    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),'fro'))
+    SeisDataContainer.io.memmap.dist.FileWrite(path(ts),imat,1,path(td));
+    x    = SeisDataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],0,'double');
+    assertElementsAlmostEqual(x,norm(SeisDataContainer.utils.vecNativeSerial(gather(imat)),0))
+    x    = SeisDataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],1,'double');
+    assertElementsAlmostEqual(x,norm(SeisDataContainer.utils.vecNativeSerial(gather(imat)),1))
+    x    = SeisDataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],2,'double');
+    assertElementsAlmostEqual(x,norm(SeisDataContainer.utils.vecNativeSerial(gather(imat)),2))
+    x    = SeisDataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],-inf,'double');
+    assertElementsAlmostEqual(x,norm(SeisDataContainer.utils.vecNativeSerial(gather(imat)),-inf))
+    x    = SeisDataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],inf,'double');
+    assertElementsAlmostEqual(x,norm(SeisDataContainer.utils.vecNativeSerial(gather(imat)),inf))
+    x    = SeisDataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],'fro','double');
+    assertElementsAlmostEqual(x,norm(SeisDataContainer.utils.vecNativeSerial(gather(imat)),'fro'))
 end
 
 function test_distributed_FileNorm_single_real
@@ -348,19 +348,19 @@ function test_distributed_FileNorm_single_real
     imat = complex(imat,imat);
     ts   = ConDir();
     td   = ConDistDirs();
-    DataContainer.io.memmap.dist.FileWrite(path(ts),imat,1,path(td),'single');
-    x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],0,'single');
-    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),0))
-    x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],1,'single');
-    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),1))
-    x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],2,'single');
-    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),2))
-    x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],-inf,'single');
-    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),-inf))
-    x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],inf,'single');
-    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),inf))
-    x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],'fro','single');
-    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),'fro'))
+    SeisDataContainer.io.memmap.dist.FileWrite(path(ts),imat,1,path(td),'single');
+    x    = SeisDataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],0,'single');
+    assertElementsAlmostEqual(x,norm(SeisDataContainer.utils.vecNativeSerial(gather(imat)),0))
+    x    = SeisDataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],1,'single');
+    assertElementsAlmostEqual(x,norm(SeisDataContainer.utils.vecNativeSerial(gather(imat)),1))
+    x    = SeisDataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],2,'single');
+    assertElementsAlmostEqual(x,norm(SeisDataContainer.utils.vecNativeSerial(gather(imat)),2))
+    x    = SeisDataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],-inf,'single');
+    assertElementsAlmostEqual(x,norm(SeisDataContainer.utils.vecNativeSerial(gather(imat)),-inf))
+    x    = SeisDataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],inf,'single');
+    assertElementsAlmostEqual(x,norm(SeisDataContainer.utils.vecNativeSerial(gather(imat)),inf))
+    x    = SeisDataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],'fro','single');
+    assertElementsAlmostEqual(x,norm(SeisDataContainer.utils.vecNativeSerial(gather(imat)),'fro'))
 end
 
 function test_distributed_FileNorm_single_complex
@@ -369,24 +369,24 @@ function test_distributed_FileNorm_single_complex
     imat = complex(imat,imat);
     ts   = ConDir();
     td   = ConDistDirs();
-    DataContainer.io.memmap.dist.FileWrite(path(ts),imat,1,path(td),'single');
-    x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],0,'single');
-    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),0))
-    x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],1,'single');
-    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),1))
-    x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],2,'single');
-    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),2))
-    x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],-inf,'single');
-    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),-inf))
-    x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],inf,'single');
-    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),inf))
-    x    = DataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],'fro','single');
-    assertElementsAlmostEqual(x,norm(DataContainer.utils.vecNativeSerial(gather(imat)),'fro'))
+    SeisDataContainer.io.memmap.dist.FileWrite(path(ts),imat,1,path(td),'single');
+    x    = SeisDataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],0,'single');
+    assertElementsAlmostEqual(x,norm(SeisDataContainer.utils.vecNativeSerial(gather(imat)),0))
+    x    = SeisDataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],1,'single');
+    assertElementsAlmostEqual(x,norm(SeisDataContainer.utils.vecNativeSerial(gather(imat)),1))
+    x    = SeisDataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],2,'single');
+    assertElementsAlmostEqual(x,norm(SeisDataContainer.utils.vecNativeSerial(gather(imat)),2))
+    x    = SeisDataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],-inf,'single');
+    assertElementsAlmostEqual(x,norm(SeisDataContainer.utils.vecNativeSerial(gather(imat)),-inf))
+    x    = SeisDataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],inf,'single');
+    assertElementsAlmostEqual(x,norm(SeisDataContainer.utils.vecNativeSerial(gather(imat)),inf))
+    x    = SeisDataContainer.io.memmap.dist.FileNorm(path(ts),[2 2 4 5 6],'fro','single');
+    assertElementsAlmostEqual(x,norm(SeisDataContainer.utils.vecNativeSerial(gather(imat)),'fro'))
 end
 
 function test_distributed_FileTranspose_double_real
 %%
-    display('  Warning: DataContainer.io.memmap.dist.FileTranspose is not fully implemented')
+    display('  Warning: SeisDataContainer.io.memmap.dist.FileTranspose is not fully implemented')
     n1      = 3;
     n2      = 4;
     n3      = 5;
@@ -398,9 +398,9 @@ function test_distributed_FileTranspose_double_real
     tDistOut = ConDistDirs();    
     % 2D transpose
     imat = distributed.rand(n1,n2);
-    DataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn));
-    DataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),1);
-    x    = DataContainer.io.memmap.dist.FileRead(path(tout));
+    SeisDataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn));
+    SeisDataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),1);
+    x    = SeisDataContainer.io.memmap.dist.FileRead(path(tout));
     assertEqual(x,transpose(imat));
     
     tin      = ConDir();
@@ -409,9 +409,9 @@ function test_distributed_FileTranspose_double_real
     tDistOut = ConDistDirs();
     % 3D transpose with sepDim == 1
     imat = distributed.rand(n1,n2,n3);
-    DataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn));
-    DataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),1);
-    x    = DataContainer.io.memmap.dist.FileRead(path(tout));
+    SeisDataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn));
+    SeisDataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),1);
+    x    = SeisDataContainer.io.memmap.dist.FileRead(path(tout));
     assertEqual(x,reshape(transpose(reshape(imat,n1,n2*n3)),n2,n3,n1));
     
     tin      = ConDir();
@@ -420,9 +420,9 @@ function test_distributed_FileTranspose_double_real
     tDistOut = ConDistDirs();
     % 3D transpose with sepDim == 2
     imat = distributed.rand(n1,n2,n3);
-    DataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn));
-    DataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),2);
-    x    = DataContainer.io.memmap.dist.FileRead(path(tout));
+    SeisDataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn));
+    SeisDataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),2);
+    x    = SeisDataContainer.io.memmap.dist.FileRead(path(tout));
     assertEqual(x,reshape(transpose(reshape(imat,n1*n2,n3)),n3,n1,n2));
     
     tin      = ConDir();
@@ -431,15 +431,15 @@ function test_distributed_FileTranspose_double_real
     tDistOut = ConDistDirs();
     % 4D transpose with sepDim == 3
     imat = distributed.rand(n1,n2,n3,n4);
-    DataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn));
-    DataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),3);
-    x    = DataContainer.io.memmap.dist.FileRead(path(tout));
+    SeisDataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn));
+    SeisDataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),3);
+    x    = SeisDataContainer.io.memmap.dist.FileRead(path(tout));
     assertEqual(x,reshape(transpose(reshape(imat,n1*n2*n3,n4)),n4,n1,n2,n3));
 end
 
 function test_distributed_FileTranspose_double_complex
 %%
-    display('  Warning: DataContainer.io.memmap.dist.FileTranspose is not fully implemented')
+    display('  Warning: SeisDataContainer.io.memmap.dist.FileTranspose is not fully implemented')
     n1      = 3;
     n2      = 4;
     n3      = 5;
@@ -452,9 +452,9 @@ function test_distributed_FileTranspose_double_complex
     % 2D transpose
     imat = distributed.rand(n1,n2);
     imat = complex(imat,imat);
-    DataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn));
-    DataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),1);
-    x    = DataContainer.io.memmap.dist.FileRead(path(tout));
+    SeisDataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn));
+    SeisDataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),1);
+    x    = SeisDataContainer.io.memmap.dist.FileRead(path(tout));
     assertEqual(x,transpose(imat));
     
     tin      = ConDir();
@@ -464,9 +464,9 @@ function test_distributed_FileTranspose_double_complex
     % 3D transpose with sepDim == 1
     imat = distributed.rand(n1,n2,n3);
     imat = complex(imat,imat);
-    DataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn));
-    DataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),1);
-    x    = DataContainer.io.memmap.dist.FileRead(path(tout));
+    SeisDataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn));
+    SeisDataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),1);
+    x    = SeisDataContainer.io.memmap.dist.FileRead(path(tout));
     assertEqual(x,reshape(transpose(reshape(imat,n1,n2*n3)),n2,n3,n1));
     
     tin      = ConDir();
@@ -476,9 +476,9 @@ function test_distributed_FileTranspose_double_complex
     % 3D transpose with sepDim == 2
     imat = distributed.rand(n1,n2,n3);
     imat = complex(imat,imat);
-    DataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn));
-    DataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),2);
-    x    = DataContainer.io.memmap.dist.FileRead(path(tout));
+    SeisDataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn));
+    SeisDataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),2);
+    x    = SeisDataContainer.io.memmap.dist.FileRead(path(tout));
     assertEqual(x,reshape(transpose(reshape(imat,n1*n2,n3)),n3,n1,n2));
     
     tin      = ConDir();
@@ -488,15 +488,15 @@ function test_distributed_FileTranspose_double_complex
     % 4D transpose with sepDim == 3
     imat = distributed.rand(n1,n2,n3,n4);
     imat = complex(imat,imat);
-    DataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn));
-    DataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),3);
-    x    = DataContainer.io.memmap.dist.FileRead(path(tout));
+    SeisDataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn));
+    SeisDataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),3);
+    x    = SeisDataContainer.io.memmap.dist.FileRead(path(tout));
     assertEqual(x,reshape(transpose(reshape(imat,n1*n2*n3,n4)),n4,n1,n2,n3));
 end
 
 function test_distributed_FileTranspose_single_real
 %%
-    display('  Warning: DataContainer.io.memmap.dist.FileTranspose is not fully implemented')
+    display('  Warning: SeisDataContainer.io.memmap.dist.FileTranspose is not fully implemented')
     n1   = 3;
     n2   = 4;
     n3   = 5;
@@ -508,9 +508,9 @@ function test_distributed_FileTranspose_single_real
     tDistOut = ConDistDirs(); 
     % 2D transpose
     imat = distributed.rand(n1,n2);
-    DataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn),'single');
-    DataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),1);
-    x    = DataContainer.io.memmap.dist.FileRead(path(tout),'single');
+    SeisDataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn),'single');
+    SeisDataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),1);
+    x    = SeisDataContainer.io.memmap.dist.FileRead(path(tout),'single');
     assertEqual(x,single(transpose(imat)));
     
     tin      = ConDir();
@@ -519,9 +519,9 @@ function test_distributed_FileTranspose_single_real
     tDistOut = ConDistDirs();
     % 3D transpose with sepDim == 1
     imat = distributed.rand(n1,n2,n3);
-    DataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn),'single');
-    DataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),1);
-    x    = DataContainer.io.memmap.dist.FileRead(path(tout),'single');
+    SeisDataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn),'single');
+    SeisDataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),1);
+    x    = SeisDataContainer.io.memmap.dist.FileRead(path(tout),'single');
     assertEqual(x,single(reshape(transpose(reshape(imat,n1,n2*n3)),n2,n3,n1)));
     
     tin      = ConDir();
@@ -530,9 +530,9 @@ function test_distributed_FileTranspose_single_real
     tDistOut = ConDistDirs();
     % 3D transpose with sepDim == 2
     imat = distributed.rand(n1,n2,n3);
-    DataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn),'single');
-    DataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),2);
-    x    = DataContainer.io.memmap.dist.FileRead(path(tout),'single');
+    SeisDataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn),'single');
+    SeisDataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),2);
+    x    = SeisDataContainer.io.memmap.dist.FileRead(path(tout),'single');
     assertEqual(x,single(reshape(transpose(reshape(imat,n1*n2,n3)),n3,n1,n2)));
     
     tin      = ConDir();
@@ -541,15 +541,15 @@ function test_distributed_FileTranspose_single_real
     tDistOut = ConDistDirs();
     % 4D transpose with sepDim == 3
     imat = distributed.rand(n1,n2,n3,n4);
-    DataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn),'single');
-    DataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),3);
-    x    = DataContainer.io.memmap.dist.FileRead(path(tout),'single');
+    SeisDataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn),'single');
+    SeisDataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),3);
+    x    = SeisDataContainer.io.memmap.dist.FileRead(path(tout),'single');
     assertEqual(x,single(reshape(transpose(reshape(imat,n1*n2*n3,n4)),n4,n1,n2,n3)));
 end
 
 function test_distributed_FileTranspose_single_complex
 %%
-    display('  Warning: DataContainer.io.memmap.dist.FileTranspose is not fully implemented')
+    display('  Warning: SeisDataContainer.io.memmap.dist.FileTranspose is not fully implemented')
     n1   = 3;
     n2   = 4;
     n3   = 5;
@@ -562,9 +562,9 @@ function test_distributed_FileTranspose_single_complex
     % 2D transpose
     imat = distributed.rand(n1,n2);
     imat = complex(imat,imat);
-    DataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn),'single');
-    DataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),1);
-    x    = DataContainer.io.memmap.dist.FileRead(path(tout),'single');
+    SeisDataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn),'single');
+    SeisDataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),1);
+    x    = SeisDataContainer.io.memmap.dist.FileRead(path(tout),'single');
     assertEqual(x,single(transpose(imat)));
     
     tin      = ConDir();
@@ -574,9 +574,9 @@ function test_distributed_FileTranspose_single_complex
     % 3D transpose with sepDim == 1
     imat = distributed.rand(n1,n2,n3);
     imat = complex(imat,imat);
-    DataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn),'single');
-    DataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),1);
-    x    = DataContainer.io.memmap.dist.FileRead(path(tout),'single');
+    SeisDataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn),'single');
+    SeisDataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),1);
+    x    = SeisDataContainer.io.memmap.dist.FileRead(path(tout),'single');
     assertEqual(x,single(reshape(transpose(reshape(imat,n1,n2*n3)),n2,n3,n1)));
     
     tin      = ConDir();
@@ -586,9 +586,9 @@ function test_distributed_FileTranspose_single_complex
     % 3D transpose with sepDim == 2
     imat = distributed.rand(n1,n2,n3);
     imat = complex(imat,imat);
-    DataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn),'single');
-    DataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),2);
-    x    = DataContainer.io.memmap.dist.FileRead(path(tout),'single');
+    SeisDataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn),'single');
+    SeisDataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),2);
+    x    = SeisDataContainer.io.memmap.dist.FileRead(path(tout),'single');
     assertEqual(x,single(reshape(transpose(reshape(imat,n1*n2,n3)),n3,n1,n2)));
     
     tin      = ConDir();
@@ -598,8 +598,8 @@ function test_distributed_FileTranspose_single_complex
     % 4D transpose with sepDim == 3
     imat = distributed.rand(n1,n2,n3,n4);
     imat = complex(imat,imat);
-    DataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn),'single');
-    DataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),3);
-    x    = DataContainer.io.memmap.dist.FileRead(path(tout),'single');
+    SeisDataContainer.io.memmap.dist.FileWrite(path(tin),imat,1,path(tDistIn),'single');
+    SeisDataContainer.io.memmap.dist.FileTranspose(path(tin),path(tout),path(tDistOut),3);
+    x    = SeisDataContainer.io.memmap.dist.FileRead(path(tout),'single');
     assertEqual(x,single(reshape(transpose(reshape(imat,n1*n2*n3,n4)),n4,n1,n2,n3)));
 end

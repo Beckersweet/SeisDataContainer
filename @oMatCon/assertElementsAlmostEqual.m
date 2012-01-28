@@ -5,7 +5,7 @@ if(isa(a,'oCon') && isa(b,'oCon'))
         error('sizes does not match')
     end       
     % Set byte size
-    bytesize  = DataContainer.utils.getByteSize(a.header.precision);
+    bytesize  = SeisDataContainer.utils.getByteSize(a.header.precision);
 
     % Set the sizes
     dims      = [1 prod(a.header.size)];
@@ -16,17 +16,17 @@ if(isa(a,'oCon') && isa(b,'oCon'))
     while (reminder > 0)
         buffer = min(reminder,maxbuffer);
         rend = rstart + buffer - 1;
-        r1 = DataContainer.io.memmap.serial.DataReadLeftChunk...
+        r1 = SeisDataContainer.io.memmap.serial.DataReadLeftChunk...
             (path(a.pathname),'real',dims,[rstart rend],[],a.header.precision,a.header.precision);
         if a.header.complex
-        dummy = DataContainer.io.memmap.serial.DataReadLeftChunk...
+        dummy = SeisDataContainer.io.memmap.serial.DataReadLeftChunk...
             (path(a.pathname),'imag',dims,[rstart rend],[],a.header.precision,a.header.precision);
             r1 = complex(r1,dummy);
         end
-        r2 = DataContainer.io.memmap.serial.DataReadLeftChunk...
+        r2 = SeisDataContainer.io.memmap.serial.DataReadLeftChunk...
             (path(b.pathname),'real',dims,[rstart rend],[],b.header.precision,b.header.precision);
         if b.header.complex
-        dummy = DataContainer.io.memmap.serial.DataReadLeftChunk...
+        dummy = SeisDataContainer.io.memmap.serial.DataReadLeftChunk...
             (path(b.pathname),'imag',dims,[rstart rend],[],b.header.precision,b.header.precision);
             r2 = complex(r2,dummy);
         end
@@ -41,7 +41,7 @@ elseif(isa(a,'oCon') || isa(b,'oCon'))
         b = x;
     end
     % Set byte size
-    bytesize  = DataContainer.utils.getByteSize(a.header.precision);
+    bytesize  = SeisDataContainer.utils.getByteSize(a.header.precision);
     % Set the sizes
     dims      = [1 prod(a.header.size)];
     reminder  = prod(a.header.size);
@@ -53,10 +53,10 @@ elseif(isa(a,'oCon') || isa(b,'oCon'))
     while (reminder > 0)
         buffer = min(reminder,maxbuffer);
         rend = rstart + buffer - 1;
-        r1 = DataContainer.io.memmap.serial.DataReadLeftChunk...
+        r1 = SeisDataContainer.io.memmap.serial.DataReadLeftChunk...
             (path(a.pathname),'real',dims,[rstart rend],[],a.header.precision,a.header.precision);
         if a.header.complex
-        dummy = DataContainer.io.memmap.serial.DataReadLeftChunk...
+        dummy = SeisDataContainer.io.memmap.serial.DataReadLeftChunk...
             (path(a.pathname),'imag',dims,[rstart rend],[],a.header.precision,a.header.precision);
             r1 = complex(r1,dummy);
         end

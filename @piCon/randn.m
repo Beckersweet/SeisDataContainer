@@ -13,7 +13,7 @@ function x = randn(varargin)
 %   Negative integers are treated as 0.
 %   - The data is always distributed to the last dimension
 
-stringIndex = DataContainer.utils.getFirstStringIndex(varargin{:});
+stringIndex = SeisDataContainer.utils.getFirstStringIndex(varargin{:});
 if(stringIndex)
     x = piCon(distributed.randn(varargin{1:stringIndex-1}),varargin{stringIndex:end});
 else

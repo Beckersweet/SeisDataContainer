@@ -36,12 +36,12 @@ methods (Access = protected)
         
         if (isa(pathname,'ConDir') && exist(pathname)) % Loading file
             if(p.Results.copy == 0) % overwrite case
-                headerIn = DataContainer.io.memmap.serial.HeaderRead(path(pathname));
+                headerIn = SeisDataContainer.io.memmap.serial.HeaderRead(path(pathname));
                 td       = pathname;
             else % no overwrite
                 td       = ConDir();
-                DataContainer.io.memmap.serial.FileCopy(path(pathname),path(td));
-                headerIn = DataContainer.io.memmap.serial.HeaderRead(path(td));
+                SeisDataContainer.io.memmap.serial.FileCopy(path(pathname),path(td));
+                headerIn = SeisDataContainer.io.memmap.serial.HeaderRead(path(td));
             end            
         else
             error('Fail: Path does not exist');
@@ -53,7 +53,7 @@ methods (Access = protected)
         x.readOnly = p.Results.readonly;
 
         % Writing header on disk
-        DataContainer.io.memmap.serial.HeaderWrite...
+        SeisDataContainer.io.memmap.serial.HeaderWrite...
             (path(pathname),x.header);
     end % constructor
 end % protected methods

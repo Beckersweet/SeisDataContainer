@@ -7,7 +7,7 @@ if(isa(a,'oMatCon'))
     aa = path(a.pathname);
 end
 td = ConDir();
-DataContainer.io.memmap.serial.FileTimes...
+SeisDataContainer.io.memmap.serial.FileTimes...
     (-1,aa,path(td));
 y  = oMatCon.load(td);
 end
