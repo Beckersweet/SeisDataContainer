@@ -13,7 +13,7 @@ if length(s) > 1
     switch s(1).type
         case {'.'}
             % attributes references and function calls
-            [output,done] = DataContainer.utils.subsrefFunctionCall(x,s);
+            [output,done] = SeisDataContainer.utils.subsrefFunctionCall(x,s);
             if done, return; end % For functions that don't return anything
             varargout{1}  = output;
 

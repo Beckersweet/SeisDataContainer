@@ -20,7 +20,7 @@ function x = zeros(varargin)
 %   Negative integers are treated as 0.
 %     global SDCdefaultIOdist;
     
-    stringIndex = DataContainer.utils.getFirstStringIndex(varargin{:});    
+    stringIndex = SeisDataContainer.utils.getFirstStringIndex(varargin{:});    
     if(stringIndex)
         xsize = cell2mat(varargin(1:stringIndex-1));
         p = inputParser;
@@ -33,12 +33,12 @@ function x = zeros(varargin)
         xprecision = 'double';
     end
     
-    td = DataContainer.io.makeDir();
-    header = DataContainer.basicHeaderStruct...
+    td = SeisDataContainer.io.makeDir();
+    header = SeisDataContainer.basicHeaderStruct...
         (xsize,xprecision,0);
-    header = DataContainer.addDistHeaderStruct...
+    header = SeisDataContainer.addDistHeaderStruct...
         (header,header.dims,[]);
-    DataContainer.io.memmap.serial.FileAlloc(td,header);
+    SeisDataContainer.io.NativeBin.serial.FileAlloc(td,header);
     if(stringIndex)
         x = oMatCon.load(td,p.Unmatched);
     else
@@ -49,7 +49,7 @@ end
 % this fuction should be improved to something like:
 %     if SDCdefaultIOdist
 %         %header = addDistFile
-%         DataContainer.io.memmap.dist.FileAlloc(td,header);
+%         SeisDataContainer.io.NativeBin.dist.FileAlloc(td,header);
 %     else
-%         DataContainer.io.memmap.serial.FileAlloc(td,header);
+%         SeisDataContainer.io.NativeBin.serial.FileAlloc(td,header);
 %     end

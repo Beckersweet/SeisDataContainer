@@ -51,7 +51,7 @@ classdef (InferiorClasses = {?distributed,?codistributed}) piCon < iCon
             
             if ~isstruct(doh)
                 data   = doh;
-                header = DataContainer.basicHeaderStructFromX(data);
+                header = SeisDataContainer.basicHeaderStructFromX(data);
                 % Distribute data if not distributed
                 if ~isdistributed(data)
                     data = distributed(data);                    

@@ -5,6 +5,6 @@ if(~isa(a,'oMatCon'))
     error('Input parameter should be data container')
 end
 td = ConDir();
-DataContainer.io.memmap.serial.FileImag(path(a.pathname),path(td));    
+SeisDataContainer.io.NativeBin.serial.FileImag(path(a.pathname),path(td));    
 y = oMatCon.load(td);
 end

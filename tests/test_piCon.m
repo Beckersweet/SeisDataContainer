@@ -57,7 +57,7 @@ y.save(path(td),1);
 
 % testing the header attributes after loading
 w = piCon.load(path(td));
-DataContainer.isequalHeaderStruct(y.header,w.header)
+SeisDataContainer.isequalHeaderStruct(y.header,w.header)
 end % inputParser
 
 % function test_piCon_inv
@@ -173,7 +173,7 @@ y.save(path(td),1);
 
 % testing the header attributes after loading
 w = piCon.load(path(td));
-DataContainer.isequalHeaderStruct(y.header,w.header);
+SeisDataContainer.isequalHeaderStruct(y.header,w.header);
 end % modifyHeader
 
 function test_piCon_ones
