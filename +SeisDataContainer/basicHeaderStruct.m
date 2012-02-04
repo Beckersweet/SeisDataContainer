@@ -9,10 +9,23 @@ function header = basicHeaderStruct(xsize,xprecision,xcomplex,varargin)
 %   Optional keyword arguments:
 %       'varName' - string holding the name of variable
 %       'varUnits' - string holding the units of variable
-%       'origin' - row vector holding the origin coordinate for ach axis
+%       'origin' - row vector holding the origin coordinate for each axis
 %       'delta' - row vector holding the delta of coordinate value for each axis
 %       'unit' - cell array of strings with units for each axis
 %       'label' - cell array of strings with label for each axis
+%
+%   Fields in output structure:
+%         varName: string holding the name of variable
+%        varUnits: string holding the units of variable
+%            dims: # of dimensions of the array
+%            size: sizes of the array
+%          origin: row vector holding the origin coordinate for ach axis
+%           delta: row vector holding the delta of coordinate value for each axis
+%       precision: array precision
+%         complex: f complex (no=0 or yes=1)
+%            unit: cell array of strings with units for each axis
+%           label: cell array of strings with label for each axis
+%   distributedIO: if distributed IO (no=0 or yes=1)
 %
 %   EXAMPLE:
 %       SeisDataContainer.basicHeaderStruct([10 10],'double',1,...
