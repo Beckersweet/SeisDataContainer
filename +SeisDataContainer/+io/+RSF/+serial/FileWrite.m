@@ -19,17 +19,19 @@ function FileWrite(filename,x,varargin)
     assert(~isdistributed(x), 'data must not be distributed')
 
 % Setup variables
-    header = SeisDataContainer.basicHeaderStructFromX(x);
 
 % Preprocess input arguments
     if nargin>2
         assert(isstruct(varargin{1}),'argument mast be header struct')
         header = varargin{1};
+        SeisDataContainer.verifyHeaderStructWithX(header,x);
+    else
+        header = SeisDataContainer.basicHeaderStructFromX(x);
     end;
-    SeisDataContainer.verifyHeaderStructWithX(header,x);
+    delta=header.delta';
+    origin=header.origin';
 
 % Write file
-    rsf_create(filename,header.dims);
-    rsf_write(x,filename);
+    rsf_write_all(filename,x,delta,origin,header.label,header.unit);
 
 end
