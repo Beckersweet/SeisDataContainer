@@ -24,14 +24,13 @@ function FileWrite(filename,x,varargin)
     if nargin>2
         assert(isstruct(varargin{1}),'argument mast be header struct')
         header = varargin{1};
-        SeisDataContainer.verifyHeaderStructWithX(header,x);
     else
         header = SeisDataContainer.basicHeaderStructFromX(x);
     end;
-    delta=header.delta';
-    origin=header.origin';
+    SeisDataContainer.verifyHeaderStructWithX(header,x);
 
 % Write file
-    rsf_write_all(filename,x,delta,origin,header.label,header.unit);
+    rsf_write_all(filename,x,...
+        header.delta,header.origin,header.label,header.unit);
 
 end

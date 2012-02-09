@@ -15,37 +15,17 @@ function [x header] = FileRead(filename)
     assert(SeisDataContainer.io.isFile(filename),...
         'Fatal error: file %s does not exist',filename)
 
-% Get file attributes
-    sizes = rsf_dim(filename);
-    if iscolumn(sizes); sizes=sizes'; end
-    dims = length(sizes);
-    
-    for i=1:dims
-        origin(i) = rsf_par(filename,['o' int2str(i)],'f',0);
-        delta(i) = rsf_par(filename,['d' int2str(i)],'f',1);
-        % unit not implemented in rsf_par
-        % label not implemented in rsf_par
-    end
-
 % Read file
-    x = zeros(sizes);           % allocate array
-    try % try reading real first
-        rsf_read(x,filename);
-    catch cmplx % give complex a try
-        x=complex(x,x);
-        try
-            rsf_read(x,filename);
-        catch final % give up
-            error('Fatal error: cannot guess RSF file type');
-        end
-    end
+    [x dims delta origin label unit]=rsf_read_all(filename);
 
 % Update header woth file atributes
     header = SeisDataContainer.basicHeaderStructFromX(x);
     [pathstr,header.varName,ext] = fileparts(filename);
     header.origin = origin;
     header.delta = delta;
-    % unit not implemented in rsf_par
+    header.label = label;
+    header.unit = unit;
     % label not implemented in rsf_par
+    SeisDataContainer.verifyHeaderStructWithX(header,x);
 
 end
