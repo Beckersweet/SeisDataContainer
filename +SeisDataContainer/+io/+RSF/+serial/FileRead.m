@@ -3,12 +3,12 @@ function [x header] = FileRead(filename)
 %
 %   [X, HEADER] = FileRead(FILENAME) reads
 %       the serial array X from RSF file FILENAME and
-%       puts RSF file attributes into HEADER struct as described
-%       in help for SeisDataContainer.basicHeaderStruct
+%       puts RSF file attributes into HEADER struct (described
+%       in help for SeisDataContainer.basicHeaderStruct)
 %
 %   FILENAME     - A string specifying the RSF file name
 %
-%   Note! needs MADAGASCAR 1.2 (SVN rev. 7470) or newer
+%   Note! needs MADAGASCAR SVN rev. 8140 or newer
 %
  
     error(nargchk(1, 1, nargin, 'struct'));
