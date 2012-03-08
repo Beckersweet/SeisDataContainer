@@ -22,5 +22,7 @@ switch s(1).subs
         output = subsref(header,s(2:end));
         
     otherwise
-        error('Function not supported with dot notation');
+        warning('Function not officially supported');
+        output = builtin('subsref', x, s);
+        done   = true;
 end

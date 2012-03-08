@@ -8,10 +8,15 @@ function y = subsrefHelper(x,s)
 
 % Checking indices
 indices  = s.subs;
-tempsubs = [indices{:}];
-while strcmp(tempsubs{1},':') && length(tempsubs) > 1
-    tempsubs = tempsubs(2:end);
+dimslist = {1:sum(size(x))};
+if length(indices) == 1 && indices{1} == ':' % vec case
+    y = vec(x);
+elseif
+    
+else
+    
 end
+
 for i=1:length(tempsubs) && length(tempsubs) > 1
     assert(~strcmp(tempsubs{i},':'),...
         'Colon indexing only allowed on contiguous fast dimensions');
