@@ -16,20 +16,10 @@ if(isa(a,'oCon') && isa(b,'oCon'))
     while (reminder > 0)
         buffer = min(reminder,maxbuffer);
         rend = rstart + buffer - 1;
-        r1 = SeisDataContainer.io.NativeBin.serial.DataReadLeftChunk...
-            (path(a.pathname),'real',dims,[rstart rend],[],a.header.precision,a.header.precision);
-        if a.header.complex
-        dummy = SeisDataContainer.io.NativeBin.serial.DataReadLeftChunk...
-            (path(a.pathname),'imag',dims,[rstart rend],[],a.header.precision,a.header.precision);
-            r1 = complex(r1,dummy);
-        end
-        r2 = SeisDataContainer.io.NativeBin.serial.DataReadLeftChunk...
-            (path(b.pathname),'real',dims,[rstart rend],[],b.header.precision,b.header.precision);
-        if b.header.complex
-        dummy = SeisDataContainer.io.NativeBin.serial.DataReadLeftChunk...
-            (path(b.pathname),'imag',dims,[rstart rend],[],b.header.precision,b.header.precision);
-            r2 = complex(r2,dummy);
-        end
+        r1 = SeisDataContainer.io.NativeBin.serial.FileReadSequentialBuffer...
+            (path(a.pathname),dims,[rstart rend],a.header.precision);
+        r2 = SeisDataContainer.io.NativeBin.serial.FileReadSequentialBuffer...
+            (path(b.pathname),dims,[rstart rend],a.header.precision);
         assertElementsAlmostEqual(r1,r2)
         reminder = reminder - buffer;
         rstart   = rend + 1;
@@ -53,13 +43,8 @@ elseif(isa(a,'oCon') || isa(b,'oCon'))
     while (reminder > 0)
         buffer = min(reminder,maxbuffer);
         rend = rstart + buffer - 1;
-        r1 = SeisDataContainer.io.NativeBin.serial.DataReadLeftChunk...
-            (path(a.pathname),'real',dims,[rstart rend],[],a.header.precision,a.header.precision);
-        if a.header.complex
-        dummy = SeisDataContainer.io.NativeBin.serial.DataReadLeftChunk...
-            (path(a.pathname),'imag',dims,[rstart rend],[],a.header.precision,a.header.precision);
-            r1 = complex(r1,dummy);
-        end
+        r1 = SeisDataContainer.io.NativeBin.serial.FileReadSequentialBuffer...
+            (path(a.pathname),dims,[rstart rend],a.header.precision);
         assertElementsAlmostEqual(r1,b(rstart:rend))
         reminder = reminder - buffer;
         rstart   = rend + 1;
