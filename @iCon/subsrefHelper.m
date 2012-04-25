@@ -7,11 +7,12 @@ function y = subsrefHelper(x,s)
 
 % Checking indices
 % We need to extract a vectors of indices for use in header subsref.
-subs  = s.subs;
+subs    = s.subs;
 indices = zeros(1,dims(x));
 if length(subs) == dims(x) % Number of indices is same as dimensions.
     
-elseif subs{end} == ':'
+elseif subs{end} == ':' % right full indexing -- NOT SUPPORTED unless 
+                        % its vectorizing
         
 else
 
