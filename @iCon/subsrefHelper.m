@@ -7,27 +7,33 @@ function y = subsrefHelper(x,s)
 
 % Checking indices
 % We need to extract a vectors of indices for use in header subsref.
-subs    = s.subs;
-indices = zeros(1,dims(x));
-if length(subs) == dims(x) % Number of indices is same as dimensions.
-    
-elseif subs{end} == ':' % right full indexing -- NOT SUPPORTED unless 
-                        % its vectorizing
-        
+ind = zeros(dims(x),2); % Start and end indices for each dimension
+if length(s.subs) == 1 && s.subs{end} == ':' % Vectorizing case
+    for i = 1:dims(x)
+        ind(i,1) = 1;
+        ind(i,2) = size(x,i);
+    end
+elseif length(s.subs) <= dims(x) && s.subs{end} ~= ':' % No right fills
+    % Number of left dimensions.
+    for i = 1:length(s.subs)
+        if s.subs{i} == ':'
+            ind(i,1) = 1;
+            ind(i,2) = size(x,i);
+        else
+            ind(i,1) = s.subs{i}(1);
+            ind(i,2) = s.subs{i}(end);
+        end
+    end
 else
-
+    error('This kind of indexing is not supported');
 end
 
 % Data processing
 data = subsref(x.data,s);
 
-% Header processing
-xheader   = x.header;
-neworigin = xheader.origin;
-
 % Repackage and export
 y                      = construct(x,data);
-y.header.delta         = xheader.delta(1:dims(y));
+y.header.delta         = xheader.delta();
 y.header.origin        = neworigin(1:dims(y));
 y.header.precision     = xheader.precision;
 y.header.complex       = xheader.complex;
