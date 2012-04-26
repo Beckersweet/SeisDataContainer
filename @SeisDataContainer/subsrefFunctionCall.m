@@ -2,6 +2,7 @@ function output = subsrefFunctionCall(x,s)
 %SUBSREFFUNCTIONCALL   Subsref function call utility
 %   For nonsimple functions with arguments included
 %   Not supposed to be called by user, only by subsref
+output = [];
 switch s(1).subs
     case 'save'
         if(length(s(2).subs) == 2)
@@ -14,7 +15,7 @@ switch s(1).subs
         output = modifyHeader(x,s(2).subs{:});
     
     case 'header'
-        output = x.header.(s(2).subs);
+        output = builtin('subsref',x.header,s(2:end).subs);
         
     otherwise
 %         warning('Function not officially supported');
