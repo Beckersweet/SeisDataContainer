@@ -14,6 +14,27 @@ else % multiple dims case
         assert(length(s.subs{i}) == s.subs{i}(end)-s.subs{i}(1) + 1,...
             'Index skipping is not allowed');
     end
+    
+    if length(s.subs) == 1 %Vector case
+        % Finding which dimension is sliced
+        k = 1;
+        d = (s.subs{:}(end)-s.subs{:}(1))/prod(size(x,1:k));
+        while d > 1
+            k = k + 1;
+            d = (s.subs{:}(end)-s.subs{:}(1))/prod(size(x,1:k));
+        end
+        
+        % Assert the contiguousness of the faster dimensions
+        assert(mod(s.subs{:}(1),d-1) == 1,...
+            'Cannot skip faster dimensions');
+        assert(mod(s.subs{:}(end),d-1) == 1,...
+            'Cannot skip faster dimensions');
+        
+    elseif length(s.subs) == 2 %multivector
+        
+    else
+        error('Index dimensions not supported');
+    end
 end
 
 % Data processing

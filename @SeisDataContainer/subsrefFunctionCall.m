@@ -13,9 +13,6 @@ switch s(1).subs
         
     case 'modifyHeader'
         output = modifyHeader(x,s(2).subs{:});
-    
-    case 'header'
-        output = builtin('subsref',x.header,s(2:end).subs);
         
     otherwise
 %         warning('Function not officially supported');

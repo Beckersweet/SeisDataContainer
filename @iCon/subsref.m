@@ -13,7 +13,7 @@ if length(s) > 1
     switch s(1).type
         case {'.'}
             % attributes references and function calls
-            varargout{1}  = subsrefFunctionCall(x,s);
+            varargout{:} = subsrefFunctionCall(x,s);
 
         case {'{}'}
             error('Cell-indexing is not supported.');
