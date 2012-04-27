@@ -7,7 +7,7 @@ function y = subsrefHelper(x,s)
 
 % Checking indices
 % We need to extract a vectors of indices for use in header subsref.
-if length(s.subs) == 1 && s.subs{end} == ':' % Vectorizing case
+if length(s.subs{:}) == 1 && s.subs{end} == ':' % Vectorizing case
     
 else % multiple dims case
     for i = 1:length(s.subs)
