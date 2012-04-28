@@ -8,7 +8,8 @@ function y = subsrefHelper(x,s)
 % Checking indices
 % We need to extract a vectors of indices for use in header subsref.
 if length(s.subs) == 1 && all(s.subs{:} == ':') % Vectorizing case
-    
+    y = vec(x);
+    return;
 else % multiple dims case
     for i = 1:length(s.subs)
         assert(length(s.subs{i}) == s.subs{i}(end)-s.subs{i}(1) + 1,...
@@ -17,18 +18,22 @@ else % multiple dims case
     
     if length(s.subs) == 1 %Vector case
         % Finding which dimension is sliced
+        imsize = isize(x);
+        imsize = [imsize{:}];
         k = 1;
-        d = (s.subs{:}(end)-s.subs{:}(1)+1)/prod(size(x,1:k));
+        d = (s.subs{:}(end)-s.subs{:}(1)+1)/prod(imsize(1:k));
         while d > 1
             k = k + 1;
-            d = (s.subs{:}(end)-s.subs{:}(1)+1)/prod(size(x,1:k));
+            d = (s.subs{:}(end)-s.subs{:}(1)+1)/prod(imsize(1:k));
         end
         
         % Assert the contiguousness of the faster dimensions
-        assert(mod(s.subs{:}(1),prod(size(x,1:k-1))) == 1,...
-            'Cannot skip faster dimensions');
-        assert(mod(s.subs{:}(end),prod(size(x,1:k-1))) == 0,...
-            'Cannot skip faster dimensions');
+        if(k-1>0) % if implicitly not vector
+            assert(mod(s.subs{:}(1),prod(imsize(1:k-1))) == 1,...
+                'Cannot skip faster dimensions');
+            assert(mod(s.subs{:}(end),prod(imsize(1:k-1))) == 0,...
+                'Cannot skip faster dimensions');
+        end
         
     elseif length(s.subs) == 2 %multivector
         

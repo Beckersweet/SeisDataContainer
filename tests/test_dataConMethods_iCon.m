@@ -7,7 +7,7 @@ initTestSuite;
 end
 
 function x = setup
-%% Setup
+% Setup
 n1 = randi([2 5]);
 n2 = randi([2 5]);
 n3 = randi([2 5]);
@@ -67,12 +67,24 @@ function test_dataConMethods_iCon_invec(x)
 end
 
 function test_dataConMethods_iCon_setImDims(x)
-%% setImDims
+% setImDims
     setImSize(x,isize(x));
 end
 
 function test_dataConMethods_iCon_size(x)
     size(x);
+end
+
+function test_dataConMethods_iCon_subsref(x)
+    x = x(:);
+    try
+        x(2:end-1); % UNALLOWABLE CASE: MUST FAIL
+        error('iCon:subsref:HORRIBLE','Indexing catch failed!');
+    catch ME
+        if strcmp(ME.identifier, 'iCon:subsref:HORRIBLE')
+            rethrow(ME);
+        end
+    end
 end
 
 function test_dataConMethods_iCon_unpermute(x)
