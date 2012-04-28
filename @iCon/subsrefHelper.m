@@ -7,7 +7,7 @@ function y = subsrefHelper(x,s)
 
 % Checking indices
 % We need to extract a vectors of indices for use in header subsref.
-if length(s.subs{:}) == 1 && s.subs{end} == ':' % Vectorizing case
+if length(s.subs) == 1 && all(s.subs{:} == ':') % Vectorizing case
     
 else % multiple dims case
     for i = 1:length(s.subs)
@@ -18,22 +18,22 @@ else % multiple dims case
     if length(s.subs) == 1 %Vector case
         % Finding which dimension is sliced
         k = 1;
-        d = (s.subs{:}(end)-s.subs{:}(1))/prod(size(x,1:k));
+        d = (s.subs{:}(end)-s.subs{:}(1)+1)/prod(size(x,1:k));
         while d > 1
             k = k + 1;
-            d = (s.subs{:}(end)-s.subs{:}(1))/prod(size(x,1:k));
+            d = (s.subs{:}(end)-s.subs{:}(1)+1)/prod(size(x,1:k));
         end
         
         % Assert the contiguousness of the faster dimensions
-        assert(mod(s.subs{:}(1),d-1) == 1,...
+        assert(mod(s.subs{:}(1),prod(size(x,1:k-1))) == 1,...
             'Cannot skip faster dimensions');
-        assert(mod(s.subs{:}(end),d-1) == 1,...
+        assert(mod(s.subs{:}(end),prod(size(x,1:k-1))) == 0,...
             'Cannot skip faster dimensions');
         
     elseif length(s.subs) == 2 %multivector
         
     else
-        error('Index dimensions not supported');
+%         error('Index dimensions not supported');
     end
 end
 

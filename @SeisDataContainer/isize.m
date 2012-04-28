@@ -17,28 +17,4 @@ function d = isize(x,varargin)
 %   http://www.cs.ubc.ca/labs/scl/spot
 
 % Setup variables
-if iscell(x.header.size)
-    d = cell2mat(x.header.size);
-    d = d(varargin{:});
-else
-    d = x.header.size(varargin{:});
-end
-% if nargin == 0
-%    error('Not enough input arguments');
-% 
-% elseif nargin > 2
-%    error('Too many input arguments');
-%    
-% elseif nargin > 1 && ~isempty('dim')
-%     if nargout > 1
-%        error('Unknown command option.');
-%     end
-%     if dim < 1 || dim > length(dims)
-%        error('Dimension argument must be within the dimensions of x');
-%     else
-%        d = dims(dim);
-%     end
-%     
-% else
-%    d = dims; 
-% end
+d = x.header.size(varargin{:});
