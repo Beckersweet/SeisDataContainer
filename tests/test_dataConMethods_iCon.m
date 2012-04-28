@@ -85,6 +85,9 @@ function test_dataConMethods_iCon_subsref(x)
             rethrow(ME);
         end
     end
+    
+    x = iCon(double(x)); % Check for implicitly vectored case
+    x(2:end-1);
 end
 
 function test_dataConMethods_iCon_unpermute(x)
