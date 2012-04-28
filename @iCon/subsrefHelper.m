@@ -28,17 +28,19 @@ else % multiple dims case
         end
         
         % Assert the contiguousness of the faster dimensions
-        if(k-1>0) % if implicitly not vector
+        if(k > 1) % if implicitly not vector
             assert(mod(s.subs{:}(1),prod(imsize(1:k-1))) == 1,...
                 'Cannot skip faster dimensions');
             assert(mod(s.subs{:}(end),prod(imsize(1:k-1))) == 0,...
                 'Cannot skip faster dimensions');
         end
         
-    elseif length(s.subs) == 2 %multivector
+    elseif length(s.subs) == 2 % multivector
+        
+    elseif length(s.subs) == 3 % slice
         
     else
-%         error('Index dimensions not supported');
+        error('Index dimensions not supported');
     end
 end
 
