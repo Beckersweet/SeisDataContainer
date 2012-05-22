@@ -53,7 +53,8 @@ classdef SeisDataContainer
                                                
             % Set attributes
             x.header = headerIn;
-            x.exsize = x.header.size;
+            x.exsize = [1:length(x.header.size);...
+                        1:length(x.header.size)];
 
             % parse extra arguments
             ldims = length(x.header.size);

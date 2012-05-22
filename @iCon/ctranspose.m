@@ -10,5 +10,8 @@ function result = ctranspose(x)
 % Conjugate Transpose
 result        = dataCon(ctranspose(double(x)));
 result        = metacopy(x,result);
-result.header.size = fliplr(x.header.size);
 result.perm   = fliplr(x.perm);
+result.exsize = fliplr(x.exsize);
+indshift      = result.exsize(1);
+result.exsize(:,1) = result.exsize(:,1) - indshift + 1;
+result.exsize(:,2) = result.exsize(:,2) + indshift - 1;
