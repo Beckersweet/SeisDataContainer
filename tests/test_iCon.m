@@ -29,6 +29,15 @@ B  = iCon(A);
 assertEqual(A',double(B'));
 end % ctranspose
 
+function test_iCon_diag
+%% diag
+n1 = randi(10);
+n2 = randi(10);
+A  = randn(n1,n2) + 1i*randn(n1,n2);
+B  = iCon(A);
+assertEqual(diag(A),double(diag(B)));
+end % diag
+
 function test_iCon_horzcat
 %% horzcat
 n1 = randi(10);
