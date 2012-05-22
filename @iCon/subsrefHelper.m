@@ -19,7 +19,6 @@ else % multiple dims case
     if length(s.subs) == 1 %Vector case
         % Finding which dimension is sliced
         imsize = isize(x);
-        imsize = [imsize{:}];
         k = 1;
         d = (s.subs{:}(end)-s.subs{:}(1)+1)/prod(imsize(1:k));
         while d > 1

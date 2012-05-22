@@ -28,7 +28,7 @@ if nargin == 3 && strcmp(swp,'swap')
     clear('tmp');
 end
 
-if isscalar(A)
+if isscalar(A) || isscalar(B)
     y = A .\ B;
     
 elseif ~isa(A,'iCon')
@@ -36,11 +36,13 @@ elseif ~isa(A,'iCon')
     y = metacopy(B,y);
     
     % Extract collapsed dimensions & permutation
-    y.header.size = { size(A,2) B.header.size{2} };
+    y.header.size(2) = B.header.size(B.exsize(1,2):B.exsize(2,2));
+    y.exsize(:,2)    = B.exsize(:,2) - B.exsize(1,2) + 2;
     
     % Check for spot ms and ns
     if isa(A,'opSpot')
-        y.header.size{1} = A.ns;
+        y.header.size(1) = A.ns;
+        y.exsize(:,1)    = [1 length(A.ns)]';
     end
     
 elseif ~isa(B,'iCon')
@@ -48,11 +50,13 @@ elseif ~isa(B,'iCon')
     y = metacopy(A,y);
     
     % Extract collapsed dimensions & permutation
-    y.header.size = { A.header.size{2} size(B,2) };
+    y.header.size(1) = A.header.size(A.exsize(1,2):A.exsize(2,2));
+    y.exsize(:,1)    = A.exsize(:,2);
     
     % Check for spot ms and ns
     if isa(A,'opSpot')
-        y.header.size{2} = B.ns;
+        y.header.size(2) = B.ns;
+        y.exsize(:,2)    = [1 length(B.ns)]' + y.exsize(2,1) + 1;
     end
     
 else % Both data containers
@@ -60,8 +64,8 @@ else % Both data containers
     y = metacopy(A,y);
     
     % Extract collapsed dimensions
-    y.header.size = { A.header.size{2} B.header.size{2} };
-    y.perm   = 1:ndims(y);
+    y.header.size(2) = B.header.size(B.exsize(1,2):B.exsize(2,2));
+    y.header.size(1) = A.header.size(A.exsize(1,2):A.exsize(2,2));
+    y.exsize(:,1)    = A.exsize(:,2);
+    y.exsize(:,2)    = B.exsize(:,2) - B.exsize(1,2) + A.exsize(2,1);
 end
-
-end % mldivide

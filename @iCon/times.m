@@ -25,13 +25,6 @@ if isscalar(A) && isscalar(B)
     return;
 end
 
-% if isscalar(A)
-%     A = dataCon(A*ones(size(B)));
-% end
-% if isscalar(B)
-%     B = dataCon(B*ones(size(A)));
-% end
-
 if ~isa(A,'iCon') % Right multiply
     y = dataCon(double(A .* double(B)));
     y = metacopy(B,y);

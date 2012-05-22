@@ -15,14 +15,24 @@ assert(length(perm) == length(x.perm),'Permutation dimensions mismatch')
 % Setup future variables
 % Find final distributed dimension and setup global size at the same
 % time
-
-gsize  = size(x);
-gisize = isize(x);
-operm  = x.perm; % Original permutation
+ngsize = zeros(2,ndims(x));
+toperm = zeros(1,ndims(x));
+nisize = [];
 for  i = 1:length(perm) % Find new dimension of distribution
-    tgsize(i)  = gsize(perm(i));
-    tgisize(i) = gisize(perm(i));
-    toperm(i)  = operm(perm(i));
+    % Rearrange explicit size
+    ngsize(:,i)  = x.exsize(:,perm(i));
+    
+    % Rearrange permutation
+    toperm(i)  = x.perm(perm(i));
+    
+    % Rearrange implicit size
+    nisize = [ nisize x.header.size(ngsize(1,i):ngsize(2,i)) ];
+end
+
+% Recalibrate explicit size
+ngsize(:,1) = ngsize(:,1) - ngsize(1,1) + 1;
+for i = 2:length(ngsize)
+    ngsize(:,i) = ngsize(:,i) - ngsize(1,i) + ngsize(2,i-1) + 1;
 end
 
 y = iCon(permute(x.data,perm));
@@ -30,5 +40,5 @@ y = iCon(permute(x.data,perm));
 % Set variables
 y.header      = SeisDataContainer.permuteHeaderStruct(x.header,perm);
 y.perm        = toperm;
-y.exsize      = tgsize;
-y.header.size = tgisize;
+y.exsize      = ngsize;
+y.header.size = nisize;

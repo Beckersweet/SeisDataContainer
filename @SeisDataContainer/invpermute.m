@@ -10,17 +10,16 @@ function y = invpermute(x)
 %   See also: iCon.permute, dataContainer.vec
 
 % Check for collapsed dimensions
-assert(all(cellfun(@isscalar,x.perm)),...
+assert(all(arrayfun(@isscalar,x.perm)),...
     'Cannot unpermute with collapsed dimensions');
 
 % Setup permutation order
-operm  = [x.perm{:}];
-toperm = zeros(1,length(operm));
+toperm = zeros(1,length(x.perm));
 
-% Brute force search algorithm
-for i = 1:length(operm)
-    for j = 1:length(operm)
-        if operm(j) == i;
+% Brute force search for original permutation
+for i = 1:length(x.perm)
+    for j = 1:length(x.perm)
+        if x.perm(j) == i;
             toperm(i) = j;
         end
     end    
