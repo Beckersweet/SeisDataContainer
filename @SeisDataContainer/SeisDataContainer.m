@@ -73,40 +73,6 @@ classdef SeisDataContainer
             x.header.label    = p.Results.label;
             
         end % Constructor
-        
-        % Access Methods
-        function value = get.type(x)
-            value = x.type;
-        end
-        
-        function value = get.exsize(x)
-            value = x.exsize;
-        end
-        
-        function value = getHeaderSize(x)
-            value = x.header.size;
-        end
-        
-        function value = get.data(x)
-            value = x.data;
-        end
-        
-        % Set Methods
-        function x = set.type(x,value)
-            x.type   = value;
-        end
-        
-        function x = set.exsize(x,value)
-            x.exsize = value;
-        end
-        
-        function x = setHeaderSize(x,value)
-            x.header.size = value;
-        end
-        
-        function x = set.data(x,value)
-            x.data   = value;
-        end
                 
     end % Public methods
         
