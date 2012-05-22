@@ -21,12 +21,12 @@ if isscalar(A) && isscalar(B)
 end
 
 % Else
-if isscalar(A)
-    A = A*ones(size(B));
-end
-if isscalar(B)
-    B = B*ones(size(A));
-end
+% if isscalar(A)
+%     A = A*ones(size(B));
+% end
+% if isscalar(B)
+%     B = B*ones(size(A));
+% end
 
 if ~isa(A,'iCon') % Right plus
     y = dataCon(double(A + double(B)));
