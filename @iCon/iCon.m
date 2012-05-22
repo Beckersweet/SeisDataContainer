@@ -45,10 +45,9 @@ classdef iCon < SeisDataContainer
             end
             
             % Construct class
-            x      = x@SeisDataContainer(header,varargin{:});
+            x = x@SeisDataContainer(header,varargin{:});
             
             if ~isstruct(doh) 
-                x.exsize = [1:ndims(doh); 1:ndims(doh)];
                 x.perm   = num2cell(1:length(size(doh)));
                 x.data   = doh;
             end
