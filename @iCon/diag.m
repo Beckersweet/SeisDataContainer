@@ -1,4 +1,4 @@
-function y = diag(varargin)
+function y = diag(x,varargin)
 %DIAG Diagonal matrices and diagonals of a matrix.
 %
 %   DIAG(V,K) when V is a vector with N components is a square matrix
@@ -14,7 +14,7 @@ function y = diag(varargin)
 %   DIAG(X) is the main diagonal of X. DIAG(DIAG(X)) is a diagonal matrix.
 
 % Doublify any iCon
-varargin = cellfun(@(x) SeisDataContainer.serial.stripicon(x), varargin,...
-    'UniformOutput',false);
+% varargin = cellfun(@(x) SeisDataContainer.serial.stripicon(x), varargin,...
+%     'UniformOutput',false);
 
-y = dataCon(diag(varargin{:}));
+y = dataCon(diag(double(x),varargin{:}));
