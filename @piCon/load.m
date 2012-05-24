@@ -4,8 +4,5 @@ function y = load(dirname)
     y        = distributed(y);
     y        = piCon(y);
     header   = SeisDataContainer.io.NativeBin.serial.HeaderRead(dirname);
-    if(~iscell(header.size))
-        header.size = num2cell(header.size);
-    end
     y.header = header;    
 end

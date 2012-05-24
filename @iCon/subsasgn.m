@@ -9,15 +9,15 @@ function x = subsasgn(x,s,b)
 %
 %   See also: iCon.vec, invvec, iCon.subsref
 
-switch s.type
-   case {'.'}
+switch s(1).type
+   case '.'
         % Set properties and flags
         x.(s.subs) = b;  
 
-   case {'{}'}
+   case '{}'
       error('Cell-index access is not supported.');
  
-   case {'()'}
+   case '()'
        x.data = subsasgn(x.data,s,b);
 
 end

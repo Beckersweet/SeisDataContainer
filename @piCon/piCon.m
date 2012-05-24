@@ -75,6 +75,7 @@ classdef (InferiorClasses = {?distributed,?codistributed}) piCon < iCon
             % Construct iCon
             x               = x@iCon(header,varargin{:});
             if ~isstruct(doh)
+                x.perm      = 1:length(size(doh));
                 x.data      = doh;
                 cod         = cod{1};
                 x.excoddims = cod.Dimension;
