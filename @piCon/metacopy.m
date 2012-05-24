@@ -5,17 +5,13 @@ function y = metacopy(x,y)
 %   return y.
 
 if ~isa(y,'piCon')
-    yheader      = y.header;
-    yheader.size = x.header.size;
-    y.header     = yheader;
+    y.exsize     = x.exsize;
     y.perm       = x.perm;
     y.strict     = x.strict;
 else
-    yheader      = y.header;
-    yheader.size = x.header.size;
-    y.header     = yheader;
+    y.exsize     = x.exsize;
     y.perm       = x.perm;
     y.strict     = x.strict;
     y.imcoddims  = x.imcoddims;
-    y.imcodpart  = SeisDataContainer.utils.defaultDistribution(size(y,y.imcoddims));
+    y.imcodpart  = x.imcodpart;
 end

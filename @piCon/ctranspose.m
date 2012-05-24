@@ -1,4 +1,4 @@
-function result = ctranspose(x)
+function y = ctranspose(x)
 %'  Complex conjugate tranpose.
 %
 %   x' is the complex conjugate transpose of x.
@@ -8,14 +8,14 @@ function result = ctranspose(x)
 %   See also iCon.transpose.
 
 % Conjugate Transpose
-result        = dataCon(ctranspose(double(x)));
-result        = metacopy(x,result);
-result.header.size = fliplr(x.header.size);
-result.perm   = fliplr(x.perm);
+y        = dataCon(ctranspose(double(x)));
+y        = metacopy(x,y);
+y.header.size = fliplr(x.header.size);
+y.perm   = fliplr(x.perm);
 if x.imcoddims == 1
-    result.imcoddims = 2;
-    result.imcodpart = SeisDataContainer.utils.defaultDistribution(size(result,2));
+    y.imcoddims = 2;
+    y.imcodpart = x.imcodpart;
 else
-    result.imcoddims = 1;    
-    result.imcodpart = SeisDataContainer.utils.defaultDistribution(size(result,1));
+    y.imcoddims = 1;    
+    y.imcodpart = x.imcodpart;
 end
