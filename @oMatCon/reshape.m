@@ -56,8 +56,9 @@ for i = 1:length(imsize)
 end
 
 % loading the dataContainer
-y        = oMatCon.load...
-    (x.pathname,'readonly',p.Results.readonly,'copy',p.Results.copy);
+y        = oMatCon.load(...
+    x.pathname,'readonly',p.Results.readonly,'copy',p.Results.copy);
+
 % changing the explicit size of the new dataContainer
 y.exsize = reshape(collapsed_dims,2,[]);
 end

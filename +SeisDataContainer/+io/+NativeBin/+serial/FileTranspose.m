@@ -1,45 +1,46 @@
-function FileTranspose(dirnameIn,dirnameOut,sepDim)
+function FileTranspose(dirIn,dirOut,sepDim)
 %DATATRANSPOSE Transposes input data and writes it to output file
 %
-%   FileTranspose(DIRNAMEIN,DIRNAMEOUT,SEPDIM)
+%   FileTranspose(dirIn,dirOut,SEPDIM)
 %   allocates binary file for serial data writing.
 %
-%   DIRNAMEIN  - A string specifying the input directory
-%   DIRNAMEOUT - A string specifying the output directory
-%   SEPDIM     - A scalar specifying the separation dimension
+%   dirIn  - A string specifying the input directory
+%   dirOut - A string specifying the output directory
+%   SEPDIM - A scalar specifying the separation dimension
 %
-%   Warning: If the specified output file already exists, it will be overwritten.
+%   Warning: If the specified output file already exists, it will be 
+%            overwritten.
 
-SeisDataContainer.io.isFileClean(dirnameIn);
-SeisDataContainer.io.isFileClean(dirnameOut);
+import SeisDataContainer.io.*
+import SeisDataContainer.io.NativeBin.serial.*
+
+isFileClean(dirIn);
+isFileClean(dirOut);
 error(nargchk(3, 3, nargin, 'struct'));
-assert(ischar(dirnameIn), 'input directory name must be a string')
-assert(isdir(dirnameIn),'Fatal error: input directory %s does not exist',dirnameIn);
-assert(ischar(dirnameOut), 'output directory name must be a string')
+assert(ischar(dirIn), 'input directory name must be a string')
+assert(isdir(dirIn),'Fatal error: input directory %s does not exist',dirIn);
+assert(ischar(dirOut), 'output directory name must be a string')
 assert(isscalar(sepDim), 'dimensions must be given as a vector')
 
 % Read header
-headerIn = SeisDataContainer.io.NativeBin.serial.HeaderRead(dirnameIn);
+headIn = HeaderRead(dirIn);
 
 % Making the transpose vector
-dim2D = [prod(headerIn.size(1:sepDim)) prod(headerIn.size(sepDim+1:end))];
+dim2D    = [prod(headIn.size(1:sepDim)) prod(headIn.size(sepDim+1:end))];
 
 % Setting up the output header
-headerOut = headerIn;
-headerOut.size = [headerIn.size(sepDim+1:end) headerIn.size(1:sepDim)];
-headerOut.origin = [headerIn.origin(sepDim+1:end) headerIn.origin(1:sepDim)];
-headerOut.delta = [headerIn.delta(sepDim+1:end) headerIn.delta(1:sepDim)];
-headerOut.unit = [headerIn.unit(sepDim+1:end) headerIn.unit(1:sepDim)];
-headerOut.label = [headerIn.label(sepDim+1:end) headerIn.label(1:sepDim)];
-SeisDataContainer.io.NativeBin.serial.HeaderWrite(dirnameOut,headerOut);
+headOut        = headIn;
+headOut.size   = [headIn.size(  sepDim+1:end) headIn.size(  1:sepDim)];
+headOut.origin = [headIn.origin(sepDim+1:end) headIn.origin(1:sepDim)];
+headOut.delta  = [headIn.delta( sepDim+1:end) headIn.delta( 1:sepDim)];
+headOut.unit   = [headIn.unit(  sepDim+1:end) headIn.unit(  1:sepDim)];
+headOut.label  = [headIn.label( sepDim+1:end) headIn.label( 1:sepDim)];
+HeaderWrite(dirOut,headOut);
 
 % Transpose file
-SeisDataContainer.io.NativeBin.serial.DataAlloc(dirnameOut,'real',headerOut.size,headerOut.precision);
-SeisDataContainer.io.NativeBin.serial.DataTranspose(dirnameIn,dirnameOut,'real',...
-    dim2D,headerOut.precision);
-if headerOut.complex
-    SeisDataContainer.io.NativeBin.serial.DataAlloc(dirnameOut,'imag',headerOut.size,headerOut.precision);
-    SeisDataContainer.io.NativeBin.serial.DataTranspose(dirnameIn,dirnameOut,'imag',...
-        dim2D,headerOut.precision);
-end
+DataAlloc(dirOut,'real', headOut.size,headOut.precision);
+DataTranspose(dirIn,dirOut,'real',dim2D,headOut.precision);
+if headOut.complex
+    DataAlloc(dirOut,'imag',headOut.size,headOut.precision);
+    DataTranspose(dirIn,dirOut,'imag',dim2D,headOut.precision);
 end

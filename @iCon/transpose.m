@@ -1,4 +1,4 @@
-function result = transpose(x)
+function y = transpose(x)
 %.'   Data container tranpose.
 %   A.' is the (non-conjugate) transpose of A.
 %
@@ -7,10 +7,10 @@ function result = transpose(x)
 %   See also iCon.ctranspose.
 
 % Transpose
-result        = dataCon(transpose(double(x)));
-result        = metacopy(x,result);
-result.perm   = fliplr(x.perm);
-result.exsize = fliplr(x.exsize);
-indshift      = result.exsize(1);
-result.exsize(:,1) = result.exsize(:,1) - indshift + 1;
-result.exsize(:,2) = result.exsize(:,2) + indshift - 1;
+y             = dataCon(transpose(double(x)));
+y             = metacopy(x,y);
+y.perm        = fliplr(x.perm);
+y.exsize      = fliplr(x.exsize);
+indshift      = y.exsize(1);
+y.exsize(:,1) = y.exsize(:,1) - indshift + 1;
+y.exsize(:,2) = y.exsize(:,2) + y.exsize(end,1);
