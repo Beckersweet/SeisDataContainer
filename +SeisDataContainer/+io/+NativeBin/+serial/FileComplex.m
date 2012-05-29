@@ -7,25 +7,30 @@ function FileComplex(A,B,dirnameOut)
 %   DIRNAMEOUT - A string specifying the output directory name
 %
 
-SeisDataContainer.io.isFileClean(dirnameOut);
+% Import class packages
+import SeisDataContainer.io.*
+import SeisDataContainer.io.NativeBin.serial.*
+import SeisDataContainer.utils.*
+
+isFileClean(dirnameOut);
 global SDCbufferSize;
 
 % Taking care of the complex part
 if(isscalar(B))
-    SeisDataContainer.io.isFileClean(A);
-    headerA = SeisDataContainer.io.NativeBin.serial.HeaderRead(A);
+    isFileClean(A);
+    headerA = HeaderRead(A);
     if(headerA.complex)
         error('Epic fail: the first input is complex')
     end        
     % Set byte size
-    bytesize          = SeisDataContainer.utils.getByteSize(headerA.precision);
+    bytesize          = getByteSize(headerA.precision);
 
     headerOut         = headerA;
     xsize             = headerOut.size;
     headerOut.complex = 1;
-    SeisDataContainer.io.NativeBin.serial.FileAlloc(dirnameOut,headerOut);        
+    FileAlloc(dirnameOut,headerOut);        
     headerOut.size    = [1 prod(xsize)];
-    SeisDataContainer.io.NativeBin.serial.HeaderWrite(dirnameOut,headerOut);
+    HeaderWrite(dirnameOut,headerOut);
 
     % Set the sizes
     reminder  = prod(xsize);
@@ -37,22 +42,22 @@ if(isscalar(B))
         rend   = rstart + buffer - 1;
         r1     = ones(1,buffer);
         r1     = r1*B;
-        SeisDataContainer.io.NativeBin.serial.FileWriteLeftChunk...
+        FileWriteLeftChunk...
             (dirnameOut,r1,[rstart rend],[]);
         reminder = reminder - buffer;
         rstart   = rend + 1;
     end
     movefile([dirnameOut filesep 'real'],[dirnameOut filesep 'imag']);
 elseif(isdir(B))
-    SeisDataContainer.io.isFileClean(B);
+    isFileClean(B);
     if(~isreal(A))
         error('Epic fail: the firt input is complex')
     end
-    headerB = SeisDataContainer.io.NativeBin.serial.HeaderRead(B);
+    headerB = HeaderRead(B);
     if(headerB.complex)
         error('Epic fail: the second input is complex')
     end
-    SeisDataContainer.io.NativeBin.serial.FileCopy(B,dirnameOut)
+    FileCopy(B,dirnameOut)
     movefile([dirnameOut filesep 'real'],[dirnameOut filesep 'imag'])        
 else
     error('Wrong type of input for B')
@@ -60,16 +65,16 @@ end
     
 % Taking care of the real part
 if(isscalar(A))
-    SeisDataContainer.io.isFileClean(B);
-    headerB = SeisDataContainer.io.NativeBin.serial.HeaderRead(B);
+    isFileClean(B);
+    headerB = HeaderRead(B);
     % Set byte size
-    bytesize       = SeisDataContainer.utils.getByteSize(headerB.precision);
+    bytesize       = getByteSize(headerB.precision);
 
     headerOut      = headerB;
     xsize          = headerOut.size;
-    SeisDataContainer.io.NativeBin.serial.FileCopy(B,dirnameOut)
+    FileCopy(B,dirnameOut)
     headerOut.size    = [1 prod(xsize)];
-    SeisDataContainer.io.NativeBin.serial.HeaderWrite(dirnameOut,headerOut);
+    HeaderWrite(dirnameOut,headerOut);
 
     % Set the sizes
     reminder  = prod(xsize);
@@ -81,25 +86,24 @@ if(isscalar(A))
         rend   = rstart + buffer - 1;
         r1     = ones(1,buffer);
         r1     = r1*A;
-        SeisDataContainer.io.NativeBin.serial.FileWriteLeftChunk...
+        FileWriteLeftChunk...
             (dirnameOut,r1,[rstart rend],[]);
         reminder = reminder - buffer;
         rstart   = rend + 1;
     end
     headerOut.size    = xsize;
     headerOut.complex = 1;
-    SeisDataContainer.io.NativeBin.serial.HeaderWrite(dirnameOut,headerOut);
+    HeaderWrite(dirnameOut,headerOut);
 elseif(isdir(A))
-    SeisDataContainer.io.isFileClean(A);
-    headerA = SeisDataContainer.io.NativeBin.serial.HeaderRead(A);
+    isFileClean(A);
+    headerA = HeaderRead(A);
     if(headerA.complex)
         error('Epic fail: the firt input is complex')
     end
-    SeisDataContainer.io.NativeBin.serial.FileCopy(A,dirnameOut)
+    FileCopy(A,dirnameOut)
     headerOut = headerA;
     headerOut.complex = 1;
-    SeisDataContainer.io.NativeBin.serial.HeaderWrite(dirnameOut,headerOut);
+    HeaderWrite(dirnameOut,headerOut);
 else
     error('Wrong type of input for A')
-end
 end
