@@ -19,11 +19,15 @@ function x = randn(varargin)
 %   Note: The size inputs M, N, and P... should be nonnegative integers. 
 %   Negative integers are treated as 0.
 %
-stringIndex = SeisDataContainer.utils.getFirstStringIndex(varargin{:});    
+
+import SeisDataContainer.utils.*
+import SeisDataContainer.io.NativeBin.serial.*
+
+stringIndex = getFirstStringIndex(varargin{:});    
 if(stringIndex)
     xsize = cell2mat(varargin(1:stringIndex-1));
     if(length(xsize) == 1)
-        xsize(2) = xsize;           
+        xsize(2) = xsize;
     end
     p = inputParser;
     p.addParamValue('precision','double',@ischar);
@@ -39,12 +43,11 @@ else
 end
 
 td     = ConDir();
-header = SeisDataContainer.basicHeaderStruct...
-    (xsize,xprecision,0);
-SeisDataContainer.io.NativeBin.serial.FileRandn(path(td),header);
+header = SeisDataContainer.basicHeaderStruct(xsize,xprecision,0);
+FileRandn(path(td),header);
+
 if(stringIndex)
     x = oMatCon.load(td,p.Unmatched);
 else
     x = oMatCon.load(td);
-end
 end

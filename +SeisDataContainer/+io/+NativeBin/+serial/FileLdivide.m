@@ -8,7 +8,11 @@ function FileLdivide(A,B,dirnameOut)
 %   DIRNAMEOUT - A string specifying the output directory name
 %    
 
-SeisDataContainer.io.isFileClean(dirnameOut);
+import SeisDataContainer.io.*
+import SeisDataContainer.utils.*
+import SeisDataContainer.io.NativeBin.serial.*
+
+isFileClean(dirnameOut);
 global SDCbufferSize;
 
 if(isnumeric(B))
@@ -25,18 +29,18 @@ if(isnumeric(A))
     if(~isdir(B))
         error('Fail: Wrong input type')
     end
-    SeisDataContainer.io.isFileClean(B);
+    isFileClean(B);
     % Reading input headers
-    headerB   = SeisDataContainer.io.NativeBin.serial.HeaderRead(B);
-    headerOut = headerB;
+    headB     = HeaderRead(B);
+    headOut   = headB;
 
     % Set byte size
-    bytesize  = SeisDataContainer.utils.getByteSize(headerOut.precision);
+    bytesize  = getByteSize(headOut.precision);
 
-    SeisDataContainer.io.NativeBin.serial.FileAlloc(dirnameOut,headerOut);
-    xsize          = headerOut.size;
-    headerOut.size = [1 prod(xsize)];
-    SeisDataContainer.io.NativeBin.serial.HeaderWrite(dirnameOut,headerOut);
+    FileAlloc(dirnameOut,headOut);
+    xsize        = headOut.size;
+    headOut.size = [1 prod(xsize)];
+    HeaderWrite(dirnameOut,headOut);
 
     % Set the sizes
     dims      = [1 prod(xsize)];
@@ -47,43 +51,44 @@ if(isnumeric(A))
     while (reminder > 0)
         buffer = min(reminder,maxbuffer);
         rend = rstart + buffer - 1;            
-        r2 = SeisDataContainer.io.NativeBin.serial.DataReadLeftChunk...
-            (B,'real',dims,[rstart rend],[],headerB.precision,...
-            headerB.precision);
-        if headerB.complex
-        dummy = SeisDataContainer.io.NativeBin.serial.DataReadLeftChunk...
-            (B,'imag',dims,[rstart rend],[],headerB.precision,...
-            headerB.precision);
+        r2   = DataReadLeftChunk...
+            (B,'real',dims,[rstart rend],[],headB.precision,...
+            headB.precision);
+        if headB.complex
+        dummy = DataReadLeftChunk...
+            (B,'imag',dims,[rstart rend],[],headB.precision,...
+            headB.precision);
             r2 = complex(r2,dummy);
         end
-        SeisDataContainer.io.NativeBin.serial.FileWriteLeftChunk...
+        FileWriteLeftChunk...
             (dirnameOut,minus(A(rstart:rend),r2),[rstart rend],[]);
         reminder = reminder - buffer;
         rstart   = rend + 1;
     end
-    headerOut.size = xsize;
-    SeisDataContainer.io.NativeBin.serial.HeaderWrite(dirnameOut,headerOut);        
+    headOut.size = xsize;
+    HeaderWrite(dirnameOut,headOut);
+    
 elseif(isdir(A))
     if(~isdir(B))
         error('Fail: Wrong input type')
     end
-    SeisDataContainer.io.isFileClean(A);
-    SeisDataContainer.io.isFileClean(B);
+    isFileClean(A);
+    isFileClean(B);
     % Reading input headers
-    headerA   = SeisDataContainer.io.NativeBin.serial.HeaderRead(A);
-    headerB   = SeisDataContainer.io.NativeBin.serial.HeaderRead(B);
-    if(headerA.size ~= headerB.size)
+    headA   = HeaderRead(A);
+    headB   = HeaderRead(B);
+    if(headA.size ~= headB.size)
             error('Epic fail: The inputs does not have the same size')
     end
-    headerOut = headerA;
+    headOut = headA;
 
     % Set byte size
-    bytesize  = SeisDataContainer.utils.getByteSize(headerOut.precision);
+    bytesize  = getByteSize(headOut.precision);
 
-    SeisDataContainer.io.NativeBin.serial.FileAlloc(dirnameOut,headerOut);
-    xsize       = headerOut.size;
-    headerOut.size = [1 prod(xsize)];
-    SeisDataContainer.io.NativeBin.serial.HeaderWrite(dirnameOut,headerOut);
+    FileAlloc(dirnameOut,headOut);
+    xsize        = headOut.size;
+    headOut.size = [1 prod(xsize)];
+    HeaderWrite(dirnameOut,headOut);
 
     % Set the sizes
     dims      = [1 prod(xsize)];
@@ -94,32 +99,31 @@ elseif(isdir(A))
     while (reminder > 0)
         buffer = min(reminder,maxbuffer);
         rend = rstart + buffer - 1;
-        r1 = SeisDataContainer.io.NativeBin.serial.DataReadLeftChunk...
-            (A,'real',dims,[rstart rend],[],headerA.precision,...
-            headerA.precision);
-        if headerA.complex
-        dummy = SeisDataContainer.io.NativeBin.serial.DataReadLeftChunk...
-            (A,'imag',dims,[rstart rend],[],headerA.precision,...
-            headerA.precision);
+        r1 = DataReadLeftChunk...
+            (A,'real',dims,[rstart rend],[],headA.precision,...
+            headA.precision);
+        if headA.complex
+        dummy = DataReadLeftChunk...
+            (A,'imag',dims,[rstart rend],[],headA.precision,...
+            headA.precision);
             r1 = complex(r1,dummy);
         end
-        r2 = SeisDataContainer.io.NativeBin.serial.DataReadLeftChunk...
-            (B,'real',dims,[rstart rend],[],headerB.precision,...
-            headerB.precision);
-        if headerB.complex
-        dummy = SeisDataContainer.io.NativeBin.serial.DataReadLeftChunk...
-            (B,'imag',dims,[rstart rend],[],headerB.precision,...
-            headerB.precision);
+        r2 = DataReadLeftChunk...
+            (B,'real',dims,[rstart rend],[],headB.precision,...
+            headB.precision);
+        if headB.complex
+        dummy = DataReadLeftChunk...
+            (B,'imag',dims,[rstart rend],[],headB.precision,...
+            headB.precision);
             r2 = complex(r2,dummy);
         end
-        SeisDataContainer.io.NativeBin.serial.FileWriteLeftChunk...
+        FileWriteLeftChunk...
             (dirnameOut,ldivide(r1,r2),[rstart rend],[]);
         reminder = reminder - buffer;
         rstart   = rend + 1;
     end
-    headerOut.size = xsize;
-    SeisDataContainer.io.NativeBin.serial.HeaderWrite(dirnameOut,headerOut);
+    headOut.size = xsize;
+    HeaderWrite(dirnameOut,headOut);
 else
     error('Fail: Wrong input type')
-end
 end

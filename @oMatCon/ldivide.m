@@ -1,6 +1,7 @@
 function y = ldivide(a,b)
 %LDIVIDE   Calculates th ldivide where at least on of a or b are oMatCon
 %
+
 aa = a;
 bb = b;
 if(isa(a,'oMatCon'))
@@ -10,7 +11,5 @@ if(isa(b,'oMatCon'))
     bb = path(b.pathname);
 end
 td = ConDir();
-SeisDataContainer.io.NativeBin.serial.FileLdivide...
-    (aa,bb,path(td));
+SeisDataContainer.io.NativeBin.serial.FileLdivide(aa,bb,path(td));
 y  = oMatCon.load(td);
-end
