@@ -147,16 +147,12 @@ end % io
 function test_oMatCon_ldivide
 %% ldivide
 y = oMatCon.randn(3,3,3);
-y = complex(y,0);
-y = y + 1i*randn(3,3,3);
-x = randn(3,3,3);
+x = zeros(3,3,3);
 for i=1:3
     x(:,:,i) = y(:,1:3,i);
 end
 z = oMatCon.randn(3,3,3);
-z = complex(z,0);
-z = y + 1i*randn(3,3,3);
-w = randn(3,3,3);
+w = zeros(3,3,3);
 for i=1:3
     w(:,:,i) = z(:,1:3,i);
 end
