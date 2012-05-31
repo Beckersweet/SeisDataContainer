@@ -46,7 +46,7 @@ else % multiple dims case
             
             % a & b must mod cleanly with the products of faster dimensions
             for j=1:length(xdims)-1
-                c = prod(x.header.size(1:xdims(j)));
+                c = x.header.size(xdims(j));
                 assert(mod(a,c)==1 && mod(b,c)==0,...
                     'Cross-dimensional indexing not allowed');           
             end
