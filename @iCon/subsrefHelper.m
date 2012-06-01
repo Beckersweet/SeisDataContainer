@@ -54,8 +54,7 @@ else % multiple dims case
             vectorized = true;
             
         % case colon:
-        elseif s.subs{i} == ':'
-            
+        elseif s.subs{i} == ':'            
             colonized = true;
             
         % What??? I don't even...
