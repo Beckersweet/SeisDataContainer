@@ -1,8 +1,7 @@
-function [output,done] = subsrefFunctionCall(x,s)
+function output = subsrefFunctionCall(x,s)
 %SUBSREFFUNCTIONCALL   Subsref function call utility
-%
+%   For nonsimple functions with arguments included
 %   Not supposed to be called by user, only by subsref
-done   = false; % Flag for return
 output = [];
 switch s(1).subs
     case 'save'
@@ -11,12 +10,11 @@ switch s(1).subs
         else
            save(x,cell2mat(s(2).subs));
         end
-        done   = true;
         
     case 'modifyHeader'
-        args   = s(2).subs;
-        output = modifyHeader(x,args{:});
+        output = modifyHeader(x,s(2).subs{:});
         
     otherwise
-        error('Function not supported with dot notation');
+%         warning('Function not officially supported');
+        output = builtin('subsref',x,s);
 end

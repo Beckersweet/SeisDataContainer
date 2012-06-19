@@ -3,13 +3,9 @@ function varargout = subsref(x,s)
 %
 %   X(a,b,..) - where a,b,.. are indices returns the explicit
 %               elements stored within the data container as if it is a
-%               Matlab array. Actually this level of subreferencing is
-%               absolutely transparent. So don't expect a data container to
-%               come out of this.
+%               Matlab array.
 %
-%   X(:)      - Returns a vectorized X. Note that doing this operation will
-%               explicitly change all references to this object, including
-%               the original, the copies and whatnot.
+%   X(:)      - Returns a vectorized X. 
 %
 %   See also: iCon.vec, invvec, iCon.subsasgn
 
@@ -17,18 +13,16 @@ if length(s) > 1
     switch s(1).type
         case {'.'}
             % attributes references and function calls
-            [output,done] = SeisDataContainer.utils.subsrefFunctionCall(x,s);
-            if done, return; end % For functions that don't return anything
-            varargout{1}  = output;
+            varargout{:} = subsrefFunctionCall(x,s);
 
         case {'{}'}
             error('Cell-indexing is not supported.');
 
         case {'()'}
-            error('What youre doing now doesnt make any sense.');
+            error('Referencing from subsreffed components is not allowed');
     end
     
-else
+else % length(s) == 1
     switch s.type
         case {'.'}            
             % Set properties and flags
@@ -38,7 +32,7 @@ else
             error('Cell-indexing is not supported.');
             
         case {'()'} %This is where all the magic happens
-            varargout{1} = subsref(double(x),s);
+            varargout{1} = subsrefHelper(x,s);
             
     end
 end

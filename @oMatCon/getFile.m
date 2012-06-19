@@ -7,7 +7,7 @@ function y = getFile(obj,x)
 %   X   - Subreferences cell
 %
 if (length(x) == 1 && isnumeric(cell2mat(x(1))))
-    error('Error: Single emelent indexing is not allowed in oMatCon')
+    error('Error: Single element indexing is not allowed in oMatCon')
 elseif (length(x) == 1 && cell2mat(x(1)) == ':')
     y = vec(obj);
 else

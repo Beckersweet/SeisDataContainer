@@ -1,4 +1,4 @@
-function d = isize(x,dim)
+function d = isize(x,varargin)
 %ISIZE  Implicit dimensions of a data container
 %
 %   isize(x) returns the implicit dimensions 
@@ -17,24 +17,4 @@ function d = isize(x,dim)
 %   http://www.cs.ubc.ca/labs/scl/spot
 
 % Setup variables
-dims = x.header.size;
-
-if nargin == 0
-   error('Not enough input arguments');
-
-elseif nargin > 2
-   error('Too many input arguments');
-   
-elseif nargin > 1 && ~isempty('dim')
-    if nargout > 1
-       error('Unknown command option.');
-    end
-    if dim < 1 || dim > length(dims)
-       error('Dimension argument must be within the dimensions of x');
-    else
-       d = dims(dim);
-    end
-    
-else
-   d = dims; 
-end
+d = x.header.size(varargin{:});
