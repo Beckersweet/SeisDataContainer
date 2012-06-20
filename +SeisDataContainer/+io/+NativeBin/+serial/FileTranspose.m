@@ -34,12 +34,14 @@ headerOut.label = [headerIn.label(sepDim+1:end) headerIn.label(1:sepDim)];
 SeisDataContainer.io.NativeBin.serial.HeaderWrite(dirnameOut,headerOut);
 
 % Transpose file
-SeisDataContainer.io.NativeBin.serial.DataAlloc(dirnameOut,'real',headerOut.size,headerOut.precision);
+SeisDataContainer.io.NativeBin.serial.FileAlloc(dirnameOut,headerOut);
+SeisDataContainer.io.setFileDirty(dirnameOut);
 SeisDataContainer.io.NativeBin.serial.DataTranspose(dirnameIn,dirnameOut,'real',...
     dim2D,headerOut.precision);
 if headerOut.complex
-    SeisDataContainer.io.NativeBin.serial.DataAlloc(dirnameOut,'imag',headerOut.size,headerOut.precision);
     SeisDataContainer.io.NativeBin.serial.DataTranspose(dirnameIn,dirnameOut,'imag',...
         dim2D,headerOut.precision);
 end
+SeisDataContainer.io.setFileClean(dirnameOut);
+
 end

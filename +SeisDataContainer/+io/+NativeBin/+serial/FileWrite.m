@@ -18,7 +18,6 @@ function FileWrite(dirname,x,varargin)
 %   Warning: If the specified dirname exists, it will be removed.
 
 SeisDataContainer.io.isFileClean(dirname);
-SeisDataContainer.io.setFileDirty(dirname);
 error(nargchk(2, 3, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 assert(isfloat(x), 'data must be float')
@@ -46,13 +45,12 @@ SeisDataContainer.verifyHeaderStructWithX(header,x);
 assert(isdir(dirname),'Fatal error: directory %s does not exist',dirname);
 
 % Write file
-SeisDataContainer.io.NativeBin.serial.DataAlloc(dirname,'real',size(x),f_precision);
+SeisDataContainer.io.NativeBin.serial.FileAlloc(dirname,header);
+SeisDataContainer.io.setFileDirty(dirname);
 SeisDataContainer.io.NativeBin.serial.DataWrite(dirname,'real',real(x),f_precision);
 if ~isreal(x)
-    SeisDataContainer.io.NativeBin.serial.DataAlloc(dirname,'imag',size(x),f_precision);
     SeisDataContainer.io.NativeBin.serial.DataWrite(dirname,'imag',imag(x),f_precision);
 end
 % Write header
-SeisDataContainer.io.NativeBin.serial.HeaderWrite(dirname,header);
 SeisDataContainer.io.setFileClean(dirname);
 end
