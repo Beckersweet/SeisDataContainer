@@ -34,10 +34,9 @@ function test_distributed_dataReadWrite_noDistribute_double_complex
 %%
     imat = distributed.rand(2,2,4);
     imat = complex(imat,imat);
-    td   = SeisDataContainer.io.makeDir();
-    SeisDataContainer.io.NativeBin.dist.FileWrite(td,imat,0);
-    x    = SeisDataContainer.io.NativeBin.dist.FileRead(td);
-    SeisDataContainer.io.NativeBin.serial.FileDelete(td);
+    td   = ConDir();
+    SeisDataContainer.io.NativeBin.dist.FileWrite(path(td),imat,0);
+    x    = SeisDataContainer.io.NativeBin.dist.FileRead(path(td));
     assert(isequal(x,imat))
 end
 

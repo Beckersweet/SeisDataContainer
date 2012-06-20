@@ -30,22 +30,16 @@ end
 % Setting up the output header
 distdim            = headerOut.size(headerOut.distribution.dim+1:end);
 headerOut.size     = [headerOut.size(sepDim+1:end) headerOut.size(1:sepDim)];
-headerOut          = SeisDataContainer.io.addDistFileHeaderStruct(headerOut,distdirnameOut);
 headerOut.origin   = [headerOut.origin(sepDim+1:end) headerOut.origin(1:sepDim)];
 headerOut.delta    = [headerOut.delta(sepDim+1:end) headerOut.delta(1:sepDim)];
 headerOut.unit     = [headerOut.unit(sepDim+1:end) headerOut.unit(1:sepDim)];
 headerOut.label    = [headerOut.label(sepDim+1:end) headerOut.label(1:sepDim)];
 partition          = SeisDataContainer.utils.defaultDistribution(headerOut.size(distdim));
 headerOut          = SeisDataContainer.addDistHeaderStruct(headerOut,headerOut.dims,partition);
-SeisDataContainer.io.NativeBin.serial.HeaderWrite(dirnameOut,headerOut);
+headerOut          = SeisDataContainer.addDistFileHeaderStruct(headerOut,distdirnameOut);
 
 % Allocate file
-SeisDataContainer.io.NativeBin.dist.DataAlloc(headerOut.directories,'real',...
-    headerOut.distribution.size,headerOut.precision);
-if headerOut.complex
-    SeisDataContainer.io.NativeBin.dist.DataAlloc(headerOut.directories,'imag',...
-        headerOut.distribution.size,headerOut.precision);
-end
+SeisDataContainer.io.NativeBin.dist.FileAlloc(dirnameOut,headerOut);
 
 % Transpose file
 SeisDataContainer.io.NativeBin.dist.DataTranspose(dirnameIn,dirnameOut,'real',...

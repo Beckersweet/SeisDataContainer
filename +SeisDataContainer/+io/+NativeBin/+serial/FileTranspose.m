@@ -1,4 +1,4 @@
-function FileTranspose(dirIn,dirOut,sepDim)
+function FileTranspose(dirnameIn,dirnameOut,sepDim)
 %DATATRANSPOSE Transposes input data and writes it to output file
 %
 %   FileTranspose(dirIn,dirOut,SEPDIM)
@@ -38,9 +38,14 @@ headOut.label  = [headIn.label( sepDim+1:end) headIn.label( 1:sepDim)];
 HeaderWrite(dirOut,headOut);
 
 % Transpose file
-DataAlloc(dirOut,'real', headOut.size,headOut.precision);
-DataTranspose(dirIn,dirOut,'real',dim2D,headOut.precision);
-if headOut.complex
-    DataAlloc(dirOut,'imag',headOut.size,headOut.precision);
-    DataTranspose(dirIn,dirOut,'imag',dim2D,headOut.precision);
+SeisDataContainer.io.NativeBin.serial.FileAlloc(dirnameOut,headerOut);
+SeisDataContainer.io.setFileDirty(dirnameOut);
+SeisDataContainer.io.NativeBin.serial.DataTranspose(dirnameIn,dirnameOut,'real',...
+    dim2D,headerOut.precision);
+if headerOut.complex
+    SeisDataContainer.io.NativeBin.serial.DataTranspose(dirnameIn,dirnameOut,'imag',...
+        dim2D,headerOut.precision);
+end
+SeisDataContainer.io.setFileClean(dirnameOut);
+
 end

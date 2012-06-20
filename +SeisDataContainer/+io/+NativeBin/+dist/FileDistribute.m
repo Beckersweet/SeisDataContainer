@@ -21,22 +21,16 @@ assert(matlabpool('size')>0,'matlabpool must be open')
 hdrin = SeisDataContainer.io.NativeBin.serial.HeaderRead(dirin);
 assert(hdrin.distributedIO==0,'input file must be serial')
 assert(distdim<=hdrin.dims,'distributin dimension bigger than input diemsions')
-% Make Directory
-if isdir(dirout); rmdir(dirout,'s'); end;
-status = mkdir(dirout);
-assert(status,'Fatal error while creating directory %s',dirout);
-% update headers
+
+% Update headers
 partition = SeisDataContainer.utils.defaultDistribution(hdrin.size(distdim));
 hdrin = SeisDataContainer.addDistHeaderStruct(hdrin,distdim,partition);
-hdrout = SeisDataContainer.io.addDistFileHeaderStruct(hdrin,dirsout);
+hdrout = SeisDataContainer.addDistFileHeaderStruct(hdrin,dirsout);
 sldims = hdrin.size(distdim+1:end);
+
 % Allocate file
-SeisDataContainer.io.NativeBin.dist.DataAlloc(hdrout.directories,'real',...
-    hdrout.distribution.size,hdrout.precision);
-if hdrin.complex
-    SeisDataContainer.io.NativeBin.dist.DataAlloc(hdrout.directories,'imag',...
-        hdrout.distribution.size,hdrout.precision);
-end
+SeisDataContainer.io.NativeBin.dist.FileAlloc(dirout,hdrout);
+
 % Copy file
 for s=1:prod(sldims)
     slice = SeisDataContainer.utils.getSliceIndexS2V(sldims,s);
@@ -51,7 +45,5 @@ for s=1:prod(sldims)
             hdrout.size,hdrout.distribution,slice,hdrout.precision);
     end
 end
-%Write header
-SeisDataContainer.io.NativeBin.serial.HeaderWrite(dirout,hdrout);
 
 end
