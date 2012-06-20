@@ -5,7 +5,9 @@ function y = metacopy(x,y)
 %   return y.
 
 if ~isa(y,'piCon')
-    y.exsize     = x.exsize;
+    yheader      = y.header;
+    yheader.size = x.header.size;
+    y.header     = yheader;
     y.perm       = x.perm;
     y.strict     = x.strict;
 else
@@ -13,5 +15,5 @@ else
     y.perm       = x.perm;
     y.strict     = x.strict;
     y.imcoddims  = x.imcoddims;
-    y.imcodpart  = x.imcodpart;
+    y.imcodpart  = SDCpckg.utils.defaultDistribution(size(y,y.imcoddims));
 end

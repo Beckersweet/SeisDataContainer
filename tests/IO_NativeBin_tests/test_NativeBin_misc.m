@@ -13,9 +13,9 @@ function test_getSliceIndex
         for j=1:J
             for i=1:I
                 S=S+1;
-                s=SeisDataContainer.utils.getSliceIndexV2S([I J K],[i j k]);
+                s=SDCpckg.utils.getSliceIndexV2S([I J K],[i j k]);
                 assert(s==S,'global index does not match');
-                v=SeisDataContainer.utils.getSliceIndexS2V([I J K],s);
+                v=SDCpckg.utils.getSliceIndexS2V([I J K],s);
                 assert(isequal([i j k],v),'index vectors do not match');
                 %disp([i j k s v]);
             end

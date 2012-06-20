@@ -17,129 +17,129 @@ whos imat
 %disp(norm(imat(:)))
 
 disp('*****');
-disp('SeisDataContainer.io.NativeBin.serial.File* single complex');
+disp('SDCpckg.io.NativeBin.serial.File* single complex');
 td=ConDir();
 orig=complex(imat,1);
-hdr=SeisDataContainer.basicHeaderStructFromX(orig);
+hdr=SDCpckg.basicHeaderStructFromX(orig);
 hdr.precision='single';
-SeisDataContainer.io.NativeBin.serial.FileWrite(path(td),orig,hdr);
-new=SeisDataContainer.io.NativeBin.serial.FileRead(path(td),'single');
+SDCpckg.io.NativeBin.serial.FileWrite(path(td),orig,hdr);
+new=SDCpckg.io.NativeBin.serial.FileRead(path(td),'single');
 assert(isequal(single(orig),new))
 dir(td)
 
 disp('*****');
-disp('SeisDataContainer.io.NativeBin.serial.File* double complex');
+disp('SDCpckg.io.NativeBin.serial.File* double complex');
 td=ConDir();
 orig=complex(imat,1);
-SeisDataContainer.io.NativeBin.serial.FileWrite(path(td),orig,SeisDataContainer.basicHeaderStructFromX(orig));
-new=SeisDataContainer.io.NativeBin.serial.FileRead(path(td),'double');
+SDCpckg.io.NativeBin.serial.FileWrite(path(td),orig,SDCpckg.basicHeaderStructFromX(orig));
+new=SDCpckg.io.NativeBin.serial.FileRead(path(td),'double');
 assert(isequal(orig,new))
 dir(td)
 
 disp('*****');
-disp('SeisDataContainer.io.NativeBin.serial.File* single real');
+disp('SDCpckg.io.NativeBin.serial.File* single real');
 td=ConDir();
-SeisDataContainer.io.NativeBin.serial.FileWrite(path(td),imat,'single');
-new=SeisDataContainer.io.NativeBin.serial.FileRead(path(td),'single');
+SDCpckg.io.NativeBin.serial.FileWrite(path(td),imat,'single');
+new=SDCpckg.io.NativeBin.serial.FileRead(path(td),'single');
 assert(isequal(single(imat),new))
 dir(td)
 
 disp('*****');
-disp('SeisDataContainer.io.NativeBin.serial.File* double real');
+disp('SDCpckg.io.NativeBin.serial.File* double real');
 td=ConDir();
-SeisDataContainer.io.NativeBin.serial.FileWrite(path(td),imat);
-new=SeisDataContainer.io.NativeBin.serial.FileRead(path(td),'double');
+SDCpckg.io.NativeBin.serial.FileWrite(path(td),imat);
+new=SDCpckg.io.NativeBin.serial.FileRead(path(td),'double');
 assert(isequal(imat,new))
 dir(td)
 
 disp('*****');
-disp('SeisDataContainer.io.NativeBin.serial.File*LeftSlice last none');
+disp('SDCpckg.io.NativeBin.serial.File*LeftSlice last none');
 td=ConDir();
-SeisDataContainer.io.NativeBin.serial.FileWrite(path(td),imat);
-slice=SeisDataContainer.io.NativeBin.serial.FileReadLeftSlice(path(td),[]);
+SDCpckg.io.NativeBin.serial.FileWrite(path(td),imat);
+slice=SDCpckg.io.NativeBin.serial.FileReadLeftSlice(path(td),[]);
 assert(isequal(imat,slice))
 nmat = imat+1;
-SeisDataContainer.io.NativeBin.serial.FileAlloc(path(td),SeisDataContainer.basicHeaderStructFromX(nmat));
-SeisDataContainer.io.NativeBin.serial.FileWriteLeftSlice(path(td),nmat,[]);
-smat = SeisDataContainer.io.NativeBin.serial.FileRead(path(td));
+SDCpckg.io.NativeBin.serial.FileAlloc(path(td),SDCpckg.basicHeaderStructFromX(nmat));
+SDCpckg.io.NativeBin.serial.FileWriteLeftSlice(path(td),nmat,[]);
+smat = SDCpckg.io.NativeBin.serial.FileRead(path(td));
 assert(isequal(smat,nmat))
 dir(td)
 
 disp('*****');
-disp('SeisDataContainer.io.NativeBin.serial.File*LeftSlice last one');
+disp('SDCpckg.io.NativeBin.serial.File*LeftSlice last one');
 td=ConDir();
-SeisDataContainer.io.NativeBin.serial.FileWrite(path(td),imat);
+SDCpckg.io.NativeBin.serial.FileWrite(path(td),imat);
 for k=1:K
-    slice=SeisDataContainer.io.NativeBin.serial.FileReadLeftSlice(path(td),[k]);
+    slice=SDCpckg.io.NativeBin.serial.FileReadLeftSlice(path(td),[k]);
     orig=imat(:,:,k);
     assert(isequal(orig,slice))
 end
 nmat = imat+1;
-SeisDataContainer.io.NativeBin.serial.FileAlloc(path(td),SeisDataContainer.basicHeaderStructFromX(nmat));
+SDCpckg.io.NativeBin.serial.FileAlloc(path(td),SDCpckg.basicHeaderStructFromX(nmat));
 for k=1:K
-    SeisDataContainer.io.NativeBin.serial.FileWriteLeftSlice(path(td),nmat(:,:,k),[k]);
+    SDCpckg.io.NativeBin.serial.FileWriteLeftSlice(path(td),nmat(:,:,k),[k]);
 end
-smat = SeisDataContainer.io.NativeBin.serial.FileRead(path(td));
+smat = SDCpckg.io.NativeBin.serial.FileRead(path(td));
 assert(isequal(smat,nmat))
 dir(td)
 
 disp('*****');
-disp('SeisDataContainer.io.NativeBin.serial.File*LeftSlice last two');
+disp('SDCpckg.io.NativeBin.serial.File*LeftSlice last two');
 td=ConDir();
-SeisDataContainer.io.NativeBin.serial.FileWrite(path(td),imat);
+SDCpckg.io.NativeBin.serial.FileWrite(path(td),imat);
 for k=1:K
     for j=1:J
-    slice=SeisDataContainer.io.NativeBin.serial.FileReadLeftSlice(path(td),[j,k]);
+    slice=SDCpckg.io.NativeBin.serial.FileReadLeftSlice(path(td),[j,k]);
     orig=imat(:,j,k);
     assert(isequal(orig,slice))
     end
 end
 nmat = imat+1;
-SeisDataContainer.io.NativeBin.serial.FileAlloc(path(td),SeisDataContainer.basicHeaderStructFromX(nmat));
+SDCpckg.io.NativeBin.serial.FileAlloc(path(td),SDCpckg.basicHeaderStructFromX(nmat));
 for k=1:K
     for j=1:J
-    SeisDataContainer.io.NativeBin.serial.FileWriteLeftSlice(path(td),nmat(:,j,k),[j,k]);
+    SDCpckg.io.NativeBin.serial.FileWriteLeftSlice(path(td),nmat(:,j,k),[j,k]);
     end
 end
-smat = SeisDataContainer.io.NativeBin.serial.FileRead(path(td));
+smat = SDCpckg.io.NativeBin.serial.FileRead(path(td));
 assert(isequal(smat,nmat))
 dir(td)
 
 disp('*****');
-disp('SeisDataContainer.io.NativeBin.serial.File*LeftChunk last none');
+disp('SDCpckg.io.NativeBin.serial.File*LeftChunk last none');
 td=ConDir();
-SeisDataContainer.io.NativeBin.serial.FileWrite(path(td),imat);
+SDCpckg.io.NativeBin.serial.FileWrite(path(td),imat);
 for k=1:K-2
-    slice=SeisDataContainer.io.NativeBin.serial.FileReadLeftChunk(path(td),[k k+2],[]);
+    slice=SDCpckg.io.NativeBin.serial.FileReadLeftChunk(path(td),[k k+2],[]);
     orig=imat(:,:,k:k+2);
     assert(isequal(orig,slice))
 end
 nmat = imat+1;
-SeisDataContainer.io.NativeBin.serial.FileAlloc(path(td),SeisDataContainer.basicHeaderStructFromX(nmat));
-SeisDataContainer.io.NativeBin.serial.FileWriteLeftChunk(path(td),nmat(:,:,1:2),[1 2],[]);
-SeisDataContainer.io.NativeBin.serial.FileWriteLeftChunk(path(td),nmat(:,:,3:K),[3 K],[]);
-smat = SeisDataContainer.io.NativeBin.serial.FileRead(path(td));
+SDCpckg.io.NativeBin.serial.FileAlloc(path(td),SDCpckg.basicHeaderStructFromX(nmat));
+SDCpckg.io.NativeBin.serial.FileWriteLeftChunk(path(td),nmat(:,:,1:2),[1 2],[]);
+SDCpckg.io.NativeBin.serial.FileWriteLeftChunk(path(td),nmat(:,:,3:K),[3 K],[]);
+smat = SDCpckg.io.NativeBin.serial.FileRead(path(td));
 assert(isequal(smat,nmat))
 dir(td)
 
 disp('*****');
-disp('SeisDataContainer.io.NativeBin.serial.File*LeftChunk last one');
+disp('SDCpckg.io.NativeBin.serial.File*LeftChunk last one');
 td=ConDir();
-SeisDataContainer.io.NativeBin.serial.FileWrite(path(td),imat);
+SDCpckg.io.NativeBin.serial.FileWrite(path(td),imat);
 for k=1:K
     for j=1:J-2
-        slice=SeisDataContainer.io.NativeBin.serial.FileReadLeftChunk(path(td),[j j+2],[k]);
+        slice=SDCpckg.io.NativeBin.serial.FileReadLeftChunk(path(td),[j j+2],[k]);
         orig=imat(:,j:j+2,k);
         assert(isequal(orig,slice))
     end
 end
 nmat = imat+1;
-SeisDataContainer.io.NativeBin.serial.FileAlloc(path(td),SeisDataContainer.basicHeaderStructFromX(nmat));
+SDCpckg.io.NativeBin.serial.FileAlloc(path(td),SDCpckg.basicHeaderStructFromX(nmat));
 for k=1:K
-    SeisDataContainer.io.NativeBin.serial.FileWriteLeftChunk(path(td),nmat(:,1:2,k),[1 2],[k]);
-    SeisDataContainer.io.NativeBin.serial.FileWriteLeftChunk(path(td),nmat(:,3:J,k),[3 J],[k]);
+    SDCpckg.io.NativeBin.serial.FileWriteLeftChunk(path(td),nmat(:,1:2,k),[1 2],[k]);
+    SDCpckg.io.NativeBin.serial.FileWriteLeftChunk(path(td),nmat(:,3:J,k),[3 J],[k]);
 end
-smat = SeisDataContainer.io.NativeBin.serial.FileRead(path(td));
+smat = SDCpckg.io.NativeBin.serial.FileRead(path(td));
 assert(isequal(smat,nmat))
 dir(td)
 

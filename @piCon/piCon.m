@@ -50,7 +50,8 @@ classdef (InferiorClasses = {?distributed,?codistributed}) piCon < iCon
         function x = piCon(doh,varargin)
             
             if ~isstruct(doh)
-                header = SeisDataContainer.basicHeaderStructFromX(doh);
+                data   = doh;
+                header = SDCpckg.basicHeaderStructFromX(data);
                 % Distribute data if not distributed
                 if ~isdistributed(doh)
                     assert(isnumeric(doh), 'data must be numeric');

@@ -1,4 +1,4 @@
-function y = imag(x)
+function y = imag(a)
 %IMAG   Gives the imaginary part of oMatCon
 %
 
@@ -6,7 +6,7 @@ if(~isa(x,'oMatCon'))
     error('Input parameter should be data container')
 end
 td = ConDir();
-SeisDataContainer.io.NativeBin.serial.FileImag(path(x.pathname),path(td));    
+SDCpckg.io.NativeBin.serial.FileImag(path(a.pathname),path(td));    
 y = oMatCon.load(td);
 y.exsize = x.exsize;
 y.perm   = x.perm;

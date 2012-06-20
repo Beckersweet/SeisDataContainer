@@ -14,7 +14,7 @@ function y = diag(x,varargin)
 %   DIAG(X) is the main diagonal of X. DIAG(DIAG(X)) is a diagonal matrix.
 
 % Doublify any iCon
-% varargin = cellfun(@(x) SeisDataContainer.serial.stripicon(x), varargin,...
+% varargin = cellfun(@(x) SDCpckg.serial.stripicon(x), varargin,...
 %     'UniformOutput',false);
 
 y = dataCon(diag(double(x),varargin{:}));

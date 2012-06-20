@@ -4,5 +4,6 @@ Rules of engagment for out-of-core APIs :)
 * all directories are created/removed by user using ConDir/ConDistDir classes
 * all file allocations are done through FileAlloc utilities
 * spmd blocks are allowed only at File* level utilities, none in Data* level
+* matlabpool size-checs at File* level
 * check/set/clean dirty flag only in File* level utilities
 

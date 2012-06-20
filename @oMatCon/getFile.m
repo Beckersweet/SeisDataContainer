@@ -1,5 +1,5 @@
-function y = getFile(x,s)
-%GETFILE is called whenever we try to access data via subreferencing
+function y = getFile(obj,x)
+%GETDATA is called whenever we try to access data via subreferencing
 %
 %   getFile(x,s)
 %
@@ -29,7 +29,8 @@ else
     end
 
     % this gives us Matlab array
-    y = FileReadLeftChunk(path(x.pathname),[chunk(1) chunk(end)],slice);
+    y = SDCpckg.io.NativeBin.serial.FileReadLeftChunk...
+        (path(obj.pathname),[chunk(1) chunk(end)],slice);
 
     % returning the result as iCon
     y = iCon(y);

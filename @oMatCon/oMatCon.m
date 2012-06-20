@@ -36,12 +36,12 @@ methods (Access = protected)
         
         if (isa(pathname,'ConDir') && exist(pathname)) % Loading file
             if(p.Results.copy == 0) % overwrite case
-                headerIn = SeisDataContainer.io.NativeBin.serial.HeaderRead(path(pathname));
+                headerIn = SDCpckg.io.NativeBin.serial.HeaderRead(path(pathname));
                 td       = pathname;
             else % no overwrite
                 td       = ConDir();
-                SeisDataContainer.io.NativeBin.serial.FileCopy(path(pathname),path(td));
-                headerIn = SeisDataContainer.io.NativeBin.serial.HeaderRead(path(td));
+                SDCpckg.io.NativeBin.serial.FileCopy(path(pathname),path(td));
+                headerIn = SDCpckg.io.NativeBin.serial.HeaderRead(path(td));
             end            
         else
             error('Fail: Path does not exist');
@@ -53,7 +53,7 @@ methods (Access = protected)
         x.readOnly = p.Results.readonly;
 
         % Writing header on disk
-        SeisDataContainer.io.NativeBin.serial.HeaderWrite...
+        SDCpckg.io.NativeBin.serial.HeaderWrite...
             (path(pathname),x.header);
     end % constructor
 end % protected methods

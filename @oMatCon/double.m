@@ -6,12 +6,11 @@ function y = double(x)
 % ***Note that for now double gives the data itself but this will change
 % later and will probably change the file precision
 %
-
-import SeisDataContainer.io.NativeBin.serial.*
-
-imsize        = x.header.size;
+imsize = x.header.size;
 x.header.size = size(x);
-HeaderWrite(path(x.pathname),x.header);
-y             = FileRead(path(x.pathname));
+SDCpckg.io.NativeBin.serial.HeaderWrite...
+            (path(x.pathname),x.header);
+y = SDCpckg.io.NativeBin.serial.FileRead(path(x.pathname));
 x.header.size = imsize;
-HeaderWrite(path(x.pathname),x.header);
+SDCpckg.io.NativeBin.serial.HeaderWrite...
+            (path(x.pathname),x.header);

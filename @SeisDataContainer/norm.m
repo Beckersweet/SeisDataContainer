@@ -64,7 +64,7 @@ y = 0;
     else
         SIZE = size(x);
         for i = 1:SIZE(end)
-            y = y + nDimsPNorm(SeisDataContainer.utils.ldind(x,i),p);
+            y = y + nDimsPNorm(SDCpckg.utils.ldind(x,i),p);
         end
     end
 end
@@ -74,9 +74,9 @@ function y = nDimsInfNorm(x,p)
         y = p(p(abs(x)));
     else
         SIZE = size(x);
-        y = nDimsInfNorm(SeisDataContainer.utils.ldind(x,1),p);
+        y = nDimsInfNorm(SDCpckg.utils.ldind(x,1),p);
         for i = 2:SIZE(end)
-            y = [ y nDimsInfNorm(SeisDataContainer.utils.ldind(x,i),p)];
+            y = [ y nDimsInfNorm(SDCpckg.utils.ldind(x,i),p)];
         end
         y = p(y);
     end

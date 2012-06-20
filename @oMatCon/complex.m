@@ -12,5 +12,7 @@ if(isa(b,'oMatCon'))
     bb = path(b.pathname);
 end
 td = ConDir();    
-SeisDataContainer.io.NativeBin.serial.FileComplex(aa,bb,path(td));
+SDCpckg.io.NativeBin.serial.FileComplex...
+    (aa,bb,path(td));
 y  = oMatCon.load(td);
+end

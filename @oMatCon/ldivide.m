@@ -1,5 +1,5 @@
 function y = ldivide(a,b)
-%LDIVIDE   Calculates the ldivide where at least one of a or b are oMatCon
+%LDIVIDE   Calculates th ldivide where at least on of a or b are oMatCon
 %
 
 if(isa(a,'oMatCon'))
@@ -15,7 +15,8 @@ else
 end
 
 td = ConDir();
-SeisDataContainer.io.NativeBin.serial.FileLdivide(aa,bb,path(td));
+SDCpckg.io.NativeBin.serial.FileLdivide...
+    (aa,bb,path(td));
 y  = oMatCon.load(td);
 
 if ~isa(a,'oMatCon') % Right divide

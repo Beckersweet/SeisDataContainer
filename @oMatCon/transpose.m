@@ -1,4 +1,4 @@
-function y = transpose(x)
+function y = transpose(x,sepDim)
 %TRANSPOSE Transposes the datacontainer
 %
 %   Y = transpose(X)
@@ -16,9 +16,8 @@ sepDim = x.exsize(end,1);
 
 % Do all the out of core magic
 td = ConDir();
-FileTranspose(path(x.pathname),path(td),sepDim);
-
-% Load out of core file
+SDCpckg.io.NativeBin.serial.FileTranspose...
+    (path(x.pathname),path(td),sepDim);
 y  = oMatCon.load(td);
 
 % In-core continuation of class properties
