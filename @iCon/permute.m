@@ -28,7 +28,7 @@ end
 y = iCon(permute(x.data,perm));
 
 % Set variables
-y.header      = SeisDataContainer.permuteHeaderStruct(x.header,perm);
+y.header      = SDCpckg.permuteHeaderStruct(x.header,perm);
 y.perm        = toperm;
 y.exsize      = tgsize;
 y.header.size = tgisize;

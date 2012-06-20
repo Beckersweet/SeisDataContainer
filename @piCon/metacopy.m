@@ -17,5 +17,5 @@ else
     y.perm       = x.perm;
     y.strict     = x.strict;
     y.imcoddims  = x.imcoddims;
-    y.imcodpart  = SeisDataContainer.utils.defaultDistribution(size(y,y.imcoddims));
+    y.imcodpart  = SDCpckg.utils.defaultDistribution(size(y,y.imcoddims));
 end

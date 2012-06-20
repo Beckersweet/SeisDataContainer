@@ -73,14 +73,14 @@ if exist('TestSuite','file')
    % Relax. Found it.
 else
    try
-      addpath(fullfile(SeisDataContainer.path,'tests','xunit'))
+      addpath(fullfile(SDCpckg.path,'tests','xunit'))
    catch ME
       error('Can''t find xunit toolbox.')
    end
 end
       
 if nargin < 1
-    suite = TestSuite.fromName(fullfile(SeisDataContainer.path,'tests','IO_NativeBin_tests'));
+    suite = TestSuite.fromName(fullfile(SDCpckg.path,'tests','IO_NativeBin_tests'));
 else
     name_list = getInputNames(varargin{:});
     if numel(name_list) == 1
@@ -93,7 +93,7 @@ else
     end
 end
 
-did_pass = suite.run(SeisDataContainer.utils.DataContainerTestRunDisplay());
+did_pass = suite.run(SDCpckg.utils.DataContainerTestRunDisplay());
 
 if nargout > 0
     out = did_pass;

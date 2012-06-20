@@ -39,12 +39,12 @@ classdef poMatCon < poCon
             
             if (isdir(pathname)) % Loading file
                 if(p.Results.copy == 0) % overwrite case
-                    headerIn = SeisDataContainer.io.NativeBin.serial.HeaderRead(pathname);
+                    headerIn = SDCpckg.io.NativeBin.serial.HeaderRead(pathname);
                     td = pathname;
                 else % no overwrite
-                    td = SeisDataContainer.io.makeDir();
-                    SeisDataContainer.io.NativeBin.serial.FileCopy(pathname,td);
-                    headerIn = SeisDataContainer.io.NativeBin.serial.HeaderRead(td);
+                    td = SDCpckg.io.makeDir();
+                    SDCpckg.io.NativeBin.serial.FileCopy(pathname,td);
+                    headerIn = SDCpckg.io.NativeBin.serial.HeaderRead(td);
                 end            
             else
                 error('Fail: Path does not exist');

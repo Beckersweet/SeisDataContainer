@@ -18,6 +18,6 @@ else
 end
 status = mkdir(dirname);
 assert(status,'Fatal error while creating directory %s',dirname);
-SeisDataContainer.io.NativeBin.serial.FileCopy...
+SDCpckg.io.NativeBin.serial.FileCopy...
     (path(obj.pathname),dirname); 
 end

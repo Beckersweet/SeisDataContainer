@@ -8,6 +8,6 @@ function y = conj(a)
 %
 aa = path(a.pathname);
 td = ConDir();    
-SeisDataContainer.io.NativeBin.serial.FileConj(aa,path(td));
+SDCpckg.io.NativeBin.serial.FileConj(aa,path(td));
 y  = oMatCon.load(td);
 end
