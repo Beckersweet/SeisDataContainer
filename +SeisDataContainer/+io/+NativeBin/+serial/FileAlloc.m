@@ -8,12 +8,12 @@ function FileAlloc(dirname,header)
 %   HEADER  - A header struct specifying the file properties
 %
 
-SeisDataContainer.io.isFileClean(dirname);
-SeisDataContainer.io.setFileDirty(dirname);
 error(nargchk(2, 2, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 assert(isstruct(header), 'header must be a header struct')
 assert(header.distributedIO==0,'header have file distribution for serial file alloc?')
+SeisDataContainer.io.isFileClean(dirname);
+SeisDataContainer.io.setFileDirty(dirname);
 
 % Check Directory
 assert(isdir(dirname),'Fatal error: directory %s does not exist',dirname);
