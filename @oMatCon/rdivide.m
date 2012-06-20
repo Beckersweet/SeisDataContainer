@@ -10,7 +10,7 @@ if(isa(b,'oMatCon'))
     bb = path(b.pathname);
 end
 td = ConDir();
-SeisDataContainer.io.NativeBin.serial.FileRdivide...
+SDCpckg.io.NativeBin.serial.FileRdivide...
     (aa,bb,path(td));
 y  = oMatCon.load(td);
 end

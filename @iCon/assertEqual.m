@@ -16,6 +16,6 @@ function assertEqual(varargin)
 %
 %   See also assertElementsAlmostEqual
 
-varargin = cellfun(@(p) SeisDataContainer.serial.stripicon(p),...
+varargin = cellfun(@(p) SDCpckg.serial.stripicon(p),...
     varargin,'UniformOutput',false');
 assertEqual(varargin{:});

@@ -11,7 +11,7 @@ function x = randn(varargin)
 %   Note: The size inputs M, N, P, ... should be nonnegative integers.
 %   Negative integers are treated as 0.
 
-stringIndex = SeisDataContainer.utils.getFirstStringIndex(varargin{:});
+stringIndex = SDCpckg.utils.getFirstStringIndex(varargin{:});
 if(stringIndex)
     x = iCon(randn(varargin{1:stringIndex-1}),varargin{stringIndex:end});
 else

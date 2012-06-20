@@ -25,6 +25,6 @@ function assertElementsAlmostEqual(varargin)
 %   assertElementsAlmostEqual(A, B, ..., msg) prepends the string msg to the
 %   output message if A and B fail the tolerance test.
 
-varargin = cellfun(@(p) SeisDataContainer.serial.stripicon(p),...
+varargin = cellfun(@(p) SDCpckg.serial.stripicon(p),...
     varargin,'UniformOutput',false');
 assertElementsAlmostEqual(varargin{:});

@@ -5,7 +5,7 @@ function assertEqual(a,b)
 global SDCbufferSize;    
 if(isa(a,'oCon') && isa(b,'oCon'))
     % Set byte size
-    bytesize  = SeisDataContainer.utils.getByteSize(a.header.precision);
+    bytesize  = SDCpckg.utils.getByteSize(a.header.precision);
     % Set the sizes
     dims      = [1 prod(a.header.size)];
     reminder  = prod(a.header.size);
@@ -17,9 +17,9 @@ if(isa(a,'oCon') && isa(b,'oCon'))
     while (reminder > 0)
         buffer = min(reminder,maxbuffer);
         rend = rstart + buffer - 1;
-        r1 = SeisDataContainer.io.NativeBin.serial.FileReadSequentialBuffer...
+        r1 = SDCpckg.io.NativeBin.serial.FileReadSequentialBuffer...
             (path(a.pathname),dims,[rstart rend],a.header.precision);
-        r2 = SeisDataContainer.io.NativeBin.serial.FileReadSequentialBuffer...
+        r2 = SDCpckg.io.NativeBin.serial.FileReadSequentialBuffer...
             (path(b.pathname),dims,[rstart rend],a.header.precision);
         assert(isequal(r1,r2),'The datacontainers are not equal')
         reminder = reminder - buffer;
@@ -32,7 +32,7 @@ elseif(isa(a,'oCon') || isa(b,'oCon'))
         b = x;
     end
     % Set byte size
-    bytesize  = SeisDataContainer.utils.getByteSize(a.header.precision);
+    bytesize  = SDCpckg.utils.getByteSize(a.header.precision);
     % Set the sizes
     dims      = [1 prod(a.header.size)];
     reminder  = prod(a.header.size);
@@ -44,7 +44,7 @@ elseif(isa(a,'oCon') || isa(b,'oCon'))
     while (reminder > 0)
         buffer = min(reminder,maxbuffer);
         rend = rstart + buffer - 1;
-        r1 = SeisDataContainer.io.NativeBin.serial.FileReadSequentialBuffer...
+        r1 = SDCpckg.io.NativeBin.serial.FileReadSequentialBuffer...
             (path(a.pathname),dims,[rstart rend],a.header.precision);
         r1 = reshape(r1,size(b(rstart:rend)));
         assert(isequal(r1,b(rstart:rend)),'Assertion failed')

@@ -30,7 +30,7 @@ function  SeisDataContainer_init(varargin)
     global SDCdefaultIOdist;
     global SDCdebugFlag;
     MBsize = 1024*1024;
-    doubleSize = SeisDataContainer.utils.getByteSize('double');
+    doubleSize = SDCpckg.utils.getByteSize('double');
 
     % parse varargin
     p = inputParser;
@@ -90,7 +90,7 @@ function  SeisDataContainer_init(varargin)
     end
 
     % set buffer size
-    SDCbufferSize = SeisDataContainer.utils.getByteSize('double')*p.Results.SDCbufferSize;
+    SDCbufferSize = SDCpckg.utils.getByteSize('double')*p.Results.SDCbufferSize;
     fprintf('IO buffer size set to %d MB\n',SDCbufferSize/MBsize);
 
     % set debug flag

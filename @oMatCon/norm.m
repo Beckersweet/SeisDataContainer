@@ -7,6 +7,6 @@ function x = norm(obj,norm)
 %                    'fro', p-norm where p is scalar.
 %
 norms = cell2mat(norm);
-x = SeisDataContainer.io.NativeBin.serial.FileNorm...
+x = SDCpckg.io.NativeBin.serial.FileNorm...
     (path(obj.pathname),size(obj),norms,'double');
 end

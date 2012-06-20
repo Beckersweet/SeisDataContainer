@@ -10,7 +10,7 @@ if(isa(b,'oMatCon'))
     bb = path(b.pathname);
 end
 td = ConDir();
-SeisDataContainer.io.NativeBin.serial.FileTimes...
+SDCpckg.io.NativeBin.serial.FileTimes...
     (aa,bb,path(td));
 y  = oMatCon.load(td);
 end

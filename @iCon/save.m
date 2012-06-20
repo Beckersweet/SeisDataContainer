@@ -16,6 +16,6 @@ header      = obj.header;
 header.size = cell2mat(header.size);    
 status = mkdir(dirname);
 assert(status,'Fatal error while creating directory %s',dirname);
-SeisDataContainer.io.NativeBin.serial.FileWrite(dirname,double(obj));
-SeisDataContainer.io.NativeBin.serial.HeaderWrite(dirname,header);
+SDCpckg.io.NativeBin.serial.FileWrite(dirname,double(obj));
+SDCpckg.io.NativeBin.serial.HeaderWrite(dirname,header);
 end
