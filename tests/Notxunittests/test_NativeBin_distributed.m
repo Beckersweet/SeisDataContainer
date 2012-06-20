@@ -106,7 +106,7 @@ tdo=ConDir();
 tdd=ConDistDirs();
 hdrs=SeisDataContainer.basicHeaderStructFromX(imat3);
 hdrs=SeisDataContainer.addDistHeaderStruct(hdrs,hdrs.dims-1,[]);
-hdrs=SeisDataContainer.io.addDistFileHeaderStruct(hdrs,path(tdd));
+hdrs=SeisDataContainer.addDistFileHeaderStruct(hdrs,path(tdd));
 SeisDataContainer.io.NativeBin.dist.FileAlloc(path(td),hdrs);
 toc
 disp('distributed write slice')
