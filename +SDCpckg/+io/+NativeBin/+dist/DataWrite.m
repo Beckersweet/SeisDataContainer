@@ -37,7 +37,9 @@ spmd
     assert(exist(filecheck)==2,'Fatal error: file %s does not exist',filecheck);
     % write data
     lx = getLocalPart(x);
-    assert(isequal(csize,size(lx)),'distribution.size does not match the size of LocalPart')
+    lxs = size(lx);
+    if length(lxs)<length(csize); lxs(end+1) = 1; end
+    assert(isequal(csize,lxs),'distribution.size does not match the size of LocalPart')
     if distribute
         SDCpckg.io.NativeBin.serial.DataWrite(dirname,filename,lx,file_precision);
     else

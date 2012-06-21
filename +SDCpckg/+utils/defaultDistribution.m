@@ -9,6 +9,7 @@ function part = defaultDistribution(dsize)
 %   Note that this function must be called from without a spmd block.
 %   
 %   See codistributor1d.defaultPartition for more details
+assert(matlabpool('size')>0,'matlabpool not open or called in spmd block');
 
 nlabs = matlabpool('size');
 r     = rem(dsize,nlabs);
