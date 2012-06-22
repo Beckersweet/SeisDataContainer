@@ -1,4 +1,4 @@
-function x = DataRead(distributed,dirnames,filename,dimensions,distribution,file_precision,x_precision)
+function x = DataRead(distributed,dirname,filename,dimensions,localsize,localidx,distdim,partition,file_precision,x_precision)
 %DATAREAD Reads serial data from binary file
 %
 %   X = DataRead(DISTRIBUTED,DIRNAMES,FILENAME,DIMENSIONS,DISTRIBUTION,FILE_PRECISION,X_PRECISION)
@@ -8,43 +8,41 @@ function x = DataRead(distributed,dirnames,filename,dimensions,distribution,file
 %   DIRNAMES     - A string specifying the directory name
 %   FILENAME     - A string specifying the file name
 %   DIMENSIONS   - A vector specifying the dimensions
-%   DISTRIBUTION - A header struct specifying the distribution
+%   LOCALSIZE    - A vector specifying the local size
+%   LOCALINDX    - A vector specifying the local index range
+%   PARTITION    - A vector holding partition
+%   DISTDIM      - A scalar with distribution dimension
 %   *_PRECISION  - An string specifying the precision of one unit of data,
 %                  Supported precisions: 'double', 'single'
 %
-error(nargchk(7, 7, nargin, 'struct'));
+error(nargchk(10, 10, nargin, 'struct'));
 assert(isscalar(distributed),'distributed flag must be a scalar')
+assert(ischar(dirname), 'directory name must be a string')
 assert(ischar(filename), 'file name must be a string')
 assert(isvector(dimensions), 'dimensions must be given as a vector')
-assert(isstruct(distribution), 'distribution must be a headser struct')
+assert(isscalar(distdim), 'distribution dimension must be a scalar')
+assert(isvector(partition), 'distribution partition be a vector')
 assert(ischar(file_precision), 'file_precision name must be a string')
 assert(ischar(x_precision), 'x_precision name must be a string')
-assert(matlabpool('size')>0,'matlabpool must be open')
-if distributed
-    assert(iscell(dirnames), 'directory names must be a cell')
-    dirname = SDCpckg.utils.Cell2Composite(dirnames);
-    csize = SDCpckg.utils.Cell2Composite(distribution.size);
-else
-    assert(ischar(dirnames), 'directory name must be a string')
-    dirname = dirnames;
-    cindx_rng = SDCpckg.utils.Cell2Composite(distribution.indx_rng);
-end
 
-spmd
-    % Check File
-    filecheck=fullfile(dirname,filename);
-    assert(exist(filecheck)==2,'Fatal error: file %s does not exist',filecheck);
-    % read data
-    if distributed
-        lx = SDCpckg.io.NativeBin.serial.DataRead(dirname,filename,csize,file_precision,x_precision);
-    else
-        lx = SDCpckg.io.NativeBin.serial.DataReadLeftChunk(dirname,filename,...
-            dimensions,cindx_rng,[],file_precision,x_precision);
-    end
-    codist = codistributor1d(distribution.dim,distribution.partition,dimensions);
-    % 'noCommunication' below is faster but dangerous
-    x = codistributed.build(lx,codist,'noCommunication');
+% Check File
+filecheck=fullfile(dirname,filename);
+assert(exist(filecheck)==2,'Fatal error: file %s does not exist',filecheck);
+
+% Read data
+if distributed
+    assert(isvector(localsize), 'local sizes must be a vector')
+    lx = SDCpckg.io.NativeBin.serial.DataRead(dirname,filename,localsize,file_precision,x_precision);
+else
+    assert(isvector(localidx), 'local index range must be a vector')
+    lx = SDCpckg.io.NativeBin.serial.DataReadLeftChunk(dirname,filename,...
+        dimensions,localidx,[],file_precision,x_precision);
 end
+codist = codistributor1d(distdim,partition,dimensions);
+% 'noCommunication' below is faster but dangerous
+x = codistributed.build(lx,codist,'noCommunication');
+
+% Check dimensions
 assert(isequal(dimensions,size(x)),'dimensions does not match the size of codistributed x')
 
 end
