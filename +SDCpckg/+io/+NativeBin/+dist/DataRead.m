@@ -10,8 +10,8 @@ function x = DataRead(distributed,dirname,filename,dimensions,localsize,localidx
 %   DIMENSIONS   - A vector specifying the dimensions
 %   LOCALSIZE    - A vector specifying the local size
 %   LOCALINDX    - A vector specifying the local index range
-%   PARTITION    - A vector holding partition
 %   DISTDIM      - A scalar with distribution dimension
+%   PARTITION    - A vector holding partition
 %   *_PRECISION  - An string specifying the precision of one unit of data,
 %                  Supported precisions: 'double', 'single'
 %

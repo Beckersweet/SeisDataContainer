@@ -11,6 +11,7 @@ function [x header] = FileReadLeftSlice(dirname,slice,varargin)
 %                 Supported precisions: 'double', 'single'
 %
 error(nargchk(2, 3, nargin, 'struct'));
+assert(matlabpool('size')>0,'matlabpool must be open')
 assert(ischar(dirname), 'directory name must be a string')
 assert(isdir(dirname),'Fatal error: directory %s does not exist',dirname);
 assert(isvector(slice)|isequal(slice,[]), 'slice index must be a vector')
@@ -36,22 +37,34 @@ else
         'distributed dimension of reading request (%d) does not match (%d) in stored file',distdim,header.distribution.dim)
     assert(isequal(partition,header.distribution.partition),'partitioning of reading request does not match stored file')
 end
+
 % Read file
 if header.distributedIO
-    x=SDCpckg.io.NativeBin.dist.DataReadLeftSlice(1,header.directories,'real',...
-        header.size,header.distribution,slice,header.precision,x_precision);
-    if header.complex
-        dummy=SDCpckg.io.NativeBin.dist.DataReadLeftSlice(1,header.directories,'imag',...
-            header.size,header.distribution,slice,header.precision,x_precision);
-        x=complex(x,dummy);
+    dirnames = SDCpckg.utils.Cell2Composite(header.directories);
+    csize = SDCpckg.utils.Cell2Composite(header.distribution.size);
+    spmd
+        x=SDCpckg.io.NativeBin.dist.DataReadLeftSlice(1,dirnames,'real',...
+            header.size,csize,[],header.distribution.dim,header.distribution.partition,...
+            slice,header.precision,x_precision);
+        if header.complex
+            dummy=SDCpckg.io.NativeBin.dist.DataReadLeftSlice(1,dirnames,'imag',...
+                header.size,csize,[],header.distribution.dim,header.distribution.partition,...
+                slice,header.precision,x_precision);
+            x=complex(x,dummy);
+        end
     end
 else
-    x=SDCpckg.io.NativeBin.dist.DataReadLeftSlice(0,dirname,'real',...
-        header.size,header.distribution,slice,header.precision,x_precision);
-    if header.complex
-        dummy=SDCpckg.io.NativeBin.dist.DataReadLeftSlice(0,dirname,'imag',...
-            header.size,header.distribution,slice,header.precision,x_precision);
-        x=complex(x,dummy);
+    cindx_rng = SDCpckg.utils.Cell2Composite(header.distribution.indx_rng);
+    spmd
+        x=SDCpckg.io.NativeBin.dist.DataReadLeftSlice(0,dirname,'real',...
+            header.size,[],cindx_rng,header.distribution.dim,header.distribution.partition,...
+            slice,header.precision,x_precision);
+        if header.complex
+            dummy=SDCpckg.io.NativeBin.dist.DataReadLeftSlice(0,dirname,'imag',...
+                header.size,[],cindx_rng,header.distribution.dim,header.distribution.partition,...
+                slice,header.precision,x_precision);
+            x=complex(x,dummy);
+        end
     end
 end
  

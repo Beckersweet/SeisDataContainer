@@ -10,7 +10,6 @@ function DataWrite(distribute,dirname,filename,x,localsize,localindx,file_precis
 %   DATA           - Distributed real data
 %   LOCALSIZE      - A vector specifying the local size
 %   LOCALINDX      - A vector specifying the local index range
-%   DISTRIBUTION   - A header struct specifying the distribution
 %   FILE_PRECISION - An string specifying the precision of one unit of data,
 %                    Supported precisions: 'double', 'single'
 %
