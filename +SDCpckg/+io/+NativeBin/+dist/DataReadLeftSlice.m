@@ -30,7 +30,7 @@ assert(ischar(x_precision), 'x_precision name must be a string')
 % Check File
 filecheck=fullfile(dirname,filename);
 assert(exist(filecheck)==2,'Fatal error: file %s does not exist',filecheck);
-% read data
+% Read data
 if distributed
     assert(isvector(localsize), 'local sizes must be a vector')
     lx = SDCpckg.io.NativeBin.serial.DataReadLeftSlice(dirname,filename,...
@@ -40,20 +40,17 @@ else
     lx = SDCpckg.io.NativeBin.serial.DataReadLeftChunk(dirname,filename,...
         dimensions,localidx,slice,file_precision,x_precision);
 end
+lxs = size(lx);
+gcsize = dimensions(1:distdim);
 if distdim==1
-    codist = codistributor1d(distdim,partition,[dimensions(1:distdim) 1]);
-else
-    codist = codistributor1d(distdim,partition,dimensions(1:distdim));
+    gcsize(end+1)=1;
+    lx = reshape(lx,[lxs(1) 1]);
 end
+codist = codistributor1d(distdim,partition,gcsize);
 % 'noCommunication' below is faster but dangerous
 x = codistributed.build(lx,codist,'noCommunication');
 
-if distdim==1
-    assert(isequal([dimensions(1:distdim) 1],size(x)),...
+assert(isequal(gcsize,size(x)),...
         'dimensions does not match the size of codistributed x')
-else
-    assert(isequal(dimensions(1:distdim),size(x)),...
-        'dimensions does not match the size of codistributed x')
-end
 
 end

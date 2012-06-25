@@ -20,7 +20,11 @@ function header = addDistHeaderStruct(headerin,dimension,partition)
         csize = header.size;
         csize(dimension) = partition(labindex);
         cindecies = codist.globalIndices(dimension);
-        cindecies = [cindecies(1) cindecies(end)];
+        if isempty(cindecies)
+            cindecies = [0 0];
+        else
+            cindecies = [cindecies(1) cindecies(end)];
+        end
     end
 
     header.distribution.dim = dimension;

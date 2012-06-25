@@ -35,8 +35,8 @@ assert(exist(filecheck)==2,'Fatal error: file %s does not exist',filecheck);
 lx = getLocalPart(x);
 lxs = size(lx);
 lcsize = localsize(1:distdim);
-if length(lxs)<length(lcsize); lxs(end+1) = 1; end
-if length(lxs)>length(lcsize); lcsize(end+1) = 1; end
+if length(lxs)<length(lcsize); lxs(end+1) = lcsize(end); end
+if length(lxs)>length(lcsize); lcsize(end+1) = lxs(end); end
 assert(isequal(lcsize,lxs),...
     'distribution.size does not match the size of LocalPart')
 if distribute

@@ -19,7 +19,11 @@ function header = addDistHeaderStructFromX(headerin,x)
         csize = header.size;
         csize(cdim) = cpart(labindex);
         cindecies = codist.globalIndices(cdim);
-        cindecies = [cindecies(1) cindecies(end)];
+        if isempty(cindecies)
+            cindecies = [0 0];
+        else
+            cindecies = [cindecies(1) cindecies(end)];
+        end
     end
 
     ddim = cdim{1};
