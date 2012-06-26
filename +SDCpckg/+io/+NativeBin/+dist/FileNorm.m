@@ -36,6 +36,7 @@ if(norm == inf)
         dims      = [1 prod(hdrin.distribution.size{labindex})];
         reminder  = prod(hdrin.distribution.size{labindex});
         rstart    = 1;
+        total     = -inf;
         while (reminder > 0)
             buffer = min(reminder,maxbuffer);
             rend = rstart + buffer - 1;
@@ -48,7 +49,9 @@ if(norm == inf)
                     dims,[rstart rend],[],file_precision,file_precision);
                 lx = complex(lx,dummy);
             end
-            total    = max(abs(lx));
+            if isempty(lx); lx = [total]; end
+            rtotal   = max(abs(lx));
+            total    = max(total,rtotal);
             reminder = reminder - buffer;
             rstart   = rend + 1;
         end
@@ -64,6 +67,7 @@ elseif(norm == -inf)
         dims      = [1 prod(hdrin.distribution.size{labindex})];
         reminder  = prod(hdrin.distribution.size{labindex});
         rstart    = 1;
+        total     = inf;
         while (reminder > 0)
             buffer = min(reminder,maxbuffer);
             rend = rstart + buffer - 1;
@@ -76,7 +80,9 @@ elseif(norm == -inf)
                     dims,[rstart rend],[],file_precision,file_precision);
                 lx = complex(lx,dummy);
             end
-            total    = min(abs(lx));
+            if isempty(lx); lx = [total]; end
+            rtotal   = min(abs(lx));
+            total    = min(total,rtotal);
             reminder = reminder - buffer;
             rstart   = rend + 1;
         end
@@ -93,7 +99,8 @@ elseif (isscalar(norm))
     spmd
         dims      = [1 prod(hdrin.distribution.size{labindex})];
         reminder  = prod(hdrin.distribution.size{labindex});
-        rstart = 1;
+        rstart    = 1;
+        total     = 0;
         while (reminder > 0)
             buffer = min(reminder,maxbuffer);
             rend = rstart + buffer - 1;
