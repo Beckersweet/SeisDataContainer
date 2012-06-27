@@ -1,4 +1,4 @@
-function y = getFile(obj,x)
+function y = getFile(obj,s)
 %GETDATA is called whenever we try to access data via subreferencing
 %
 %   getFile(x,s)
@@ -7,12 +7,10 @@ function y = getFile(obj,x)
 %   s - Subreferences cell
 %
 
-import SeisDataContainer.io.NativeBin.serial.*
-
 if (length(s) == 1 && isnumeric(cell2mat(s(1))))
     error('Error: Single element indexing is not allowed in oMatCon')
 elseif (length(s) == 1 && cell2mat(s(1)) == ':')
-    y = vec(x);
+    y = vec(obj);
 else
     i = 0;
     while(cell2mat(s(i+1)) == ':')

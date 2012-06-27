@@ -5,6 +5,6 @@ function y = vertcat(varargin)
 %
 %   See also iCon.horzcat
 
-varargin = cellfun(@(x) SeisDataContainer.serial.stripicon(x),...
+varargin = cellfun(@(x) SDCpckg.serial.stripicon(x),...
            varargin,'UniformOutput',false');
 y = dataCon(vertcat(varargin{:}));

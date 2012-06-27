@@ -4,8 +4,8 @@ function FileTranspose(dirnameIn,dirnameOut,sepDim)
 %   FileTranspose(DIRNAMEIN,DIRNAMEOUT,SEPDIM)
 %   allocates binary file for serial data writing.
 %
-%   dirIn  - A string specifying the input directory
-%   dirOut - A string specifying the output directory
+%   dirnameIn  - A string specifying the input directory
+%   dirnameOut - A string specifying the output directory
 %   SEPDIM - A scalar specifying the separation dimension
 %
 %   Warning: If the specified output file already exists, it will be 
@@ -14,16 +14,16 @@ function FileTranspose(dirnameIn,dirnameOut,sepDim)
 SDCpckg.io.isFileClean(dirnameIn);
 SDCpckg.io.isFileClean(dirnameOut);
 error(nargchk(3, 3, nargin, 'struct'));
-assert(ischar(dirIn), 'input directory name must be a string')
-assert(isdir(dirIn),'Fatal error: input directory %s does not exist',dirIn);
-assert(ischar(dirOut), 'output directory name must be a string')
+assert(ischar(dirnameIn), 'input directory name must be a string')
+assert(isdir(dirnameIn),'Fatal error: input directory %s does not exist',dirnameIn);
+assert(ischar(dirnameOut), 'output directory name must be a string')
 assert(isscalar(sepDim), 'dimensions must be given as a vector')
 
 % Read header
 headerIn = SDCpckg.io.NativeBin.serial.HeaderRead(dirnameIn);
 
 % Making the transpose vector
-dim2D    = [prod(headIn.size(1:sepDim)) prod(headIn.size(sepDim+1:end))];
+dim2D    = [prod(headerIn.size(1:sepDim)) prod(headerIn.size(sepDim+1:end))];
 
 % Setting up the output header
 headerOut = headerIn;
