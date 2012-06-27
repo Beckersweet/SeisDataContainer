@@ -31,13 +31,13 @@ fidr = fopen(in,'r');
 fidw = fopen(out,'w');
 
 % Transpose
+skip = (dimensions(1)-1)*bytesize;
 for i=1:dimensions(1)
+    start = (i-1)*bytesize;
     % Setting the pointer to the start of each row
-    fseek(fidr, (i-1)*bytesize, 'bof');
-    for j=1:dimensions(2)
-        % Read one row
-        r(j) = fread(fidr, 1, file_precision, (dimensions(1)-1)*bytesize);
-    end
+    fseek(fidr, start, 'bof');
+    % Read one row
+    r = fread(fidr, dimensions(2), file_precision, skip);
     % Write the row to output file
     fwrite(fidw, r, file_precision);
     clear r;

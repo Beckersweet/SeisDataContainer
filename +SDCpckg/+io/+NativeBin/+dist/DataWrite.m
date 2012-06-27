@@ -1,4 +1,4 @@
-function DataWrite(distribute,dirnames,filename,x,distribution,file_precision)
+function DataWrite(distribute,dirname,filename,x,localsize,localindx,file_precision)
 %DATAWRITE Writes serial data to binary file
 %
 %   DataWrite(DISTRIBUTE,DIRNAMES,FILENAME,DATA,DISTRIBUTION,FILE_PRECISION) writes
@@ -8,46 +8,38 @@ function DataWrite(distribute,dirnames,filename,x,distribution,file_precision)
 %   DIRNAMES       - A string specifying the directory name
 %   FILENAME       - A string specifying the file name
 %   DATA           - Distributed real data
-%   DISTRIBUTION   - A header struct specifying the distribution
+%   LOCALSIZE      - A vector specifying the local size
+%   LOCALINDX      - A vector specifying the local index range
 %   FILE_PRECISION - An string specifying the precision of one unit of data,
 %                    Supported precisions: 'double', 'single'
 %
 %   Warning: The specified file must exist.
-error(nargchk(6, 6, nargin, 'struct'));
+error(nargchk(7, 7, nargin, 'struct'));
 assert(isscalar(distribute),'distribute flag must be a scalar')
+assert(ischar(dirname), 'directory names must be a string')
 assert(ischar(filename), 'file name must be a string')
 assert(isreal(x), 'data must be real')
-assert(isdistributed(x), 'data must be distributed')
-assert(isstruct(distribution), 'distribution must be a headser struct')
+assert(iscodistributed(x), 'data must be distributed')
+assert(isvector(localsize),'localsize must be a vector')
 assert(ischar(file_precision), 'file_precision name must be a string')
-assert(matlabpool('size')>0,'matlabpool must be open')
-if distribute
-    assert(iscell(dirnames), 'directory names must be a cell')
-    dirname = SDCpckg.utils.Cell2Composite(dirnames);
-else
-    assert(ischar(dirnames), 'directory name must be a string')
-    dirname = dirnames;
-    cindx_rng = SDCpckg.utils.Cell2Composite(distribution.indx_rng);
-end
-csize = SDCpckg.utils.Cell2Composite(distribution.size);
 
-spmd
-    % Check File
-    filecheck=fullfile(dirname,filename);
-    assert(exist(filecheck)==2,'Fatal error: file %s does not exist',filecheck);
-    % write data
-    lx = getLocalPart(x);
-    lxs = size(lx);
-    if length(lxs)<length(csize); lxs(end+1) = 1; end
-    assert(isequal(csize,lxs),'distribution.size does not match the size of LocalPart')
-    if distribute
-        SDCpckg.io.NativeBin.serial.DataWrite(dirname,filename,lx,file_precision);
-    else
-        SDCpckg.io.acquireIOlock(dirname);
-        SDCpckg.io.NativeBin.serial.DataWriteLeftChunk(dirname,filename,lx,...
-            size(x),cindx_rng,[],file_precision);
-        SDCpckg.io.releaseIOlock(dirname);
-    end
+% Check File
+filecheck=fullfile(dirname,filename);
+assert(exist(filecheck)==2,'Fatal error: file %s does not exist',filecheck);
+
+% Write data
+lx = getLocalPart(x);
+lxs = size(lx);
+if length(lxs)<length(localsize); lxs(end+1) = 1; end
+assert(isequal(localsize,lxs),'distribution.size does not match the size of LocalPart')
+if distribute
+    SDCpckg.io.NativeBin.serial.DataWrite(dirname,filename,lx,file_precision);
+else
+    assert(isvector(localindx),'localindx must be a vector')
+    SDCpckg.io.acquireIOlock(dirname);
+    SDCpckg.io.NativeBin.serial.DataWriteLeftChunk(dirname,filename,lx,...
+        size(x),localindx,[],file_precision);
+    SDCpckg.io.releaseIOlock(dirname);
 end
 
 end

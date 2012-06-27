@@ -4,9 +4,9 @@ end
 
 function test_getSliceIndex
 %%
-    I=randi(43);
-    J=randi(45);
-    K=randi(47);
+    I=randi(13);
+    J=randi(15);
+    K=randi(17);
 
     S=0;
     for k=1:K

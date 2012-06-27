@@ -20,6 +20,7 @@ function FileWrite(dirname,x,distribute,varargin)
 %            it will be overwritten.
 %
 error(nargchk(3, 5, nargin, 'struct'));
+assert(matlabpool('size')>0,'matlabpool must be open')
 assert(ischar(dirname), 'directory name must be a string')
 assert(isdistributed(x), 'data must not be distributed')
 assert(isscalar(distribute),'distribute flag must be a scalar')
@@ -60,19 +61,27 @@ else
 end
 
 % Write file
+csize = SDCpckg.utils.Cell2Composite(header.distribution.size);
+
 if distribute
-    SDCpckg.io.NativeBin.dist.DataWrite(1,header.directories,'real',...
-        real(x),header.distribution,f_precision);
-    if ~isreal(x)
-        SDCpckg.io.NativeBin.dist.DataWrite(1,header.directories,'imag',...
-            imag(x),header.distribution,f_precision);
+    dirnames = SDCpckg.utils.Cell2Composite(header.directories);
+    spmd
+        SDCpckg.io.NativeBin.dist.DataWrite(1,dirnames,'real',...
+            real(x),csize,[],f_precision);
+        if ~isreal(x)
+            SDCpckg.io.NativeBin.dist.DataWrite(1,dirnames,'imag',...
+                imag(x),csize,[],f_precision);
+        end
     end
 else
-    SDCpckg.io.NativeBin.dist.DataWrite(0,dirname,'real',...
-        real(x),header.distribution,f_precision);
-    if ~isreal(x)
-        SDCpckg.io.NativeBin.dist.DataWrite(0,dirname,'imag',...
-            imag(x),header.distribution,f_precision);
+    cindx_rng = SDCpckg.utils.Cell2Composite(header.distribution.indx_rng);
+    spmd
+        SDCpckg.io.NativeBin.dist.DataWrite(0,dirname,'real',...
+            real(x),csize,cindx_rng,f_precision);
+        if ~isreal(x)
+            SDCpckg.io.NativeBin.dist.DataWrite(0,dirname,'imag',...
+                imag(x),csize,cindx_rng,f_precision);
+        end
     end
 end
 
