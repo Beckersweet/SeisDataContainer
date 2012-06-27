@@ -37,7 +37,7 @@ elseif ~isa(A,'iCon')
     
     % Extract collapsed dimensions & permutation
     y.header.size(2) = B.header.size(B.exsize(1,2):B.exsize(2,2));
-    y.exsize(:,2)    = B.exsize(:,2) - B.exsize(1,2) + 2;
+    y.exsize(:,2)    = B.exsize(:,2) - B.exsize(2,1) + 1;
     
     % Check for spot ms and ns
     if isa(A,'opSpot')
@@ -51,7 +51,7 @@ elseif ~isa(B,'iCon')
     
     % Extract collapsed dimensions & permutation
     y.header.size(1) = A.header.size(A.exsize(1,2):A.exsize(2,2));
-    y.exsize(:,1)    = A.exsize(:,2);
+    y.exsize(:,1)    = A.exsize(:,2) - A.exsize(2,1);
     
     % Check for spot ms and ns
     if isa(A,'opSpot')
@@ -66,6 +66,6 @@ else % Both data containers
     % Extract collapsed dimensions
     y.header.size(2) = B.header.size(B.exsize(1,2):B.exsize(2,2));
     y.header.size(1) = A.header.size(A.exsize(1,2):A.exsize(2,2));
-    y.exsize(:,1)    = A.exsize(:,2);
-    y.exsize(:,2)    = B.exsize(:,2) - B.exsize(1,2) + A.exsize(2,1);
+    y.exsize(:,1)    = A.exsize(:,2) - A.exsize(2,1);
+    y.exsize(:,2)    = B.exsize(:,2) - B.exsize(2,1) + A.exsize(2,1);
 end

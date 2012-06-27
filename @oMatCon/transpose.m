@@ -6,8 +6,6 @@ function y = transpose(x,sepDim)
 %   X - The input dataContainer
 %
 
-import SeisDataContainer.io.NativeBin.serial.*
-
 % Assert x is 2D
 assert(size(x.exsize,2) == 2, 'Can only transpose 2D array');
 
@@ -21,9 +19,6 @@ SDCpckg.io.NativeBin.serial.FileTranspose...
 y  = oMatCon.load(td);
 
 % In-core continuation of class properties
-y.strict      = x.strict;
-y.perm        = fliplr(x.perm);
-y.exsize      = fliplr(x.exsize);
-indshift      = y.exsize(1);
-y.exsize(:,1) = y.exsize(:,1) - indshift + 1;
-y.exsize(:,2) = y.exsize(:,2) + y.exsize(end,1);
+y.strict = x.strict;
+y.perm   = fliplr(x.perm);
+y.exsize = [x.exsize(:,2) - x.exsize(2,1),x.exsize(:,1) + y.exsize(2,1)];

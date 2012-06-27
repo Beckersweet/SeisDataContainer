@@ -1,4 +1,4 @@
-function result = ctranspose(x)
+function y = ctranspose(x)
 %'  Complex conjugate tranpose.
 %
 %   x' is the complex conjugate transpose of x.
@@ -17,9 +17,9 @@ y.exsize(:,1) = y.exsize(:,1) - indshift + 1;
 y.exsize(:,2) = y.exsize(:,2) + y.exsize(end,1);
 
 if x.imcoddims == 1
-    result.imcoddims = 2;
-    result.imcodpart = SDCpckg.utils.defaultDistribution(size(result,2));
+    y.imcoddims = 2;
+    y.imcodpart = SDCpckg.utils.defaultDistribution(size(y,2));
 else
-    result.imcoddims = 1;    
-    result.imcodpart = SDCpckg.utils.defaultDistribution(size(result,1));
+    y.imcoddims = 1;    
+    y.imcodpart = SDCpckg.utils.defaultDistribution(size(y,1));
 end
