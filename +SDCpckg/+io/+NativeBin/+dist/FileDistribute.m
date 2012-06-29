@@ -24,26 +24,35 @@ assert(distdim<=hdrin.dims,'distributin dimension bigger than input diemsions')
 
 % Update headers
 partition = SDCpckg.utils.defaultDistribution(hdrin.size(distdim));
-hdrin = SDCpckg.addDistHeaderStruct(hdrin,distdim,partition);
-hdrout = SDCpckg.addDistFileHeaderStruct(hdrin,dirsout);
+hdrout = SDCpckg.addDistHeaderStruct(hdrin,distdim,partition);
+hdrout = SDCpckg.addDistFileHeaderStruct(hdrout,dirsout);
 sldims = hdrin.size(distdim+1:end);
 
 % Allocate file
 SDCpckg.io.NativeBin.dist.FileAlloc(dirout,hdrout);
 
 % Copy file
+dirnames = SDCpckg.utils.Cell2Composite(hdrout.directories);
+csize_out = SDCpckg.utils.Cell2Composite(hdrout.distribution.size);
+cindx_rng_out = SDCpckg.utils.Cell2Composite(hdrout.distribution.indx_rng);
+spmd
 for s=1:prod(sldims)
     slice = SDCpckg.utils.getSliceIndexS2V(sldims,s);
     x=SDCpckg.io.NativeBin.dist.DataReadLeftSlice(0,dirin,'real',...
-        hdrin.size,hdrin.distribution,slice,hdrin.precision,hdrin.precision);
-    SDCpckg.io.NativeBin.dist.DataWriteLeftSlice(1,hdrout.directories,'real',x,...
-        hdrout.size,hdrout.distribution,slice,hdrout.precision);
-    if hdrin.complex
+        hdrout.size,[],cindx_rng_out,hdrout.distribution.dim,hdrout.distribution.partition,...
+        slice,hdrout.precision,hdrout.precision);
+    SDCpckg.io.NativeBin.dist.DataWriteLeftSlice(1,dirnames,'real',x,...
+        hdrout.size,csize_out,[],hdrout.distribution.dim,...
+        slice,hdrout.precision);
+    if hdrout.complex
         x=SDCpckg.io.NativeBin.dist.DataReadLeftSlice(0,dirin,'imag',...
-            hdrin.size,hdrin.distribution,slice,hdrin.precision,hdrin.precision);
-        SDCpckg.io.NativeBin.dist.DataWriteLeftSlice(1,hdrout.directories,'imag',x,...
-            hdrout.size,hdrout.distribution,slice,hdrout.precision);
+            hdrout.size,[],cindx_rng_out,hdrout.distribution.dim,hdrout.distribution.partition,...
+            slice,hdrout.precision,hdrout.precision);
+        SDCpckg.io.NativeBin.dist.DataWriteLeftSlice(1,dirnames,'imag',x,...
+            hdrout.size,csize_out,[],hdrout.distribution.dim,...
+            slice,hdrout.precision);
     end
+end
 end
 
 end

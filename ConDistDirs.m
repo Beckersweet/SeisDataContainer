@@ -70,9 +70,10 @@ classdef (Sealed=true) ConDistDirs < handle
     methods ( Access = private )
         function delete(td)
         if ~td.Keep
-            assert(isdir(td.Home),'Fatal error: home directory %s is missing',td.Home);
+            tdHome = td.Home;
             tdPaths = SDCpckg.utils.Cell2Composite(td.Paths);
             spmd
+                assert(isdir(tdHome),'Fatal error: home directory %s is missing',tdHome);
                 assert(isdir(tdPaths),'Fatal error: directory %s is missing',tdPaths);
             end
             SDCpckg.io.deleteDistDir(td.Paths)

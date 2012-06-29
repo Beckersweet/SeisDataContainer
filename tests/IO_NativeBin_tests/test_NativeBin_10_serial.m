@@ -1,13 +1,5 @@
-function test_suite = test_NativeBin_serial
+function test_suite = test_NativeBin_10_serial
 initTestSuite;
-end
-
-function test_serial_basicHeaderStruct
-%%
-    imat=rand(13,11,9);
-    hdrx=SDCpckg.basicHeaderStructFromX(imat);
-    hdrb=SDCpckg.basicHeaderStruct(hdrx.size,hdrx.precision,hdrx.complex);
-    assert(isequal(hdrx,hdrb))
 end
 
 function test_serial_file_single_complex

@@ -12,6 +12,7 @@ function [x header] = FileRead(dirname,varargin)
 %                 Supported precisions: 'double', 'single'
 %
 error(nargchk(1, 2, nargin, 'struct'));
+assert(matlabpool('size')>0,'matlabpool must be open')
 assert(ischar(dirname), 'directory name must be a string')
 assert(isdir(dirname),'Fatal error: directory %s does not exist',dirname);
 
@@ -26,24 +27,36 @@ end;
 
 % Read header
 header = SDCpckg.io.NativeBin.serial.HeaderRead(dirname);
+
 % Read file
 if header.distributedIO
-    x=SDCpckg.io.NativeBin.dist.DataRead(1,header.directories,'real',...
-        header.size,header.distribution,header.precision,x_precision);
-    if header.complex
-        dummy=SDCpckg.io.NativeBin.dist.DataRead(1,header.directories,'imag',...
-            header.size,header.distribution,header.precision,x_precision);
-        x=complex(x,dummy);
+    csize = SDCpckg.utils.Cell2Composite(header.distribution.size);
+    cdirnames = SDCpckg.utils.Cell2Composite(header.directories);
+    spmd
+        x=SDCpckg.io.NativeBin.dist.DataRead(1,cdirnames,'real',...
+            header.size,csize,[],header.distribution.dim,header.distribution.partition,...
+            header.precision,x_precision);
+        if header.complex
+            dummy=SDCpckg.io.NativeBin.dist.DataRead(1,cdirnames,'imag',...
+                header.size,csize,[],header.distribution.dim,header.distribution.partition,...
+                header.precision,x_precision);
+            x=complex(x,dummy);
+        end
     end
 else
     header = SDCpckg.addDistHeaderStruct(header,...
         header.dims,SDCpckg.utils.defaultDistribution(header.size(end)));
-    x=SDCpckg.io.NativeBin.dist.DataRead(0,dirname,'real',...
-        header.size,header.distribution,header.precision,x_precision);
-    if header.complex
-        dummy=SDCpckg.io.NativeBin.dist.DataRead(0,dirname,'imag',...
-            header.size,header.distribution,header.precision,x_precision);
-        x=complex(x,dummy);
+    cindx_rng = SDCpckg.utils.Cell2Composite(header.distribution.indx_rng);
+    spmd
+        x=SDCpckg.io.NativeBin.dist.DataRead(0,dirname,'real',...
+            header.size,[],cindx_rng,header.distribution.dim,header.distribution.partition,...
+            header.precision,x_precision);
+        if header.complex
+            dummy=SDCpckg.io.NativeBin.dist.DataRead(0,dirname,'imag',...
+                header.size,[],cindx_rng,header.distribution.dim,header.distribution.partition,...
+                header.precision,x_precision);
+            x=complex(x,dummy);
+        end
     end
 end
  

@@ -26,18 +26,27 @@ sldims = hdrin.size(hdrin.distribution.dim+1:end);
 SDCpckg.io.NativeBin.serial.FileAlloc(dirout,hdrout);
 
 % Copy file
+dirnames = SDCpckg.utils.Cell2Composite(hdrin.directories);
+csize_in = SDCpckg.utils.Cell2Composite(hdrin.distribution.size);
+cindx_rng_in = SDCpckg.utils.Cell2Composite(hdrin.distribution.indx_rng);
+spmd
 for s=1:prod(sldims)
     slice = SDCpckg.utils.getSliceIndexS2V(sldims,s);
-    x=SDCpckg.io.NativeBin.dist.DataReadLeftSlice(1,hdrin.directories,'real',...
-        hdrin.size,hdrin.distribution,slice,hdrin.precision,hdrin.precision);
+    x=SDCpckg.io.NativeBin.dist.DataReadLeftSlice(1,dirnames,'real',...
+        hdrin.size,csize_in,[],hdrin.distribution.dim,hdrin.distribution.partition,...
+        slice,hdrin.precision,hdrin.precision);
     SDCpckg.io.NativeBin.dist.DataWriteLeftSlice(0,dirout,'real',x,...
-        hdrin.size,hdrin.distribution,slice,hdrin.precision);
+        hdrin.size,csize_in,cindx_rng_in,hdrin.distribution.dim,...
+        slice,hdrin.precision);
     if hdrin.complex
-        x=SDCpckg.io.NativeBin.dist.DataReadLeftSlice(1,hdrin.directories,'imag',...
-            hdrin.size,hdrin.distribution,slice,hdrin.precision,hdrin.precision);
+        x=SDCpckg.io.NativeBin.dist.DataReadLeftSlice(1,dirnames,'imag',...
+            hdrin.size,csize_in,[],hdrin.distribution.dim,hdrin.distribution.partition,...
+            slice,hdrin.precision,hdrin.precision);
         SDCpckg.io.NativeBin.dist.DataWriteLeftSlice(0,dirout,'imag',x,...
-            hdrin.size,hdrin.distribution,slice,hdrin.precision);
+            hdrin.size,csize_in,cindx_rng_in,hdrin.distribution.dim,...
+            slice,hdrin.precision);
     end
+end
 end
 
 end
