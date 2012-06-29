@@ -1,24 +1,5 @@
-function test_suite = test_NativeBin_distributed
+function test_suite = test_NativeBin_20_distributed
 initTestSuite;
-end
-
-function test_distributed_basicHeaderStruct_real
-%%
-    imat = distributed.rand(2,2,4);
-    hdrb = SDCpckg.basicHeaderStructFromX(imat);
-    hdrx = SDCpckg.addDistHeaderStructFromX(hdrb,imat);
-    hdrd = SDCpckg.addDistHeaderStruct(hdrb,hdrx.distribution.dim,hdrx.distribution.partition);
-    assert(isequal(hdrx,hdrd),'distributions do not match')
-end
-
-function test_distributed_basicHeaderStruct_complex
-%%
-    imat = distributed.rand(2,2,4);
-    imat = complex(imat,imat);
-    hdrb = SDCpckg.basicHeaderStructFromX(imat);
-    hdrx = SDCpckg.addDistHeaderStructFromX(hdrb,imat);
-    hdrd = SDCpckg.addDistHeaderStruct(hdrb,hdrx.distribution.dim,hdrx.distribution.partition);
-    assert(isequal(hdrx,hdrd),'distributions do not match')
 end
 
 function test_distributed_fileReadWrite_noDistribute_double_real
@@ -305,220 +286,102 @@ end
 
 function test_distributed_FileTranspose_double_real
 %%
-    display('  Warning: SDCpckg.io.NativeBin.dist.FileTranspose is not fully implemented')
-    n1      = 3;
-    n2      = 4;
-    n3      = 5;
-    n4      = 8;
+    nn = [3 4 3 4];
+    for t = 2:4
+        tt = round(t/2);
+        imat = randn(nn(1:t));
+        td       = ConDir();
+        tin      = ConDir();
+        tDistIn  = ConDistDirs();
+        tout     = ConDir();
+        tDistOut = ConDistDirs();    
+        tg       = ConDir();
+        SDCpckg.io.NativeBin.serial.FileWrite(path(td),imat);
+        SDCpckg.io.NativeBin.dist.FileDistribute(path(td),path(tin),path(tDistIn),tt);
+        SDCpckg.io.NativeBin.dist.FileTranspose(path(tin),path(tout),path(tDistOut));
+        SDCpckg.io.NativeBin.dist.FileGather(path(tout),path(tg));
+        x    = SDCpckg.io.NativeBin.serial.FileRead(path(tg));
+        imat = reshape(imat,[prod(nn(1:tt)) prod(nn(tt+1:t))]);
+        imat = transpose(imat);
+        imat = reshape(imat,[nn(tt+1:t) nn(1:tt)]);
+        assertEqual(x,imat);
+    end
     
-    tin      = ConDir();
-    tDistIn  = ConDistDirs();
-    tout     = ConDir();
-    tDistOut = ConDistDirs();    
-    % 2D transpose
-    imat = distributed.rand(n1,n2);
-    SDCpckg.io.NativeBin.dist.FileWrite(path(tin),imat,1,path(tDistIn));
-    SDCpckg.io.NativeBin.dist.FileTranspose(path(tin),path(tout),path(tDistOut),1);
-    x    = SDCpckg.io.NativeBin.dist.FileRead(path(tout));
-    assertEqual(x,transpose(imat));
-    
-    tin      = ConDir();
-    tDistIn  = ConDistDirs();
-    tout     = ConDir();
-    tDistOut = ConDistDirs();
-    % 3D transpose with sepDim == 1
-    imat = distributed.rand(n1,n2,n3);
-    SDCpckg.io.NativeBin.dist.FileWrite(path(tin),imat,1,path(tDistIn));
-    SDCpckg.io.NativeBin.dist.FileTranspose(path(tin),path(tout),path(tDistOut),1);
-    x    = SDCpckg.io.NativeBin.dist.FileRead(path(tout));
-    assertEqual(x,reshape(transpose(reshape(imat,n1,n2*n3)),n2,n3,n1));
-    
-    tin      = ConDir();
-    tDistIn  = ConDistDirs();
-    tout     = ConDir();
-    tDistOut = ConDistDirs();
-    % 3D transpose with sepDim == 2
-    imat = distributed.rand(n1,n2,n3);
-    SDCpckg.io.NativeBin.dist.FileWrite(path(tin),imat,1,path(tDistIn));
-    SDCpckg.io.NativeBin.dist.FileTranspose(path(tin),path(tout),path(tDistOut),2);
-    x    = SDCpckg.io.NativeBin.dist.FileRead(path(tout));
-    assertEqual(x,reshape(transpose(reshape(imat,n1*n2,n3)),n3,n1,n2));
-    
-    tin      = ConDir();
-    tDistIn  = ConDistDirs();
-    tout     = ConDir();
-    tDistOut = ConDistDirs();
-    % 4D transpose with sepDim == 3
-    imat = distributed.rand(n1,n2,n3,n4);
-    SDCpckg.io.NativeBin.dist.FileWrite(path(tin),imat,1,path(tDistIn));
-    SDCpckg.io.NativeBin.dist.FileTranspose(path(tin),path(tout),path(tDistOut),3);
-    x    = SDCpckg.io.NativeBin.dist.FileRead(path(tout));
-    assertEqual(x,reshape(transpose(reshape(imat,n1*n2*n3,n4)),n4,n1,n2,n3));
 end
 
 function test_distributed_FileTranspose_double_complex
 %%
-    display('  Warning: SDCpckg.io.NativeBin.dist.FileTranspose is not fully implemented')
-    n1      = 3;
-    n2      = 4;
-    n3      = 5;
-    n4      = 8;
+    nn = [3 4 3 4];
+    for t = 2:4
+        tt = round(t/2);
+        imat = randn(nn(1:t));
+        imat = complex(imat,imat);
+        td       = ConDir();
+        tin      = ConDir();
+        tDistIn  = ConDistDirs();
+        tout     = ConDir();
+        tDistOut = ConDistDirs();    
+        tg       = ConDir();
+        SDCpckg.io.NativeBin.serial.FileWrite(path(td),imat);
+        SDCpckg.io.NativeBin.dist.FileDistribute(path(td),path(tin),path(tDistIn),tt);
+        SDCpckg.io.NativeBin.dist.FileTranspose(path(tin),path(tout),path(tDistOut));
+        SDCpckg.io.NativeBin.dist.FileGather(path(tout),path(tg));
+        x    = SDCpckg.io.NativeBin.serial.FileRead(path(tg));
+        imat = reshape(imat,[prod(nn(1:tt)) prod(nn(tt+1:t))]);
+        imat = transpose(imat);
+        imat = reshape(imat,[nn(tt+1:t) nn(1:tt)]);
+        assertEqual(x,imat);
+    end
     
-    tin      = ConDir();
-    tDistIn  = ConDistDirs();
-    tout     = ConDir();
-    tDistOut = ConDistDirs();    
-    % 2D transpose
-    imat = distributed.rand(n1,n2);
-    imat = complex(imat,imat);
-    SDCpckg.io.NativeBin.dist.FileWrite(path(tin),imat,1,path(tDistIn));
-    SDCpckg.io.NativeBin.dist.FileTranspose(path(tin),path(tout),path(tDistOut),1);
-    x    = SDCpckg.io.NativeBin.dist.FileRead(path(tout));
-    assertEqual(x,transpose(imat));
-    
-    tin      = ConDir();
-    tDistIn  = ConDistDirs();
-    tout     = ConDir();
-    tDistOut = ConDistDirs();
-    % 3D transpose with sepDim == 1
-    imat = distributed.rand(n1,n2,n3);
-    imat = complex(imat,imat);
-    SDCpckg.io.NativeBin.dist.FileWrite(path(tin),imat,1,path(tDistIn));
-    SDCpckg.io.NativeBin.dist.FileTranspose(path(tin),path(tout),path(tDistOut),1);
-    x    = SDCpckg.io.NativeBin.dist.FileRead(path(tout));
-    assertEqual(x,reshape(transpose(reshape(imat,n1,n2*n3)),n2,n3,n1));
-    
-    tin      = ConDir();
-    tDistIn  = ConDistDirs();
-    tout     = ConDir();
-    tDistOut = ConDistDirs();
-    % 3D transpose with sepDim == 2
-    imat = distributed.rand(n1,n2,n3);
-    imat = complex(imat,imat);
-    SDCpckg.io.NativeBin.dist.FileWrite(path(tin),imat,1,path(tDistIn));
-    SDCpckg.io.NativeBin.dist.FileTranspose(path(tin),path(tout),path(tDistOut),2);
-    x    = SDCpckg.io.NativeBin.dist.FileRead(path(tout));
-    assertEqual(x,reshape(transpose(reshape(imat,n1*n2,n3)),n3,n1,n2));
-    
-    tin      = ConDir();
-    tDistIn  = ConDistDirs();
-    tout     = ConDir();
-    tDistOut = ConDistDirs();
-    % 4D transpose with sepDim == 3
-    imat = distributed.rand(n1,n2,n3,n4);
-    imat = complex(imat,imat);
-    SDCpckg.io.NativeBin.dist.FileWrite(path(tin),imat,1,path(tDistIn));
-    SDCpckg.io.NativeBin.dist.FileTranspose(path(tin),path(tout),path(tDistOut),3);
-    x    = SDCpckg.io.NativeBin.dist.FileRead(path(tout));
-    assertEqual(x,reshape(transpose(reshape(imat,n1*n2*n3,n4)),n4,n1,n2,n3));
 end
 
 function test_distributed_FileTranspose_single_real
 %%
-    display('  Warning: SDCpckg.io.NativeBin.dist.FileTranspose is not fully implemented')
-    n1   = 3;
-    n2   = 4;
-    n3   = 5;
-    n4   = 8;
+    nn = [3 4 3 4];
+    for t = 2:4
+        tt = round(t/2);
+        imat = randn(nn(1:t));
+        td       = ConDir();
+        tin      = ConDir();
+        tDistIn  = ConDistDirs();
+        tout     = ConDir();
+        tDistOut = ConDistDirs();    
+        tg       = ConDir();
+        SDCpckg.io.NativeBin.serial.FileWrite(path(td),imat,'single');
+        SDCpckg.io.NativeBin.dist.FileDistribute(path(td),path(tin),path(tDistIn),tt);
+        SDCpckg.io.NativeBin.dist.FileTranspose(path(tin),path(tout),path(tDistOut));
+        SDCpckg.io.NativeBin.dist.FileGather(path(tout),path(tg));
+        x    = SDCpckg.io.NativeBin.serial.FileRead(path(tg),'single');
+        imat = reshape(imat,[prod(nn(1:tt)) prod(nn(tt+1:t))]);
+        imat = transpose(imat);
+        imat = reshape(imat,[nn(tt+1:t) nn(1:tt)]);
+        assertEqual(x,single(imat));
+    end
     
-    tin      = ConDir();
-    tDistIn  = ConDistDirs();
-    tout     = ConDir();
-    tDistOut = ConDistDirs(); 
-    % 2D transpose
-    imat = distributed.rand(n1,n2);
-    SDCpckg.io.NativeBin.dist.FileWrite(path(tin),imat,1,path(tDistIn),'single');
-    SDCpckg.io.NativeBin.dist.FileTranspose(path(tin),path(tout),path(tDistOut),1);
-    x    = SDCpckg.io.NativeBin.dist.FileRead(path(tout),'single');
-    assertEqual(x,single(transpose(imat)));
-    
-    tin      = ConDir();
-    tDistIn  = ConDistDirs();
-    tout     = ConDir();
-    tDistOut = ConDistDirs();
-    % 3D transpose with sepDim == 1
-    imat = distributed.rand(n1,n2,n3);
-    SDCpckg.io.NativeBin.dist.FileWrite(path(tin),imat,1,path(tDistIn),'single');
-    SDCpckg.io.NativeBin.dist.FileTranspose(path(tin),path(tout),path(tDistOut),1);
-    x    = SDCpckg.io.NativeBin.dist.FileRead(path(tout),'single');
-    assertEqual(x,single(reshape(transpose(reshape(imat,n1,n2*n3)),n2,n3,n1)));
-    
-    tin      = ConDir();
-    tDistIn  = ConDistDirs();
-    tout     = ConDir();
-    tDistOut = ConDistDirs();
-    % 3D transpose with sepDim == 2
-    imat = distributed.rand(n1,n2,n3);
-    SDCpckg.io.NativeBin.dist.FileWrite(path(tin),imat,1,path(tDistIn),'single');
-    SDCpckg.io.NativeBin.dist.FileTranspose(path(tin),path(tout),path(tDistOut),2);
-    x    = SDCpckg.io.NativeBin.dist.FileRead(path(tout),'single');
-    assertEqual(x,single(reshape(transpose(reshape(imat,n1*n2,n3)),n3,n1,n2)));
-    
-    tin      = ConDir();
-    tDistIn  = ConDistDirs();
-    tout     = ConDir();
-    tDistOut = ConDistDirs();
-    % 4D transpose with sepDim == 3
-    imat = distributed.rand(n1,n2,n3,n4);
-    SDCpckg.io.NativeBin.dist.FileWrite(path(tin),imat,1,path(tDistIn),'single');
-    SDCpckg.io.NativeBin.dist.FileTranspose(path(tin),path(tout),path(tDistOut),3);
-    x    = SDCpckg.io.NativeBin.dist.FileRead(path(tout),'single');
-    assertEqual(x,single(reshape(transpose(reshape(imat,n1*n2*n3,n4)),n4,n1,n2,n3)));
 end
-
+    
 function test_distributed_FileTranspose_single_complex
 %%
-    display('  Warning: SDCpckg.io.NativeBin.dist.FileTranspose is not fully implemented')
-    n1   = 3;
-    n2   = 4;
-    n3   = 5;
-    n4   = 8;
+    nn = [3 4 3 4];
+    for t = 2:4
+        tt = round(t/2);
+        imat = randn(nn(1:t));
+        imat = complex(imat,imat);
+        td       = ConDir();
+        tin      = ConDir();
+        tDistIn  = ConDistDirs();
+        tout     = ConDir();
+        tDistOut = ConDistDirs();    
+        tg       = ConDir();
+        SDCpckg.io.NativeBin.serial.FileWrite(path(td),imat,'single');
+        SDCpckg.io.NativeBin.dist.FileDistribute(path(td),path(tin),path(tDistIn),tt);
+        SDCpckg.io.NativeBin.dist.FileTranspose(path(tin),path(tout),path(tDistOut));
+        SDCpckg.io.NativeBin.dist.FileGather(path(tout),path(tg));
+        x    = SDCpckg.io.NativeBin.serial.FileRead(path(tg),'single');
+        imat = reshape(imat,[prod(nn(1:tt)) prod(nn(tt+1:t))]);
+        imat = transpose(imat);
+        imat = reshape(imat,[nn(tt+1:t) nn(1:tt)]);
+        assertEqual(x,single(imat));
+    end
     
-    tin      = ConDir();
-    tDistIn  = ConDistDirs();
-    tout     = ConDir();
-    tDistOut = ConDistDirs(); 
-    % 2D transpose
-    imat = distributed.rand(n1,n2);
-    imat = complex(imat,imat);
-    SDCpckg.io.NativeBin.dist.FileWrite(path(tin),imat,1,path(tDistIn),'single');
-    SDCpckg.io.NativeBin.dist.FileTranspose(path(tin),path(tout),path(tDistOut),1);
-    x    = SDCpckg.io.NativeBin.dist.FileRead(path(tout),'single');
-    assertEqual(x,single(transpose(imat)));
-    
-    tin      = ConDir();
-    tDistIn  = ConDistDirs();
-    tout     = ConDir();
-    tDistOut = ConDistDirs();
-    % 3D transpose with sepDim == 1
-    imat = distributed.rand(n1,n2,n3);
-    imat = complex(imat,imat);
-    SDCpckg.io.NativeBin.dist.FileWrite(path(tin),imat,1,path(tDistIn),'single');
-    SDCpckg.io.NativeBin.dist.FileTranspose(path(tin),path(tout),path(tDistOut),1);
-    x    = SDCpckg.io.NativeBin.dist.FileRead(path(tout),'single');
-    assertEqual(x,single(reshape(transpose(reshape(imat,n1,n2*n3)),n2,n3,n1)));
-    
-    tin      = ConDir();
-    tDistIn  = ConDistDirs();
-    tout     = ConDir();
-    tDistOut = ConDistDirs();
-    % 3D transpose with sepDim == 2
-    imat = distributed.rand(n1,n2,n3);
-    imat = complex(imat,imat);
-    SDCpckg.io.NativeBin.dist.FileWrite(path(tin),imat,1,path(tDistIn),'single');
-    SDCpckg.io.NativeBin.dist.FileTranspose(path(tin),path(tout),path(tDistOut),2);
-    x    = SDCpckg.io.NativeBin.dist.FileRead(path(tout),'single');
-    assertEqual(x,single(reshape(transpose(reshape(imat,n1*n2,n3)),n3,n1,n2)));
-    
-    tin      = ConDir();
-    tDistIn  = ConDistDirs();
-    tout     = ConDir();
-    tDistOut = ConDistDirs();
-    % 4D transpose with sepDim == 3
-    imat = distributed.rand(n1,n2,n3,n4);
-    imat = complex(imat,imat);
-    SDCpckg.io.NativeBin.dist.FileWrite(path(tin),imat,1,path(tDistIn),'single');
-    SDCpckg.io.NativeBin.dist.FileTranspose(path(tin),path(tout),path(tDistOut),3);
-    x    = SDCpckg.io.NativeBin.dist.FileRead(path(tout),'single');
-    assertEqual(x,single(reshape(transpose(reshape(imat,n1*n2*n3,n4)),n4,n1,n2,n3)));
 end
