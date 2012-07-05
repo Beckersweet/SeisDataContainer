@@ -1,12 +1,16 @@
-function test_ooftrans(trials)
+function test_OutOfCoreDistTranspose(varargin)
+    if nargin > 0
+        trials = varargin{1};
+        assert(isscalar(trials),'number of tests must be a scalar')
+    else
+        trials = 1;
+    end
     labs = matlabpool('size');
     for t=1:trials
 
         all = tic;
-        ds = randi([labs 16],1,randi([1 3],1,1));
-        de = randi([labs 16],1,randi([1 3],1,1));
-        ds = [2 3];
-        de = [4];
+        ds = randi([1+round(labs/2) labs*2],1,randi([1 3],1,1));
+        de = randi([1+round(labs/2) labs*2],1,randi([1 3],1,1));
 
         lds = length(ds);
         lde = length(de);
@@ -29,6 +33,8 @@ function test_ooftrans(trials)
             Ds = redistribute(D,c); 
             c = codistributor1d(1,dde,pOut);
             De = codistributed.zeros(pOut,c);
+            %lp=getLocalPart(Ds);
+            %lp = reshape(lp,[dds(labindex) sum(dde)])
         end
 
         tds=ConDir();
