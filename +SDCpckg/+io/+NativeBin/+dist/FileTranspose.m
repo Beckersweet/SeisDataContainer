@@ -31,8 +31,6 @@ if ~hdrin.distributedIO % serial redirect to serial transpose
     sepdim = varargin{1};
     SDCpckg.io.NativeBin.serial.FileTranspose(dirnameIn,dirnameOut,sepdim);
 else % here starts the distributed transpose
-    %disp('distributedIO')
-    %hdrin.distribution
 
     % Process arguments
     error(nargchk(3, 4, nargin, 'struct'));
@@ -54,7 +52,6 @@ else % here starts the distributed transpose
     hdrout = SDCpckg.addDistFileHeaderStruct(hdrout,distdirs);
     hdcmplx = hdrin.complex;
     fprecision = hdrin.precision;
-    %hdrout.distribution
 
     % Allocate file
     SDCpckg.io.NativeBin.dist.FileAlloc(dirnameOut,hdrout);
@@ -69,11 +66,17 @@ else % here starts the distributed transpose
     pde1 = prod(de(1:end-1));
     dde = pde1*hdrout.distribution.partition;
     % indecies
-    irng = zeros(matlabpool('size'),2);
-    indx_rng = hdrin.distribution.indx_rng;
-    for l = 1:matlabpool('size')
-        irng(l,1) = (indx_rng{l}(1)-1)*pds1+1;
-        irng(l,2) = (indx_rng{l}(2))*pds1;
+    irngIn = zeros(matlabpool('size'),2);
+    indxRngIn = hdrin.distribution.indx_rng;
+    for l=1:matlabpool('size')
+        irngIn(l,1) = (indxRngIn{l}(1)-1)*pds1+1;
+        irngIn(l,2) = (indxRngIn{l}(2))*pds1;
+    end
+    irngOut = zeros(matlabpool('size'),2);
+    indxRngOut = hdrout.distribution.indx_rng;
+    for l=1:matlabpool('size')
+        irngOut(l,1) = (indxRngOut{l}(1)-1)*pde1+1; % here is wrong
+        irngOut(l,2) = (indxRngOut{l}(2))*pde1;
     end
     % composites
     distdirin = SDCpckg.utils.Cell2Composite(hdrin.directories);
@@ -82,41 +85,46 @@ else % here starts the distributed transpose
     spmd
         % transpose
         for s=1:pds
+            %fprintf('***** SLICE %d\n',s)
             % find sender
             for l=1:numlabs
-                if s>=irng(l,1) & s<=irng(l,2); sender = l; end
+                if s>=irngIn(l,1) & s<=irngIn(l,2); sender = l; end
             end
-            % read data
-            if s>=irng(labindex,1) & s<=irng(labindex,2)
-                start = s-irng(labindex,1)+1;
-                skip = dds(labindex);
-                count = pde;
-                %disp([sender start count skip])
-                lp = SDCpckg.io.NativeBin.serial.DataReadStriped(distdirin,'real',...
-                    [dds(labindex) pde],start,count,skip,fprecision,fprecision);
-                if hdcmplx
-                    dummy = SDCpckg.io.NativeBin.serial.DataReadStriped(distdirin,'imag',...
-                        [dds(labindex) pde],start,count,skip,fprecision,fprecision);
-                    lp = complex(lp,dummy);
+            % read and send data
+            if labindex==sender
+                for l=1:numlabs
+                    start = s-irngIn(sender,1)+(irngOut(l,1)-1)*dds(sender)+1;
+                    skip = dds(sender);
+                    count = dde(l);
+                    %fprintf('bfr: lab=%d start=%d count=%d skip=%d\n',l,start,count,skip)
+                    if count>0
+                        bfr = SDCpckg.io.NativeBin.serial.DataReadStriped(distdirin,'real',...
+                            [dds(sender) pde],start,count,skip,fprecision,fprecision);
+                        if hdcmplx
+                            dummy = SDCpckg.io.NativeBin.serial.DataReadStriped(distdirin,'imag',...
+                                [dds(sender) pde],start,count,skip,fprecision,fprecision);
+                            bfr = complex(bfr,dummy);
+                        end
+                    else
+                        bfr=zeros(0,1);
+                    end
+                    if l~=sender
+                        labSend(bfr, l, sender)
+                    else
+                        lb = bfr;
+                    end
                 end
             else
-                lp = zeros(0,1);
-                if hdcmplx
-                    lp = complex(lp,lp);
-                end
+                lb = labReceive(sender,sender);
             end
             % crate codistributed
-            prt = zeros(1,numlabs); prt(1,sender) = pde;
-            cin = codistributor1d(1,prt,[pde 1]);
-            LP = codistributed.build(lp,cin,'noCommunication');
-            % redistribute
             cout = codistributor1d(1,dde,[pde 1]);
-            LP = redistribute(LP,cout);
+            LB = codistributed.build(lb,cout,'noCommunication');
             % write slice
-            SDCpckg.io.NativeBin.dist.DataWriteLeftSlice(1,distdirout,'real',real(LP),...
+            SDCpckg.io.NativeBin.dist.DataWriteLeftSlice(1,distdirout,'real',real(LB),...
                 hdrout.size,[dde(labindex) pds],[],1,s,fprecision);
             if hdcmplx
-                SDCpckg.io.NativeBin.dist.DataWriteLeftSlice(1,distdirout,'imag',imag(LP),...
+                SDCpckg.io.NativeBin.dist.DataWriteLeftSlice(1,distdirout,'imag',imag(LB),...
                     hdrout.size,[dde(labindex) pds],[],1,s,fprecision);
             end
         end

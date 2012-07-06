@@ -25,11 +25,13 @@ function status = acquireIOlock(dirname,varargin)
 end
 
 function mypause()
+    denom = 1000;
+    fact = 10;
     if SDCpckg.inspmd
-        labs = numlabs;
+        rndmax = numlabs*fact;
     else
-        labs = matlabpool('size');
+        rndmax = fact;
     end
-    time = randi(numlabs*10)/10000;
+    time = randi(rndmax)/denom;
     pause(time);
 end
