@@ -1,27 +1,25 @@
-function x = FileNorm( dirname,dimensions,norm,file_precision )
+function x = FileNorm(dirname,norm)
 %FILENORM Calculates the norm of a given data
 %
 %   FileNorm(DIRNAME,FILENAME,DIMENSIONS,NORM,FILE_PRECISION)
 %
 %   DIRNAME        - A string specifying the input directory
-%   FILENAME       - A string specifying the input filename
 %   NORM           - Specifyies the norm type. Supported norms: inf, -inf,
 %                    'fro', p-norm where p is scalar.
-%   DIMENSIONS     - A scalar vector specifying the dimensions
-%   FILE_PRECISION - An string specifying the file_precision of one unit of 
-%                    data, Supported precisions: 'double' or 'single'
 
 SDCpckg.io.isFileClean(dirname);
-error(nargchk(4, 4, nargin, 'struct'));
+error(nargchk(2, 2, nargin, 'struct'));
 assert(ischar(dirname), 'input directory name must be a string')
-assert(isvector(dimensions), 'dimensions must be a vector')
 assert(isdir(dirname),'Fatal error: input directory %s does not exist'...
     ,dirname)
 
 global SDCbufferSize;
+assert(~isempty(SDCbufferSize),'you first need to execute SeisDataContainer_init')
 
 % Reading the header
 header    = SDCpckg.io.NativeBin.serial.HeaderRead(dirname);
+file_precision = header.precision;
+dimensions = header.size;
 
 % Set byte size
 bytesize  = SDCpckg.utils.getByteSize(file_precision);
