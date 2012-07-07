@@ -207,17 +207,17 @@ function test_distributed_FileNorm_double_real
     ts   = ConDir();
     td   = ConDistDirs();
     SDCpckg.io.NativeBin.dist.FileWrite(path(ts),imat,1,path(td));
-    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),[2 2 4 5 6],0,'double');
+    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),0);
     assertElementsAlmostEqual(x,norm(SDCpckg.utils.vecNativeSerial(gather(imat)),0))
-    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),[2 2 4 5 6],1,'double');
+    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),1);
     assertElementsAlmostEqual(x,norm(SDCpckg.utils.vecNativeSerial(gather(imat)),1))
-    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),[2 2 4 5 6],2,'double');
+    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),2);
     assertElementsAlmostEqual(x,norm(SDCpckg.utils.vecNativeSerial(gather(imat)),2))
-    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),[2 2 4 5 6],-inf,'double');
+    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),-inf);
     assertElementsAlmostEqual(x,norm(SDCpckg.utils.vecNativeSerial(gather(imat)),-inf))
-    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),[2 2 4 5 6],inf,'double');
+    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),inf);
     assertElementsAlmostEqual(x,norm(SDCpckg.utils.vecNativeSerial(gather(imat)),inf))
-    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),[2 2 4 5 6],'fro','double');
+    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),'fro');
     assertElementsAlmostEqual(x,norm(SDCpckg.utils.vecNativeSerial(gather(imat)),'fro'))
 end
 
@@ -228,59 +228,58 @@ function test_distributed_FileNorm_double_complex
     ts   = ConDir();
     td   = ConDistDirs();
     SDCpckg.io.NativeBin.dist.FileWrite(path(ts),imat,1,path(td));
-    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),[2 2 4 5 6],0,'double');
+    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),0);
     assertElementsAlmostEqual(x,norm(SDCpckg.utils.vecNativeSerial(gather(imat)),0))
-    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),[2 2 4 5 6],1,'double');
+    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),1);
     assertElementsAlmostEqual(x,norm(SDCpckg.utils.vecNativeSerial(gather(imat)),1))
-    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),[2 2 4 5 6],2,'double');
+    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),2);
     assertElementsAlmostEqual(x,norm(SDCpckg.utils.vecNativeSerial(gather(imat)),2))
-    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),[2 2 4 5 6],-inf,'double');
+    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),-inf);
     assertElementsAlmostEqual(x,norm(SDCpckg.utils.vecNativeSerial(gather(imat)),-inf))
-    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),[2 2 4 5 6],inf,'double');
+    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),inf);
     assertElementsAlmostEqual(x,norm(SDCpckg.utils.vecNativeSerial(gather(imat)),inf))
-    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),[2 2 4 5 6],'fro','double');
+    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),'fro');
     assertElementsAlmostEqual(x,norm(SDCpckg.utils.vecNativeSerial(gather(imat)),'fro'))
 end
 
 function test_distributed_FileNorm_single_real
 %%
-    imat = distributed.rand(2,2,4,5,6);
-    imat = complex(imat,imat);
+    imat = single(distributed.rand(2,2,4,5,6));
     ts   = ConDir();
     td   = ConDistDirs();
-    SDCpckg.io.NativeBin.dist.FileWrite(path(ts),imat,1,path(td),'single');
-    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),[2 2 4 5 6],0,'single');
+    SDCpckg.io.NativeBin.dist.FileWrite(path(ts),imat,1,path(td));
+    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),0);
     assertElementsAlmostEqual(x,norm(SDCpckg.utils.vecNativeSerial(gather(imat)),0))
-    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),[2 2 4 5 6],1,'single');
+    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),1);
     assertElementsAlmostEqual(x,norm(SDCpckg.utils.vecNativeSerial(gather(imat)),1))
-    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),[2 2 4 5 6],2,'single');
+    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),2);
     assertElementsAlmostEqual(x,norm(SDCpckg.utils.vecNativeSerial(gather(imat)),2))
-    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),[2 2 4 5 6],-inf,'single');
+    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),-inf);
     assertElementsAlmostEqual(x,norm(SDCpckg.utils.vecNativeSerial(gather(imat)),-inf))
-    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),[2 2 4 5 6],inf,'single');
+    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),inf);
     assertElementsAlmostEqual(x,norm(SDCpckg.utils.vecNativeSerial(gather(imat)),inf))
-    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),[2 2 4 5 6],'fro','single');
+    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),'fro');
     assertElementsAlmostEqual(x,norm(SDCpckg.utils.vecNativeSerial(gather(imat)),'fro'))
 end
 
 function test_distributed_FileNorm_single_complex
 %%
-    imat = distributed.rand(2,2,4,5,6);
+    imat = single(distributed.rand(2,2,4,5,6));
     imat = complex(imat,imat);
     ts   = ConDir();
     td   = ConDistDirs();
-    SDCpckg.io.NativeBin.dist.FileWrite(path(ts),imat,1,path(td),'single');
-    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),[2 2 4 5 6],0,'single');
+    SDCpckg.io.NativeBin.dist.FileWrite(path(ts),imat,1,path(td));
+    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),0);
     assertElementsAlmostEqual(x,norm(SDCpckg.utils.vecNativeSerial(gather(imat)),0))
-    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),[2 2 4 5 6],1,'single');
+    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),1);
     assertElementsAlmostEqual(x,norm(SDCpckg.utils.vecNativeSerial(gather(imat)),1))
-    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),[2 2 4 5 6],2,'single');
+    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),2);
     assertElementsAlmostEqual(x,norm(SDCpckg.utils.vecNativeSerial(gather(imat)),2))
-    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),[2 2 4 5 6],-inf,'single');
+    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),-inf);
     assertElementsAlmostEqual(x,norm(SDCpckg.utils.vecNativeSerial(gather(imat)),-inf))
-    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),[2 2 4 5 6],inf,'single');
+    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),inf);
     assertElementsAlmostEqual(x,norm(SDCpckg.utils.vecNativeSerial(gather(imat)),inf))
-    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),[2 2 4 5 6],'fro','single');
+    x    = SDCpckg.io.NativeBin.dist.FileNorm(path(ts),'fro');
     assertElementsAlmostEqual(x,norm(SDCpckg.utils.vecNativeSerial(gather(imat)),'fro'))
 end
 
