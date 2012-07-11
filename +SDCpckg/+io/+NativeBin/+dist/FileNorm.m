@@ -1,25 +1,24 @@
-function y = FileNorm(dirname,dimensions,norm,file_precision)
+function y = FileNorm(dirname,norm)
 %FILENORM Calculates the norm of the distributed data
 %
 %   FileNorm(DIRNAME,FILENAME,DIMENSIONS,NORM,FILE_PRECISION)
 %
 %   DIRNAME        - A string specifying the input directory
-%   FILENAME       - A string specifying the input filename
 %   NORM           - Specifyies the norm type. Supported norms: inf, -inf,
 %                    'fro', p-norm where p is scalar.
-%   DIMENSIONS     - A scalar vector specifying the dimensions
-%   FILE_PRECISION - An string specifying the file_precision of one unit of 
-%                    data, Supported precisions: 'double' or 'single'
-error(nargchk(4, 4, nargin, 'struct'));
+SDCpckg.io.isFileClean(dirname);
+error(nargchk(2, 2, nargin, 'struct'));
 assert(ischar(dirname), 'input directory name must be a string')
-assert(isvector(dimensions), 'dimensions must be a vector')
 assert(isdir(dirname),'Fatal error: input directory %s does not exist'...
     ,dirname)
 
 global SDCbufferSize;
+assert(~isempty(SDCbufferSize),'you first need to execute SeisDataContainer_init')
 
 % Reading the header
-hdrin = SDCpckg.io.NativeBin.serial.HeaderRead(dirname);
+header = SDCpckg.io.NativeBin.serial.HeaderRead(dirname);
+file_precision = header.precision;
+dimensions = header.size;
 
 % Set byte size
 bytesize  = SDCpckg.utils.getByteSize(file_precision);
@@ -33,19 +32,19 @@ end
 % Infinite norm
 if(norm == inf)
     spmd
-        dims      = [1 prod(hdrin.distribution.size{labindex})];
-        reminder  = prod(hdrin.distribution.size{labindex});
+        dims      = [1 prod(header.distribution.size{labindex})];
+        reminder  = prod(header.distribution.size{labindex});
         rstart    = 1;
         total     = -inf;
         while (reminder > 0)
             buffer = min(reminder,maxbuffer);
             rend = rstart + buffer - 1;
             lx = SDCpckg.io.NativeBin.serial.DataReadLeftChunk(...
-                hdrin.directories{labindex},'real',...
+                header.directories{labindex},'real',...
                 dims,[rstart rend],[],file_precision,file_precision);            
-            if hdrin.complex
+            if header.complex
                 dummy = SDCpckg.io.NativeBin.serial.DataReadLeftChunk(...
-                    hdrin.directories{labindex},'imag',...
+                    header.directories{labindex},'imag',...
                     dims,[rstart rend],[],file_precision,file_precision);
                 lx = complex(lx,dummy);
             end
@@ -64,19 +63,19 @@ if(norm == inf)
 % Negative infinite norm
 elseif(norm == -inf)
     spmd
-        dims      = [1 prod(hdrin.distribution.size{labindex})];
-        reminder  = prod(hdrin.distribution.size{labindex});
+        dims      = [1 prod(header.distribution.size{labindex})];
+        reminder  = prod(header.distribution.size{labindex});
         rstart    = 1;
         total     = inf;
         while (reminder > 0)
             buffer = min(reminder,maxbuffer);
             rend = rstart + buffer - 1;
             lx = SDCpckg.io.NativeBin.serial.DataReadLeftChunk(...
-                hdrin.directories{labindex},'real',...
+                header.directories{labindex},'real',...
                 dims,[rstart rend],[],file_precision,file_precision);            
-            if hdrin.complex
+            if header.complex
                 dummy = SDCpckg.io.NativeBin.serial.DataReadLeftChunk(...
-                    hdrin.directories{labindex},'imag',...
+                    header.directories{labindex},'imag',...
                     dims,[rstart rend],[],file_precision,file_precision);
                 lx = complex(lx,dummy);
             end
@@ -97,19 +96,19 @@ elseif (isscalar(norm))
     total = 0;
     grandTotal = 0;
     spmd
-        dims      = [1 prod(hdrin.distribution.size{labindex})];
-        reminder  = prod(hdrin.distribution.size{labindex});
+        dims      = [1 prod(header.distribution.size{labindex})];
+        reminder  = prod(header.distribution.size{labindex});
         rstart    = 1;
         total     = 0;
         while (reminder > 0)
             buffer = min(reminder,maxbuffer);
             rend = rstart + buffer - 1;
             lx = SDCpckg.io.NativeBin.serial.DataReadLeftChunk(...
-                hdrin.directories{labindex},'real',...
+                header.directories{labindex},'real',...
                 dims,[rstart rend],[],file_precision,file_precision);            
-            if hdrin.complex
+            if header.complex
                 dummy = SDCpckg.io.NativeBin.serial.DataReadLeftChunk(...
-                    hdrin.directories{labindex},'imag',...
+                    header.directories{labindex},'imag',...
                     dims,[rstart rend],[],file_precision,file_precision);
                 lx = complex(lx,dummy);
             end

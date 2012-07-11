@@ -8,5 +8,5 @@ function x = norm(obj,norm)
 %
 norms = cell2mat(norm);
 x = SDCpckg.io.NativeBin.serial.FileNorm...
-    (path(obj.pathname),size(obj),norms,'double');
+    (path(obj.pathname),norms);
 end
