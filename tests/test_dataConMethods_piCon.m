@@ -57,7 +57,7 @@ end
 
 function test_dataConMethods_piCon_norm(x)
     norm(x(:),1);
-    norm(x(:),2);
+    norm(x(:));
     norm(x,'fro');
 end
 

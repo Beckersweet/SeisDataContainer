@@ -268,12 +268,13 @@ for i=1:3
     x(:,:,i) = y(:,1:3,i);
 end
 x = x(:);
-assertElementsAlmostEqual(y.norm(0),norm(x,0));
+assertElementsAlmostEqual(norm(y,0),norm(x,0));
 assertElementsAlmostEqual(y.norm(1),norm(x,1));
-assertElementsAlmostEqual(y.norm(2),norm(x,2));
+assertElementsAlmostEqual(norm(y),norm(x));
 assertElementsAlmostEqual(y.norm(inf),norm(x,inf));
-assertElementsAlmostEqual(y.norm(-inf),norm(x,-inf));
+assertElementsAlmostEqual(norm(y,-inf),norm(x,-inf));
 assertElementsAlmostEqual(y.norm('fro'),norm(x,'fro'));
+assertElementsAlmostEqual(norm(y,'fro'),norm(x,'fro'));
 end % norm
 
 function test_oMatCon_ones

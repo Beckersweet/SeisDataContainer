@@ -1,4 +1,4 @@
-function y = norm(x,p)
+function y = norm(varargin)
 %NORM   Matrix or vector norm.
 %
 %   The behavior of NORM(Y) where Y contains NaNs will change in 
@@ -25,7 +25,12 @@ function y = norm(x,p)
 %       NORM(X,-inf) = min(abs(vec(X))).
 
 % Process and extract arguments
-if nargin == 1, p = 2; end
+ip = inputParser; 
+ip.addRequired('obj'); 
+ip.addOptional('norm',2,@(x)ischar(x)||isscalar(x));
+ip.parse(varargin{:});
+x = ip.Results.obj;
+p = ip.Results.norm;
 
 % Process N-D data container
 if length(size(x)) <= 2

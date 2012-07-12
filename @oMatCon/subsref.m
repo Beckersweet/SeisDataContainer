@@ -10,7 +10,11 @@ switch s(1).type
                 obj.save(cell2mat(s(2).subs));
             end
         elseif(strcmp(s(1).subs,'norm'))
-            sref = obj.norm(s(2).subs);
+            if(length(s(2).subs) == 1)
+                sref = obj.norm(cell2mat(s(2).subs(1)));
+            else
+                sref = obj.norm();
+            end
         else
             sref = builtin('subsref',obj,s);
         end
