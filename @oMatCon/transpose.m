@@ -10,7 +10,7 @@ function y = transpose(x,sepDim)
 assert(size(x.exsize,2) <= 2 , 'Can only transpose 2D array');
 
 % Find seperation dimension (last index of first collapsed group)
-sepDim = x.exsize(end,1);
+sepDim = x.exsize(2,1);
 
 % Do all the out of core magic
 td = ConDir();
