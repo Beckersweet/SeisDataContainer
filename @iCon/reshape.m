@@ -44,6 +44,12 @@ collapsed_dims = reshape(collapsed_dims,2,[]);
 
 % Reshape
 y        = iCon(reshape(x.data,redims));
-y.header.size = x.header.size;
-y.exsize = collapsed_dims;
 y.perm   = 1:length(collapsed_dims);
+y.exsize = collapsed_dims;
+
+if isvector(collapsed_dims) % vec case
+    y.header.size = [x.header.size 1];
+    y.exsize(:,2) = [collapsed_dims(end) + 1; collapsed_dims(end) + 1];
+else
+    y.header.size = x.header.size;
+end

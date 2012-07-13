@@ -12,5 +12,7 @@ y             = metacopy(x,y);
 y.perm        = fliplr(x.perm);
 y.exsize      = fliplr(x.exsize);
 indshift      = y.exsize(1);
+y.header.size = [x.header.size(x.exsize(1,2):x.exsize(2,2)) ...
+                 x.header.size(x.exsize(1,1):x.exsize(2,1))];
 y.exsize(:,1) = y.exsize(:,1) - indshift + 1;
 y.exsize(:,2) = y.exsize(:,2) + y.exsize(end,1);

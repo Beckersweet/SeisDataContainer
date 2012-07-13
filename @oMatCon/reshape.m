@@ -62,13 +62,9 @@ y        = oMatCon.load(...
 % changing y.exsize = reshape(collapthe explicit size of the new dataContainer
 y.exsize = reshape(collapsed_dims,2,[]);
 % Vec case
-% if isvector(y.exsize)
-%     y.exsize(:,2) = [y.exsize(2,1)+1; y.exsize(2,1)+1];
-% end
-
-% if y.header.size(end) ~= 1    
-%     y.header.size(end+1) = 1;
-% end
-
+if isvector(y.exsize)
+    y.header.size(end+1) = 1;
+    y.exsize(:,2) = [y.exsize(2,1)+1; y.exsize(2,1)+1];
+end
 end
 
