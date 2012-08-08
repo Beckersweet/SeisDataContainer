@@ -12,6 +12,8 @@ assert(ischar(dirname), 'directory name must be a string')
 %assert(isstruct(header), 'header must be a header struct')
 %assert(header.distributed==0,'header have file distribution for serial file alloc?')
 
+% test
+
 % %Make Directory
 % if isdir(dirname); rmdir(dirname,'s'); end;
 % status = mkdir(dirname);
