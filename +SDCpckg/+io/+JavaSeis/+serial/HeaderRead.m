@@ -1,4 +1,4 @@
-function header = HeaderRead(dirname)
+function [FpV,SpT,TpF,VpH,dimensions] = HeaderRead(dirname)
 %HEADERREAD Reads header from specified directory
 %
 % Edited for JavaSeis by Trisha
@@ -13,19 +13,20 @@ assert(ischar(dirname), 'directory name must be a string')
 assert(isdir(dirname),'Fatal error: directory %s does not exist',dirname);
 
 % Set up the Seisio object
-import beta.javaseis.io.Seisio.*;    
-seisio = beta.javaseis.io.Seisio( dirname );
+import beta.javaseis.io.Seisio.*; 
+import beta.javaseis.grid.* ;
+seisio = beta.javaseis.io.Seisio(dirname);
 seisio.open('r');
 
-% Read header
-% 2 options !
-header = readFrameHeaders(); % returns an int; the number of traces in frame
-%header = getHeaderIO(); % returns a virtual io "headerIO"
+% Get number of dimensions and set position accordingly
+dimensions = seisio.getGridDefinition.getNumDimensions();
 
-% header = load(fullfile(dirname,'header.mat')); % original matlab code 
- 
+% Define number of Hypercubes, Volumes, Frames & Traces
+FpV = seisio.getGridDefinition.getNumFramesPerVolume() ;
+SpT = seisio.getGridDefinition.getNumSamplesPerTrace() ;
+TpF = seisio.getGridDefinition.getNumTracesPerFrame() ;
+VpH = seisio.getGridDefinition.getNumVolumesPerHypercube() ;
 
-
-
-
+seisio.close() ;
+    
 end
