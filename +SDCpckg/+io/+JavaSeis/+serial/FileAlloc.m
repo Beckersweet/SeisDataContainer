@@ -1,7 +1,7 @@
 function FileAlloc(dirname,header)
-%FILEALLOC Allocates file space for header
+%FILEALLOC Allocates file space with header
 %
-%   FileAlloc(DIRNAME,HEADER) allocates file for serial header writing.
+%   FileAlloc(DIRNAME,HEADER) allocates files for serial I/O.
 %
 %   DIRNAME - A string specifying the directory name
 %   HEADER  - A header struct specifying the distribution
@@ -9,12 +9,12 @@ function FileAlloc(dirname,header)
 
 error(nargchk(2, 2, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
-%assert(isstruct(header), 'header must be a header struct')
+assert(isstruct(header), 'header must be a header struct')
 %assert(header.distributed==0,'header have file distribution for serial file alloc?')
 
-% Add dynamic libraries
-% javaaddpath('$Path/dhale-jtk-78bca79.jar');
-% javaaddpath('$Path/betajavaseis1819.jar');
+% Load dynamic libraries
+ javaaddpath('/Users/bcollignon/Documents/workspace/dhale-jtk-78bca79.jar');
+ javaaddpath('/Users/bcollignon/Documents/workspace/betajavaseis1819.jar');
 
 % Import External Functions
 import beta.javaseis.io.Seisio.*;
@@ -28,28 +28,27 @@ import java.io.RandomAccessFile.* ;
  status = mkdir(dirname);
  assert(status,'Fatal error while creating directory %s',dirname);
  
-% %Write file
-% DataContainer.io.memmap.serial.DataAlloc(dirname,'real',header.size,header.precision);
-% if header.complex
-%     DataContainer.io.memmap.serial.DataAlloc(dirname,'imag',header.size,header.precision);
-% end
-% %Write header
-% DataContainer.io.memmap.serial.HeaderWrite(dirname,header);
-
 % Create a brand new file for serial I/O in dirname
+% Make sure the working directory is in your $PATH
 delete('TraceFile');
 java.io.RandomAccessFile('TraceFile','rw');
 
-% Convert header - MAT 2 JS 
+% Define logical & physical coordinates
+% Need to Convert Header - MAT 2 JS 
 % neworigin = convert2JS(header.dims) ;
 % newdelta = convert2JS(header.delta) ;
 
-% Define physical coordinates from logical coordinates
-
-% No need to go further as long as the above points are not fixed
+% TEST : Manual logical & physical coordinates
+x = [250,30,100,10] ;
+gridsize = x ; 
+origin = header.origin ;
+delta = header.delta ;
+neworigin = origin ;
+newdelta = delta ;
 
 % Grid definition 
-grid = beta.javaseis.grid.GridDefinition.standardGrid(1,header.size,neworigin,newdelta,neworigin,newdelta) ;
+%grid = beta.javaseis.grid.GridDefinition.standardGrid(1,gridsize,origin,delta,neworigin,newdelta) ;
+grid = beta.javaseis.grid.GridDefinition.standardGrid(1,gridsize,[0,1,1,1],[4,4,1,2],[0,0,0,0],[4,100,25,50])
 
 % Create the dataset 
 seisio = beta.javaseis.io.Seisio(dirname,grid);
