@@ -22,33 +22,6 @@ assert(ischar(dirname), 'directory name must be a string')
 assert(isfloat(x), 'data must be float')
 %assert(~isdistributed(x), 'data must not be distributed')
 
-%{
-% Setup variables
-header = DataContainer.basicHeaderStructFromX(x);
-f_precision = header.precision;
-
-% Preprocess input arguments
-if nargin>2
-    assert(ischar(varargin{1})|isstruct(varargin{1}),...
-        'argument mast be either file_precision string or header struct')
-    if ischar(varargin{1})
-        f_precision = varargin{1};
-        header.precision = f_precision;
-    elseif isstruct(varargin{1})
-        header = varargin{1};
-        f_precision = header.precision;
-    end
-end;
-DataContainer.io.verifyHeaderStructWithX(header,x);
-%}
-
-% Make Directory
-% if isdir(dirname); rmdir(dirname,'s'); end;
-% status = mkdir(dirname);
-% assert(status,'Fatal error while creating directory %s',dirname);
-% At this time, the directory must already exist. 
-%}
-
 % Import Javaseis Functions
 import beta.javaseis.io.Seisio.*;    
 import beta.javaseis.grid.GridDefinition.* ;
@@ -58,22 +31,18 @@ import beta.javaseis.array.Position.*;
 import beta.javaseis.array.BigArrayJava1D.*;
 import edu.mines.jtk.util.*;
 import java.io.RandomAccessFile.* ;
+import SDCpckg.* ;
 
+% Define number of Hypercubes, Volumes, Frames & Traces
+% Define number of dimensions
+[FpV,SpT,TpF,VpH,dimensions] = SDCpckg.io.JavaSeis.serial.HeaderRead(dirname) 
+
+% Set position accordingly
+position = zeros(dimensions,1);
 
 % Open Seisio File Structure
 seisio = beta.javaseis.io.Seisio(dirname);
 seisio.open('rw');
-
-% Get number of dimensions and set position accordingly
-dimensions = seisio.getGridDefinition.getNumDimensions();
-
-% Define number of Hypercubes, Volumes, Frames & Traces
-FpV = seisio.getGridDefinition.getNumFramesPerVolume()
-SpT = seisio.getGridDefinition.getNumSamplesPerTrace()
-TpF = seisio.getGridDefinition.getNumTracesPerFrame()
-VpH = seisio.getGridDefinition.getNumVolumesPerHypercube()
-    
-position = zeros(dimensions,1);
 
 % Test: Check Position
 checkpos = beta.javaseis.array.Position.checkPosition(seisio,position) ;
@@ -105,7 +74,8 @@ end
 % end
 
 % Define Grid Size
-% Shoule be defined from header ?
+% TEST : DEFINE GRID SIZE MANUALLY 
+x = [250,30,100,10];
 gridsize = x ;
 
 % Define an array that will contain more than 2D
@@ -116,52 +86,30 @@ if gridsize(4) ~= 0
  %ndata = VpH*FpV*TpF*SpT   
  %loop over volumes
  for vol=1:VpH
- 
-      position(4) = vol-1;   
-      %fprintf('%s\n','Volume');
- 
+     position(4) = vol-1;   
+      
       for frm=1:FpV 
-
           position(3) = frm-1;
-          %fprintf('%s\n','Frame');
           
           for trc=1:TpF
-             
               position(2) = trc-1 ;
-              %fprintf('%s\n','Trace');
-             
+              
               %mytest1
               for smp=1:SpT
+                  position(1) = smp-1 ;
                   
-                   position(1) = smp-1 ;
-                  
-                   %Matrix of traces has to be built from x
-                    matrixoftraces(trc,smp) = trc*smp ;
+                   % Store smp in traces
+                     matrixoftraces(trc,smp) = smp ;
               end
-             
-              sizeofmatrix = size(matrixoftraces);
-              nbofSpT = matrixoftraces(trc,:) ; 
+              % Store smp from x in traces
+              % matrixoftraces(trc,:) = x(1,4,1,1) ;
               
-              checkpos = beta.javaseis.array.Position.checkPosition(sio,position) ;
-              if checkpos
-
-                 %fprintf('%s\n','checkpos is TRUE');
-    
-              end       
-              
-              %setPosition Now works because xml files has been created 
-              % means : _position[] object created
-              seisio.setPosition(position);
-               
-               
           end          
-                  
-           %Write matrixofframes
-           matrixofframes(frm,:,:) = matrixoftraces ;
+          %Store matrixofframes
+          matrixofframes(frm,:,:) = matrixoftraces ;
            
       end
- 
-      %Write matrixofvolumes
+      %Store matrixofvolumes
       matrixofvolumes(vol,:,:,:) = matrixofframes ;
       
  end
@@ -194,6 +142,6 @@ end
    seisio.writeMultiArray(grid_multiarray,position) ;
     
    seisio.close();
-   java.io.close('TraceFile'); 
+   %java.io.close('TraceFile'); 
     
 end
