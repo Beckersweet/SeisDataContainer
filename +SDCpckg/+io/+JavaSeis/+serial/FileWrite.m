@@ -74,7 +74,7 @@ end
 % end
 
 % Define Grid Size
-% TEST : DEFINE GRID SIZE MANUALLY 
+% TEST : DEFINE GRID SIZE as in Chuck's example
 x = [250,30,100,10];
 gridsize = x ;
 
