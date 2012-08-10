@@ -35,8 +35,7 @@ java.io.RandomAccessFile('TraceFile','rw');
 
 % Define logical & physical coordinates
 % Need to Convert Header - MAT 2 JS 
-% neworigin = convert2JS(header.dims) ;
-% newdelta = convert2JS(header.delta) ;
+% Do it in MEMORY
 
 % TEST : Manual logical & physical coordinates
 x = [250,30,100,10] ;
