@@ -1,16 +1,13 @@
-function HeaderWrite(dirname,x)
-%HEADERWRITE writes header
+function header = HeaderWrite(x,xprecision,xcomplex)
+%HEADERWRITE creates Header as MATLAB Struct
 
-% %Write file
-% DataContainer.io.memmap.serial.DataAlloc(dirname,'real',header.size,header.precision);
-% if header.complex
-%     DataContainer.io.memmap.serial.DataAlloc(dirname,'imag',header.size,header.precision);
-% end
-% %Write header
-% DataContainer.io.memmap.serial.HeaderWrite(dirname,header);
+% Import package
+import SDCpckg.* 
 
+% Create Header as MATLAB Struct
+header = basicHeaderStruct(size(x),xprecision,xcomplex) ;
 
-
-
+% Verify Header Struct 
+verifyHeaderStructWithX(header,x) ;
 
 end
