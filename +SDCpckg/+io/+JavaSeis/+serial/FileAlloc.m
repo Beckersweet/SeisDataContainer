@@ -36,20 +36,20 @@ java.io.RandomAccessFile('TraceFile','rw');
 % Define logical & physical coordinates
 % Need to Convert Header - MAT 2 JS 
 % Do it in MEMORY
+% origin = header.origin ;
+% delta = header.delta ;
+% neworigin = origin ;
+% newdelta = delta ;
 
-% TEST : Manual logical & physical coordinates
+% TEST : Logical & physical coordinates from Chuck's example
 x = [250,30,100,10] ;
 gridsize = x ; 
-origin = header.origin ;
-delta = header.delta ;
-neworigin = origin ;
-newdelta = delta ;
 
 % Grid definition 
-%grid = beta.javaseis.grid.GridDefinition.standardGrid(1,gridsize,origin,delta,neworigin,newdelta) ;
+% grid = beta.javaseis.grid.GridDefinition.standardGrid(1,gridsize,origin,delta,neworigin,newdelta) ;
 grid = beta.javaseis.grid.GridDefinition.standardGrid(1,gridsize,[0,1,1,1],[4,4,1,2],[0,0,0,0],[4,100,25,50])
 
-% Create the dataset 
+% Create the JS header / dataset 
 seisio = beta.javaseis.io.Seisio(dirname,grid);
 
 % Create the file struture: allocate/construct the corresponding objects 
