@@ -19,7 +19,8 @@ assert(isstruct(header), 'header must be a header struct')
 % Import External Functions
 import beta.javaseis.io.Seisio.*;
 import beta.javaseis.grid.GridDefinition.* ;
-import java.io.RandomAccessFile.* ;
+%import java.io.RandomAccessFile.* ;
+%import @iCon.*;
 
 % Make Directory
  if isdir(dirname) 
@@ -28,26 +29,31 @@ import java.io.RandomAccessFile.* ;
  status = mkdir(dirname);
  assert(status,'Fatal error while creating directory %s',dirname);
  
-% Create a brand new file for serial I/O in dirname
 % Make sure the working directory is in your $PATH
-delete('TraceFile');
-java.io.RandomAccessFile('TraceFile','rw');
+% Otherwise you will get java.io.RandomAccessFile error.
 
 % Define logical & physical coordinates
 % Need to Convert Header - MAT 2 JS 
 % Do it in MEMORY
-% origin = header.origin ;
-% delta = header.delta ;
-% neworigin = origin ;
-% newdelta = delta ;
+ origin = header.origin ;
+ delta = header.delta ;
+ neworigin = [origin] ;
+ newdelta = [delta] ;
+
+ 
+ % Define Grid Size
+ gridsize = header.size  ;
+ 
+ %gridsize = [slim_dc.data(1,1),slim_dc.data(1,2),slim_dc.data(1,3),slim_dc.data(1,4),slim_dc.data(1,5)] 
 
 % TEST : Logical & physical coordinates from Chuck's example
-x = [250,30,100,10] ;
-gridsize = x ; 
+% x = [250,30,100,10] ;
+% gridsize = x ; 
 
 % Grid definition 
-% grid = beta.javaseis.grid.GridDefinition.standardGrid(1,gridsize,origin,delta,neworigin,newdelta) ;
-grid = beta.javaseis.grid.GridDefinition.standardGrid(1,gridsize,[0,1,1,1],[4,4,1,2],[0,0,0,0],[4,100,25,50])
+  grid = beta.javaseis.grid.GridDefinition.standardGrid(1,gridsize,neworigin,newdelta,neworigin,newdelta) ;
+%  grid = beta.javaseis.grid.GridDefinition.standardGrid(1,gridsize,neworigin,newdelta,neworigin,newdelta) ;
+% grid = beta.javaseis.grid.GridDefinition.standardGrid(1,gridsize,[0,1,1,1],[4,4,1,2],[0,0,0,0],[4,100,25,50])
 
 % Create the JS header / dataset 
 seisio = beta.javaseis.io.Seisio(dirname,grid);
