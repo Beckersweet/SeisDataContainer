@@ -30,7 +30,7 @@ import beta.javaseis.array.ElementType.* ;
 import beta.javaseis.array.Position.*;
 import beta.javaseis.array.BigArrayJava1D.*;
 import edu.mines.jtk.util.*;
-import java.io.RandomAccessFile.* ;
+%import java.io.RandomAccessFile.* ;
 import SDCpckg.* ;
 
 % Define number of Hypercubes, Volumes, Frames & Traces
@@ -75,11 +75,11 @@ end
 
 % Define Grid Size
 % TEST : DEFINE GRID SIZE as in Chuck's example
-x = [250,30,100,10];
+% x = [250,30,100,10];
 gridsize = x ;
 
-% Define an array that will contain more than 2D
-grid_multiarray = beta.javaseis.array.MultiArray.factory(dimensions,beta.javaseis.array.ElementType.FLOAT,1,gridsize);
+% Define an array that will contain more than 2D datasets
+grid_multiarray = beta.javaseis.array.MultiArray.factory(dimensions,beta.javaseis.array.ElementType.DOUBLE,1,gridsize);
 
 % Loop implementation
 if gridsize(4) ~= 0
@@ -102,7 +102,7 @@ if gridsize(4) ~= 0
                      matrixoftraces(trc,smp) = smp ;
               end
               % Store smp from x in traces
-              % matrixoftraces(trc,:) = x(1,4,1,1) ;
+              % matrixoftraces(trc,:) = datacon(1,1) ;
               
           end          
           %Store matrixofframes
