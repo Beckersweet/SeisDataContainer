@@ -6,9 +6,9 @@ function header = HeaderWrite(x,xprecision,xcomplex)
 import SDCpckg.* 
 
 % Create Header as MATLAB Struct
-header = basicHeaderStruct(size(x),xprecision,xcomplex) ;
+header = SDCpckg.basicHeaderStruct(x,xprecision,xcomplex) ;
 
 % Verify Header Struct 
-verifyHeaderStructWithX(header,x) ;
+% verifyHeaderStructWithX(header,x) ;
 
 end
