@@ -35,17 +35,15 @@ import beta.javaseis.grid.GridDefinition.* ;
 % Define logical & physical coordinates
 % Need to Convert Header - MAT 2 JS 
 % Do it in MEMORY
- origin = header.origin ;
- delta = header.delta ;
- neworigin = [origin] ;
- newdelta = [delta] ;
+% Coordinates Transpose does nt change anything
+ origin = header.origin 
+ delta = header.delta 
+ neworigin = [origin]' 
+ newdelta = [delta]' 
 
+% Define Grid Size
+ gridsize = [header.size]'  
  
- % Define Grid Size
- gridsize = header.size  ;
- 
- %gridsize = [slim_dc.data(1,1),slim_dc.data(1,2),slim_dc.data(1,3),slim_dc.data(1,4),slim_dc.data(1,5)] 
-
 % TEST : Logical & physical coordinates from Chuck's example
 % x = [250,30,100,10] ;
 % gridsize = x ; 
