@@ -1,7 +1,7 @@
 function FileWrite(dirname,x,varargin)
 %FILEWRITE Writes serial data to binary file
 % TODO: be able to create directory, >3 dims 
-%
+%  
 %   FileWrite(DIRNAME,DATA,FILE_PRECISION|HEADER_STRUCT) writes
 %   the real serial array X into DIRNAME/FILENAME.
 %
@@ -30,22 +30,21 @@ import beta.javaseis.array.ElementType.* ;
 import beta.javaseis.array.Position.*;
 import beta.javaseis.array.BigArrayJava1D.*;
 import edu.mines.jtk.util.*;
-%import java.io.RandomAccessFile.* ;
 import SDCpckg.* ;
-
-% Define number of Hypercubes, Volumes, Frames & Traces
-% Define number of dimensions
-[FpV,SpT,TpF,VpH,dimensions] = SDCpckg.io.JavaSeis.serial.HeaderRead(dirname) 
-
-% Set position accordingly
-position = zeros(dimensions,1);
 
 % Open Seisio File Structure
 seisio = beta.javaseis.io.Seisio(dirname);
 seisio.open('rw');
 
+% Define number of Hypercubes, Volumes, Frames & Traces
+AxisLengths = seisio.getGridDefinition.getAxisLengths() ;
+
+% Get number of dimensions and set position accordingly
+dimensions = seisio.getGridDefinition.getNumDimensions();
+position = zeros(dimensions,1);
+
 % Test: Check Position
-checkpos = beta.javaseis.array.Position.checkPosition(seisio,position) ;
+  checkpos = beta.javaseis.array.Position.checkPosition(seisio,position) ;
 
 if checkpos
 
@@ -54,9 +53,9 @@ if checkpos
 end    
 
 % Test: Check Axis Values
-for di=0:dimensions-1
-AxisLength = seisio.getGridDefinition.getAxisLength(di)
-end
+% for di=0:dimensions-1
+% AxisLength = seisio.getGridDefinition.getAxisLength(di)
+% end
 
 % Write file
 % Trisha's code
@@ -74,40 +73,54 @@ end
 % end
 
 % Define Grid Size
-% TEST : DEFINE GRID SIZE as in Chuck's example
-% x = [250,30,100,10];
-gridsize = x ;
+gridsize = AxisLengths'
+
+% Fill x with ones
+x = gridsize 
+x = ones(AxisLengths') ;
+
+% Build new array format for gridsize
+% As argument of the factory function
+sx = size(x)
+   
+  for z=1:length(sx)
+     
+    formatgridsize(z) = sx(z)  ;
+      
+  end    
+
+  % if less than 4D: Reshape to 4D
+  if length(sx) < 4
+     for nullDim=length(sx):3
+  
+      formatgridsize(nullDim+1) = 1 ;
+     
+     end
+  end
+  
+% test = newgridsize
+% formatgridsize = [sx(1),sx(2),1,1]
+% formatgridsize works while gridsize and x do not work as arguments of factory
 
 % Define an array that will contain more than 2D datasets
-grid_multiarray = beta.javaseis.array.MultiArray.factory(dimensions,beta.javaseis.array.ElementType.DOUBLE,1,gridsize);
+%grid_multiarray = beta.javaseis.array.MultiArray.factory(dimensions,beta.javaseis.array.ElementType.DOUBLE,1,gridsize);
+grid_multiarray = beta.javaseis.array.MultiArray.factory(dimensions,beta.javaseis.array.ElementType.DOUBLE,1,formatgridsize);
+
 
 % Loop implementation
-if gridsize(4) ~= 0
- %ndata = VpH*FpV*TpF*SpT   
- %loop over volumes
- for vol=1:VpH
+% Loop over 1 hypercube
+for hyp=1:1
+ %loop over volumes 
+ for vol=1:AxisLengths(4)
      position(4) = vol-1;   
       
-      for frm=1:FpV 
+     %loop over frames
+      for frm=1:AxisLengths(3)
           position(3) = frm-1;
           
-          for trc=1:TpF
-              position(2) = trc-1 ;
-              
-              %mytest1
-              for smp=1:SpT
-                  position(1) = smp-1 ;
-                  
-                   % Store smp in traces
-                     matrixoftraces(trc,smp) = smp ;
-              end
-              % Store smp from x in traces
-              % matrixoftraces(trc,:) = datacon(1,1) ;
-              
-          end          
           %Store matrixofframes
-          matrixofframes(frm,:,:) = matrixoftraces ;
-           
+           matrixofframes(frm,:,:) = x(:,:,frm,vol) ;
+          
       end
       %Store matrixofvolumes
       matrixofvolumes(vol,:,:,:) = matrixofframes ;
@@ -142,6 +155,5 @@ end
    seisio.writeMultiArray(grid_multiarray,position) ;
     
    seisio.close();
-   %java.io.close('TraceFile'); 
-    
+   
 end
