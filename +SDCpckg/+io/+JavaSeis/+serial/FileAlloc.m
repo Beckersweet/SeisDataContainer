@@ -27,7 +27,7 @@ import beta.javaseis.grid.GridDefinition.* ;
     rmdir(dirname,'s'); 
  end
  status = mkdir(dirname);
- assert(status,'Fatal error while creating directory %s',dirname);
+ assert(status,'Fatal error while creating directory %s',dirname);  
  
 % Make sure the working directory is in your $PATH
 % Otherwise you will get java.io.RandomAccessFile error.
@@ -43,6 +43,17 @@ import beta.javaseis.grid.GridDefinition.* ;
 
 % Define Grid Size
  gridsize = [header.size]'  
+ 
+% if less than 4D: Reshape to 4D
+  if size(gridsize) < 4
+     for nullDim=size(gridsize):3
+  
+      gridsize(nullDim+1) =  1
+      neworigin(nullDim+1) = 1
+      newdelta(nullDim+1) = 1
+     
+     end
+  end    
  
 % TEST : Logical & physical coordinates from Chuck's example
 % x = [250,30,100,10] ;
