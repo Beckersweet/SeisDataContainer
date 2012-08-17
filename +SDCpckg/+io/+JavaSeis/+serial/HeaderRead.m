@@ -1,7 +1,7 @@
-function [FpV,SpT,TpF,VpH,dimensions] = HeaderRead(dirname)
+function header = HeaderRead(dirname)
 %HEADERREAD Reads header from specified directory
 %
-% Edited for JavaSeis by Trisha
+% Edited for JavaSeis by Trisha, Barbara
 %
 %   HeaderRead(DIRNAME) reads the serial header
 %   from file DIRNAME/FILENAME.
@@ -19,13 +19,10 @@ seisio = beta.javaseis.io.Seisio(dirname);
 seisio.open('r');
 
 % Get number of dimensions and set position accordingly
-dimensions = seisio.getGridDefinition.getNumDimensions();
+header.dims = seisio.getGridDefinition.getNumDimensions() ;
 
 % Define number of Hypercubes, Volumes, Frames & Traces
-FpV = seisio.getGridDefinition.getNumFramesPerVolume() ;
-SpT = seisio.getGridDefinition.getNumSamplesPerTrace() ;
-TpF = seisio.getGridDefinition.getNumTracesPerFrame() ;
-VpH = seisio.getGridDefinition.getNumVolumesPerHypercube() ;
+header.size = seisio.getGridDefinition.getAxisLengths() ;
 
 seisio.close() ;
     
