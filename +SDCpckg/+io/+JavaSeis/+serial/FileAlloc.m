@@ -16,12 +16,6 @@ assert(isstruct(header), 'header must be a header struct')
  javaaddpath('/Users/bcollignon/Documents/workspace/dhale-jtk-78bca79.jar');
  javaaddpath('/Users/bcollignon/Documents/workspace/betajavaseis1819.jar');
 
-% Import External Functions
-import beta.javaseis.io.Seisio.*;
-import beta.javaseis.grid.GridDefinition.* ;
-%import java.io.RandomAccessFile.* ;
-%import @iCon.*;
-
 % Make Directory
  if isdir(dirname) 
     rmdir(dirname,'s'); 
@@ -33,9 +27,6 @@ import beta.javaseis.grid.GridDefinition.* ;
 % Otherwise you will get java.io.RandomAccessFile error.
 
 % Define logical & physical coordinates
-% Need to Convert Header - MAT 2 JS 
-% Do it in MEMORY
-% Coordinates Transpose does nt change anything
  origin = header.origin ;
  delta = header.delta ;
  neworigin = [origin]' ;
@@ -55,17 +46,9 @@ import beta.javaseis.grid.GridDefinition.* ;
      end
   end    
  
-% TEST : Logical & physical coordinates from Chuck's example
-% x = [250,30,100,10] ;
-% gridsize = x ; 
-
-% Test: Find Hypercube Index Name
-% test = beta.javaseis.grid.GridDefinition.getIndexName(4)
 
 % Grid definition 
   grid = beta.javaseis.grid.GridDefinition.standardGrid(1,gridsize,neworigin,newdelta,neworigin,newdelta) ;
-%  grid = beta.javaseis.grid.GridDefinition.standardGrid(1,gridsize,neworigin,newdelta,neworigin,newdelta) ;
-% grid = beta.javaseis.grid.GridDefinition.standardGrid(1,gridsize,[0,1,1,1],[4,4,1,2],[0,0,0,0],[4,100,25,50])
 
 % Create the JS header / dataset 
 seisio = beta.javaseis.io.Seisio(dirname,grid);

@@ -22,25 +22,18 @@ assert(ischar(dirname), 'directory name must be a string')
 assert(isfloat(x), 'data must be float')
 %assert(~isdistributed(x), 'data must not be distributed')
 
-% Import Javaseis Functions
-import beta.javaseis.io.Seisio.*;    
-import beta.javaseis.grid.GridDefinition.* ;
-import beta.javaseis.array.MultiArray.* ;
-import beta.javaseis.array.ElementType.* ;
-import beta.javaseis.array.Position.*;
-import beta.javaseis.array.BigArrayJava1D.*;
+% Import External Functions
 import edu.mines.jtk.util.*;
-import SDCpckg.* ;
 
 % Open Seisio File Structure
 seisio = beta.javaseis.io.Seisio(dirname);
 seisio.open('rw');
 
 % Define number of Hypercubes, Volumes, Frames & Traces
-AxisLengths = seisio.getGridDefinition.getAxisLengths() 
+AxisLengths = seisio.getGridDefinition.getAxisLengths() ;
 
 % Get number of dimensions and set position accordingly
-dimensions = seisio.getGridDefinition.getNumDimensions()
+dimensions = seisio.getGridDefinition.getNumDimensions() ;
 position = zeros(dimensions,1);
 
 % Test: Check Position
@@ -81,8 +74,6 @@ end
 y = ones(AxisLengths') ;
 formatgridsize = size(y) ;
 
-
- 
 % if less than 4D: Reshape to 4D
   if length(formatgridsize) < 4
      for nullDim=length(formatgridsize):3
@@ -150,6 +141,8 @@ end
            % Need to use Abstract function:setLength to allocate "dest_array"
            % setLength in IBigArray is overriden in BigArrayJava1D
            % Issue not fixed
+           % Should I use beta.javaseis.array.arrayutil.arraycopy instead
+           % of native method
 
     
    seisio.close();
