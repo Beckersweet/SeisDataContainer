@@ -1,7 +1,7 @@
 UNDER DEVELOPEMENT.
 
-Header Translation not implemented
-Bug with putHypercubes not fixed
-Current TEST based on Chuck's example
- 
+Current TEST based on 1 Hypercube
+Header Translation not completed
+Bug with writeMultiArray not fixed
+Need to add Javaseis functions to read/write 5D datasets
 
