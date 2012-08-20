@@ -75,33 +75,34 @@ end
 % Define Grid Size
 % gridsize = AxisLengths'
 
-% TEST
-% x = gridsize 
-
 % Create a format array with size of AxisLenghts
 % as argument of the factory function 
 % JS 2 MAT Conversion
 y = ones(AxisLengths') ;
-formatgridsize = size(y) 
+formatgridsize = size(y) ;
+
 
 
   % if less than 4D: Reshape to 4D
   if length(formatgridsize) < 4
      for nullDim=length(formatgridsize):3
   
-      formatgridsize(nullDim+1) = 1 
+      formatgridsize(nullDim+1) = 1 ;
+     
      
      end
   end
   
- 
+
 % formatgridsize works while gridsize or AxisLengths do not work as arguments of factory
 
 % Define an array that will contain more than 2D datasets
 % grid_multiarray = beta.javaseis.array.MultiArray.factory(dimensions,beta.javaseis.array.ElementType.DOUBLE,1,gridsize);
 grid_multiarray = beta.javaseis.array.MultiArray.factory(dimensions,beta.javaseis.array.ElementType.DOUBLE,1,formatgridsize);
 
-
+% TEST: Fill a test x with ones (size of formatgridsize)  
+testx = ones(formatgridsize)  ;
+ 
 % Loop implementation
 % Loop over 1 hypercube
 for hyp=1:1
@@ -114,7 +115,7 @@ for hyp=1:1
           position(3) = frm-1;
           
           %Store matrixofframes
-           matrixofframes(frm,:,:) = x(:,:,frm,vol) ;
+           matrixofframes(frm,:,:) = testx(:,:,frm,vol) ;
           
       end
       %Store matrixofvolumes
