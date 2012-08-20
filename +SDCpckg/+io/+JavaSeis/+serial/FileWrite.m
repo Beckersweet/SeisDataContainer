@@ -136,12 +136,7 @@ for hyp=1:1
  seisio.setPosition(position);
  matrixofhypercubes(1,:,:,:,:) = matrixofvolumes ; 
  grid_multiarray.putHypercube(matrixofhypercubes,position) ;
-           % Null pointer Exeption line 485 in beta.javaseis.array.BigArrayJava1D.putArray:System.arraycopy(..source_array...dest_array..)
-           % The destination array "dest_array" has not been allocated
-           % Need to use Abstract function:setLength to allocate "dest_array"
-           % setLength in IBigArray is overriden in BigArrayJava1D
-           % Issue not fixed
-
+           
 end
 
    position(1) = 0;
@@ -149,6 +144,12 @@ end
    position(3) = 0;
    position(4) = 0; 
    seisio.writeMultiArray(grid_multiarray,position) ;
+   % Null pointer Exeption line 409 in beta.javaseis.array.BigArrayJava1D.putArray:System.arraycopy(..source_array...dest_array..)
+           % The destination array "dest_array" has not been allocated
+           % Need to use Abstract function:setLength to allocate "dest_array"
+           % setLength in IBigArray is overriden in BigArrayJava1D
+           % Issue not fixed
+
     
    seisio.close();
    
