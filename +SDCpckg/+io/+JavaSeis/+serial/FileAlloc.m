@@ -36,21 +36,21 @@ import beta.javaseis.grid.GridDefinition.* ;
 % Need to Convert Header - MAT 2 JS 
 % Do it in MEMORY
 % Coordinates Transpose does nt change anything
- origin = header.origin 
- delta = header.delta 
- neworigin = [origin]' 
- newdelta = [delta]' 
+ origin = header.origin ;
+ delta = header.delta ;
+ neworigin = [origin]' ;
+ newdelta = [delta]' ;
 
 % Define Grid Size
- gridsize = [header.size]'  
+ gridsize = [header.size]'  ;
  
 % if less than 4D: Reshape to 4D
   if size(gridsize) < 4
      for nullDim=size(gridsize):3
   
-      gridsize(nullDim+1) =  1
-      neworigin(nullDim+1) = 1
-      newdelta(nullDim+1) = 1
+      gridsize(nullDim+1) =  1 ;
+      neworigin(nullDim+1) = 1 ;
+      newdelta(nullDim+1) = 1 ;
      
      end
   end    
@@ -58,6 +58,9 @@ import beta.javaseis.grid.GridDefinition.* ;
 % TEST : Logical & physical coordinates from Chuck's example
 % x = [250,30,100,10] ;
 % gridsize = x ; 
+
+% Test: Find Hypercube Index Name
+% test = beta.javaseis.grid.GridDefinition.getIndexName(4)
 
 % Grid definition 
   grid = beta.javaseis.grid.GridDefinition.standardGrid(1,gridsize,neworigin,newdelta,neworigin,newdelta) ;
