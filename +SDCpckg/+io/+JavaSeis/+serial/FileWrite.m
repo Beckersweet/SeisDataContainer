@@ -37,10 +37,10 @@ seisio = beta.javaseis.io.Seisio(dirname);
 seisio.open('rw');
 
 % Define number of Hypercubes, Volumes, Frames & Traces
-AxisLengths = seisio.getGridDefinition.getAxisLengths() ;
+AxisLengths = seisio.getGridDefinition.getAxisLengths() 
 
 % Get number of dimensions and set position accordingly
-dimensions = seisio.getGridDefinition.getNumDimensions();
+dimensions = seisio.getGridDefinition.getNumDimensions()
 position = zeros(dimensions,1);
 
 % Test: Check Position
@@ -73,37 +73,32 @@ end
 % end
 
 % Define Grid Size
-gridsize = AxisLengths'
+% gridsize = AxisLengths'
 
-% Fill x with ones
-x = gridsize 
-x = ones(AxisLengths') ;
+% TEST
+% x = gridsize 
 
-% Build new array format for gridsize
-% As argument of the factory function
-sx = size(x)
-   
-  for z=1:length(sx)
-     
-    formatgridsize(z) = sx(z)  ;
-      
-  end    
+% Create a format array with size of AxisLenghts
+% as argument of the factory function 
+% JS 2 MAT Conversion
+y = ones(AxisLengths') ;
+formatgridsize = size(y) 
+
 
   % if less than 4D: Reshape to 4D
-  if length(sx) < 4
-     for nullDim=length(sx):3
+  if length(formatgridsize) < 4
+     for nullDim=length(formatgridsize):3
   
-      formatgridsize(nullDim+1) = 1 ;
+      formatgridsize(nullDim+1) = 1 
      
      end
   end
   
-% test = newgridsize
-% formatgridsize = [sx(1),sx(2),1,1]
-% formatgridsize works while gridsize and x do not work as arguments of factory
+ 
+% formatgridsize works while gridsize or AxisLengths do not work as arguments of factory
 
 % Define an array that will contain more than 2D datasets
-%grid_multiarray = beta.javaseis.array.MultiArray.factory(dimensions,beta.javaseis.array.ElementType.DOUBLE,1,gridsize);
+% grid_multiarray = beta.javaseis.array.MultiArray.factory(dimensions,beta.javaseis.array.ElementType.DOUBLE,1,gridsize);
 grid_multiarray = beta.javaseis.array.MultiArray.factory(dimensions,beta.javaseis.array.ElementType.DOUBLE,1,formatgridsize);
 
 
@@ -111,11 +106,11 @@ grid_multiarray = beta.javaseis.array.MultiArray.factory(dimensions,beta.javasei
 % Loop over 1 hypercube
 for hyp=1:1
  %loop over volumes 
- for vol=1:AxisLengths(4)
+ for vol=1:formatgridsize(4)
      position(4) = vol-1;   
       
      %loop over frames
-      for frm=1:AxisLengths(3)
+      for frm=1:formatgridsize(3)
           position(3) = frm-1;
           
           %Store matrixofframes
