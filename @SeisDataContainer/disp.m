@@ -40,14 +40,14 @@ if(dims(x)<20)
     fprintf(' ]\n');
     fprintf('Label:             [ ');
     labels = label(x);
-    for i=1:dims(x)
+    for i=1:length(labels)
         fprintf('%c',labels{i});
         fprintf(' ');
     end
     fprintf(']\n');
     fprintf('Unit:              [ ');
     units = unit(x);
-    for i=1:dims(x)
+    for i=1:length(units)
         fprintf('%c',units{i});
         fprintf(' ');
     end

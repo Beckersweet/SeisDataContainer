@@ -5,8 +5,7 @@ function y = subsrefHelper(x,s)
 %   Nothing the user needs to know here.
 %
 
-lastdim = max(2,length(s.subs));
-
+lastdim = length(s.subs);
 % Checking indices
 % We need to extract a vector of indices for use in header subsref.
 if length(s.subs) == 1 && all(s.subs{:} == ':') % Vectorizing case
@@ -28,7 +27,7 @@ else % multiple dims case
             assert(~vectorized && ~colonized,...
                 'May only use scalars to index over rightmost dimensions')
             
-            lastdim = max(2,lastdim - 1);
+            lastdim = lastdim - 1;
             
         % case vector a:b
         elseif isvector(s.subs{i}) && isnumeric(s.subs{i})
@@ -66,6 +65,7 @@ end
 
 % Data processing
 data = subsref(x.data,s);
+%lastdim = lastdim - 1;
 
 % Repackage and export
 y                      = construct(x,data);
