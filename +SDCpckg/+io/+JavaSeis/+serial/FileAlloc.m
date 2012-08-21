@@ -1,6 +1,8 @@
 function FileAlloc(dirname,header)
 %FILEALLOC Allocates file space with header
 %
+%   Allocate up to 4D Dataset
+%
 %   FileAlloc(DIRNAME,HEADER) allocates files for serial I/O.
 %
 %   DIRNAME - A string specifying the directory name

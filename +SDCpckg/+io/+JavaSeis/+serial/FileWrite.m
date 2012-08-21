@@ -1,6 +1,6 @@
 function FileWrite(dirname,x,varargin)
 %FILEWRITE Writes serial data to binary file
-% TODO: be able to create directory, >3 dims 
+%   Create a 5D MultiArray 
 %  
 %   FileWrite(DIRNAME,DATA,FILE_PRECISION|HEADER_STRUCT) writes
 %   the real serial array X into DIRNAME/FILENAME.
