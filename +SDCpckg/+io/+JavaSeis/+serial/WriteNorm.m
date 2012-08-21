@@ -1,5 +1,10 @@
 function OOCNorm = WriteNorm(dirname,x)
 
+% Load dynamic libraries
+ javaaddpath('/Users/bcollignon/Documents/workspace/dhale-jtk-78bca79.jar');
+ javaaddpath('/Users/bcollignon/Documents/workspace/betajavaseis1819.jar');
+
+
 % Import External Java functions
 % import java.io.RandomAccessFile.* ;
 
@@ -43,7 +48,12 @@ newcol1 = j2mArray(:,1)
 n1 = norm(newcol1)
 
 % Convert Mat to Java - Not easy
+objArr = beta.javaseis.array.ArrayUtil.allocateArray(beta.javaseis.array.ElementType.DOUBLE,length(newcol1))
+java.lang.System.arraycopy(newcol1,0,objArr,0,length(newcol1))
 
+
+a = objArr
+b = newcol1
 
 % Create Java Frame Object
 % frame = java.awt.Frame('testframe')
