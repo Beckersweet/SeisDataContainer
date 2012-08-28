@@ -30,11 +30,11 @@ end;
 % Read header
 header = SDCpckg.io.NativeBin.serial.HeaderRead(dirname);
 % Read file
-x=SDCpckg.io.NativeBin.serial.DataReadLeftSlice(dirname,'real',...
+x = SDCpckg.io.NativeBin.serial.DataReadLeftSlice(dirname,'real',...
     header.size,slice,header.precision,x_precision);
 if header.complex
-    dummy=SDCpckg.io.NativeBin.serial.DataReadLeftSlice(dirname,'imag',...
+    dummy = SDCpckg.io.NativeBin.serial.DataReadLeftSlice(dirname,'imag',...
         header.size,slice,header.precision,x_precision);
-    x=complex(x,dummy);
+    x = complex(x,dummy);
 end 
 end
