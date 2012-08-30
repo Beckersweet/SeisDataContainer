@@ -1,6 +1,15 @@
 %% oMatCon Walkthrough
 % A concise guide to the functionality and guts of the oMatCon Out-of-Core
 % Native Binary Data Container.
+%
+% *Required software packages*
+%
+% You will need SLIM's spot and datacontainer packages installed to be able
+% to run this demo.
+%
+% * *Spot* - <https://github.com/slimgroup/spot>
+% * *oSpot* - <https://github.com/slimgroup/oSpot>
+% * *SeisDataContainer* - <https://github.com/slimgroup/SeisDataContainer>
 
 %% Basic Usage
 % The oMatCon data container is designed to open external files stored in
