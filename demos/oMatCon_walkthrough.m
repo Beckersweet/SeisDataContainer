@@ -46,6 +46,20 @@ y = A*x(:)
 % *Displaying the answer*
 double(y)
 
+
+%% Other oft-used functions
+%
+% These functions are mostly overloads of Matlab's builtin methods
+%
+% * *reshape*
+% * *transpose*
+% * *norm*
+% * *vec*
+% * *invvec*
+%
+% For more information please type "help oMatCon/<function name>" in the
+% Matlab console.
+
 %% Breakdown of oMatCon components
 % The oMatCon design philosophy is to empower users so they could use and 
 % manipulate large data files living on harddisk as if they were mere 
@@ -76,14 +90,17 @@ double(y)
 % The header is where all of the metadata pertaining to the data is stored.
 % In oMatCon we currently have these attributes:
 %
-% * *varName* - 
-% * *varUnits* - 
-% * *dims* - 
-% * *size* - 
-% * *origin* - 
-% * *delta* - 
-% * *precision* - 
-% * *complex* - 
-% * *unit* - 
-% * *label* - 
-% * *distributedIO* - 
+% Care must be taken to update the header.mat file after every operation
+% so that it is synchronized with the object's version of the header.
+%
+% * *varName* - string holding the name of variable
+% * *varUnits* - string holding the units of variable
+% * *dims* - number of dimensions of the array
+% * *size* - sizes of the array
+% * *origin* - row vector holding the origin coordinate for each axis
+% * *delta* - row vector holding the delta of coordinate value for each axis
+% * *precision* - array precision
+% * *complex* - if complex (no=0 or yes=1)
+% * *unit* - cell array of strings with units for each axis
+% * *label* - cell array of strings with label for each axis
+% * *distributedIO* - if distributed IO (no=0 or yes=1)
