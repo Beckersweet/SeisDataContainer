@@ -1,4 +1,4 @@
-function y = getFile(obj,s)
+function y = getFile(obj,subs)
 %GETDATA is called whenever we try to access data via subreferencing
 %
 %   getFile(x,s)
@@ -7,21 +7,21 @@ function y = getFile(obj,s)
 %   s - Subreferences cell
 %
 
-if (length(s) == 1 && isnumeric(cell2mat(s(1))))
+if (length(subs) == 1 && isnumeric(cell2mat(subs(1))))
     error('Error: Single element indexing is not allowed in oMatCon')
-elseif (length(s) == 1 && cell2mat(s(1)) == ':')
+elseif (length(subs) == 1 && cell2mat(subs(1)) == ':')
     y = vec(obj);
 else
     i = 0;
-    while(cell2mat(s(i+1)) == ':')
-        i = i+1;
+    while(cell2mat(subs(i+1)) == ':')
+        i = i+1; % i is first index of non-":" index
     end
 
-    chunk = cell2mat(s(i+1));
-    chunk = [chunk(1) chunk(end)];
+    chunk = cell2mat(subs(i+1));   % chunk refers to cases of x(:,i:j)
+    chunk = [chunk(1) chunk(end)]; % basically getting i and j here
 
-    if(length(s)>=i+2)
-        slice = cell2mat(s(i+2:end));
+    if(length(subs)>=i+2) % slice is for cases of x(:,k)
+        slice = cell2mat(subs(i+2:end)); % But sometimes they mix, see
     else
         slice = [];
     end

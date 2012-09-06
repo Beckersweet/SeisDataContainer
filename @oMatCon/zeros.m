@@ -39,8 +39,7 @@ else
 end
 
 td     = ConDir();
-header = SDCpckg.basicHeaderStruct...
-    (xsize,xprecision,0);
+header = SDCpckg.basicHeaderStruct(xsize,xprecision,0);
 SDCpckg.io.NativeBin.serial.FileAlloc(path(td),header);
 if(stringIndex)
     x = oMatCon.load(td,p.Unmatched);

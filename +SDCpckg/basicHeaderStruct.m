@@ -22,7 +22,7 @@ function header = basicHeaderStruct(xsize,xprecision,xcomplex,varargin)
 %          origin: row vector holding the origin coordinate for ach axis
 %           delta: row vector holding the delta of coordinate value for each axis
 %       precision: array precision
-%         complex: f complex (no=0 or yes=1)
+%         complex: if complex (no=0 or yes=1)
 %            unit: cell array of strings with units for each axis
 %           label: cell array of strings with label for each axis
 %   distributedIO: if distributed IO (no=0 or yes=1)

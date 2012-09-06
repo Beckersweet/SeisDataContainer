@@ -9,18 +9,21 @@ function [cdims, origin] = getLeftChunkInfo(dimensions,range,slice)
 %
 %   Note: slice indecies have to be in last dimesions
 %
-    assert(isvector(dimensions), 'dimensions must be a vector')
-    assert(isvector(range)&length(range)==2, 'chunk range must be a vector with two elements')
+
+%     assert(isvector(dimensions), 'dimensions must be a vector')
+%     assert(isvector(range)&length(range)==2, ...
+%            'chunk range must be a vector with two elements')
     assert(range(2)>=range(1),'range indecies must be sorted')
-    assert(isvector(slice)|isequal(slice,[]), 'slice index must be a vector')
+%     assert(isvector(slice)|isequal(slice,[]), 'slice index must be a vector')
 
     cslice = [range(1) slice];
-    l_s = length(cslice);
-    sdims = dimensions(1:end-l_s);
-    l_sd = length(sdims);
+    l_s    = length(cslice);
+    sdims  = dimensions(1:end-l_s);
+    l_sd   = length(sdims);
     if prod(range)>0    % account for labs with 0 elements in distributed array
         assert(1<=range(1),'left range index %d is smaller than 1',range(1))
-        assert(range(2)<=dimensions(l_sd+1),'right range index %d is biger than %d',range(2),dimensions(l_sd+1))
+        assert(range(2)<=dimensions(l_sd+1),'right range index %d is bigger than %d',...
+            range(2),dimensions(l_sd+1))
         csize = range(2)-range(1)+1;
         cdims = [sdims csize];
         rdims = dimensions(end-l_s+1:end);
