@@ -1,4 +1,4 @@
-function [x header] = FileRead(dirname,varargin)
+function [x, header] = FileRead(dirname,varargin)
 %FILEREAD  Read serial data and header from binary file
 %TODO: >3dims
 %
@@ -25,27 +25,37 @@ end;
 
 % Set up the Seisio object
 import beta.javaseis.io.Seisio.*;    
-seisio = beta.javaseis.io.Seisio( dirname );
+seisio = beta.javaseis.io.Seisio(dirname);
 seisio.open('r');
 
 % Read header
-%header = DataContainer.io.javaseis.serial.HeaderRead(dirname);
+header = SDCpckg.io.JavaSeis.serial.HeaderRead(dirname)
 
 % Get number of dimensions and set position accordingly
-dimensions = seisio.getGridDefinition.getNumDimensions();
+dimensions = header.dims ;
 position = zeros(dimensions,1);
 
-% need to pre-set X to be 3d array of zeros with the correct dimensions
-x=zeros(seisio.getGridDefinition.getNumSamplesPerTrace(),...
-    seisio.getGridDefinition.getNumTracesPerFrame(), ...
-    seisio.getGridDefinition.getNumFramesPerVolume());
+% Get Shape
+shape = header.size ;
+
+% Pre-set X to be 4d array of zeros with the correct dimensions
+x=zeros(shape(1),...
+    shape(2), ...
+    shape(3), ...
+    shape(4));
 %x=zeros(226,676,rangeCount);
     % Matlab reads the frame in transposed, so traces then samples. This is
     % an issue to keep in mind. 
-for i = 1:seisio.getGridDefinition.getNumFramesPerVolume()
-    position(dimensions)=i-1;
+
+% Read up to 4D datasets    
+for j=1:shape(4)
+    position(4) = j-1
+  for i = 1:shape(3)
+    position(3) = i -1 ; 
     seisio.readFrame(position); % reads one 2D "Frame"
-    x(:,:,i) = seisio.getTraceDataArray()'; 
-end
- seisio.close();
+    x(:,:,i,j) = seisio.getTraceDataArray()';  
+  end
+end  
+  seisio.close();
+ 
 end
