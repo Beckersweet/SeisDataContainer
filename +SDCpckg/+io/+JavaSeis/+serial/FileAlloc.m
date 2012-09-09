@@ -48,6 +48,7 @@ assert(isstruct(header), 'header must be a header struct')
      end
   end    
  
+% testgrid = gridsize
 
 % Grid definition 
   grid = beta.javaseis.grid.GridDefinition.standardGrid(1,gridsize,neworigin,newdelta,neworigin,newdelta) ;
