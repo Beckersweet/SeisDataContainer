@@ -93,49 +93,131 @@ grid_multiarray = beta.javaseis.array.MultiArray.factory(dimensions,beta.javasei
 
 % TEST: Fill a test x with ones (size of formatgridsize)  
 testx = ones(formatgridsize)  ;
+testxsize = size(testx)
  
 % Loop implementation
 % Loop over 1 hypercube
 for hyp=1:1
  %loop over volumes 
  for vol=1:formatgridsize(4)
+     vola = formatgridsize(4)
      position(4) = vol-1;   
-      
      %loop over frames
       for frm=1:formatgridsize(3)
+          frmb = formatgridsize(3)
           position(3) = frm-1;
+         
+          %Store matrixofframes - Java format (right slice contiguous in memory)
+          %matrixofframes(frm,:,:) = testx(:,:,frm,vol) 
+           a = testx(:,:,frm,vol)
+           matrixofframes(frm,:,:) = a' ;
+           seisio.setTraceDataArray(a');
+           seisio.setPosition(position);
+           seisio.writeFrame(size(a,2));
           
-          %Store matrixofframes
-           matrixofframes(frm,:,:) = testx(:,:,frm,vol) ;
-          
-      end
+     end
       %Store matrixofvolumes
       matrixofvolumes(vol,:,:,:) = matrixofframes ;
       
+      
  end
  
- checkpos = beta.javaseis.array.Position.checkPosition(seisio,position) ;
+ % Debugging
+ % checkpos = beta.javaseis.array.Position.checkPosition(seisio,position) ;
               
- if checkpos
+ % if checkpos
 
-    fprintf('%s\n','checkpos is TRUE');
-    pos = position
+   % fprintf('%s\n','checkpos is TRUE');
+   % pos1 = position
     
- end 
+ % end 
  
  %Write in 1 Hypercube
  seisio.setPosition(position);
- matrixofhypercubes(1,:,:,:,:) = matrixofvolumes ; 
+ matrixofhypercubes(1,:,:,:,:) = matrixofvolumes  
  grid_multiarray.putHypercube(matrixofhypercubes,position) ;
+ 
+ % Fill Multiarray
+ % a = 17.89
+ % whos a
+ % isfloat(a)
+ % grid_multiarray.fill(a,position,grid_multiarray.getTotalElementCount())
            
 end
 
-    position(1) = 0;
-    position(2) = 0;
-    position(3) = 0;
-    position(4) = 0;
-   %seisio.setPosition(position); 
-   seisio.writeMultiArray(grid_multiarray,position) ;
+  % Debugging
+    checkpos = beta.javaseis.array.Position.checkPosition(seisio,position) ;
+              
+    if checkpos
+
+    fprintf('%s\n','checkpos is TRUE');
+    pos2 = position
+    
+    end 
+
+  
+  % DEBUGGING 
+   getarrayLength = grid_multiarray.getArrayLength() 
+   getDim = grid_multiarray.getDimensions()
+   getShape = grid_multiarray.getShape()
+   getElemCount = grid_multiarray.getElementCount()
+   getFrameLenght = grid_multiarray.getFrameLength()
+   getVolumeLenght = grid_multiarray.getVolumeLength()
+   getHypL = grid_multiarray.getHypercubeLength()
+   getHypC = grid_multiarray.getTotalHypercubeCount()
+   getVolC = grid_multiarray.getTotalVolumeCount()
+   getFrmC = grid_multiarray.getTotalFrameCount()
+   getTraC = grid_multiarray.getTotalTraceCount()
+   getSamC = grid_multiarray.getTotalSampleCount()
+   getTotElC = grid_multiarray.getTotalElementCount()
+   Index = grid_multiarray.index(position) 
+   
+   % make sure arrays of samples have been filled
+   % grid_multiarray.fill(0.10,position,12)
+   %  a = [12] ;
+   % grid_multiarray.getSample(a,position) 
+   
+   
+   % Debugging 
+   if seisio.frameExists(position)
+       
+       fprintf('%s\n','FRAME'); 
+       
+       seisio.getTracesInFrame()
+       seisio.getTraceDataArray()
+       
+   else
+       
+      fprintf('%s\n','NO FRAME'); 
+       
+   end    
+   
+   %make sure that _traceData is allocated (sio.create())
+   %make sure backup_Array is allocated
+   
+   % Copy multiarray
+   % arraycopy = beta.javaseis.array.MultiArray(grid_multiarray)
+   % arraycopy.getShape()
+   % grid_multiarray.transpose(beta.javaseis.array.TransposeType.T4321)
+   % grid_multiarray.getShape()
+   
+   % TEST
+   %getarrayLength = grid_multiarray.getArrayLength() 
+   %getDim = grid_multiarray.getDimensions()
+   %getElemCount = grid_multiarray.getElementCount()
+   %getFrameLenght = grid_multiarray.getFrameLength()
+   %getVolumeLenght = grid_multiarray.getVolumeLength()
+   %getHypL = grid_multiarray.getHypercubeLength()
+   %getHypC = grid_multiarray.getTotalHypercubeCount()
+   %getVolC = grid_multiarray.getTotalVolumeCount()
+   %getFrmC = grid_multiarray.getTotalFrameCount()
+   %getTraC = grid_multiarray.getTotalTraceCount()
+   %getSamC = grid_multiarray.getTotalSampleCount()
+   %getTotElC = grid_multiarray.getTotalElementCount()
+   %Index = grid_multiarray.index(position) 
+   
+  
+   seisio.writeMultiArray(grid_multiarray,position) ; % do I get the array at the right position ? is my array correctly filled ? 
    % Null pointer Exeption line 409 in beta.javaseis.array.BigArrayJava1D.getArray:System.arraycopy(..source_array...dest_array..)
            % The destination array "dest_array" has not been allocated
            % Need to use Abstract function:setLength to allocate "dest_array"
