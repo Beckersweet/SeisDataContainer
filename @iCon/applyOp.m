@@ -8,4 +8,4 @@ y_data   = mtimes(op,double(x));
 % Rewrap data
 y            = dataCon(y_data);
 xmeta.exsize = x.exsize;
-y.header     = headerMod(op,xmeta,y.header,1);
+y.header     = headerMod(op,xmeta,x.header,1);
