@@ -47,9 +47,23 @@ y        = iCon(reshape(x.data,redims));
 y.perm   = 1:length(collapsed_dims);
 y.exsize = collapsed_dims;
 
+% Metadata transfer
+y_header               = y.header;
+y_header.varName       = x.header.varName;
+y_header.varUnits      = x.header.varUnits;
+y_header.origin        = x.header.origin;
+y_header.delta         = x.header.delta;
+y_header.precision     = x.header.precision;
+y_header.complex       = x.header.complex;
+y_header.unit          = x.header.unit;
+y_header.label         = x.header.label;
+y_header.distributedIO = x.header.distributedIO;
+
 if isvector(collapsed_dims) % vec case
-    y.header.size = [x.header.size 1];
+    y_header.size = [x.header.size 1];
     y.exsize(:,2) = [collapsed_dims(end) + 1; collapsed_dims(end) + 1];
 else
-    y.header.size = x.header.size;
+    y_header.size = x.header.size;
 end
+
+y.header = y_header;
