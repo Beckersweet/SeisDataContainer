@@ -1,7 +1,7 @@
 function [x header] = FileReadLeftSlice(dirname,slice,varargin)
 %FILEREADLEFTSLICE  Read serial left slice data from binary file
 %
-% Edited with JavaSeis by Trisha
+% Edited with JavaSeis by Trisha, Barbara
 %
 %   [X, HEADER] = FileReadLeftSlice(DIRNAME,SLICE,X_PRECISION) reads
 %   the serial left slice from file DIRNAME/FILENAME.
@@ -32,22 +32,38 @@ seisio = beta.javaseis.io.Seisio( dirname );
 seisio.open('r');
 
 % Read header
-%header = DataContainer.io.memmap.serial.HeaderRead(dirname);
-% header = seisio.readFrameHeaders(); % returns number of traces in the
-% frame, or zero on end-of-file. 
+header = SDCpckg.io.JavaSeis.serial.HeaderRead(dirname)
 
 % Get number of dimensions and set position accordingly
-dimensions = seisio.getGridDefinition.getNumDimensions();
-assert(isequal(dimensions,2)|isequal(dimensions,3)|isequal(dimensions,4)|...
-    isequal(dimensions,5), 'Data in js file must have dimensions 2<=n<=5.')
-position = zeros(1,dimensions);
-position(dimensions-length(slice)+1:dimensions) = slice;
+dimensions = header.dims ;
+position = zeros(dimensions,1);
 
-% Read file
+% Get Shape
+shape = header.size ;
 
-seisio.readFrame(position); % reads one 2D "Frame", from N-dimensional dataset 
-% this is a problem because we might want to read some N-n dimensions, not
-% nec. 2d...
-x = seisio.getTraceDataArray()';
+%assert(isequal(slice,[]), 'Code only completed for slice == []');
+%asser(isequal(dimensions, 3), 'Code only completed for 3 dimensions');
+position = zeros(dimensions,1);
+
+% Pre-set X to be 4d array of zeros with the correct dimensions
+rangeCount=range(2)-range(1)+1; 
+x = zeros(shape(1),shape(2),slice(1),slice(2)) ;
+
+%x=zeros(226,676,rangeCount);
+    % Matlab reads the frame in transposed, so traces then samples. This is
+    % an issue to keep in mind. 
+
+% Read up to 4D datasets    
+for j= slice(2):slice(2)
+    position(4) = j-1
+  for i = slice(1):slice(1)
+    position(3) = i - 1 ; 
+    seisio.readFrame(position); % reads one 2D "Frame"
+    x(:,:,i,j) = seisio.getTraceDataArray()' ;
+ 
+  end
+end  
+  seisio.close();
+ 
 
 end
