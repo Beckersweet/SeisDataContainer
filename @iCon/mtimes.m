@@ -25,6 +25,9 @@ if ~isa(A,'SeisDataContainer') % Right multiply
     if isa(A,'opSpot')
         y.header.size(1) = A.ms;
         y.exsize(:,1)    = [1 length(A.ms)]';
+    else
+        y.header.size(1) = size(A,1);
+        y.exsize(:,1)    = [1 length(size(A,1))]';
     end
     
 elseif ~isa(B,'SeisDataContainer') % Left multiply

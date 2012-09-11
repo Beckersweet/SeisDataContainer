@@ -21,7 +21,7 @@
 %%
 % *Directory name*
 %
-% Here we have a preconfigured data file stored in native binary format
+% Here we have a preconfigured data file in native binary format
 % stored in the specified directory:
 directory = [SDCpckg.path 'demos' filesep 'data' filesep 'data1']
 
