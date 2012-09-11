@@ -26,26 +26,3 @@ classdef oCon < SeisDataContainer
         end % constructor
     end % protected methods
 end % classdef
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
