@@ -11,6 +11,7 @@ function y = ctranspose(x)
 y             = dataCon(ctranspose(double(x)));
 y             = metacopy(x,y);
 y.perm        = fliplr(x.perm);
+y.header      = x.header;
 
 % vec case
 if isvector(x.exsize)
