@@ -49,6 +49,7 @@ y.exsize = collapsed_dims;
 
 % Metadata transfer
 y_header               = y.header;
+y_header.dims          = x.header.dims;
 y_header.varName       = x.header.varName;
 y_header.varUnits      = x.header.varUnits;
 y_header.origin        = x.header.origin;
@@ -58,12 +59,13 @@ y_header.complex       = x.header.complex;
 y_header.unit          = x.header.unit;
 y_header.label         = x.header.label;
 y_header.distributedIO = x.header.distributedIO;
+y_header.size          = x.header.size;
 
-if isvector(collapsed_dims) % vec case
-    y_header.size = [x.header.size 1];
-    y.exsize(:,2) = [collapsed_dims(end) + 1; collapsed_dims(end) + 1];
-else
-    y_header.size = x.header.size;
-end
+% if isvector(collapsed_dims) % vec case
+%     y_header.size = [x.header.size 1];
+%     y.exsize(:,2) = [collapsed_dims(end) + 1; collapsed_dims(end) + 1];
+% else
+%     y_header.size = x.header.size;
+% end
 
 y.header = y_header;

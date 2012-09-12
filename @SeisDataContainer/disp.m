@@ -27,9 +27,12 @@ if(dims(x)<20)
     fprintf('Variable Units:    ');
     fprintf('%c',varUnits(x));
     fprintf('\n');
-    fprintf('Dims:             ');
+    fprintf('Implicit Dims:     ');
     fprintf(' %d\n',dims(x));
-    fprintf('Size:              [');
+    fprintf('Implicit Size:     [');
+    fprintf(' %d',x.header.size);
+    fprintf(' ]\n');
+    fprintf('Explicit Size:     [');
     fprintf(' %d',size(x));
     fprintf(' ]\n');
     fprintf('Origin:            [');
