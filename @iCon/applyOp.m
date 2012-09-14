@@ -9,3 +9,12 @@ y_data   = mtimes(op,double(x));
 y            = dataCon(y_data);
 xmeta.exsize = x.exsize;
 y.header     = headerMod(op,xmeta,x.header,1);
+
+% vec case
+if isscalar(y.header.size)
+    y.exsize = y.exsize(:,1);
+end
+
+% Post calculation reshape
+x_n = size(x,2);
+y = reshape(y,[prod(size(y))/x_n x_n]);
