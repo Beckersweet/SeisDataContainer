@@ -45,29 +45,6 @@ if checkpos
     
 end    
 
-% Test: Check Axis Values
-% for di=0:dimensions-1
-% AxisLength = seisio.getGridDefinition.getAxisLength(di)
-% end
-
-% Write file
-% Trisha's code
-% Con: This works only if the dimension is 2d 
-%      If  2D: write frames and traces
-%      Transpose/Permute the data in memory: Too long & Pb with out-of-core
-% Pro: write chunk of data (we want to limit data movement)
-% for i = 1:size(x,3)
-%    position(dimensions)=i-1;
-%    data = x(:,:,i);
-%    data=data';
-%    seisio.setTraceDataArray(data);
-%    seisio.setPosition(position);
-%    seisio.writeFrame(size(data,1));% writes one 2D "Frame"
-% end
-
-% Define Grid Size
-% gridsize = AxisLengths'
-
 % Create a format array with size of AxisLenghts
 % as argument of the factory function 
 % JS 2 MAT Conversion
@@ -88,10 +65,10 @@ formatgridsize = size(y) ;
 % formatgridsize works while gridsize or AxisLengths do not work as arguments of factory
 
 % Define an array that will contain more than 2D datasets
-% grid_multiarray = beta.javaseis.array.MultiArray.factory(dimensions,beta.javaseis.array.ElementType.DOUBLE,1,gridsize);
 grid_multiarray = beta.javaseis.array.MultiArray.factory(dimensions,beta.javaseis.array.ElementType.DOUBLE,1,formatgridsize);
 
 % TEST: Fill a test x with ones (size of formatgridsize)  
+% It should be filled with DataCon
 testx = ones(formatgridsize)  ;
 testxsize = size(testx)
  
@@ -116,33 +93,18 @@ for hyp=1:1
            seisio.writeFrame(size(a,2));
           
      end
-      %Store matrixofvolumes
-      matrixofvolumes(vol,:,:,:) = matrixofframes ;
+      %Store matrixofvolumes - For Imultiarray
+      %matrixofvolumes(vol,:,:,:) = matrixofframes ;
       
       
  end
  
- % Debugging
- % checkpos = beta.javaseis.array.Position.checkPosition(seisio,position) ;
-              
- % if checkpos
-
-   % fprintf('%s\n','checkpos is TRUE');
-   % pos1 = position
-    
- % end 
+ %Store 1 Hypercube - For Imultiarray Only
+ %seisio.setPosition(position);
+ %matrixofhypercubes(1,:,:,:,:) = matrixofvolumes  
+ %grid_multiarray.putHypercube(matrixofhypercubes,position) ;
  
- %Write in 1 Hypercube
- seisio.setPosition(position);
- matrixofhypercubes(1,:,:,:,:) = matrixofvolumes  
- grid_multiarray.putHypercube(matrixofhypercubes,position) ;
  
- % Fill Multiarray
- % a = 17.89
- % whos a
- % isfloat(a)
- % grid_multiarray.fill(a,position,grid_multiarray.getTotalElementCount())
-           
 end
 
   % Debugging
@@ -173,9 +135,7 @@ end
    Index = grid_multiarray.index(position) 
    
    % make sure arrays of samples have been filled
-   % grid_multiarray.fill(0.10,position,12)
-   %  a = [12] ;
-   % grid_multiarray.getSample(a,position) 
+    
    
    
    % Debugging 
@@ -195,29 +155,14 @@ end
    %make sure that _traceData is allocated (sio.create())
    %make sure backup_Array is allocated
    
-   % Copy multiarray
+   % Bebugging
    % arraycopy = beta.javaseis.array.MultiArray(grid_multiarray)
    % arraycopy.getShape()
    % grid_multiarray.transpose(beta.javaseis.array.TransposeType.T4321)
    % grid_multiarray.getShape()
-   
-   % TEST
-   %getarrayLength = grid_multiarray.getArrayLength() 
-   %getDim = grid_multiarray.getDimensions()
-   %getElemCount = grid_multiarray.getElementCount()
-   %getFrameLenght = grid_multiarray.getFrameLength()
-   %getVolumeLenght = grid_multiarray.getVolumeLength()
-   %getHypL = grid_multiarray.getHypercubeLength()
-   %getHypC = grid_multiarray.getTotalHypercubeCount()
-   %getVolC = grid_multiarray.getTotalVolumeCount()
-   %getFrmC = grid_multiarray.getTotalFrameCount()
-   %getTraC = grid_multiarray.getTotalTraceCount()
-   %getSamC = grid_multiarray.getTotalSampleCount()
-   %getTotElC = grid_multiarray.getTotalElementCount()
-   %Index = grid_multiarray.index(position) 
-   
   
-   seisio.writeMultiArray(grid_multiarray,position) ; % do I get the array at the right position ? is my array correctly filled ? 
+   % Write 1 Hypercube - For IMultiarray Only
+   % seisio.writeMultiArray(grid_multiarray,position) ; % do I get the array at the right position ? is my array correctly filled ? 
    % Null pointer Exeption line 409 in beta.javaseis.array.BigArrayJava1D.getArray:System.arraycopy(..source_array...dest_array..)
            % The destination array "dest_array" has not been allocated
            % Need to use Abstract function:setLength to allocate "dest_array"
