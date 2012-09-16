@@ -86,7 +86,7 @@ for hyp=1:1
          
           %Store matrixofframes - Java format (right slice contiguous in memory)
           %matrixofframes(frm,:,:) = testx(:,:,frm,vol) 
-           a = testx(:,:,frm,vol)
+           a = testx(:,:,frm,vol) ;
            matrixofframes(frm,:,:) = a' ;
            seisio.setTraceDataArray(a');
            seisio.setPosition(position);
@@ -118,21 +118,21 @@ end
     end 
 
   
-  % DEBUGGING 
-   getarrayLength = grid_multiarray.getArrayLength() 
-   getDim = grid_multiarray.getDimensions()
-   getShape = grid_multiarray.getShape()
-   getElemCount = grid_multiarray.getElementCount()
-   getFrameLenght = grid_multiarray.getFrameLength()
-   getVolumeLenght = grid_multiarray.getVolumeLength()
-   getHypL = grid_multiarray.getHypercubeLength()
-   getHypC = grid_multiarray.getTotalHypercubeCount()
-   getVolC = grid_multiarray.getTotalVolumeCount()
-   getFrmC = grid_multiarray.getTotalFrameCount()
-   getTraC = grid_multiarray.getTotalTraceCount()
-   getSamC = grid_multiarray.getTotalSampleCount()
-   getTotElC = grid_multiarray.getTotalElementCount()
-   Index = grid_multiarray.index(position) 
+  % DEBUGGING - For IMultiarray
+  % getarrayLength = grid_multiarray.getArrayLength() 
+  % getDim = grid_multiarray.getDimensions()
+  % getShape = grid_multiarray.getShape()
+  % getElemCount = grid_multiarray.getElementCount()
+  % getFrameLenght = grid_multiarray.getFrameLength()
+  % getVolumeLenght = grid_multiarray.getVolumeLength()
+  % getHypL = grid_multiarray.getHypercubeLength()
+  % getHypC = grid_multiarray.getTotalHypercubeCount()
+  % getVolC = grid_multiarray.getTotalVolumeCount()
+  % getFrmC = grid_multiarray.getTotalFrameCount()
+  % getTraC = grid_multiarray.getTotalTraceCount()
+  % getSamC = grid_multiarray.getTotalSampleCount()
+  % getTotElC = grid_multiarray.getTotalElementCount()
+  % Index = grid_multiarray.index(position) 
    
    % make sure arrays of samples have been filled
     
