@@ -64,7 +64,7 @@ for j= slice(2):slice(2)
     position(3) = i - 1 ; 
     seisio.readFrame(position); % reads one 2D "Frame"
     sx(:,:,i,j) = seisio.getTraceDataArray()' ;
-    x = sx(range(1):range(2),:,i,j) ;
+    x = sx(:,range(1):range(2),i,j) ;
          
  
   end
