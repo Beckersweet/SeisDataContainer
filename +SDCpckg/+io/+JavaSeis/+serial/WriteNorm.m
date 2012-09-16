@@ -55,17 +55,17 @@ myfile.close()
 
 % Use JS/Java calls
 % TEST Case : Algo
-x = [23,34,6,67]
-slice(1) = 4 ;
-slice(2) = 5 ;
-range(1) = 6 ;
-range(2) = 8 ;
+x = [250,30,100,10]
+slice(1) = 67 ;
+slice(2) = 1 ;
+range(1) = 1 ; % range is +1 compared to java
+range(2) = 2 ;
 header = SDCpckg.io.JavaSeis.serial.HeaderWrite(x,'double',0)
 SDCpckg.io.JavaSeis.serial.FileAlloc('newtest',header) ;
 SDCpckg.io.JavaSeis.serial.FileWrite('newtest',x) ;
 [myslice header] = SDCpckg.io.JavaSeis.serial.FileReadLeftSlice('newtest',slice) ;
 [mychunk header] = SDCpckg.io.JavaSeis.serial.FileReadLeftChunk('newtest',range,slice) ;
-nbTrc = size(mychunk) ;
-norm = beta.javaseis.examples.io.norm2.fileNorm(nbTrc(2),mychunk) ;
+nbTrc = size(mychunk) 
+mynorm = beta.javaseis.examples.io.norm2.fileNorm(nbTrc(2),mychunk) 
 
 
