@@ -2,19 +2,16 @@ function Calc2DFFT(dirname)
 
 % Load dynamic libraries
 % javaaddpath('/Users/bcollignon/Documents/workspace/dhale-jtk-78bca79.jar');
-% javaaddpath('/Users/bcollignon/Documents/workspace/betajavaseis1819.jar');
-
-% import beta.javaseis.fft.IFFT ;
+ javaaddpath('/Users/bcollignon/Documents/workspace/betajavaseis1819.jar');
+ javaaddpath('/Users/bcollignon/Documents/workspace/jama-1.0.2.jar');
+ javaaddpath('/Users/bcollignon/Documents/workspace/javaSeisExample.jar');
+ 
+% import jama.Matrix.* ;
 
 % x = frame of traces
-
 %[x header] = beta.javaseis.io.javaseis.serial.FileRead(dirname) ;
 
-%nbVolumes = header.size(4) ;
-%nbFrames = header.size(3) ;
-%nbTraces = header.size(2) ;
-%nbSamples = header.size(1) ;
-
+% TEST Case
 % Set Shape for the 2D JAVA array (ARRAY OF ARRAYS: 
 % double[][] array = new double[][] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9
 % })
@@ -39,7 +36,6 @@ realtracearray = real(array)
 % Fill the array with complex trace
 imagtracearray = imag(array)
 
-
 % Transpose arrays (JAVA format)
 a = realtracearray(:,1) ;
 b = realtracearray(:,2) ;
@@ -57,18 +53,30 @@ JAVaa = aa'
 JAVbb = bb'
 JAVcc = cc'
 
-% JAVASEIS
-% TESTFftNd
-% FFT for IMultiArray (distributed FS)
-% shape = [16,8,7,11,5]
-% pad =  [0,0,0,0,0]
-% fnd = beta.javaseis.fft.FftNd(shape,pad,beta.javaseis.fft.IFFT.Type.REAL)
-% da = beta.javaseis.distributed.DistributedArray.DistributedArray(pc,2,fnd.beta.javaseis.fft.FftNd.getForwardShape());
-% da.beta.javaseis.distributed.DistributedArray.setShape(1,shape);
-% fnd.beta.javaseis.fft.FftNd.forward(da) ;
-% fnd.beta.javaseis.fft.FftNd.inverse(da) ;
+% TEST
+% Create a Java object array
+% Java Arr = array of arrays
+javaArr = javaArray('java.lang.Double',4,5)
 
-% 1DFFT the given axis, numbering from 0
+% Fill Array
+for m=1:4
+    for n=1:5
+
+        javaArr(m,n) = java.lang.Double(m*n) ; 
+
+    end
+end
+
+% TEST
+test = javaArr
+raw1 = javaArr(1)
+raw2 = javaArr(2)
+col1 = javaArr(:,1)
+col2 = javaArr(:,2)
+
+n = beta.javaseis.examples.io.norm2.test() 
+beta.javaseis.examples.io.norm2.fileNorm(5,matarr) 
+% 1DFFT on each axis 
 % Get the real trace
 realTrace = JAVaa
 % Compute the window transform
