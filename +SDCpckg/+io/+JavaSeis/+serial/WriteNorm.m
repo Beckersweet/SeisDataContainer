@@ -20,25 +20,51 @@ function OOCNorm = WriteNorm(dirname,x)
 %assert(status,'Fatal error while creating directory %s',dirname);
 
 % Use JS/Java calls
-% TEST Case : Algo
-x = [250,30,100,10]
-slice(1) = 67 ;
+% TEST Case1 : Algo
+%x = [250,30,100,10]
+%slice(1) = 67 ;
+%slice(2) = 1 ;
+%range(1) = 1 ; % range is +1 compared to java
+%range(2) = 2 ;
+
+%TEST Case2
+x = [3,3,1,1] ;
+slice(1) = 1 ;
 slice(2) = 1 ;
 range(1) = 1 ; % range is +1 compared to java
 range(2) = 2 ;
+
 header = SDCpckg.io.JavaSeis.serial.HeaderWrite(x,'double',0)
 SDCpckg.io.JavaSeis.serial.FileAlloc('newtest',header) ;
 SDCpckg.io.JavaSeis.serial.FileWrite('newtest',x) ;
 [myslice header] = SDCpckg.io.JavaSeis.serial.FileReadLeftSlice('newtest',slice) ;
 [mychunk header] = SDCpckg.io.JavaSeis.serial.FileReadLeftChunk('newtest',range,slice) ;
+
 mysize = size(mychunk) 
+
 % Matlab norm (2-norm)
 MATnorm = norm(mychunk)
 % JS norm (To be defined/completed)
 JSnorm = beta.javaseis.examples.io.norm2.fileNorm(mysize(2),mychunk) 
-% Jama norm (2-norm)
+
+% Convert Matrix to Vector
+row1 = mychunk(1,:)
+row2 = mychunk(2,:)
+row3 = mychunk(3,:)
+matarr1D = [row1,row2,row3]
+
+% Jama norm (2-norm) - Matrix as input
+tStart1 = tic ;
 mat = jama.Matrix(mychunk)
 JamaNorm = mat.norm2()
+tElapsed1 = toc(tStart1)
+
+% JAMA norm (2-norm) - Vector as input
+tStart2 = tic ;
+mat = jama.Matrix(matarr1D,3) 
+JAMAmat = mat.norm2()
+tElapsed2 =toc(tStart2) % Vector norm is faster than Matrix Norm. 
+
 
 
 
