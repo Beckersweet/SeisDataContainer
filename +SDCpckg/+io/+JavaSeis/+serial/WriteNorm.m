@@ -28,22 +28,29 @@ function OOCNorm = WriteNorm(dirname,x)
 %range(2) = 2 ;
 
 %TEST Case2
-x = [3,3,1,1] ;
-slice(1) = 1 ;
-slice(2) = 1 ;
+x = [3,3,4,5] ;
+slice(1) = 2 ;
+slice(2) = 3 ;
 range(1) = 1 ; % range is +1 compared to java
 range(2) = 2 ;
+
+%TEST Case3
+%x = [3,3,4,5] ;
+%slice = [] ;
+%range(1) = 1 ; % range is +1 compared to java
+%range(2) = 2 ;
 
 header = SDCpckg.io.JavaSeis.serial.HeaderWrite(x,'double',0)
 SDCpckg.io.JavaSeis.serial.FileAlloc('newtest',header) ;
 SDCpckg.io.JavaSeis.serial.FileWrite('newtest',x) ;
-[myslice header] = SDCpckg.io.JavaSeis.serial.FileReadLeftSlice('newtest',slice) ;
+% [myslice header] = SDCpckg.io.JavaSeis.serial.FileReadLeftSlice('newtest',slice) ;
 [mychunk header] = SDCpckg.io.JavaSeis.serial.FileReadLeftChunk('newtest',range,slice) ;
 
+y = mychunk 
 mysize = size(mychunk) 
 
 % Matlab norm (2-norm)
-MATnorm = norm(mychunk)
+MATnorm = norm(mychunk) % works for a 2d chunk only
 % JS norm (To be defined/completed)
 JSnorm = beta.javaseis.examples.io.norm2.fileNorm(mysize(2),mychunk) 
 
