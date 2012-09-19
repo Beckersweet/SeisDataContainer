@@ -69,7 +69,7 @@ grid_multiarray = beta.javaseis.array.MultiArray.factory(dimensions,beta.javasei
 
 % TEST: Fill a test x with ones (size of formatgridsize)  
 % It should be filled with DataCon
-testx = ones(formatgridsize)  ;
+testx = 2.56784*ones(formatgridsize)  ;
 testxsize = size(testx)
  
 % Loop implementation
