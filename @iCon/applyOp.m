@@ -8,17 +8,18 @@ y_data   = mtimes(op,double(x));
 % Rewrap data
 y             = dataCon(y_data);
 header        = x.header;
-header.exsize = x.exsize;
+header.exsize = x.exsize; % Inject exsize
 y.header      = headerMod(op,header,1);
+y.exsize      = y.header.exsize; % Extract exsize
 
 % vec case
-if isscalar(y.header.size)
-    y.exsize = y.exsize(:,1);
-end
-
-% Post calculation reshape
-% x_n = size(x,2);
-%y = reshape(y,[prod(size(y))/x_n x_n]);
+% if isscalar(y.header.size)
+%     y.exsize = y.exsize(:,1);
+% end
 
 % Remove field
 y.header = rmfield(y.header,'exsize');
+
+% Post calculation reshape
+x_n = size(x,2);
+y = reshape(y,[prod(size(y))/x_n x_n]);
