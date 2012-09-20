@@ -12,11 +12,6 @@ header.exsize = x.exsize; % Inject exsize
 y.header      = headerMod(op,header,1);
 y.exsize      = y.header.exsize; % Extract exsize
 
-% vec case
-% if isscalar(y.header.size)
-%     y.exsize = y.exsize(:,1);
-% end
-
 % Remove field
 y.header = rmfield(y.header,'exsize');
 

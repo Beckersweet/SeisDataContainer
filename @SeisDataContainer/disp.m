@@ -29,9 +29,15 @@ if(dims(x)<20)
     fprintf('\n');
     fprintf('Implicit Dims:     ');
     fprintf(' %d\n',dims(x));
-    fprintf('Implicit Size:     [');
-    fprintf(' %d',x.header.size);
-    fprintf(' ]\n');
+    if isscalar(x.header.size)
+        fprintf('Implicit Size:     [');
+        fprintf(' %d 1',x.header.size);
+        fprintf(' ]\n');
+    else
+        fprintf('Implicit Size:     [');
+        fprintf(' %d',x.header.size);
+        fprintf(' ]\n');
+    end
     fprintf('Explicit Size:     [');
     fprintf(' %d',size(x));
     fprintf(' ]\n');

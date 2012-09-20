@@ -68,6 +68,8 @@ methods ( Static )
         % ones
         x = ones(varargin);
         % load
-        x = load(pathname,varargin)
+        x = load(pathname,varargin);
+        % intoout
+        x = intoout(data,varargin);
 end % Static methods
 end % classdef
