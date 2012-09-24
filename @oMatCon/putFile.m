@@ -25,4 +25,3 @@ else
     SDCpckg.io.NativeBin.serial.FileWriteLeftChunk...
         (path(obj.pathname),dataa,[chunk(1) chunk(end)],slice);
 end
-end

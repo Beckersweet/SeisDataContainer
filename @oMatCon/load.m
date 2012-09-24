@@ -16,4 +16,3 @@ else
     pathname = dirname;
 end
 x = oMatCon(pathname,varargin{:});
-end
