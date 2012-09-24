@@ -46,17 +46,37 @@ shape = header.size ;
 position = zeros(dimensions,1);
 
 % Pre-set X to be 4d array of zeros with the correct dimensions
-rangeCount=range(2)-range(1)+1; 
-x = zeros(shape(1),shape(2),slice(1),slice(2)) ;
+% x = zeros(shape(1),shape(2),slice(1),slice(2)) ;
+
+ if isequal(slice,[]) == 0 
+   x = zeros(shape(1),shape(2),1,1) ;
+  % test = 0
+   jstart = slice(2) 
+   jend = jstart 
+   istart = slice(1) 
+   iend = istart 
+   
+else 
+    x = zeros(shape(1),shape(2),shape(3),shape(4)) 
+ 
+  % test = 1
+   
+   jstart = 1 
+   jend = shape(4) 
+   istart = 1 
+   iend = shape(3) 
+   
+end
+
 
 %x=zeros(226,676,rangeCount);
     % Matlab reads the frame in transposed, so traces then samples. This is
     % an issue to keep in mind. 
 
 % Read up to 4D datasets    
-for j= slice(2):slice(2)
+for j= jstart:jend
     position(4) = j-1
-  for i = slice(1):slice(1)
+  for i = istart:iend
     position(3) = i - 1 ; 
     seisio.readFrame(position); % reads one 2D "Frame"
     x(:,:,i,j) = seisio.getTraceDataArray()' ;
