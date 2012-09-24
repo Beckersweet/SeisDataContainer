@@ -1,4 +1,4 @@
-function [x header] = FileReadLeftSlice(dirname,slice,varargin)
+function [y header] = FileReadLeftSlice(dirname,slice,varargin)
 %FILEREADLEFTSLICE  Read serial left slice data from binary file
 %
 % Edited with JavaSeis by Trisha, Barbara
@@ -49,7 +49,7 @@ position = zeros(dimensions,1);
 % x = zeros(shape(1),shape(2),slice(1),slice(2)) ;
 
  if isequal(slice,[]) == 0 
-   x = zeros(shape(1),shape(2),1,1) ;
+   x = zeros([shape(1),shape(2),1,1]) ;
   % test = 0
    jstart = slice(2) 
    jend = jstart 
@@ -57,7 +57,7 @@ position = zeros(dimensions,1);
    iend = istart 
    
 else 
-    x = zeros(shape(1),shape(2),shape(3),shape(4)) 
+    x = zeros(shape(1),shape(2),shape(3),shape(4)) ;
  
   % test = 1
    
@@ -75,14 +75,25 @@ end
 
 % Read up to 4D datasets    
 for j= jstart:jend
-    position(4) = j-1
+    position(4) = j-1 ;
   for i = istart:iend
     position(3) = i - 1 ; 
     seisio.readFrame(position); % reads one 2D "Frame"
-    x(:,:,i,j) = seisio.getTraceDataArray()' ;
- 
+    x(:,:,i,j) = seisio.getTraceDataArray()' 
+    y=x(:,:,i,j) ;
+    
+    testi =i
+    testj = j
+    
   end
 end  
+
+  % Case of multiple read of the same file
+  % Take the last slice added in x
+  if isequal(slice,[]) == 0 
+  y = x(:,:,i,j) 
+  end
+
   seisio.close();
  
 
