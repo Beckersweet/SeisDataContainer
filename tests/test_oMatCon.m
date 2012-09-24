@@ -447,3 +447,13 @@ y = oMatCon.zeros(3,3,3);
 x = zeros(3,3,3);
 assertEqual(x,y);
 end % zeros
+
+function test_oMatCon_iCon
+%% oMatCon
+x = oMatCon.randn(3,2,4);
+x = reshape(x,[6 4]);
+y = iCon(x);
+assertEqual(x.exsize,y.exsize);
+assertEqual(double(x),double(y));
+assertEqual(x.header.size,y.header.size);
+end % iCon

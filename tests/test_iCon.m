@@ -329,6 +329,16 @@ end % uminus
 
 function test_iCon_uplus
 %% uplus
+
+function test_oMatCon_iCon
+%% oMatCon
+x = oMatCon.randn(3,2,4);
+x = reshape(x,[6 4]);
+y = iCon(x);
+assertEqual(x.exsize,y.exsize);
+assertEqual(double(x),double(y));
+assertEqual(x.header.size,y.header.size);
+end
 n1 = randi(10);
 n2 = randi(10);
 A  = randn(n1,n2) + 1i*randn(n1,n2);
@@ -357,3 +367,13 @@ x  = iCon.randn(randi(10),randi(10),randi(10));
 x1 = vec(x);
 assertEqual( double(x), double(invvec(x1)) );
 end % vec invvec
+
+function test_iCon_oMatCon
+%% oMatCon
+x = iCon.randn(3,2,4);
+x = reshape(x,[6 4]);
+y = oMatCon(x);
+assertEqual(x.exsize,y.exsize);
+assertEqual(double(x),double(y));
+assertEqual(x.header.size,y.header.size);
+end % oMatCon
