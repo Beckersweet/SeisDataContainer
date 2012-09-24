@@ -68,20 +68,24 @@ formatgridsize = size(y) ;
 grid_multiarray = beta.javaseis.array.MultiArray.factory(dimensions,beta.javaseis.array.ElementType.DOUBLE,1,formatgridsize);
 
 % TEST: Fill a test x with ones (size of formatgridsize)  
-% It should be filled with DataCon
-testx = 2.56784*ones(formatgridsize)  ;
-testxsize = size(testx)
- 
+% It should be filled with DataCon or JS Call
+%SeisDataContainer_init ;
+%ConDir() ;
+%test = rand(x);
+%testx = complex(test,1) 
+%testxsize = size(testx)
+testx = x ;
+
 % Loop implementation
 % Loop over 1 hypercube
 for hyp=1:1
  %loop over volumes 
  for vol=1:formatgridsize(4)
-     vola = formatgridsize(4)
+     vola = formatgridsize(4) ;
      position(4) = vol-1;   
      %loop over frames
       for frm=1:formatgridsize(3)
-          frmb = formatgridsize(3)
+          frmb = formatgridsize(3) ;
           position(3) = frm-1;
          
           %Store matrixofframes - Java format (right slice contiguous in memory)
@@ -113,7 +117,7 @@ end
     if checkpos
 
     fprintf('%s\n','checkpos is TRUE');
-    pos2 = position
+    pos2 = position ;
     
     end 
 
@@ -143,8 +147,8 @@ end
        
        fprintf('%s\n','FRAME'); 
        
-       seisio.getTracesInFrame()
-       seisio.getTraceDataArray()
+       seisio.getTracesInFrame() ;
+       seisio.getTraceDataArray() ;
        
    else
        
