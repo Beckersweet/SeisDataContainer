@@ -50,13 +50,16 @@ dimensions = header.dims ;
 position = zeros(dimensions,1);
 
 % Get Shape
-shape = header.size ;
+shape = header.size 
 
 %assert(isequal(slice,[]), 'Code only completed for slice == []');
 %asser(isequal(dimensions, 3), 'Code only completed for 3 dimensions');
-position = zeros(dimensions,1);
+position = zeros(dimensions,1)
 
-testx = X ;
+testx = X 
+
+size(testx)
+
 
 if isequal(slice,[]) == 0 
    
@@ -81,15 +84,34 @@ for hyp=1:1
  
  %loop over volumes 
  for vol=jstart:jend  
-     position(4) = vol-1;   
-   
+     position(4) = vol-1 
+     myvol = vol
      %loop over frames
       for frm=istart:iend 
-          position(3) = frm-1;
-         
+          position(3) = frm-1
+          myfrm = frm
           %Store matrixofframes - Java format (right slice contiguous in memory)
           %matrixofframes(frm,:,:) = testx(:,:,frm,vol) 
-           a = testx(:,:,frm,vol) ;
+         
+           % Debugging 
+           if seisio.frameExists(position)
+       
+             fprintf('%s\n','FRAME exist'); 
+       
+             seisio.getTracesInFrame() ;
+             seisio.getTraceDataArray() ;
+             
+              a = testx(:,:,1,1)
+       
+           else
+       
+               fprintf('%s\n','NO FRAME'); 
+               a = testx(:,:,frm,vol)
+       
+            end    
+          
+          %a = testx(:,:,frm,vol) 
+          % a = testx(:,:,1,1)
            matrixofframes(frm,:,:) = a' 
            seisio.setTraceDataArray(a');
            seisio.setPosition(position);
