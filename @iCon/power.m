@@ -4,7 +4,12 @@ function y = power(A,B)
 %   must have the same dimensions unless one is a scalar. 
 %   A scalar can operate into anything.
 
-y = dataCon(power(double(A),double(B)));
+y = power(double(A),double(B));
+if isa(y, 'distributed')
+    y = piCon(y);
+else
+    y = iCon(y);
+end
 
 if isa(A,'iCon')
     y = metacopy(A,y);

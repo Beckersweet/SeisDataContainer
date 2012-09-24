@@ -14,7 +14,12 @@ end
 
 % Multiply
 if ~isa(A,'SeisDataContainer') % Right multiply
-    y = dataCon(double( A*double(B) ));
+    y = double( A*double(B) );
+    if isa(y, 'distributed')
+        y = piCon(y);
+    else
+        y = iCon(y);
+    end
     y = metacopy(B,y);
     
     % Extract collapsed dimensions & permutation
@@ -31,7 +36,12 @@ if ~isa(A,'SeisDataContainer') % Right multiply
     end
     
 elseif ~isa(B,'SeisDataContainer') % Left multiply
-    y = dataCon(double( double(A)*B ));
+    y = double( double(A)*B );
+    if isa(y, 'distributed')
+        y = piCon(y);
+    else
+        y = iCon(y);
+    end
     y = metacopy(A,y);
     
     % Extract collapsed dimensions & permutation
@@ -45,7 +55,12 @@ elseif ~isa(B,'SeisDataContainer') % Left multiply
     end
     
 else % Both data containers
-    y = dataCon(double(A)*double(B));
+    y = double(A)*double(B);
+    if isa(y, 'distributed')
+        y = piCon(y);
+    else
+        y = iCon(y);
+    end
     y = metacopy(A,y);
     
     % Extract collapsed dimensions
@@ -54,5 +69,3 @@ else % Both data containers
     y.exsize(:,1)    = A.exsize(:,1);
     y.exsize(:,2)    = B.exsize(:,2) - B.exsize(1,2) + A.exsize(2,1);
 end
-
-end % mtimes

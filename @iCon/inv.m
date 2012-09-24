@@ -4,7 +4,12 @@ function y = inv(x)
 %   A warning message is printed if X is badly scaled or
 %   nearly singular.
 
-y             = dataCon(inv(double(x)));
+y             = inv(double(x));
+if isa(y, 'distributed')
+    y = piCon(y);
+else
+    y = iCon(y);
+end
 y             = metacopy(x,y);
 y.perm        = fliplr(x.perm);
 y.exsize      = fliplr(x.exsize);

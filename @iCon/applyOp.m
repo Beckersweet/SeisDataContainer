@@ -6,7 +6,11 @@ function y = applyOp(x, op)
 y_data   = mtimes(op,double(x));
 
 % Rewrap data
-y             = dataCon(y_data);
+if isa(y_data,'distributed')
+    y = piCon(y_data);
+else
+    y = iCon(y_data);
+end
 header        = x.header;
 header.exsize = x.exsize; % Inject exsize
 y.header      = headerMod(op,header,1);

@@ -32,7 +32,12 @@ if isscalar(A) || isscalar(B)
     y = A .\ B;
     
 elseif ~isa(A,'iCon')
-    y = dataCon(double( A \ double(B) ));
+    y = double( A \ double(B) );
+    if isa(y, 'distributed')
+        y = piCon(y);
+    else
+        y = iCon(y);
+    end
     y = metacopy(B,y);
     
     % Extract collapsed dimensions & permutation
@@ -46,7 +51,12 @@ elseif ~isa(A,'iCon')
     end
     
 elseif ~isa(B,'iCon')
-    y = dataCon(double( double(A) \ B ));
+    y = double( double(A) \ B );
+    if isa(y, 'distributed')
+        y = piCon(y);
+    else
+        y = iCon(y);
+    end
     y = metacopy(A,y);
     
     % Extract collapsed dimensions & permutation
@@ -60,7 +70,12 @@ elseif ~isa(B,'iCon')
     end
     
 else % Both data containers
-    y = dataCon(double(A) \ double(B));
+    y = double(A) \ double(B);
+    if isa(y, 'distributed')
+        y = piCon(y);
+    else
+        y = iCon(y);
+    end
     y = metacopy(A,y);
     
     % Extract collapsed dimensions

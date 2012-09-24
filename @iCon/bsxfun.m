@@ -45,8 +45,12 @@ function y = bsxfun(fun,A,B)
 %     A = magic(5);
 %     A = bsxfun(@minus, A, mean(A));
 
-
-y = dataCon(bsxfun(fun,double(A),double(B)));
+y = bsxfun(fun,double(A),double(B));
+if isa(y, 'distributed')
+    y = piCon(y);
+else
+    y = iCon(y);
+end
 
 if isa(A,'iCon')
     y = metacopy(A,y);

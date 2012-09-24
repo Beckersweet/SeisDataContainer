@@ -9,7 +9,12 @@ ldind = @SDCpckg.utils.ldind;
 y_data   = mtimes(op,double(x));
 
 % Rewrap data
-y             = dataCon(y_data);
+y             = y_data;
+if isa(y, 'distributed')
+    y = piCon(y);
+else
+    y = iCon(y);
+end
 header        = x.header;
 header.exsize = x.exsize; % Inject exsize
 y.header      = headerMod(op,header,1);

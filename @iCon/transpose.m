@@ -7,7 +7,12 @@ function y = transpose(x)
 %   See also iCon.ctranspose.
 
 % Transpose
-y             = dataCon(transpose(double(x)));
+y             = transpose(double(x));
+if isa(y, 'distributed')
+    y = piCon(y);
+else
+    y = iCon(y);
+end
 y             = metacopy(x,y);
 y.perm        = fliplr(x.perm);
 y.header      = x.header;

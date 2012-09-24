@@ -7,4 +7,9 @@ function y = vertcat(varargin)
 
 varargin = cellfun(@(x) SDCpckg.serial.stripicon(x),...
            varargin,'UniformOutput',false');
-y = dataCon(vertcat(varargin{:}));
+y = vertcat(varargin{:});
+if isa(y, 'distributed')
+    y = piCon(y);
+else
+    y = iCon(y);
+end

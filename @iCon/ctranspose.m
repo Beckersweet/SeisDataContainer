@@ -8,7 +8,12 @@ function y = ctranspose(x)
 %   See also iCon.transpose.
 
 % Conjugate Transpose
-y             = dataCon(ctranspose(double(x)));
+y             = ctranspose(double(x));
+if isa(y, 'distributed')
+    y = piCon(y);
+else
+    y = iCon(y);
+end
 y             = metacopy(x,y);
 y.perm        = fliplr(x.perm);
 y.header      = x.header;

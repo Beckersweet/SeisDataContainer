@@ -17,4 +17,9 @@ function y = diag(x,varargin)
 % varargin = cellfun(@(x) SDCpckg.serial.stripicon(x), varargin,...
 %     'UniformOutput',false);
 
-y = dataCon(diag(double(x),varargin{:}));
+y = diag(double(x),varargin{:});
+if isa(y, 'distributed')
+    y = piCon(y);
+else
+    y = iCon(y);
+end
