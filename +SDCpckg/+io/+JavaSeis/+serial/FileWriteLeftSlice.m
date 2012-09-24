@@ -93,22 +93,28 @@ for hyp=1:1
           %Store matrixofframes - Java format (right slice contiguous in memory)
           %matrixofframes(frm,:,:) = testx(:,:,frm,vol) 
          
-           % Debugging 
-           if seisio.frameExists(position)
+          if isequal(slice,[]) == 0
+            
+             % if frame exist 
+             if seisio.frameExists(position)
        
-             fprintf('%s\n','FRAME exist'); 
+                fprintf('%s\n','FRAME exist'); 
        
-             seisio.getTracesInFrame() ;
-             seisio.getTraceDataArray() ;
+                seisio.getTracesInFrame() ;
+                seisio.getTraceDataArray() ;
              
-              a = testx(:,:,1,1)
+                a = testx(:,:,1,1) ;
        
-           else
+             else
        
                fprintf('%s\n','NO FRAME'); 
-               a = testx(:,:,frm,vol)
+               a = testx(:,:,frm,vol) ;
        
-            end    
+             end
+             
+          else
+              a = testx(:,:,frm,vol) 
+          end    
           
           %a = testx(:,:,frm,vol) 
           % a = testx(:,:,1,1)
