@@ -35,7 +35,7 @@ seisio = beta.javaseis.io.Seisio( dirname );
 seisio.open('r');
 
 % Read header
-header = SDCpckg.io.JavaSeis.serial.HeaderRead(dirname)
+header = SDCpckg.io.JavaSeis.serial.HeaderRead(dirname) ;
 
 % Get number of dimensions and set position accordingly
 dimensions = header.dims ;
@@ -47,8 +47,6 @@ shape = header.size ;
 %assert(isequal(slice,[]), 'Code only completed for slice == []');
 %asser(isequal(dimensions, 3), 'Code only completed for 3 dimensions');
 %position = zeros(dimensions,1);
-
-
 
 
 % Pre-set X to be 4d array of zeros with the correct dimensions
@@ -63,14 +61,14 @@ if isequal(slice,[]) == 0
    iend = istart ;
    
 else 
-    x = zeros(shape(2),rangeCount,shape(3),shape(4)) 
-   sx = zeros(shape(1),shape(2),shape(3),shape(4)) 
+    x = zeros(shape(2),rangeCount,shape(3),shape(4)) ;
+   sx = zeros(shape(1),shape(2),shape(3),shape(4)) ;
    
    
-   jstart = 1
-   jend = shape(4)
-   istart = 1
-   iend = shape(3) 
+   jstart = 1;
+   jend = shape(4);
+   istart = 1;
+   iend = shape(3) ;
    
 end
 
@@ -80,16 +78,25 @@ end
 
 % Read up to 4D datasets    
 for j=jstart:jend
-    position(4) = j-1
+    position(4) = j-1 ;
   for i = istart:iend
     position(3) = i - 1 ; 
     seisio.readFrame(position); % reads one 2D "Frame"
     sx(:,:,i,j) = seisio.getTraceDataArray()' ;
   
     if isequal(slice,[]) == 0
-     x = sx(:,range(1):range(2),i,j) ;
+        
+        size_x = size(x);
+        size_sx = size(sx(:,range(1):range(2),i,j));
+        
+        x = sx(:,range(1):range(2),i,j) ;
     else 
-     x(:,:,i,j) = sx(:,range(1):range(2),i,j) ;   
+        
+        size_x = size(x(:,:,i,j));
+        size_sx = size(sx(:,range(1):range(2),i,j));
+        
+        
+        x(:,:,i,j) = sx(:,range(1):range(2),i,j)   ; 
     end     
  
   end

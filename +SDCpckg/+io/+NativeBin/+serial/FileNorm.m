@@ -48,7 +48,7 @@ if(norm == inf)
             r = complex(r,dummy);
         end
         total     = max(abs(r));
-        x         = max(total,x);        
+        x         = max(total,x);          
         reminder  = reminder - buffer;
         rstart    = rend + 1;
         clear r;
