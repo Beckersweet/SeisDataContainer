@@ -8,9 +8,11 @@ function y = subsrefHelper(x,s)
 lastdim = length(s.subs);
 % Checking indices
 % We need to extract a vector of indices for use in header subsref.
-if length(s.subs) == 1 && all(s.subs{:} == ':') % Vectorizing case
-    y = vec(x);
-    return;
+if length(s.subs) == 1  % Vectorizing case
+    if all(s.subs{:} == ':')
+        y = vec(x);
+        return;
+    end
     
 else % multiple dims case    
     % indexing must be same # of dimensions as x
