@@ -42,8 +42,8 @@ for i = 1:N
 end
 S1 = oppStack(N,OP,1);
 S2 =  opStack(oplist{:});
-x1 = iCon(S1.drandn);
-x2 = iCon(S1.rrandn);
+x1 = piCon(S1.drandn);
+x2 = piCon(S1.rrandn);
 y1 = S1*x1;
 y2 = S2*x1;
 z1 = S1'*x2;

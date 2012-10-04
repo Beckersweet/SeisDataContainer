@@ -38,7 +38,7 @@ classdef iCon < SeisDataContainer
         % iCon Constructor
         function x = iCon(doh,varargin)
             if ~isstruct(doh)
-                assert(isnumeric(doh));
+                assert(isnumeric(doh),'data must be numeric');
                 header = SDCpckg.basicHeaderStructFromX(doh);
             else
                 header = doh;
