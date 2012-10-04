@@ -34,18 +34,25 @@ for i = 1:length(imsize)
         j = j + 1;
         collapsed_chunk = [];
     elseif prod(collapsed_chunk) > redims(j)
-        error(['Reshape dimensions must be collapsed '...
+        warning(['Reshape dimensions must be collapsed '...
             'or multiples of implicit dimension']);
     end
 end
 
 % Reshape collapsed dims
-collapsed_dims = reshape(collapsed_dims,2,[]);
+y        = iCon(reshape(x.data,redims));
+if ~(length(collapsed_dims) == 1)
+    % Just giving a warning don't fail them poor souls
+    collapsed_dims = reshape(collapsed_dims,2,[]);
+    y.perm   = 1:length(collapsed_dims);
+    y.exsize = collapsed_dims;
+else
+    y.perm   = 1:length(size(y.data));
+    y.exsize = y.perm;
+    y.exsize = [y.exsize; y.exsize];
+end
 
 % Reshape
-y        = iCon(reshape(x.data,redims));
-y.perm   = 1:length(collapsed_dims);
-y.exsize = collapsed_dims;
 
 % Metadata transfer
 y_header               = y.header;

@@ -21,6 +21,6 @@ y.header = rmfield(y.header,'exsize');
 
 % Post calculation reshape
 x_n = size(x,2);
-if ~all(size(y) == [prod(size(y))/x_n x_n])
+if ~(length(size(y)) == 2)
     y = reshape(y,[prod(size(y))/x_n x_n]);
 end

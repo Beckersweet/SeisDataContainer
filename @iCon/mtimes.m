@@ -12,6 +12,17 @@ if nargin == 3 && strcmp(swp,'swap')
     clear('tmp');
 end
 
+% Scalar case
+if isscalar(A) && ~isa(A,'SeisDataContainer')
+    B.data = double(A)*B.data;
+    y = B;
+    return;
+elseif isscalar(B) && ~isa(B,'SeisDataContainer')
+    A.data = double(B)*A.data;
+    y = A;
+    return;
+end
+
 % Multiply
 if ~isa(A,'SeisDataContainer') % Right multiply
     y = double( A*double(B) );
@@ -67,5 +78,5 @@ else % Both data containers
     y.header.size(2) = B.header.size(B.exsize(1,2):B.exsize(2,2));
     y.header.size(1) = A.header.size(A.exsize(1,1):A.exsize(2,1));
     y.exsize(:,1)    = A.exsize(:,1);
-    y.exsize(:,2)    = B.exsize(:,2) - B.exsize(1,2) + A.exsize(2,1);
+    y.exsize(:,2)    = B.exsize(:,2) - B.exsize(2,1) + A.exsize(2,1);
 end

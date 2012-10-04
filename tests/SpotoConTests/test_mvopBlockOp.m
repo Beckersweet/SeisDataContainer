@@ -55,13 +55,15 @@ function test_mvopBlockOp_Gaussian(seed)
    M = opMatrix(G);
    A = opBlockOp(32,80,M,8,16,10,12);
 
-   dataA = reshape(A*data(:),40,60); % 4x5 blocks of size 10x12
+   % Hacks had to be done because iCon does not support expansionary
+   % reshaping as of yet
+   dataA = iCon(reshape(A*double(data(:)),40,60)); % 4x5 blocks of size 10x12
    dataB = zeros(40,60);
    for i=1:4
       for j=1:5
          block = data((1:8)+(i-1)*8,(1:16)+(j-1)*16);
-         dataB((1:10)+(i-1)*10,(1:12)+(j-1)*12) = reshape(...
-             double(G*block(:)),10,12);
+         dataB((1:10)+(i-1)*10,(1:12)+(j-1)*12) = iCon(reshape(...
+             double(G*double(block(:))),10,12));
       end      
    end
    
