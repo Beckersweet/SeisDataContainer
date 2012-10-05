@@ -13,66 +13,67 @@ function y = reshape(x,varargin)
 %
 %   See also: invvec, dataContainer.vec, iCon.double, setimsize
 
-% Check for the collapsibility of reshape
-% Do the calculation
+% Setting up the variables
 imsize  = x.header.size;
-while (imsize(end) == 1) % Strip singleton dimensions
-   imsize(end)  = [];
-end
-redims          = [varargin{:}];
-j               = 1;
-collapsed_chunk = [];
-collapsed_dims  = 1;
+redims  = [varargin{:}];
 
-for i = 1:length(imsize)
-    collapsed_chunk = [collapsed_chunk imsize(i)];
-    if  prod(collapsed_chunk) == redims(j)
-        collapsed_dims(end+1)  = i;
-        if i < length(imsize)
-            collapsed_dims(end+1)  = i+1;
+% Reshape data 
+y = iCon(reshape(x.data,redims));
+
+% Strip singleton dimensions
+while (imsize(end) == 1) 
+   imsize(end) = [];
+end
+
+while (redims(end) == 1) 
+   redims(end) = [];
+end
+
+if length(redims) > length(imsize) % Expanding implicit size
+    warning('iCon:reshape:imsize',...
+        ['reshape dimensions more than implicit dimensions. Old metadata '...
+         'will be replaced']);
+else % Collapsing implicit size
+
+    % Calculate collapsed dimensiosn
+    j               = 1;
+    collapsed_chunk = [];
+    collapsed_dims  = 1;
+
+    for i = 1:length(imsize)
+        collapsed_chunk = [collapsed_chunk imsize(i)];
+        if  prod(collapsed_chunk) == redims(j)
+            collapsed_dims(end+1) = i;
+            if i < length(imsize)
+                collapsed_dims(end+1) = i+1;
+            end
+            j = j + 1;
+            collapsed_chunk = [];
+        elseif prod(collapsed_chunk) > redims(j)
+            warning('iCon:reshape:imsize',...
+            ['reshape dimensions not collapsible from implicit dimensions. '...
+            'old metadata will be replaced']);
+            return;
         end
-        j = j + 1;
-        collapsed_chunk = [];
-    elseif prod(collapsed_chunk) > redims(j)
-        warning(['Reshape dimensions must be collapsed '...
-            'or multiples of implicit dimension']);
     end
-end
 
-% Reshape collapsed dims
-y        = iCon(reshape(x.data,redims));
-if ~(length(collapsed_dims) == 1)
-    % Just giving a warning don't fail them poor souls
+    % Reshape collapsed dims
     collapsed_dims = reshape(collapsed_dims,2,[]);
-    y.perm   = 1:length(collapsed_dims);
-    y.exsize = collapsed_dims;
-else
-    y.perm   = 1:length(size(y.data));
-    y.exsize = y.perm;
-    y.exsize = [y.exsize; y.exsize];
-end
+    y.perm         = 1:length(collapsed_dims);
+    y.exsize       = collapsed_dims;
 
-% Reshape
-
-% Metadata transfer
-y_header               = y.header;
-y_header.dims          = x.header.dims;
-y_header.varName       = x.header.varName;
-y_header.varUnits      = x.header.varUnits;
-y_header.origin        = x.header.origin;
-y_header.delta         = x.header.delta;
-y_header.precision     = x.header.precision;
-y_header.complex       = x.header.complex;
-y_header.unit          = x.header.unit;
-y_header.label         = x.header.label;
-y_header.distributedIO = x.header.distributedIO;
-y_header.size          = x.header.size;
-
-% if isvector(collapsed_dims) % vec case
-%     y_header.size = [x.header.size 1];
-%     y.exsize(:,2) = [collapsed_dims(end) + 1; collapsed_dims(end) + 1];
-% else
-%     y_header.size = x.header.size;
-% end
-
-y.header = y_header;
+    % Metadata transfer
+    y_header               = y.header;
+    y_header.dims          = x.header.dims;
+    y_header.varName       = x.header.varName;
+    y_header.varUnits      = x.header.varUnits;
+    y_header.origin        = x.header.origin;
+    y_header.delta         = x.header.delta;
+    y_header.precision     = x.header.precision;
+    y_header.complex       = x.header.complex;
+    y_header.unit          = x.header.unit;
+    y_header.label         = x.header.label;
+    y_header.distributedIO = x.header.distributedIO;
+    y_header.size          = x.header.size;
+    y.header               = y_header;
+end % collapsing implicit size
