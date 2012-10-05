@@ -49,11 +49,15 @@ end % dirac special
 
 function test_oppKron2Lo_FoG
 %% FoG
-m  = randi([2 10]);
+m  = 3;
 A  = opDFT(m);
 B  = opDFT(m*m);
 K1 = B*opKron(A,A)*B;
 K2 = B*oppKron2Lo(A,A,1)*B;
-x  = iCon(K1.drandn);
+x  = piCon(K1.drandn);
+x_header = x.header;
+x_header.size = [3 3];
+x.header = x_header;
+x.exsize = [1;2];
 assertElementsAlmostEqual(K1*x, K2*x);
 end % FoG
