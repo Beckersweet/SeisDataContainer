@@ -27,7 +27,7 @@ k = 1;
 Ratio = [inf,0];
 for i=1:k
     x   = piCon(A2.drandn);
-    y   = iCon(A2.rrandn);
+    y   = piCon(A2.rrandn);
     z1  = (A*x)' * y;
     z2  = x' * (A'*y);
     err = max( err, abs(z1 - z2) );
@@ -54,7 +54,7 @@ function test_oppNumBlockDiag_weights
 % Test for negative scalar weights
 B    = piCon.randn(5,4,3);
 A    = oppNumBlockDiag(-2,B);
-assertEqual(A.weights,[-2;-2;-2]);
+assertEqual(gather(A.weights),[-2;-2;-2]);
 
 % Test for normal weights
 B    = iCon.randn(5,4,2);
@@ -62,9 +62,9 @@ A    = oppNumBlockDiag([3 4],distributed(B),1);
 B1   = B(:,:,1); B2 = B(:,:,2);
 C{1} = opMatrix(B1); C{2} = opMatrix(B2);
 A2   = oppBlockDiag([3 4],C{:},1);
-x    = iCon(A2.drandn);
+x    = piCon(A2.drandn);
 assertElementsAlmostEqual(A*x, A2*x);
-x    = iCon(A2.rrandn);
+x    = piCon(A2.rrandn);
 assertElementsAlmostEqual(A'*x, A2'*x);
 
 end
@@ -138,7 +138,7 @@ spmd % Create x with only second lab
     x = codistributed.build(xloc,codistributor1d(1,part,gsize));
 end
 
-A*iCon(x);
+A*piCon(x);
 end
 
 
