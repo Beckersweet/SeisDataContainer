@@ -26,7 +26,7 @@ k = 1;
 
 Ratio = [inf,0];
 for i=1:k
-    x   = iCon(A2.drandn);
+    x   = piCon(A2.drandn);
     y   = iCon(A2.rrandn);
     z1  = (A*x)' * y;
     z2  = x' * (A'*y);
@@ -78,7 +78,7 @@ C{1} = opKron(opDirac(3), opMatrix(B1));
 C{2} = opKron(opDirac(3), opMatrix(B2)); 
 A2   = oppBlockDiag(C{:},1);
 
-x    = iCon(drandn(A2));
+x    = piCon(drandn(A2));
 
 y1   = A*x;
 y2   = A2*x;
@@ -94,7 +94,7 @@ B1   = B(:,:,1); B2 = B(:,:,2);
 C{1} = opKron(opDirac(3), opMatrix(B1)); 
 C{2} = opKron(opDirac(3), opMatrix(B2)); 
 A2   = oppBlockDiag(C{:},1);
-x    = iCon(drandn(A2));
+x    = piCon(drandn(A2));
 y1   = A*x;
 y2   = A2*x;
 assertElementsAlmostEqual(y1,y2);
@@ -123,7 +123,7 @@ spmd
 end
 
 % Construct A
-A = oppNumBlockDiag(iCon(B));
+A = oppNumBlockDiag(piCon(B));
 
 spmd % Create x with only second lab
     x = codistributed.randn(numlabs*5,1);

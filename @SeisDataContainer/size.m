@@ -12,7 +12,11 @@ function varargout = size(x,varargin)
     
     % Size indexing
     if ~isempty(varargin)
-        y = y(varargin{:});
+        if varargin{1} > length(y) % Indexing into all the singleton dimensions
+            y = 1;
+        else
+            y = y(varargin{:});
+        end
     end 
     
     if nargout == length(y)
