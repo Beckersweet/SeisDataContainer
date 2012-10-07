@@ -116,8 +116,7 @@ for hyp=1:1
               a = testx(:,:,frm,vol) 
           end    
           
-          %a = testx(:,:,frm,vol) 
-          % a = testx(:,:,1,1)
+          
            matrixofframes(frm,:,:) = a' 
            seisio.setTraceDataArray(a');
            seisio.setPosition(position);

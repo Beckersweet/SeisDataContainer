@@ -36,7 +36,7 @@ dimensions = header.dims ;
 position = zeros(dimensions,1);
 
 % Get Shape
-shape = header.size ;
+shape = header.size 
 
 % Pre-set X to be 4d array of zeros with the correct dimensions
 x=zeros(shape(1),...
@@ -49,11 +49,11 @@ x=zeros(shape(1),...
 
 % Read up to 4D datasets    
 for j=1:shape(4)
-    position(4) = j-1
+    position(4) = j-1 ;
   for i = 1:shape(3)
     position(3) = i -1 ; 
     seisio.readFrame(position); % reads one 2D "Frame"
-    x(:,:,i,j) = seisio.getTraceDataArray()';  
+    x(:,:,i,j) = seisio.getTraceDataArray()'   ; 
   end
 end  
   seisio.close();

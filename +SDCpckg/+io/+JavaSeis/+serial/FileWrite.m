@@ -33,7 +33,7 @@ seisio.open('rw');
 AxisLengths = seisio.getGridDefinition.getAxisLengths() ;
 
 % Get number of dimensions and set position accordingly
-dimensions = seisio.getGridDefinition.getNumDimensions() ;
+dimensions = seisio.getGridDefinition.getNumDimensions() 
 position = zeros(dimensions,1);
 
 % Test: Check Position
@@ -81,17 +81,18 @@ testx = x ;
 for hyp=1:1
  %loop over volumes 
  for vol=1:formatgridsize(4)
-     vola = formatgridsize(4) ;
+    % vola = formatgridsize(4) ;
      position(4) = vol-1;   
      %loop over frames
       for frm=1:formatgridsize(3)
-          frmb = formatgridsize(3) ;
+         % frmb = formatgridsize(3) ;
           position(3) = frm-1;
          
           %Store matrixofframes - Java format (right slice contiguous in memory)
           %matrixofframes(frm,:,:) = testx(:,:,frm,vol) 
            a = testx(:,:,frm,vol) ;
-           matrixofframes(frm,:,:) = a' ;
+          
+          % matrixofframes(frm,:,:) = a' ;
            seisio.setTraceDataArray(a');
            seisio.setPosition(position);
            seisio.writeFrame(size(a,2));

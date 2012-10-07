@@ -35,8 +35,10 @@ assert(isstruct(header), 'header must be a header struct')
  newdelta = [delta]' ;
 
 % Define Grid Size
+testHsize = header.size;
  gridsize = [header.size]'  ;
- 
+% gridsize = [header.size] ;
+
 % if less than 4D: Reshape to 4D
   if size(gridsize) < 4
      for nullDim=size(gridsize):3
@@ -48,7 +50,7 @@ assert(isstruct(header), 'header must be a header struct')
      end
   end    
  
-% testgrid = gridsize
+% testgrid = size(gridsize) ;
 
 % Grid definition 
   grid = beta.javaseis.grid.GridDefinition.standardGrid(1,gridsize,neworigin,newdelta,neworigin,newdelta) ;
