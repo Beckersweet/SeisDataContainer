@@ -1,4 +1,4 @@
-function x = FileNorm(dirname,K,J,norm)
+function [x,y,z] = FileNorm(dirname,K,J,norm)
 %FILENORM Calculates the norm of a given data
 %
 %   FileNorm(DIRNAME,FILENAME,DIMENSIONS,NORM,FILE_PRECISION)
@@ -6,6 +6,13 @@ function x = FileNorm(dirname,K,J,norm)
 %   DIRNAME        - A string specifying the input directory
 %   NORM           - Specifyies the norm type. Supported norms: inf, -inf,
 %                    'fro', p-norm where p is scalar.
+
+
+% Load dynamic libraries
+ javaaddpath('/Users/bcollignon/Documents/workspace/dhale-jtk-78bca79.jar');
+ javaaddpath('/Users/bcollignon/Documents/workspace/betajavaseis1819.jar');
+ javaaddpath('/Users/bcollignon/Documents/workspace/jama.jar');
+ javaaddpath('/Users/bcollignon/Documents/workspace/javaSeisExample.jar');
 
 SDCpckg.io.isFileClean(dirname);
 %error(nargchk(2, 2, nargin, 'struct'));
@@ -22,7 +29,9 @@ end
 % Infinite norm
 if(norm == inf)
     total =0 ;
-    x = -inf;
+    totaltest=0 ;
+    x = -999 ;
+    y = -999 ;
     
    
          for k = 1:K
@@ -30,47 +39,84 @@ if(norm == inf)
             
                r = SDCpckg.io.JavaSeis.serial.FileReadLeftChunk(dirname,[j j+2],[k 1]) ;
                size_r= size(r);
+               test_r = r;
                
+               % sum all elements per row
                for i=1:size_r(1)
-                total    = total + max(abs(r(i,:))) ;
+                   r_row = r(i,:) ;
+                   total    = sumabs(r(i,:)) ;
+                   % take the higher sum among rows
+                   x     = max(total,x);
                end
                
-               % replace for loop with JS call
                
+               
+               % No Need to transpose r (row to col)
+               
+               
+               totaltest = beta.javaseis.examples.io.sum_inf.fileNormInf(r) ;
+               
+                y     = max(totaltest,y);
+              
+             
+              
+              
+               % replace/compare for loop with JS/JAVA call 
+               % need to calculate vector norm instead of matrix
+               % chunk should be a vector 
+              
                clear r
           
            end
          end
         
        
-        x     = max(total,x);        
-      
+    
    
     
 % Negative infinite norm    
 elseif(norm == -inf)
-   x=inf ;
-   total = 0;     
-        
-       for k = 1:K
+    total =0 ;
+    totaltest=0 ;
+    x = 999 ;
+    y = 999 ;
+    
+   
+         for k = 1:K
            for j = 1:J-2
             
                r = SDCpckg.io.JavaSeis.serial.FileReadLeftChunk(dirname,[j j+2],[k 1]) ;
-               size_r= size(r);
-              
+               size_r= size(r) ;
+               test_r = r ;
+               
+               % sum all elements per row
                for i=1:size_r(1)
-                total    = total + min(abs(r(i,:))) ;
+                   r_row = r(i,:) ;
+                   total    = sumabs(r(i,:)) ;
+                   % take the higher sum among rows
+                   x     = min(total,x);
                end
                
-               % replace for loop with JS call
                
+               
+               % No Need to transpose r (row to col)
+               
+               
+               totaltest = beta.javaseis.examples.io.sum_inf.fileNormPInf(r) ;
+               
+                y     = min(totaltest,y);
+              
+             
+              
+              
+               % replace/compare for loop with JS/JAVA call 
+               % need to calculate vector norm instead of matrix
+               % chunk should be a vector 
+              
                clear r
           
            end
          end
-        
-       
-        x    = min(total,x);        
         
        
     
@@ -78,8 +124,7 @@ elseif(norm == -inf)
 % P-norm
 elseif (isscalar(norm))
     total = 0;
-  
-        
+    totaltest = 0;
         
         
          for k = 1:K
@@ -92,7 +137,7 @@ elseif (isscalar(norm))
                 total    = total + sum(abs(r(:,i)).^norm) ;
                end
                
-               % replace for loop with JS call
+                totaltest = beta.javaseis.examples.io.sum_inf.fileNormScalar(r,norm) ;
                
                clear r
           
@@ -101,7 +146,8 @@ elseif (isscalar(norm))
         
          
        
-         
+   
+    y = totaltest^(1/norm);  
   
     x = total^(1/norm);
 else
