@@ -4,6 +4,7 @@ function OOCNorm = TestNorm(dirname,x)
  javaaddpath('/Users/bcollignon/Documents/workspace/dhale-jtk-78bca79.jar');
  javaaddpath('/Users/bcollignon/Documents/workspace/betajavaseis1819.jar');
  javaaddpath('/Users/bcollignon/Documents/workspace/jama.jar');
+ javaaddpath('/Users/bcollignon/Documents/workspace/javaSeisExample.jar');
  
 
 % Import External Java functions
@@ -42,6 +43,8 @@ range(2) = 2 ;
 
 header = SDCpckg.io.JavaSeis.serial.HeaderWrite(x,'double',0)
 SDCpckg.io.JavaSeis.serial.FileAlloc('newtest',header) ;
+% fill x
+x = rand(x) ;
 SDCpckg.io.JavaSeis.serial.FileWrite('newtest',x) ;
 % [myslice header] = SDCpckg.io.JavaSeis.serial.FileReadLeftSlice('newtest',slice) ;
 [mychunk header] = SDCpckg.io.JavaSeis.serial.FileReadLeftChunk('newtest',range,slice) ;
