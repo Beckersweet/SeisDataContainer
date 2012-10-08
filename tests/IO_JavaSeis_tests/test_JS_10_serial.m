@@ -695,28 +695,28 @@ function test_serial_file_Norm_single_real
     SDCpckg.io.JavaSeis.serial.FileWrite(path,imat,hdr);
     K=5;
     J=12;
-    
-    
-    % Matlab norm (2-norm)
-    %MATnorm = norm(x,1) % works for a 2d chunks only
 
+    % Matrix to vector
+    %if length(size(imat))>1
+    %        imat = reshape(imat,[1 prod(size(imat))]);
+    %end
     
     % Norm over pieces of 2-D chunks
-    %n      = SDCpckg.io.JavaSeis.serial.FileNorm(path,K,J,0) 
+    %[n,m]      = SDCpckg.io.JavaSeis.serial.FileNorm(path,K,J,0) 
     %x      = norm(SDCpckg.utils.vecNativeSerial(imat),0) 
     %assertElementsAlmostEqual(x,n)
-    %n      = SDCpckg.io.JavaSeis.serial.FileNorm(path,K,J,1)
+    %[n,m]      = SDCpckg.io.JavaSeis.serial.FileNorm(path,K,J,1)
     %x      = norm(SDCpckg.utils.vecNativeSerial(imat),1)
     %assertElementsAlmostEqual(x,n)total^(1/norm);
-    %n      = SDCpckg.io.JavaSeis.serial.FileNorm(path,K,J,2)
+    %[n,m]     = SDCpckg.io.JavaSeis.serial.FileNorm(path,K,J,2)
     %x      = norm(SDCpckg.utils.vecNativeSerial(imat),2)
     %assertElementsAlmostEqual(x,n)
     [n,m]      = SDCpckg.io.JavaSeis.serial.FileNorm(path,K,J,inf)
-    %x      = norm(SDCpckg.utils.vecNativeSerial(imat),inf)
-    %assertElementsAlmostEqual(x,n)
- %   [n,m]      = SDCpckg.io.JavaSeis.serial.FileNorm(path,K,J,-inf)
-    %x      = norm(SDCpckg.utils.vecNativeSerial(imat),-inf)
-    %assertElementsAlmostEqual(x,n)
+    x      = norm(SDCpckg.utils.vecNativeSerial(imat),inf)
+    assertElementsAlmostEqual(x,m)
+    [n,m]      = SDCpckg.io.JavaSeis.serial.FileNorm(path,K,J,-inf)
+    x      = norm(SDCpckg.utils.vecNativeSerial(imat),-inf)
+    assertElementsAlmostEqual(x,m)
     %n      = SDCpckg.io.JavaSeis.serial.FileNorm(path,K,J,'fro')
     %x      = norm(SDCpckg.utils.vecNativeSerial(imat),'fro')
     %assertElementsAlmostEqual(x,n)
