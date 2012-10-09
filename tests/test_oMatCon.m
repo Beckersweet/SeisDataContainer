@@ -1,5 +1,6 @@
 function test_suite = test_oMatCon
     initTestSuite;
+    SeisDataContainer_init;
 end
 
 function test_oMatCon_complex
