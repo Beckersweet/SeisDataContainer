@@ -35,96 +35,65 @@ sizes   = [varargin{2:end}];
 % Check for the collapsibility of reshape
 % Do the calculation
 imsize  = x.header.size;
+redims  = sizes;
 
-while(imsize(end) == 1) % Strip singleton dimensions
+% Reshape data 
+y = piCon(reshape(x.data,redims));
+
+% Strip singleton dimensions
+while (imsize(end) == 1) 
    imsize(end) = [];
 end
-redims          = sizes;
-j               = 1;
-collapsed_chunk = [];
-collapsed_dims  = 1;
 
-for i = 1:length(imsize)
-    collapsed_chunk = [collapsed_chunk imsize(i)];
-    if  prod(collapsed_chunk) == redims(j)
-        collapsed_dims(end+1)  = i;
-        if i < length(imsize)
-            collapsed_dims(end+1)  = i+1;
-        end
-        j = j + 1;
-        collapsed_chunk = [];
-    elseif prod(collapsed_chunk) > redims(j)
-        error(['Reshape dimensions must be collapsed '...
-            'or multiples of implicit dimension']);
-    end
+while (redims(end) == 1) 
+   redims(end) = [];
 end
 
-% Reshape collapsed dims
-collapsed_dims = reshape(collapsed_dims,2,[]);
+if length(redims) > length(imsize) % Expanding implicit size
+    warning('iCon:reshape:imsize',...
+        ['reshape dimensions more than implicit dimensions. Old metadata '...
+         'will be replaced']);
+else % Collapsing implicit size
 
-% Check for number of elements
-assert(numel(x.data) == prod(sizes),'Number of elements must be conserved')
+    % Calculate collapsed dimensiosn
+    j               = 1;
+    collapsed_chunk = [];
+    collapsed_dims  = 1;
 
-% Setup variables
-data = x.data;
-if ~dim, dim  = x.excoddims; end
-
-% Pick the smallest dimension
-dim = min(dim,length(sizes));
-
-% Vec case
-if prod(sizes) == sizes(1)
-    spmd
-        % Setup local parts
-        data = getLocalPart(data);
-        data = data(:); % vec
-        part = codistributed.zeros(1,numlabs);
-        
-        % Setup codistributor and combine
-        if ~isempty(data)
-            part(labindex)  = length(data);
+    for i = 1:length(imsize)
+        collapsed_chunk = [collapsed_chunk imsize(i)];
+        if  prod(collapsed_chunk) == redims(j)
+            collapsed_dims(end+1) = i;
+            if i < length(imsize)
+                collapsed_dims(end+1) = i+1;
+            end
+            j = j + 1;
+            collapsed_chunk = [];
+        elseif prod(collapsed_chunk) > redims(j)
+            warning('iCon:reshape:imsize',...
+            ['reshape dimensions not collapsible from implicit dimensions. '...
+            'old metadata will be replaced']);
+            return;
         end
-        
-        % Build codistributed
-        cod  = codistributor1d(1,part,sizes);
-        data = codistributed.build(data,cod,'noCommunication');
     end
-    
-else % Everything else
-    spmd
-        % Setup local parts
-        data = getLocalPart(data);
-        part = codistributed.zeros(1,numlabs);
-        
-        % Reshape
-        if ~isempty(data)
-            locsizes        = num2cell(sizes);
-            locsizes{dim}   = [];
-            data            = reshape(data,locsizes{:});
-            part(labindex)  = size(data,dim);
-        else
-            empty_size      = sizes;
-            empty_size(dim) = 0;
-            data = zeros(empty_size);
-        end
-        
-        % Build codistributed
-        cod  = codistributor1d(dim,part,sizes);
-        data = codistributed.build(data,cod,'noCommunication');
-    end
-end
 
-% Set variables
-% Compensate for 1D case
-if length(collapsed_dims) == 1
-    collapsed_dims(end + 1) = 1;
-end
+    % Reshape collapsed dims
+    collapsed_dims = reshape(collapsed_dims,2,[]);
+    y.perm         = 1:length(collapsed_dims);
+    y.exsize       = collapsed_dims;
 
-% Set variables
-y             = piCon(data);
-cod           = cod{1};
-y.imcoddims   = cod.Dimension; % Old distribution is obsolete
-y.imcodpart   = cod.Partition; % Old distribution is obsolete
-y.header.size = x.header.size;
-y.exsize      = collapsed_dims;
-y.perm        = 1:length(collapsed_dims); % Old permutation is GONE
+    % Metadata transfer
+    y_header               = y.header;
+    y_header.dims          = x.header.dims;
+    y_header.varName       = x.header.varName;
+    y_header.varUnits      = x.header.varUnits;
+    y_header.origin        = x.header.origin;
+    y_header.delta         = x.header.delta;
+    y_header.precision     = x.header.precision;
+    y_header.complex       = x.header.complex;
+    y_header.unit          = x.header.unit;
+    y_header.label         = x.header.label;
+    y_header.distributedIO = x.header.distributedIO;
+    y_header.size          = x.header.size;
+    y.header               = y_header;
+end % collapsing implicit size

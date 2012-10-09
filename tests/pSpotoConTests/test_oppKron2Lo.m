@@ -5,7 +5,7 @@ end
 function test_oppKron2Lo_emptylabs
 %% Test for empty labs
 % Setup x
-x = piCon.randn(10,10);
+x = piCon.randn(100,1);
 x = redistribute(x,3);
 A = opDFT(100);
 K = oppKron2Lo(opDirac(1),A);
@@ -14,8 +14,8 @@ end % empty labs
 
 function test_oppKron2Lo_dirac
 %% Test for Dirac-skipping functionality
-m  = randi(100);
-n  = randi(100);
+m  = 4;
+n  = 3;
 A  = opDirac(m);
 B  = opDFT(n);
 x  = vec(redistribute(piCon.randn(n,m),2));
@@ -40,24 +40,24 @@ function test_oppKron2Lo_dirac_special
 A  = randn(10,51);
 K1 = opKron(opDirac(4),opKron(A,opDirac(101)));
 K2 = oppKron2Lo(opDirac(4),opKron(A,opDirac(101)),1);
-x1 = iCon.randn(5151,4);
+x1 = iCon.randn(101,51,4);
 x2 = distributed(x1);
 y1 = K1*vec(x1);
 y2 = K2*vec(x2);
-assertEqual(y1,y2);
+assertElementsAlmostEqual(y1,y2);
 end % dirac special
 
-function test_oppKron2Lo_FoG
-%% FoG
-m  = 3;
-A  = opDFT(m);
-B  = opDFT(m*m);
-K1 = B*opKron(A,A)*B;
-K2 = B*oppKron2Lo(A,A,1)*B;
-x  = piCon(K1.drandn);
-x_header = x.header;
-x_header.size = [3 3];
-x.header = x_header;
-x.exsize = [1;2];
-assertElementsAlmostEqual(K1*x, K2*x);
-end % FoG
+% function test_oppKron2Lo_FoG
+% %% FoG
+% m  = 3;
+% A  = opDFT(m);
+% B  = opDFT(m*m);
+% K1 = B*opKron(A,A)*B;
+% K2 = B*oppKron2Lo(A,A,1)*B;
+% x  = piCon(K1.drandn);
+% x_header = x.header;
+% x_header.size = [3 3];
+% x.header = x_header;
+% x.exsize = [1;2];
+% assertElementsAlmostEqual(K1*x, K2*x);
+% end % FoG

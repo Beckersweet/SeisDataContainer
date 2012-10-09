@@ -13,7 +13,7 @@ else
 end
 header        = x.header;
 header.exsize = x.exsize; % Inject exsize
-y.header      = headerMod(op,header,1);
+y.header      = headerMod(op, header, 1);
 y.exsize      = y.header.exsize; % Extract exsize
 
 % Remove field
