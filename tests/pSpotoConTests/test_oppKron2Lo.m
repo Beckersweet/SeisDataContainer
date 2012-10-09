@@ -5,7 +5,7 @@ end
 function test_oppKron2Lo_emptylabs
 %% Test for empty labs
 % Setup x
-x = piCon.randn(100,1);
+x = piCon.randn(10,10);
 x = redistribute(x,3);
 A = opDFT(100);
 K = oppKron2Lo(opDirac(1),A);
