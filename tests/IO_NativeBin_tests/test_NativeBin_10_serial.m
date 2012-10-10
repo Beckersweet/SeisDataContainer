@@ -655,3 +655,87 @@ function test_serial_file_Norm_single_complex
     x      = norm(SDCpckg.utils.vecNativeSerial(imat),'fro');
     assertElementsAlmostEqual(x,n)
 end
+
+function test_serial_file_copy_left_chunk_single_real
+%%
+    I=randi([5 15],1); J=randi([5 15],1); K=randi([5 15],1);
+    imat=rand(I,J,K);
+    tb=ConDir();
+    ts=ConDir();
+    cs=randi([1 J],1);
+    ce=randi([cs J],1);
+    si=randi([1 K],1);
+    large=single(imat);
+    small=large(:,cs:ce,si);
+    hdrb=SDCpckg.basicHeaderStructFromX(large);
+    SDCpckg.io.NativeBin.serial.FileWrite(path(tb),large,hdrb);
+    hdrs=SDCpckg.basicHeaderStructFromX(small);
+    SDCpckg.io.NativeBin.serial.FileAlloc(path(ts),hdrs);
+    SDCpckg.io.NativeBin.serial.FileCopyLeftChunkToFile(path(tb),path(ts),[cs ce],[si]);
+    SDCpckg.io.NativeBin.serial.FileCopyLeftChunkFromFile(path(ts),path(tb),[cs ce],[si]);
+    new=SDCpckg.io.NativeBin.serial.FileRead(path(tb));
+    assert(isequal(large,new))
+end
+
+function test_serial_file_copy_left_chunk_single_complex
+%%
+    I=randi([5 15],1); J=randi([5 15],1); K=randi([5 15],1);
+    imat=rand(I,J,K);
+    tb=ConDir();
+    ts=ConDir();
+    cs=randi([1 J],1);
+    ce=randi([cs J],1);
+    si=randi([1 K],1);
+    large=single(complex(imat,1));
+    small=large(:,cs:ce,si);
+    hdrb=SDCpckg.basicHeaderStructFromX(large);
+    SDCpckg.io.NativeBin.serial.FileWrite(path(tb),large,hdrb);
+    hdrs=SDCpckg.basicHeaderStructFromX(small);
+    SDCpckg.io.NativeBin.serial.FileAlloc(path(ts),hdrs);
+    SDCpckg.io.NativeBin.serial.FileCopyLeftChunkToFile(path(tb),path(ts),[cs ce],[si]);
+    SDCpckg.io.NativeBin.serial.FileCopyLeftChunkFromFile(path(ts),path(tb),[cs ce],[si]);
+    new=SDCpckg.io.NativeBin.serial.FileRead(path(tb));
+    assert(isequal(large,new))
+end
+
+function test_serial_file_copy_left_chunk_double_real
+%%
+    I=randi([5 15],1); J=randi([5 15],1); K=randi([5 15],1);
+    imat=rand(I,J,K);
+    tb=ConDir();
+    ts=ConDir();
+    cs=randi([1 J],1);
+    ce=randi([cs J],1);
+    si=randi([1 K],1);
+    large=imat;
+    small=large(:,cs:ce,si);
+    hdrb=SDCpckg.basicHeaderStructFromX(large);
+    SDCpckg.io.NativeBin.serial.FileWrite(path(tb),large,hdrb);
+    hdrs=SDCpckg.basicHeaderStructFromX(small);
+    SDCpckg.io.NativeBin.serial.FileAlloc(path(ts),hdrs);
+    SDCpckg.io.NativeBin.serial.FileCopyLeftChunkToFile(path(tb),path(ts),[cs ce],[si]);
+    SDCpckg.io.NativeBin.serial.FileCopyLeftChunkFromFile(path(ts),path(tb),[cs ce],[si]);
+    new=SDCpckg.io.NativeBin.serial.FileRead(path(tb));
+    assert(isequal(large,new))
+end
+
+function test_serial_file_copy_left_chunk_double_complex
+%%
+    I=randi([5 15],1); J=randi([5 15],1); K=randi([5 15],1);
+    imat=rand(I,J,K);
+    tb=ConDir();
+    ts=ConDir();
+    cs=randi([1 J],1);
+    ce=randi([cs J],1);
+    si=randi([1 K],1);
+    large=complex(imat,1);
+    small=large(:,cs:ce,si);
+    hdrb=SDCpckg.basicHeaderStructFromX(large);
+    SDCpckg.io.NativeBin.serial.FileWrite(path(tb),large,hdrb);
+    hdrs=SDCpckg.basicHeaderStructFromX(small);
+    SDCpckg.io.NativeBin.serial.FileAlloc(path(ts),hdrs);
+    SDCpckg.io.NativeBin.serial.FileCopyLeftChunkToFile(path(tb),path(ts),[cs ce],[si]);
+    SDCpckg.io.NativeBin.serial.FileCopyLeftChunkFromFile(path(ts),path(tb),[cs ce],[si]);
+    new=SDCpckg.io.NativeBin.serial.FileRead(path(tb));
+    assert(isequal(large,new))
+end
