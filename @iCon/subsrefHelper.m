@@ -60,7 +60,9 @@ else % multiple dims case
             
         % What??? I don't even...
         else
-            warning('Unrecognized indexing %s', s.subs{i});
+            warning('Unsupported indexing. broken is metadata continuity');
+            y = construct(x,subsref(x.data,s));
+            return;
         end        
     end    
 end
