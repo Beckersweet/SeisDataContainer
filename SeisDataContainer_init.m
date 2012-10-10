@@ -39,15 +39,18 @@ function  SeisDataContainer_init(varargin)
     p.addParamValue('SDCbufferSize',doubleSize*MBsize,@(x)isnumeric(x)||isscalar(x));
     p.addParamValue('SDCdefaultIOdist',0,@(x)isnumeric(x)||isscalar(x));
     p.addParamValue('SDCdebugFlag',0,@(x)isnumeric(x)||isscalar(x));
+    p.addParamValue('Verbose',1,@isnumeric);
     p.parse(varargin{:});
-    %p.Results
+    verbose = p.Results.Verbose;
 
     % create global temporary directory
     % accessible from every worker
     if length(p.Results.SDCglobalTmpDir) > 0
         SDCglobalTmpDir = p.Results.SDCglobalTmpDir;
     else
-        disp('Warning: Missing GLOBTMPDIR environment. Using SDC.tmp in current directory.')
+        if verbose
+            disp('Warning: Missing GLOBTMPDIR environment. Using SDC.tmp in current directory.')
+        end
         SDCglobalTmpDir = fullfile(pwd,'SDC.tmp');
     end
     if ~strcmp(SDCglobalTmpDir(1),filesep)
@@ -57,21 +60,27 @@ function  SeisDataContainer_init(varargin)
     if ~isdir(SDCglobalTmpDir)
         mkdir(SDCglobalTmpDir)
     end
-    fprintf('Global temporary home in %s\n',SDCglobalTmpDir);
+    if verbose
+        fprintf('Global temporary home in %s\n',SDCglobalTmpDir);
+    end
 
     % set local temporary directories
     % might not accessible form every worker
     if length(p.Results.SDClocalTmpDir) > 0
         SDClocalTmpDir = p.Results.SDClocalTmpDir;
     else
-        disp('Warning: Missing TMPDIR environment. Using /tmp/SDC.tmp.')
+        if verbose
+            disp('Warning: Missing TMPDIR environment. Using /tmp/SDC.tmp.')
+        end
         SDClocalTmpDir = '/tmp/SDC.tmp';
     end
     if ~strcmp(SDClocalTmpDir(1),filesep)
         SDClocalTmpDir = fullfile(pwd,SDClocalTmpDir);
     end
     SDClocalTmpDir = tempname(SDClocalTmpDir);
-    fprintf('Local temporary home in %s\n',SDClocalTmpDir);
+    if verbose
+        fprintf('Local temporary home in %s\n',SDClocalTmpDir);
+    end
 
     % check gloabl directory on the workers
     % and create local temporary directories
@@ -85,19 +94,25 @@ function  SeisDataContainer_init(varargin)
             end
         end
     end
-    if strcmp(SDCglobalTmpDir,SDClocalTmpDir)
+    if strcmp(SDCglobalTmpDir,SDClocalTmpDir) && verbose
         warning('Having SAME GLOBAL AND LOCAL TEMPORARY DIRECTORIES might be a BAD IDEA.')
     end
 
     % set buffer size
     SDCbufferSize = SDCpckg.utils.getByteSize('double')*p.Results.SDCbufferSize;
-    fprintf('IO buffer size set to %d MB\n',SDCbufferSize/MBsize);
+    if verbose
+        fprintf('IO buffer size set to %d MB\n',SDCbufferSize/MBsize);
+    end
 
     % set debug flag
     SDCdefaultIOdist = p.Results.SDCdefaultIOdist;
-    fprintf('Default IO distribution flag is set to %d\n',SDCdefaultIOdist);
+    if verbose
+        fprintf('Default IO distribution flag is set to %d\n',SDCdefaultIOdist);
+    end
 
     % set debug flag
     SDCdebugFlag = p.Results.SDCdebugFlag;
-    fprintf('Debug flag is set to %d\n',SDCdebugFlag);
+    if verbose
+        fprintf('Debug flag is set to %d\n',SDCdebugFlag);
+    end
 end
