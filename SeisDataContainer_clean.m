@@ -1,4 +1,4 @@
-function  SeisDataContainer_clean(name,mode)
+function  SeisDataContainer_clean(varargin)
 % SeisDataContainer_finalize cleans global and local temporary directories
 %
     global SDCglobalTmpDir;
@@ -6,8 +6,12 @@ function  SeisDataContainer_clean(name,mode)
     global SDCbufferSize;
     global SDCdefaultIOdist;
     global SDCdebugFlag;
-    if strcmp(name,'Verbose')
-        verbose = mode;
+    if length(varargin) > 1
+        if strcmp(name,'Verbose')
+            verbose = mode;
+        else
+            verbose = 1;
+        end
     else
         verbose = 1;
     end

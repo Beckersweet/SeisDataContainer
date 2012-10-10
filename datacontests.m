@@ -65,6 +65,11 @@ if matlabpool('size') == 0
     error('Matlab pool is not on!');
 end
 
+% Make sure SeisDataContainer is initted
+if ~SeisDataContainer_status
+    SeisDataContainer_init('Verbose',0);
+end
+
 % Make sure that xUnit is on the path.
 if exist('TestSuite','file')
    % Relax. Found it.
