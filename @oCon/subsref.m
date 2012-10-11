@@ -22,5 +22,4 @@ switch s(1).type
         sref = obj.getFile(s(1).subs);
     otherwise
         error('Not a supported subscripted assignment');
-end
-end
+end % switch
