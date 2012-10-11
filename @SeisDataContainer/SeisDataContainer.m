@@ -85,12 +85,6 @@ classdef SeisDataContainer
         % double
         y = double(x)
         
-        % subsref
-        varargout = subsref(x,s)
-        
-        % subsasgn
-        x = subsasgn(x,s,b)
-        
         % plus
         y = plus(A,B,swp)
         
