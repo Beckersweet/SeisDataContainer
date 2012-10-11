@@ -9,30 +9,22 @@ function varargout = subsref(x,s)
 %
 %   See also: iCon.vec, invvec, iCon.subsasgn
 
-if length(s) > 1
-    switch s(1).type
-        case {'.'}
-            % attributes references and function calls
-            varargout{:} = subsrefFunctionCall(x,s);
+switch s(1).type
+    case {'.'}            
+        % attributes references and function calls
+        if nargout > 0
+            varargout{1:nargout} = builtin('subsref',x,s);
+        else % function calls with no return value
+            builtin('subsref',x,s);
+        end
 
-        case {'{}'}
-            error('Cell-indexing is not supported.');
+    case {'{}'}
+        error('Cell-indexing is not supported.');
 
-        case {'()'}
+    case {'()'} % This is where all the magic happens
+        if length(s) > 1
             error('Referencing from subsreffed components is not allowed');
-    end
-    
-else % length(s) == 1
-    switch s.type
-        case {'.'}            
-            % Set properties and flags
-            varargout{1} = x.(s.subs);
-            
-        case {'{}'}
-            error('Cell-indexing is not supported.');
-            
-        case {'()'} %This is where all the magic happens
+        else
             varargout{1} = subsrefHelper(x,s);
-            
-    end
+        end
 end

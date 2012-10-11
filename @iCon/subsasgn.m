@@ -9,27 +9,18 @@ function x = subsasgn(x,s,b)
 %
 %   See also: iCon.vec, invvec, iCon.subsref
 
-if length(s) > 1
-    switch s(1).type
-        case {'.'}
-            x = builtin('subsasgn',x,s,b);
-        case {'{}'}
-            error('Cell-indexing is not supported.');
-        case {'()'}
-            error('Subsassignment to subsreffed components is not allowed');
-    end % switch s(1).type
-    return;
-end % length(s) > 1
-
 switch s(1).type
    case '.'
         % Set properties and flags
-        x.(s.subs) = b;  
+        x = builtin('subsasgn',x,s,b);
 
    case '{}'
       error('Cell-index access is not supported.');
  
    case '()'
-       x.data = subsasgn(x.data,s,b);
-
+       if length(s) > 1
+           error('Subsassignment to subsreffed components is not allowed');
+       else
+           x.data = subsasgn(x.data,s,b);
+       end
 end
