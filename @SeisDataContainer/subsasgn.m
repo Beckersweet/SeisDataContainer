@@ -23,6 +23,8 @@ switch s(1).type
            error(['Trying to assign to an subs-referenced item? ',...
                'Does humanity"s greed knows no bounds?']);
        else
+           % Call each container's overloaded subsasgnHelper to fetch
+           % actual data
            x = subsasgnHelper(x,s,b);
        end
 end
