@@ -15,12 +15,14 @@ switch s(1).type
         x = builtin('subsasgn',x,s,b);
 
    case '{}'
-      error('Cell-index access is not supported.');
+      error(['Unless you happen to have a Portal Gun, you are not ',...
+          'accessing this Cell']);
  
    case '()'
        if length(s) > 1
-           error('Subsassignment to subsreffed components is not allowed');
+           error(['Trying to assign to an subs-referenced item? ',...
+               'Does humanity"s greed knows no bounds?']);
        else
-           x.data = subsasgn(x.data,s,b);
+           x = subsasgnHelper(x,s,b);
        end
 end

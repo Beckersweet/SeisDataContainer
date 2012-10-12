@@ -31,8 +31,8 @@ end
 
 if length(redims) > length(imsize) % Expanding implicit size
     warning('iCon:reshape:imsize',...
-        ['reshape dimensions more than implicit dimensions. Old metadata '...
-         'will be replaced']);
+        ['Too... many.... reshape... dimensions... cant handle... more ',...
+        'than... number of implicit dimensions... Old metadata destroyed...']);
 else % Collapsing implicit size
 
     % Calculate collapsed dimensiosn
@@ -51,8 +51,8 @@ else % Collapsing implicit size
             collapsed_chunk = [];
         elseif prod(collapsed_chunk) > redims(j)
             warning('iCon:reshape:imsize',...
-            ['reshape dimensions not collapsible from implicit dimensions. '...
-            'old metadata will be replaced']);
+            ['ERROR: reshape dimensions not collapsible from implicit dimensions. ',...
+            'DOES NOT COMPUTE... WILL PROCEED TO MURDER YOUR OLD METADATA... DONE']);
             return;
         end
     end
