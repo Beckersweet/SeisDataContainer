@@ -43,16 +43,17 @@ x=zeros(shape(1),...
     shape(2), ...
     shape(3), ...
     shape(4));
-%x=zeros(226,676,rangeCount);
-    % Matlab reads the frame in transposed, so traces then samples. This is
-    % an issue to keep in mind. 
+
+% Matlab reads the frame in transposed, so traces then samples. This is
+% an issue to keep in mind. 
 
 % Read up to 4D datasets    
 for j=1:shape(4)
     position(4) = j-1 ;
   for i = 1:shape(3)
     position(3) = i -1 ; 
-    seisio.readFrame(position); % reads one 2D "Frame"
+    myposread = position 
+    seisio.readFrame(position) % reads one 2D "Frame"
     x(:,:,i,j) = seisio.getTraceDataArray()'   ; 
   end
 end  

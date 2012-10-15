@@ -54,7 +54,7 @@ if(norm == inf)
         rend = rstart + buffer - 1 ;
       
         % We expect the Chunk to be already a vector
-        r =  SDCpckg.io.JavaSeis.serial.DataReadLeftChunk(dirname,[1 5],[],[rstart rend]) ;
+        r =  SDCpckg.io.JavaSeis.serial.DataReadLeftChunk(dirname,[1 5],[],[rstart rend],'single') ;
        
         total     = max(abs(r));
         x         = max(total,x);          
@@ -74,7 +74,7 @@ elseif(norm == -inf)
         rend = rstart + buffer - 1;
         
         % We expect the Chunk to be already a vector
-        r =  SDCpckg.io.JavaSeis.serial.DataReadLeftChunk(dirname,[1 5],[],[rstart rend]) ;
+        r =  SDCpckg.io.JavaSeis.serial.DataReadLeftChunk(dirname,[1 5],[],[rstart rend],'single') ;
          
          
         total     = min(abs(r));
@@ -95,7 +95,7 @@ elseif (isscalar(norm))
         rend = rstart + buffer - 1;
         
         % We expect the Chunk to be already a vector
-        r =  SDCpckg.io.JavaSeis.serial.DataReadLeftChunk(dirname,[1 5],[],[rstart rend]) ;
+        r =  SDCpckg.io.JavaSeis.serial.DataReadLeftChunk(dirname,[1 5],[],[rstart rend],'single') ;
         
         total    = total + sum(abs(r).^norm);
         reminder = reminder - buffer;

@@ -20,37 +20,14 @@ assert(ischar(dirname), 'directory name must be a string')
 assert(isvector(range)&length(range)==2, 'range index must be a vector with 2 elements')
 assert(isvector(slice)|isequal(slice,[]), 'slice index must be a vector')
 
+% Global variable
+global globalTable
+%assert(~isempty(globalTable),'you first need to initialize the variable somewhere (e.g. SeisDataContainer_init)')
+
 % Set up the Seisio object
 import beta.javaseis.io.Seisio.*;    
 seisio = beta.javaseis.io.Seisio( dirname );
 seisio.open('rw');
-
-% Get number of dimensions and set position accordingly
-dimensions = seisio.getGridDefinition.getNumDimensions();
-%assert(isequal(slice,[]), 'Code only completed for slice == []');
-%asser(isequal(dimensions, 3), 'Code only completed for 3 dimensions');
-    
-position = zeros(dimensions,1);
-
-% Write file
-%for i = range(1)+1:range(2)+1
-%    position(dimensions)=i-1;
-%    data = x(:,:,i);
-%    data=data';
-%    seisio.setTraceDataArray(data);
-%    seisio.setPosition(position);
-%    seisio.writeFrame(size(data,1));% writes one 2D "Frame"
-%end
-
-%    seisio.close();
-
-% Global variable
-global globalTable
-assert(~isempty(globalTable),'you first need to initialize the variable somewhere (e.g. SeisDataContainer_init)')
-
-%global size_tot;
-
-
 
 % Read header
 header = SDCpckg.io.JavaSeis.serial.HeaderRead(dirname)
@@ -62,13 +39,9 @@ position = zeros(dimensions,1);
 % Get Shape
 shape = header.size ;
 
-%assert(isequal(slice,[]), 'Code only completed for slice == []');
-%asser(isequal(dimensions, 3), 'Code only completed for 3 dimensions');
-position = zeros(dimensions,1)
+testx = X ;
 
-testx = X 
-
-size_X = size(testx) 
+size_X = size(testx) ;
 %size_tot =  size_tot + size_X(2)
 
 testzeros = zeros(size(X)) ;
@@ -93,10 +66,7 @@ if isequal(slice,[]) == 0
    iend = istart ;
        
    end
-   
-   
-   
-   
+
 else 
      
  %  jstart = 1 
@@ -113,7 +83,6 @@ else
 end
 
 
-
 % Loop implementation
 % Loop over 1 hypercube
 for hyp=1:1
@@ -121,123 +90,68 @@ for hyp=1:1
  %loop over volumes 
  for vol=jstart:jend  
      position(4) = vol-1 
-     myvol = vol ;
+     %myvol = vol ;
      %loop over frames
       for frm=istart:iend 
           position(3) = frm-1
-          myfrm = frm ;
+          %myfrm = frm ;
           %Store matrixofframes - Java format (right slice contiguous in memory)
           %matrixofframes(frm,:,:) = testx(:,:,frm,vol) 
          
-          if isequal(slice,[]) == 0
             
              % if frame exist 
              if seisio.frameExists(position)
        
-                fprintf('%s\n','FRAME exist'); 
-       
+               % fprintf('%s\n','FRAME exist'); 
                % seisio.getTracesInFrame() ;
-              %  seisio.getTraceDataArray() ;
+               %  seisio.getTraceDataArray() ;
              
                 a = testx(:,:,1,1) ;
-            % a = testx(:,:,frm,vol) ;
-       
+           
              else
        
-               fprintf('%s\n','NO FRAME'); 
-               a = testx(:,:,frm,vol) ;
+               % fprintf('%s\n','NO FRAME'); 
+                a = testx(:,:,frm,vol) ;
        
              end
              
-          else
-            %  a = testx(:,:,frm,vol) ;
+          
+             if isequal(slice,[]) == 0
+               
+                globalTable(vol,frm,range(1):range(2),:) = a' ;
+                size_Glob = size(globalTable) ;
+                shape_init = shape';
+
+                if (size_Glob(3) == shape_init(2))
+                   
+                   globalFrame = globalTable(vol,frm,:,:) ; 
+                   %test = sum(all(globalFrame)) ;
             
-             % if frame exist 
-             if seisio.frameExists(position)
-       
-                fprintf('%s\n','FRAME exist'); 
-       
-              %  seisio.getTracesInFrame() ;
-              %  seisio.getTraceDataArray() ;
-             
-                a = testx(:,:,1,1) ;
-       
-             else
-       
-               fprintf('%s\n','NO FRAME'); 
-               a = testx(:,:,frm,vol) ;
-       
+                   seisio.setTraceDataArray(globalFrame); 
+                   seisio.setPosition(position);
+                   seisio.writeFrame(size(a,2));
+                   
+                end
+
+             else 
+            
+                globalTable(vol,frm,:,:) = a' 
+                size_Glob = size(globalTable) ;
+                shape_init = shape';
+
+
+                if (size_Glob(3) == shape_init(2))
+                   
+                   globalFrame = globalTable(vol,frm,:,:)
+                   %sum(all(globalFrame)) ;
+            
+                   seisio.setTraceDataArray(globalFrame); 
+                   seisio.setPosition(position);
+                   seisio.writeFrame(size(a,2));
+                   
+                end
+          
              end
-            
-            
-          end    
-          
-          
-          if isequal(slice,[]) == 0
-           size_a = size(a) ;
-           size_aT = size(a');
-          
-         %  matrixofframes(vol,frm,:,:) = a' ;
-           globalTable(vol,frm,range(1):range(2),:) = a' ;
-           size_Glob = size(globalTable) ;
-           shape_init = shape';
-
-           size_Glob(2);
-           shape_init(2);
-           
-
-           if (size_Glob(3) == shape_init(2))
-            mypos = position
-            globalFrame = globalTable(vol,frm,:,:) ; 
-            sum(all(globalFrame)) ;
-            
-            seisio.setTraceDataArray(globalFrame); 
-            seisio.setPosition(position);
-            seisio.writeFrame(size(a,2));
-           end
-
-          else 
-            
-           globalTable(vol,frm,:,:) = a' 
-           size_Glob = size(globalTable) ;
-           shape_init = shape';
-
-           size_Glob(2);
-           shape_init(2);
-           
-
-           if (size_Glob(3) == shape_init(2))
-            mypos = position
-            globalFrame = globalTable(vol,frm,:,:)
-            sum(all(globalFrame)) ;
-            
-            seisio.setTraceDataArray(globalFrame); 
-            seisio.setPosition(position);
-            seisio.writeFrame(size(a,2));
-           end
-              
-           %size_a = size(a) 
-           %size_aT = size(a')
-          
-           %matrixofframes(frm,:,:) = a' ;
-           %globalTable(vol,frm,:,:) = a' ;
-           %size_Glob = size(globalTable) 
-           %shape_init = shape'
-
-
-           %if (size_Glob(2) == shape_init(2))
-            %globalFrame = globalTable(vol,frm,:,:)  
-            %seisio.setTraceDataArray(globalTable(vol,frm,:,:));
-            %seisio.setPosition(position);
-            %seisio.writeFrame(size(a,2));
-           %end
-              
-          end
-           
-         %  seisio.setTraceDataArray(globalTable);
-         %  seisio.setPosition(position);
-         %  seisio.writeFrame(size(a,2));
-          
           
      end
      

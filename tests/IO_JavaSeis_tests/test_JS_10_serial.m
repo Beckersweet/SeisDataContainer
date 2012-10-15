@@ -519,11 +519,12 @@ end
 
 function test_serial_file_LeftChunk_lastOne_single_real
 %%
-    global size_tot;
-    size_tot = 0;
+    global globalTable
+    
     SeisDataContainer_init ;
     path = 'newtest' ;
     x    = [13,11,9] ;
+    globalTable = zeros(x);
     imat  = rand(x) ;
    
     J             = 11;

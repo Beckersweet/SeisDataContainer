@@ -61,16 +61,7 @@ if isequal(slice,[]) == 0
    iend = istart ;
    
 else 
- %   x = zeros(shape(2),rangeCount,shape(3),shape(4)) ;
- %  sx = zeros(shape(1),shape(2),shape(3),shape(4)) ;
-   
-   
-  % jstart = 1;
-  % jend = shape(4);
-  % istart = 1;
-  % iend = shape(3) ;
-  
-  % x = zeros(shape(1),shape(2),rangeCount,shape(4)) ;
+ 
    sx = zeros(shape(1),shape(2),shape(3),shape(4)) ;
    
     jstart = 1;
@@ -78,17 +69,13 @@ else
    istart = range(1);
    iend = range(2);
    k=1;
-  % jstart = 1;
-  % jend = shape(4);
-  % istart = 1;
-  % iend = shape(3) ;
+ 
   
    
 end
 
-%x=zeros(226,676,rangeCount);
-    % Matlab reads the frame in transposed, so traces then samples. This is
-    % an issue to keep in mind. 
+% Matlab reads the frame in transposed, so traces then samples. This is
+% an issue to keep in mind. 
 
 % Read up to 4D datasets    
 for j=jstart:jend
@@ -106,12 +93,6 @@ for j=jstart:jend
         x = sx(:,range(1):range(2),i,j) ;
     else 
         
-     %   size_x = size(x(:,:,i,j));
-     %   size_sx = size(sx(:,range(1):range(2),i,j));
-     %   x(:,:,i,j) = sx(:,range(1):range(2),i,j)   ; 
-     
-    %    size_x = size(x(:,:,i,j));
-    %    size_sx = size(sx(:,:,i,j));
         x(:,:,k,j) = sx(:,:,i,j) ;
         k=k+1;
      

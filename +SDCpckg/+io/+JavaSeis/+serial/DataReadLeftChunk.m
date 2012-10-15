@@ -1,4 +1,4 @@
-function x = DataReadLeftChunk(dirname,range,slice,buffer,varargin)
+function x = DataReadLeftChunk(dirname,range,slice,buffer,x_precision,varargin)
 %DATAREADLEFTCHUNCK Reads left chunck from binary file
 %
 %   X = DataReadLeftChunk(DIRNAME,FILENAME,DIMENSIONS,RANGE,SLICE,FILE_PRECISION,X_PRECISION)
@@ -41,12 +41,10 @@ if length(size(r))>1
    r = reshape(r,[1 newsize]) ;
 end
 
-%buffer(1);
-%buffer(2);
 
 r = r(buffer(1):buffer(2)) ;
 
 % swap x_precision
-x = SDCpckg.utils.switchPrecisionIP(r,'single');
+x = SDCpckg.utils.switchPrecisionIP(r,x_precision);
 
 end
