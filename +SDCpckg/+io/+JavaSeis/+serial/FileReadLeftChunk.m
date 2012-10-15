@@ -52,7 +52,7 @@ shape = header.size ;
 % Pre-set X to be 4d array of zeros with the correct dimensions
 rangeCount=range(2)-range(1)+1; 
 if isequal(slice,[]) == 0 
-   x = zeros(shape(2),rangeCount,1,1) ;
+   x = zeros(shape(1),rangeCount,1,1) ;
    sx = zeros(shape(1),shape(2),1,1) ;
    
    jstart = slice(2) ;
@@ -61,14 +61,28 @@ if isequal(slice,[]) == 0
    iend = istart ;
    
 else 
-    x = zeros(shape(2),rangeCount,shape(3),shape(4)) ;
+ %   x = zeros(shape(2),rangeCount,shape(3),shape(4)) ;
+ %  sx = zeros(shape(1),shape(2),shape(3),shape(4)) ;
+   
+   
+  % jstart = 1;
+  % jend = shape(4);
+  % istart = 1;
+  % iend = shape(3) ;
+  
+  % x = zeros(shape(1),shape(2),rangeCount,shape(4)) ;
    sx = zeros(shape(1),shape(2),shape(3),shape(4)) ;
    
-   
-   jstart = 1;
+    jstart = 1;
    jend = shape(4);
-   istart = 1;
-   iend = shape(3) ;
+   istart = range(1);
+   iend = range(2);
+   k=1;
+  % jstart = 1;
+  % jend = shape(4);
+  % istart = 1;
+  % iend = shape(3) ;
+  
    
 end
 
@@ -92,11 +106,15 @@ for j=jstart:jend
         x = sx(:,range(1):range(2),i,j) ;
     else 
         
-        size_x = size(x(:,:,i,j));
-        size_sx = size(sx(:,range(1):range(2),i,j));
-        
-        
-        x(:,:,i,j) = sx(:,range(1):range(2),i,j)   ; 
+     %   size_x = size(x(:,:,i,j));
+     %   size_sx = size(sx(:,range(1):range(2),i,j));
+     %   x(:,:,i,j) = sx(:,range(1):range(2),i,j)   ; 
+     
+    %    size_x = size(x(:,:,i,j));
+    %    size_sx = size(sx(:,:,i,j));
+        x(:,:,k,j) = sx(:,:,i,j) ;
+        k=k+1;
+     
     end     
  
   end
