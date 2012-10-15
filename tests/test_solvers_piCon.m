@@ -6,7 +6,7 @@ function test_solvers_piCon_spql1
 %% Testing piCon with spgl1
 % A = opGaussian(50,100);
 % x = sprandn(100,1,.1);
-% b = A*x;
+% b = distributed(A*x);
 % options.verbosity = 0;
 % tic, y1 = spgl1(A,b,[],[],[],options); toc
 % tic, y2 = spgl1(A,piCon(b),[],[],[],options); toc
