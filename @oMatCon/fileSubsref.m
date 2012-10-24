@@ -20,32 +20,55 @@ len = length(varargin);
 if len == 1 && varargin{1} == ':' % Vec case
     y = x(:);
     return;
-elseif len == size(x.exsize,2) || len == length(x.header.size)
-    % Implicit OR explicit indexing
-    % Extract range and slice
-    % Remove colons
-    while(varargin{1} == ':')
-        varargin = varargin(2:end);
-    end
-    
-    range = varargin{1};
-    if length(varargin) > 1
-        slice = varargin{2:end};
-    else
-        slice = varargin{1};
-    end
-    
-else
-    error(['The laws of Time and Space has been broken by your ',...
-        'unsupported use of weird indexing, and the blood is on your ',...
-        'hands...']);
 end
+
+% Check for implicit and explicit indexing sizes
+assert(len == size(x.exsize,2) || len == length(x.header.size),...
+    ['The laws of Time and Space has been broken by your ',...
+        'unsupported use of weird indexing...']);
+    
+% Implicit OR explicit indexing
+% Extract range and slice
+% Remove colons
+while(varargin{1} == ':')
+    varargin = varargin(2:end);
+end
+
+% Modify headers for implicit or explicit indexing
+if len == size(x.exsize,2) % Explicit indexing
+    % Change working header to reflect this size
+    work_header = x.header;
+    work_header.size = size(x);
+    work_header.dims = ndims(x);
+
+    % Temporarily write header to file
+    SDCpckg.io.NativeBin.serial.HeaderWrite(path(x.pathname),work_header);
+else % implicit indexing, use current header
+    work_header = x.header;
+end
+
+range = varargin{1};
+slice = [];
+if isempty(varargin)
+    error(['Chuck Norris dissaproves of your weird usage of colon ',...
+        ' indexing']);
+elseif length(varargin) == 1 %
+    if isscalar(varargin{1})
+        slice = varargin{1};
+        range = 1:work_header.size(end-1);
+    end
+else
+    slice = varargin{2:end};
+end
+
 
 % Preallocate y as oMatCon
 y = oMatCon.zeros(alloc_size);
 
 % Extract data
 FileCopyLeftChunkToFile(path(x.pathname),path(y.pathname),range,slice);
+   
+
 
 % Useful warnings
 % A long time ago in a galaxy far, far away...
