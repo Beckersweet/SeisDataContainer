@@ -34,6 +34,9 @@ while(varargin{1} == ':')
     varargin = varargin(2:end);
 end
 
+% Calculate colon length
+col_len = len - length(varargin);
+
 % Modify headers for implicit or explicit indexing
 if len == size(x.exsize,2) % Explicit indexing
     % Change working header to reflect this size
@@ -47,28 +50,43 @@ else % implicit indexing, use current header
     work_header = x.header;
 end
 
+% Check and extract range and slice
 range = varargin{1};
 slice = [];
 if isempty(varargin)
     error(['Chuck Norris dissaproves of your weird usage of colon ',...
         ' indexing']);
-elseif length(varargin) == 1 %
-    if isscalar(varargin{1})
+elseif length(varargin) == 1 % last dimension ranging or slicing
+    if isscalar(varargin{1}) % last dimension slicing
         slice = varargin{1};
         range = 1:work_header.size(end-1);
     end
-else
-    slice = varargin{2:end};
+else % last (few) dimensions slicing plus possible ranging
+    if isscalar(varargin{1}) % All slices
+        slice = varargin{1:end};
+        range = 1:work_header.size(end-length(slice));
+    else % range is present
+        slice = varargin{2:end};
+    end
+    check = arrayfun(@isscalar,slice);
+    assert(all(check) && length(check) == length(slice),...
+        'Last few dimensions must be scalars, or else...');
 end
 
-
 % Preallocate y as oMatCon
+alloc_size = [work_header.size(1:col_len) length(range)];
 y = oMatCon.zeros(alloc_size);
 
 % Extract data
-FileCopyLeftChunkToFile(path(x.pathname),path(y.pathname),range,slice);
-   
+% Accomodate the weird syntax of the FileCopyLeftChunkToFile function
+range = [range(1) range(end)];
+SDCpckg.io.NativeBin.serial.FileCopyLeftChunkToFile(path(x.pathname),...
+    path(y.pathname),range,slice);
 
+% Return original header to original state
+if len == size(x.exsize,2) % Explicit indexing
+    SDCpckg.io.NativeBin.serial.HeaderWrite(path(x.pathname),x.header);
+end
 
 % Useful warnings
 % A long time ago in a galaxy far, far away...
