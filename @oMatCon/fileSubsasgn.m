@@ -30,9 +30,6 @@ while(varargin{1} == ':')
     varargin = varargin(2:end);
 end
 
-% Calculate colon length
-col_len = len - length(varargin);
-
 % Modify headers for implicit or explicit indexing
 if len == size(x.exsize,2) % Explicit indexing
     % Change working header to reflect this size

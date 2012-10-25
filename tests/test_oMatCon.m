@@ -449,7 +449,7 @@ assertEqual(x,y);
 end % zeros
 
 function test_oMatCon_iCon
-%% oMatCon
+%% iCon
 x = oMatCon.randn(3,2,4);
 x = reshape(x,[6 4]);
 y = iCon(x);
@@ -457,3 +457,44 @@ assertEqual(x.exsize,y.exsize);
 assertEqual(double(x),double(y));
 assertEqual(x.header.size,y.header.size);
 end % iCon
+
+function test_oMatCon_fileSubsref
+%% fileSubsref
+x  = randn(4,3,2);
+xo = oMatCon(x);
+xi = iCon(x);
+assertEqual(double(xo.fileSubsref(:,1:3,1)), double(xi(:,1:3,1)));
+end
+
+function test_oMatCon_fileSubsref_reshaped
+%% fileSubsref reshaped
+x  = randn(4,3,2);
+xo = oMatCon(x); xo = reshape(xo,12,2);
+xi = iCon(x); xi = reshape(xi,12,2);
+assertEqual(double(xo.fileSubsref(1:4,1)), double(xi(1:4,1)));
+end
+
+function test_oMatCon_fileSubsasgn
+%% fileSubsasgn
+x  = randn(4,3,2);
+xo = oMatCon(x);
+xi = iCon(x);
+ao = oMatCon.zeros(4,2);
+ai = iCon.zeros(4,2);
+xo = xo.fileSubsasgn(ao,:,1:2,1);
+xi(:,1:2,1) = ai;
+assertEqual(double(xo), double(xi));
+end
+
+function test_oMatCon_fileSubsasgn_reshaped
+%% fileSubsasgn
+x  = randn(4,3,2);
+xo = oMatCon(x); xo = reshape(xo,12,2);
+xi = iCon(x); xi = reshape(xi,12,2);
+ao = oMatCon.zeros(4,1);
+ai = iCon.zeros(4,1);
+xo = xo.fileSubsasgn(ao,3:6,1);
+xi(3:6,1) = ai;
+assertEqual(double(xo), double(xi));
+end
+

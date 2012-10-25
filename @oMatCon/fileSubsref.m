@@ -75,6 +75,9 @@ end
 
 % Preallocate y as oMatCon
 alloc_size = [work_header.size(1:col_len) length(range)];
+if isscalar(alloc_size) % singleton padding
+    alloc_size = [alloc_size 1];
+end
 y = oMatCon.zeros(alloc_size);
 
 % Extract data

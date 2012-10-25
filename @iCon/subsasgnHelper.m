@@ -3,4 +3,4 @@ function x = subsasgnHelper(x,s,b)
 %
 %   Not for user to use.
 
-x.data = subsasgn(x.data,s,b);
+x.data = subsasgn(double(x),s,double(b));
