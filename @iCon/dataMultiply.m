@@ -1,6 +1,6 @@
-function y = applyMultiply(x, op)
-%APPLYMULTIPLY Function to strip data from datacontainer for op to apply
-%   y = applyMultiply(x,op) returns what op*x is supposed to return
+function y = dataMultiply(x, op)
+%DATAMULTIPLY Function to strip data from datacontainer for op to apply
+%   y = dataMultiply(x,op) returns what op*x is supposed to return
 
 % Unwrap data and multiply
 y_data   = mtimes(op,double(x));

@@ -1,5 +1,5 @@
-function y = applyDivide(x,op)
-%APPLYDIVIDE Summary of this function goes here
+function y = dataDivide(x,op)
+%DATADIVIDE Summary of this function goes here
 %   Detailed explanation goes here
 
 % Preallocate y
