@@ -59,7 +59,7 @@ if(norm == inf)
         rend = rstart + buffer - 1;
         
         % We expect the Chunk to be already a vector
-        r =  SDCpckg.io.JavaSeis.serial.DataReadLeftChunk(dirname,[1 K],[],[rstart rend],'single') ;
+        r =  SDCpckg.io.JavaSeis.serial.DataReadLeftChunk(dirname,[1 K],[],[rstart rend],'double') ;
         size_r= size(r);
         
          for i=1:size_r(1)
@@ -72,15 +72,14 @@ if(norm == inf)
                
          end
          
-        total     = max(abs(r));
-        x         = max(total,x);        
+        total     = max(abs(r)) ;
+        x         = max(total,x) ;        
         reminder  = reminder - buffer;
-        rstart    = rend + 1;
+        rstart    = rend + 1 ;
         clear r;
+        
     end
      
-     
-    
    
      totaltest2 = beta.javaseis.examples.io.sum_inf.fileNormVectInf(matarr1D) ;
      y     = max(totaltest2,y);
@@ -104,7 +103,7 @@ elseif(norm == -inf)
         rend = rstart + buffer - 1;
         
         % We expect the Chunk to be already a vector
-        r =  SDCpckg.io.JavaSeis.serial.DataReadLeftChunk(dirname,[1 K],[],[rstart rend],'single') ;
+        r =  SDCpckg.io.JavaSeis.serial.DataReadLeftChunk(dirname,[1 K],[],[rstart rend],'double') ;
         size_r= size(r);
         
          for i=1:size_r(1)
@@ -146,11 +145,12 @@ elseif (isscalar(norm))
         rend = rstart + buffer - 1;
         
         % We expect the Chunk to be already a vector
-        r =  SDCpckg.io.JavaSeis.serial.DataReadLeftChunk(dirname,[1 K],[],[rstart rend],'single') ;
+        r =  SDCpckg.io.JavaSeis.serial.DataReadLeftChunk(dirname,[1 K],[],[rstart rend],'double') ;
         size_r= size(r);
         
         % FileNormScalar works for 2D only
         anothertest = anothertest + beta.javaseis.examples.io.sum_inf.fileNormScalar(r,norm) ;
+       
         
          for i=1:size_r(1)
              for t=1:size_r(2)
