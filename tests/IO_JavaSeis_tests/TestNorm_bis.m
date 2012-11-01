@@ -90,15 +90,19 @@ normexp = 2 ;
  end
  
 
-sio.close();
-
 JSnorm = normComp*(1/normexp) 
 
 K=5;
 J=12;
 
 % Full File Norm
-SDCpckg.io.JavaSeis.serial.FileNorm_test2('Newtest',K,J,2)
+MatNorm = SDCpckg.io.JavaSeis.serial.FileNorm('newtest',2,'double')
+
+% JSnorm must be equal to MatNorm
+% if not equal , then there is a problem with sliceNormComponent
+
+
+sio.close();
 
 % Convert Matrix to Vector
 %row1 = mychunk(1,:)
