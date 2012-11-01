@@ -6,6 +6,8 @@ function [x,y,zz] = FileNorm_test2(dirname,K,J,norm)
 %   DIRNAME        - A string specifying the input directory
 %   NORM           - Specifyies the norm type. Supported norms: inf, -inf,
 %                    'fro', p-norm where p is scalar.
+%   K, J : Temporary arguments for unit testing/debugging
+%          Final signature should be : FileNorm(dirname,norm) 
 
 
 % Load dynamic libraries
