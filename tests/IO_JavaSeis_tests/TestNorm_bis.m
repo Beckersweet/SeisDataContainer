@@ -1,4 +1,4 @@
-function OOCNorm = TestNorm(dirname,x)
+function OOCNorm = TestNorm_bis(dirname,x)
 
 % Load dynamic libraries
  javaaddpath('/Users/bcollignon/Documents/workspace/dhale-jtk-78bca79.jar');
@@ -91,16 +91,22 @@ normexp = 2 ;
  
 
 JSnorm = normComp*(1/normexp) 
+%JSnorm = normComp 
 
 K=5;
 J=12;
 
 % Full File Norm
-MatNorm = SDCpckg.io.JavaSeis.serial.FileNorm('newtest',2,'double')
+tStart1 = tic 
+MatNorm = SDCpckg.io.JavaSeis.serial.FileNorm('newtest',normexp,'double')
+tElapsed1 = toc(tStart1)
+% Much faster
+tStart2 = tic 
+JSnorm2 = beta.javaseis.examples.io.normTot.FileNorm('newtest',normexp) 
+tElapsed2 =toc(tStart2)       
 
-% JSnorm must be equal to MatNorm
-% if not equal , then there is a problem with sliceNormComponent
-
+% JSnorm must be equal to MatNorm must be equal to JSnorm2 
+% if not equal , then there is a problem ..
 
 sio.close();
 
