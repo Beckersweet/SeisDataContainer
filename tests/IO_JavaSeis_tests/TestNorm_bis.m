@@ -62,14 +62,6 @@ y = mychunk
 mysize = size(y) 
 
 
-%for k=1:6-2
-%mychunk = SDCpckg.io.JavaSeis.serial.DataReadLeftChunk('newtest',range,slice,[k k+2]) ;
-%end
-
-%y2 = mychunk 
-%mysize = size(y2) 
-
-
 % Matlab norm (2-norm)
 %MATnorm = norm(mychunk) % works for a 2d chunk only
 % JS norm (To be defined/completed)
@@ -109,22 +101,22 @@ J=12;
 SDCpckg.io.JavaSeis.serial.FileNorm_test2('Newtest',K,J,2)
 
 % Convert Matrix to Vector
-row1 = mychunk(1,:)
-row2 = mychunk(2,:)
-row3 = mychunk(3,:)
-matarr1D = [row1,row2,row3]
+%row1 = mychunk(1,:)
+%row2 = mychunk(2,:)
+%row3 = mychunk(3,:)
+%matarr1D = [row1,row2,row3]
 
 % Jama norm (2-norm) - Matrix as input
-tStart1 = tic ;
-mat = jama.Matrix(mychunk)
-JamaNorm = mat.norm2()
-tElapsed1 = toc(tStart1)
+%tStart1 = tic ;
+%mat = jama.Matrix(mychunk)
+%JamaNorm = mat.norm2()
+%tElapsed1 = toc(tStart1)
 
 % JAMA norm (2-norm) - Vector as input
-tStart2 = tic ;
-mat = jama.Matrix(matarr1D,3) 
-JAMAmat = mat.norm2()
-tElapsed2 =toc(tStart2) % Vector norm is faster than Matrix Norm. 
+%tStart2 = tic ;
+%mat = jama.Matrix(matarr1D,3) 
+%JAMAmat = mat.norm2()
+%tElapsed2 =toc(tStart2) % Vector norm is faster than Matrix Norm. 
 
 
 
