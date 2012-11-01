@@ -35,7 +35,7 @@ assert(isstruct(header), 'header must be a header struct')
  newdelta = [delta]' ;
 
 % Define Grid Size
-testHsize = header.size;
+%testHsize = header.size;
  gridsize = [header.size]'  ;
 % gridsize = [header.size] ;
 

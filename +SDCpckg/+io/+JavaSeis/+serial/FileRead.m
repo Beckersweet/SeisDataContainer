@@ -7,7 +7,7 @@ function [x, header] = FileRead(dirname,varargin)
 %
 %   DIRNAME     - A string specifying the directory name
 %   X_PRECISION - An optional string specifying the precision of one unit of data,
-%                 defaults to 'double' (8 bits)
+%                 defaults to 'double' (8 bytes)
 %                 Supported precisions: 'double', 'single'
 %
 error(nargchk(1, 2, nargin, 'struct'));
@@ -15,7 +15,7 @@ assert(ischar(dirname), 'directory name must be a string')
 assert(isdir(dirname),'Fatal error: directory %s does not exist',dirname);
 
 % Setup variables
-x_precision = 'double';
+%x_precision = 'double';
 
 % Preprocess input arguments
 if nargin>1

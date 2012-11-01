@@ -65,7 +65,7 @@ formatgridsize = size(y) ;
 % formatgridsize works while gridsize or AxisLengths do not work as arguments of factory
 
 % Define an array that will contain more than 2D datasets
-grid_multiarray = beta.javaseis.array.MultiArray.factory(dimensions,beta.javaseis.array.ElementType.DOUBLE,1,formatgridsize);
+% grid_multiarray = beta.javaseis.array.MultiArray.factory(dimensions,beta.javaseis.array.ElementType.DOUBLE,1,formatgridsize);
 
 % TEST: Fill a test x with ones (size of formatgridsize)  
 % It should be filled with DataCon or JS Call
