@@ -1,4 +1,4 @@
-function x = FileNorm(dirname,norm)
+function x = FileNorm(dirname,norm,file_precision)
 %FILENORM Calculates the norm of a given data
 %
 %   FileNorm(DIRNAME,FILENAME,DIMENSIONS,NORM,FILE_PRECISION)
@@ -20,7 +20,7 @@ SDCbufferSize = 840 ;
 
 % Reading the header
 header    = SDCpckg.io.JavaSeis.serial.HeaderRead(dirname);
-file_precision = 'single';
+%file_precision = 'double';
 dimensions = header.size
 newdim = dimensions(1)*dimensions(2)*dimensions(3)*dimensions(4)
 
@@ -54,7 +54,7 @@ if(norm == inf)
         rend = rstart + buffer - 1 ;
       
         % We expect the Chunk to be already a vector
-        r =  SDCpckg.io.JavaSeis.serial.DataReadLeftChunk(dirname,[1 5],[],[rstart rend],'single') ;
+        r =  SDCpckg.io.JavaSeis.serial.DataReadLeftChunk(dirname,[1 5],[],[rstart rend],file_precision) ;
        
         total     = max(abs(r));
         x         = max(total,x);          
@@ -74,7 +74,7 @@ elseif(norm == -inf)
         rend = rstart + buffer - 1;
         
         % We expect the Chunk to be already a vector
-        r =  SDCpckg.io.JavaSeis.serial.DataReadLeftChunk(dirname,[1 5],[],[rstart rend],'single') ;
+        r =  SDCpckg.io.JavaSeis.serial.DataReadLeftChunk(dirname,[1 5],[],[rstart rend],file_precision) ;
          
          
         total     = min(abs(r));
@@ -95,7 +95,7 @@ elseif (isscalar(norm))
         rend = rstart + buffer - 1;
         
         % We expect the Chunk to be already a vector
-        r =  SDCpckg.io.JavaSeis.serial.DataReadLeftChunk(dirname,[1 5],[],[rstart rend],'single') ;
+        r =  SDCpckg.io.JavaSeis.serial.DataReadLeftChunk(dirname,[1 5],[],[rstart rend],file_precision) ;
         
         total    = total + sum(abs(r).^norm);
         reminder = reminder - buffer;
