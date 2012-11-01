@@ -5,5 +5,10 @@ function y = full(x)
 %
 %   If A is full, issparse(A) returns 0.
 
-y = dataCon(full(double(x)));
+y = full(double(x));
+if isa(y, 'distributed')
+    y = piCon(y);
+else
+    y = iCon(y);
+end
 y = metacopy(x,y);

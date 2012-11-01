@@ -53,19 +53,21 @@ classdef (InferiorClasses = {?distributed,?codistributed}) piCon < iCon
                 data   = doh;
                 header = SDCpckg.basicHeaderStructFromX(data);
                 % Distribute data if not distributed
-                if ~isdistributed(data)
-                    data = distributed(data);                    
+                if ~isdistributed(doh)
+                    assert(isnumeric(doh), 'data must be numeric');
+                    doh = distributed(doh);                    
+                else
+                    % Check for input data type
+                    assert( strcmp(classUnderlying(doh),'double') ||...
+                            strcmp(classUnderlying(doh),'single') ,...
+                            'data must be numeric')
                 end
-
-                % Check for input data type
-                assert( isdistributed(data) && ...
-                    strcmp(classUnderlying(data),'double'),...
-                    ['Parallel In-Core Data Container '...
-                    'can only be created with distributed numeric data'] )
 
                 % Extract distribution dimension
                 spmd
-                    cod  = getCodistributor(data);
+                    if labindex == 1
+                        cod  = getCodistributor(doh);
+                    end
                 end
             else
                 header = doh;
@@ -74,9 +76,8 @@ classdef (InferiorClasses = {?distributed,?codistributed}) piCon < iCon
             % Construct iCon
             x               = x@iCon(header,varargin{:});
             if ~isstruct(doh)
-                x.exsize    = size(data);
-                x.perm      = num2cell(1:length(size(data)));
-                x.data      = data;
+                x.perm      = 1:length(size(doh));
+                x.data      = doh;
                 cod         = cod{1};
                 x.excoddims = cod.Dimension;
                 x.excodpart = cod.Partition;

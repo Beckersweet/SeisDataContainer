@@ -23,10 +23,6 @@ filename=fullfile(dirname,filename);
 % Check File
 assert(exist(filename)==2,'Fatal error: file %s does not exist',filename);
 
-if(iscell(dimensions))
-    dimensions = cell2mat(dimensions);
-end
-
 % Read local data
 fid = fopen(filename,'r');
 x = fread(fid,prod(dimensions),file_precision);

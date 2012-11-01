@@ -31,28 +31,35 @@ if(prod(shape) ~= prod(size(x)))
     error('bad input shape: the number of elements should be preserved')
 end
 
-if(length(shape) > 2)
-    % getting rid of extra ones at the end of our shape (if there is any)
-    actualEnd = length(shape);
-    if(shape(end) == 1)        
-        for i = length(shape)-1:-1:1
-            if(shape(i) == 1)
-                actualEnd = actualEnd - 1;
-            else
-                break;
-            end
+imsize  = x.header.size;
+
+while(imsize(end) == 1) % Strip singleton dimensions
+   imsize(end) = [];
+end
+j               = 1;
+collapsed_chunk = [];
+collapsed_dims  = 1;
+
+for i = 1:length(imsize)
+    collapsed_chunk = [collapsed_chunk imsize(i)];
+    if  prod(collapsed_chunk) == shape(j)
+        collapsed_dims(end+1)  = i;
+        if i < length(imsize)
+            collapsed_dims(end+1)  = i+1;
         end
-    end
-    if(size(shape(1:actualEnd)) == 1)
-        shape    = shape(1:actualEnd+1);
-    else
-        shape    = shape(1:actualEnd);
+        j = j + 1;
+        collapsed_chunk = [];
+    elseif prod(collapsed_chunk) > shape(j)
+        error(['Reshape dimensions must be collapsed '...
+            'or multiples of implicit dimension']);
     end
 end
+
 % loading the dataContainer
-y        = oMatCon.load...
-    (x.pathname,'readonly',p.Results.readonly,'copy',p.Results.copy);
-% changing the explicit size of the new dataContainer
-y.exsize = shape;
+y        = oMatCon.load(...
+    x.pathname,'readonly',p.Results.readonly,'copy',p.Results.copy);
+
+% changing y.exsize = reshape(collapthe explicit size of the new dataContainer
+y.exsize = reshape(collapsed_dims,2,[]);
 end
 

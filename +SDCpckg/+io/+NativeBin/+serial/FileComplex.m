@@ -102,4 +102,3 @@ elseif(isdir(A))
 else
     error('Wrong type of input for A')
 end
-end

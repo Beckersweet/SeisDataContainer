@@ -34,7 +34,7 @@ classdef SeisDataContainer
     properties (SetAccess = protected)
         header = struct(); % header struct for dataContainer
         exsize = []; % Explicit dimensions of data
-        perm   = {}; % Permutation of data (since original construction)
+        perm   = []; % Permutation of data (since original construction)
         type   = ''; % Type of data container
         strict = false; % Strict flag for elementary operations
     end
@@ -53,7 +53,8 @@ classdef SeisDataContainer
                                                
             % Set attributes
             x.header = headerIn;
-            x.exsize = x.header.size;
+            x.exsize = [1:length(x.header.size);...
+                        1:length(x.header.size)];
 
             % parse extra arguments
             ldims = length(x.header.size);

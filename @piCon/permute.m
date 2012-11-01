@@ -21,7 +21,7 @@ assert(length(perm) == length(x.perm),'Permutation dimensions mismatch')
 % Find final distributed dimension and setup global size at the same time
 fdim   = 0; % New explicit distributed dimension
 fidim  = 0; % New implicit distribtued dimension
-gsize  = x.exsize; % Global size
+gsize  = size(x); % Global size
 gisize = isize(x); % Global implicit size
 operm  = x.perm; % Original permutation
 for  i = 1:length(perm) % Find new dimension of distribution
@@ -50,7 +50,7 @@ spmd
 end % spmd
 
 % Set variables
-y           = piCon(data);
-y.imcoddims = fidim;
-y.perm      = toperm;
+y                = piCon(data);
+y.imcoddims      = fidim;
+y.perm           = toperm;
 y.header.size    = tgisize;

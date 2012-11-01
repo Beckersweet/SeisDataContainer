@@ -25,23 +25,31 @@ if isscalar(A) && isscalar(B)
     return;
 end
 
-if isscalar(A)
-    A = A*ones(size(B));
-end
-if isscalar(B)
-    B = B*ones(size(A));
-end
-
 if ~isa(A,'iCon') % Right divide
-    y = dataCon(double(A .\ double(B)));
+    y = double(A .\ double(B));
+    if isa(y, 'distributed')
+        y = piCon(y);
+    else
+        y = iCon(y);
+    end
     y = metacopy(B,y);
             
 elseif ~isa(B,'iCon') % Left divide
-    y = dataCon(double(double(A) .\ B));
+    y = double(double(A) .\ B);
+    if isa(y, 'distributed')
+        y = piCon(y);
+    else
+        y = iCon(y);
+    end
     y = metacopy(A,y);
     
 else % Both data containers
-    y = dataCon(double(A) .\ double(B));
+    y = double(A) .\ double(B);
+    if isa(y, 'distributed')
+        y = piCon(y);
+    else
+        y = iCon(y);
+    end
     y = metacopy(A,y);
     
     % Check for strict flag

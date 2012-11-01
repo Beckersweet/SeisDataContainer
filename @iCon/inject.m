@@ -15,4 +15,4 @@ assert(numel(data) == prod(cell2mat(isize(x))),...
 % Copy and insert
 y        = x;
 y.data   = data;
-y.exsize = size(data);
+y.exsize = [1:ndims(data); 1:ndims(data)];

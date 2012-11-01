@@ -8,3 +8,4 @@ y = iCon(gather(double(x)));
 yheader      = y.header;
 yheader.size = x.header.size;
 y.header     = yheader;
+y.exsize     = x.exsize;

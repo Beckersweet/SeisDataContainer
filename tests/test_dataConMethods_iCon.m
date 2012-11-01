@@ -21,7 +21,8 @@ function test_dataConMethods_iCon_abs(x)
 end
 
 function test_dataConMethods_iCon_end(x)
-    x(1:end);
+% Currently only per-dimension indexing is supported
+    x(1:end,1:end,1:end);
 end
 
 function test_dataConMethods_iCon_isempty(x)
@@ -76,18 +77,20 @@ function test_dataConMethods_iCon_size(x)
 end
 
 function test_dataConMethods_iCon_subsref(x)
-    x = x(:);
-    try
-        x(2:end-1); % UNALLOWABLE CASE: MUST FAIL
-        error('iCon:subsref:HORRIBLE','Indexing catch failed!');
-    catch ME
-        if strcmp(ME.identifier, 'iCon:subsref:HORRIBLE')
-            rethrow(ME);
-        end
-    end
-    
-    x = iCon(double(x)); % Check for implicitly vectored case
-    x(2:end-1);
+% Pending new and relevant test for subsref
+
+%     x = x(:);
+%     try
+%         x(2:end-1); % UNALLOWABLE CASE: MUST FAIL
+%         error('iCon:subsref:HORRIBLE','Indexing catch failed!');
+%     catch ME
+%         if strcmp(ME.identifier, 'iCon:subsref:HORRIBLE')
+%             rethrow(ME);
+%         end
+%     end
+%     
+%     x = iCon(double(x)); % Check for implicitly vectored case
+%     x(2:end-1);
 end
 
 function test_dataConMethods_iCon_unpermute(x)

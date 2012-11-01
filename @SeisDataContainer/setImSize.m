@@ -15,10 +15,6 @@ function y = setImSize(x,varargin)
 
 % Un-cell varargin
 imdims = [varargin{:}];
-assert(iscell(imdims),'Implicit dimensions must be stored in cell');
-while(iscell(imdims))
-   imdims = [imdims{:}];
-end
 
 % Check for number of elements
 assert(prod(size(x)) == prod(imdims),...

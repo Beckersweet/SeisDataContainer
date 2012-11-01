@@ -3,23 +3,21 @@ function y = modifyHeader(obj,varargin)
 %fields untouched
 
 y      = obj;
-header = y.header;
 dims   = y.header.dims;
 p      = inputParser;
-p.addParamValue('varName',header.varName,@ischar);
-p.addParamValue('varUnits',header.varUnits,@ischar);
-p.addParamValue('origin',header.origin,@(x)isrow(x)&&length(x)==dims);
-p.addParamValue('delta',header.delta,@(x)isrow(x)&&length(x)==dims);
-p.addParamValue('unit',header.unit,@(x)iscell(x)&&length(x)==dims);
-p.addParamValue('label',header.label,@(x)iscell(x)&&length(x)==dims);
+p.addParamValue('varName',y.header.varName,@ischar);
+p.addParamValue('varUnits',y.header.varUnits,@ischar);
+p.addParamValue('origin',y.header.origin,@(x)isrow(x)&&length(x)==dims);
+p.addParamValue('delta',y.header.delta,@(x)isrow(x)&&length(x)==dims);
+p.addParamValue('unit',y.header.unit,@(x)iscell(x)&&length(x)==dims);
+p.addParamValue('label',y.header.label,@(x)iscell(x)&&length(x)==dims);
 p.parse(varargin{:});
 
-header.varName  = p.Results.varName;
-header.varUnits = p.Results.varUnits;
-header.origin   = p.Results.origin;
-header.delta    = p.Results.delta;
-header.unit     = p.Results.unit;
-header.label    = p.Results.label;
-y.header        = header;
+y.header.varName  = p.Results.varName;
+y.header.varUnits = p.Results.varUnits;
+y.header.origin   = p.Results.origin;
+y.header.delta    = p.Results.delta;
+y.header.unit     = p.Results.unit;
+y.header.label    = p.Results.label;
 
 end

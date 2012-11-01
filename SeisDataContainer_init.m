@@ -47,7 +47,7 @@ function  SeisDataContainer_init(varargin)
     if length(p.Results.SDCglobalTmpDir) > 0
         SDCglobalTmpDir = p.Results.SDCglobalTmpDir;
     else
-        disp('Warrning: Missing GLOBTMPDIR environment. Using SDC.tmp in current directory.')
+        disp('Warning: Missing GLOBTMPDIR environment. Using SDC.tmp in current directory.')
         SDCglobalTmpDir = fullfile(pwd,'SDC.tmp');
     end
     if ~strcmp(SDCglobalTmpDir(1),filesep)
@@ -64,7 +64,7 @@ function  SeisDataContainer_init(varargin)
     if length(p.Results.SDClocalTmpDir) > 0
         SDClocalTmpDir = p.Results.SDClocalTmpDir;
     else
-        disp('Warrning: Missing TMPDIR environment. Using /tmp/SDC.tmp.')
+        disp('Warning: Missing TMPDIR environment. Using /tmp/SDC.tmp.')
         SDClocalTmpDir = '/tmp/SDC.tmp';
     end
     if ~strcmp(SDClocalTmpDir(1),filesep)

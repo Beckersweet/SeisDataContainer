@@ -36,12 +36,14 @@ end % conj
 
 function test_oMatCon_ctranspose
 %% ctranspose
-y = oMatCon.randn(3,3);
-y = complex(y,0);
-y = y + 1i*randn(3,3);
-x = randn(3,3);
-x(:,1:3) = y(:,1:3);
-assertEqual(x',y');
+x  = complex(oMatCon.randn(3,3,3), oMatCon.randn(3,3,3));
+y  = double(x);
+x  = reshape(x,[9 3]);
+y  = reshape(y,[9 3]);
+xt = x';
+yt = y';
+assertEqual(size(yt), size(xt));
+assertEqual(double(xt),yt);
 end % ctranspose
 
 function test_oMatCon_imag
@@ -145,16 +147,12 @@ end % io
 function test_oMatCon_ldivide
 %% ldivide
 y = oMatCon.randn(3,3,3);
-y = complex(y,0);
-y = y + 1i*randn(3,3,3);
-x = randn(3,3,3);
+x = zeros(3,3,3);
 for i=1:3
     x(:,:,i) = y(:,1:3,i);
 end
 z = oMatCon.randn(3,3,3);
-z = complex(z,0);
-z = y + 1i*randn(3,3,3);
-w = randn(3,3,3);
+w = zeros(3,3,3);
 for i=1:3
     w(:,:,i) = z(:,1:3,i);
 end
@@ -449,3 +447,13 @@ y = oMatCon.zeros(3,3,3);
 x = zeros(3,3,3);
 assertEqual(x,y);
 end % zeros
+
+function test_oMatCon_iCon
+%% oMatCon
+x = oMatCon.randn(3,2,4);
+x = reshape(x,[6 4]);
+y = iCon(x);
+assertEqual(x.exsize,y.exsize);
+assertEqual(double(x),double(y));
+assertEqual(x.header.size,y.header.size);
+end % iCon

@@ -6,8 +6,9 @@ function y = conj(a)
 %
 %   A  - Input oMatCon
 %
-aa = path(a.pathname);
-td = ConDir();    
+aa       = path(a.pathname);
+td       = ConDir();
 SDCpckg.io.NativeBin.serial.FileConj(aa,path(td));
-y  = oMatCon.load(td);
-end
+y        = oMatCon.load(td);
+y.perm   = a.perm;
+y.exsize = a.exsize;

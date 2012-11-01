@@ -11,9 +11,7 @@ if ~isa(y,'piCon')
     y.perm       = x.perm;
     y.strict     = x.strict;
 else
-    yheader      = y.header;
-    yheader.size = x.header.size;
-    y.header     = yheader;
+    y.exsize     = x.exsize;
     y.perm       = x.perm;
     y.strict     = x.strict;
     y.imcoddims  = x.imcoddims;

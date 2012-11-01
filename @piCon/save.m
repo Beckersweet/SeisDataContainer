@@ -13,8 +13,7 @@ else
     assert(~isdir(dirname),'Fatal error: directory %s already exists',dirname);
 end
 header      = obj.header;
-header.size = cell2mat(header.size);
-status = mkdir(dirname);
+status      = mkdir(dirname);
 assert(status,'Fatal error while creating directory %s',dirname);
 SDCpckg.io.NativeBin.serial.FileWrite(dirname,gather(double(obj)));
 SDCpckg.io.NativeBin.serial.HeaderWrite(dirname,header);

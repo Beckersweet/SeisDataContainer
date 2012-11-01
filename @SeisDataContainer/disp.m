@@ -27,9 +27,18 @@ if(dims(x)<20)
     fprintf('Variable Units:    ');
     fprintf('%c',varUnits(x));
     fprintf('\n');
-    fprintf('Dims:             ');
+    fprintf('Implicit Dims:     ');
     fprintf(' %d\n',dims(x));
-    fprintf('Size:              [');
+    if isscalar(x.header.size)
+        fprintf('Implicit Size:     [');
+        fprintf(' %d 1',x.header.size);
+        fprintf(' ]\n');
+    else
+        fprintf('Implicit Size:     [');
+        fprintf(' %d',x.header.size);
+        fprintf(' ]\n');
+    end
+    fprintf('Explicit Size:     [');
     fprintf(' %d',size(x));
     fprintf(' ]\n');
     fprintf('Origin:            [');
@@ -40,14 +49,14 @@ if(dims(x)<20)
     fprintf(' ]\n');
     fprintf('Label:             [ ');
     labels = label(x);
-    for i=1:dims(x)
+    for i=1:length(labels)
         fprintf('%c',labels{i});
         fprintf(' ');
     end
     fprintf(']\n');
     fprintf('Unit:              [ ');
     units = unit(x);
-    for i=1:dims(x)
+    for i=1:length(units)
         fprintf('%c',units{i});
         fprintf(' ');
     end

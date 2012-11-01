@@ -26,8 +26,8 @@ k = 1;
 
 Ratio = [inf,0];
 for i=1:k
-    x   = dataCon(A2.drandn);
-    y   = dataCon(A2.rrandn);
+    x   = iCon(A2.drandn);
+    y   = iCon(A2.rrandn);
     z1  = (A*x)' * y;
     z2  = x' * (A'*y);
     err = max( err, abs(z1 - z2) );
@@ -62,9 +62,9 @@ A    = oppNumBlockDiag([3 4],distributed(B),1);
 B1   = B(:,:,1); B2 = B(:,:,2);
 C{1} = opMatrix(B1); C{2} = opMatrix(B2);
 A2   = oppBlockDiag([3 4],C{:},1);
-x    = dataCon(A2.drandn);
+x    = iCon(A2.drandn);
 assertElementsAlmostEqual(A*x, A2*x);
-x    = dataCon(A2.rrandn);
+x    = iCon(A2.rrandn);
 assertElementsAlmostEqual(A'*x, A2'*x);
 
 end
@@ -78,7 +78,7 @@ C{1} = opKron(opDirac(3), opMatrix(B1));
 C{2} = opKron(opDirac(3), opMatrix(B2)); 
 A2   = oppBlockDiag(C{:},1);
 
-x    = dataCon(drandn(A2));
+x    = iCon(drandn(A2));
 
 y1   = A*x;
 y2   = A2*x;
@@ -94,7 +94,7 @@ B1   = B(:,:,1); B2 = B(:,:,2);
 C{1} = opKron(opDirac(3), opMatrix(B1)); 
 C{2} = opKron(opDirac(3), opMatrix(B2)); 
 A2   = oppBlockDiag(C{:},1);
-x    = dataCon(drandn(A2));
+x    = iCon(drandn(A2));
 y1   = A*x;
 y2   = A2*x;
 assertElementsAlmostEqual(y1,y2);
@@ -123,7 +123,7 @@ spmd
 end
 
 % Construct A
-A = oppNumBlockDiag(dataCon(B));
+A = oppNumBlockDiag(iCon(B));
 
 spmd % Create x with only second lab
     x = codistributed.randn(numlabs*5,1);
@@ -138,7 +138,7 @@ spmd % Create x with only second lab
     x = codistributed.build(xloc,codistributor1d(1,part,gsize));
 end
 
-A*dataCon(x);
+A*iCon(x);
 end
 
 

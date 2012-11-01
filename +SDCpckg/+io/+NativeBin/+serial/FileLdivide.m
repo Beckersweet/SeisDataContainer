@@ -75,7 +75,7 @@ elseif(isdir(A))
     if(headerA.size ~= headerB.size)
             error('Epic fail: The inputs does not have the same size')
     end
-    headerOut = headerA;
+    headOut = headA;
 
     % Set byte size
     bytesize  = SDCpckg.utils.getByteSize(headerOut.precision);
@@ -121,5 +121,4 @@ elseif(isdir(A))
     SDCpckg.io.NativeBin.serial.HeaderWrite(dirnameOut,headerOut);
 else
     error('Fail: Wrong input type')
-end
 end

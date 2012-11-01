@@ -5,5 +5,11 @@ function y = horzcat(varargin)
 %
 %   See also iCon.vertcat
 
-varargin = cellfun(@double,varargin,'UniformOutput',false');
-y        = dataCon(horzcat(varargin{:}));
+varargin = cellfun(@(x) SDCpckg.serial.stripicon(x),...
+           varargin,'UniformOutput',false');
+y        = horzcat(varargin{:});
+if isa(y, 'distributed')
+    y = piCon(y);
+else
+    y = iCon(y);
+end

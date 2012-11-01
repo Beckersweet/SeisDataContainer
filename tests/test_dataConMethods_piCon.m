@@ -20,7 +20,7 @@ function test_dataConMethods_piCon_abs(x)
 end
 
 function test_dataConMethods_piCon_end(x)
-    x(1:end);
+    x(1:end,1:end,1:end);
 end
 
 function test_dataConMethods_piCon_isempty(x)

@@ -54,4 +54,3 @@ elseif(isa(a,'oCon') || isa(b,'oCon'))
 else
     error('At least one input should be an oCon');
 end
-end

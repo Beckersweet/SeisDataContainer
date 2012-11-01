@@ -23,7 +23,12 @@ else
 end
 
 if isa(A,'iCon')
-    y = dataCon(double(A) ^ B);
+    y = double(A) ^ B;
+    if isa(y, 'distributed')
+        y = piCon(y);
+    else
+        y = iCon(y);
+    end
     y = metacopy(A,y);
 else
     y = A ^ B;
