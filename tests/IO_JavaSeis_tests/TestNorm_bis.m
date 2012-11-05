@@ -1,4 +1,8 @@
-function OOCNorm = TestNorm_bis(dirname,x)
+function OOCNorm = TestNorm_bis(normexp)
+% Full File Norm
+% Compare 3 methods to calculate Norm2
+% The 3 norm results must be equal: 
+% JSnorm == MatNorm == JSnorm2
 
 % Load dynamic libraries
  javaaddpath('/Users/bcollignon/Documents/workspace/dhale-jtk-78bca79.jar');
@@ -47,10 +51,11 @@ slice = [] ;
 range(1) = 1;
 range(2) = 5;
 
-
+if (exist('newtest','dir') == 1) 
 SDCpckg.io.isFileClean('newtest');
+end
 
-header = SDCpckg.io.JavaSeis.serial.HeaderWrite(x,'double',0)
+header = SDCpckg.io.JavaSeis.serial.HeaderWrite(x,'double',0);
 SDCpckg.io.JavaSeis.serial.FileAlloc('newtest',header) ;
 % fill x
 x = rand(x) ;
@@ -59,24 +64,20 @@ SDCpckg.io.JavaSeis.serial.FileWrite('newtest',x) ;
 [mychunk header] = SDCpckg.io.JavaSeis.serial.FileReadLeftChunk('newtest',range,slice) ;
 
 % Dimension
-dimensions = size(mychunk)
-
-y = mychunk 
-mysize = size(y) 
-
+dimensions = size(mychunk);
+y = mychunk ;
+mysize = size(y) ;
 
 % Matlab norm (2-norm)
 %MATnorm = norm(mychunk) % works for a 2d chunk only
-% JS norm (To be defined/completed)
-%JSnorm = beta.javaseis.examples.io.norm2.fileNorm(mysize(2),mychunk) 
 
 sio = beta.javaseis.io.Seisio('newtest');
 sio.open('r');
 
-Axis = sio.getGridDefinition().getAxisLengths() 
+Axis = sio.getGridDefinition().getAxisLengths() ;
 
 normComp = 0.0 ; 
-normexp = 2 ;
+%normexp = -999 ;
  
 %for(myslice_m to myslice_m+n)
  for j=1:Axis(4) 
@@ -93,44 +94,24 @@ normexp = 2 ;
        end
  end
  
-
-%JSnorm = normComp*(1/normexp) 
-JSnorm = sqrt(normComp) 
-
-K=5;
-J=12;
+JSnorm = normComp^(1/double(normexp)) 
+%JSnorm = sqrt(normComp) 
 
 % Full File Norm
-tStart1 = tic 
+%tStart1 = tic 
 MatNorm = SDCpckg.io.JavaSeis.serial.FileNorm('newtest',normexp,'double')
-tElapsed1 = toc(tStart1)
+%tElapsed1 = toc(tStart1)
 % Java call - Much faster
-tStart2 = tic 
+%tStart2 = tic 
 JSnorm2 = beta.javaseis.examples.io.normTot.FileNorm('newtest',normexp) 
-tElapsed2 =toc(tStart2)       
+%tElapsed2 =toc(tStart2)       
 
 % JSnorm must be equal to MatNorm must be equal to JSnorm2 
 % if not equal , then there is a problem ..
 
 sio.close();
 
-% Convert Matrix to Vector
-%row1 = mychunk(1,:)
-%row2 = mychunk(2,:)
-%row3 = mychunk(3,:)
-%matarr1D = [row1,row2,row3]
 
-% Jama norm (2-norm) - Matrix as input
-%tStart1 = tic ;
-%mat = jama.Matrix(mychunk)
-%JamaNorm = mat.norm2()
-%tElapsed1 = toc(tStart1)
-
-% JAMA norm (2-norm) - Vector as input
-%tStart2 = tic ;
-%mat = jama.Matrix(matarr1D,3) 
-%JAMAmat = mat.norm2()
-%tElapsed2 =toc(tStart2) % Vector norm is faster than Matrix Norm. 
 
 
 
