@@ -14,7 +14,7 @@ function [x,y,zz] = FileNorm_test2(dirname,K,J,norm)
  javaaddpath('/Users/bcollignon/Documents/workspace/dhale-jtk-78bca79.jar');
  javaaddpath('/Users/bcollignon/Documents/workspace/betajavaseis1819.jar');
  javaaddpath('/Users/bcollignon/Documents/workspace/jama.jar');
- javaaddpath('/Users/bcollignon/Documents/workspace/javaSeisExample.jar');
+ javaaddpath('/Users/bcollignon/Documents/workspace/javaSeisExample_test2.jar');
 
 SDCpckg.io.isFileClean(dirname);
 %error(nargchk(2, 2, nargin, 'struct'));
@@ -83,7 +83,7 @@ if(norm == inf)
     end
      
    
-     totaltest2 = beta.javaseis.examples.io.sum_inf.fileNormVectInf(matarr1D) ;
+     totaltest2 = beta.javaseis.examples.io.allNorms.fileNormVectInf(matarr1D) ;
      y     = max(totaltest2,y);
      zz = y;
     
@@ -126,7 +126,7 @@ elseif(norm == -inf)
     end
     
     
-    totaltest2 = beta.javaseis.examples.io.sum_inf.fileNormVectPInf(matarr1D) ;
+    totaltest2 = beta.javaseis.examples.io.allNorms.fileNormVectPInf(matarr1D) ;
     y = min(totaltest2,y) ;
     zz=y;
   %  x = total^(1/norm);
@@ -151,7 +151,7 @@ elseif (isscalar(norm))
         size_r= size(r);
         
         % FileNormScalar works for 2D only
-        anothertest = anothertest + beta.javaseis.examples.io.sum_inf.fileNormScalar(r,norm) ;
+        anothertest = anothertest + beta.javaseis.examples.io.allNorms.fileNormScalar(r,norm) ;
        
         
          for i=1:size_r(1)
@@ -173,67 +173,12 @@ elseif (isscalar(norm))
     
     zz = anothertest^(1/norm) 
     
-    totaltest2 = beta.javaseis.examples.io.sum_inf.fileNormVectScalar(matarr1D,norm) ;
+    totaltest2 = beta.javaseis.examples.io.allNorms.fileNormVectScalar(matarr1D,norm) ;
     y = totaltest2^(1/norm);
     
     x = total^(1/norm);
     
- %   total = 0;
- %   totaltest = 0;
- %   totaltest2 = 0;
- %   z = 0;    
- %   test = 0;    
-    
- %        for k = 1:K
- %          for j = 1:J-2
-            
- %              r = SDCpckg.io.JavaSeis.serial.FileReadLeftChunk(dirname,[j j+2],[k 1]) ;
- %              size_r= size(r)
- %              test = test + 1 
-               
-              
- %              for i=1:size_r(2)
- %               total    = total + sum(abs(r(:,i)).^norm) ;
- %              end
-               
-              % totaltest = totaltest+ beta.javaseis.examples.io.sum_inf.fileNormScalar(r,norm) ;
-                
-              % if length(size(r))>1
-              %     r = reshape(r,[1 prod(size(r))]);
-              % end
-               
-               
-  %              for i=1:size_r(1)
-                  
-  %                 for t=1:size_r(2)
-                   % Convert Matrix to Vector
-                   % Be careful: Vector non-contigus in memory
-                   % Meaning the size of the vector is larger
-                   %a = r(i,t)
-  %                 matarr1D(1+z) = r(i,t) ;
-  %                 z=z+1 ;
-                  
-  %                 end
-                   %total    = sumabs(r(i,:)) ;
-                   % take the higher sum among rows
-                   %x     = max(total,x);
-                   
-  %             end
-               
-               
-              %totaltest2 = totaltest2 + beta.javaseis.examples.io.sum_inf.fileNormVectScalar(matarr1D,norm) ;
-              
-  %             clear r;
-          
-  %         end
-  %       end
-         
-  %   SIZE =    size(matarr1D);
-     
-  %  totaltest2 = beta.javaseis.examples.io.sum_inf.fileNormVectScalar(matarr1D,norm) ;
-  %  y = totaltest2^(1/norm);  
-  
-  %  x = total^(1/norm);
+ 
 else
     error('Unsupported norm');
 end
