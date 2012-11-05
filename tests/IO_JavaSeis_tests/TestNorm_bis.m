@@ -47,6 +47,9 @@ slice = [] ;
 range(1) = 1;
 range(2) = 5;
 
+
+SDCpckg.io.isFileClean('newtest');
+
 header = SDCpckg.io.JavaSeis.serial.HeaderWrite(x,'double',0)
 SDCpckg.io.JavaSeis.serial.FileAlloc('newtest',header) ;
 % fill x
@@ -70,7 +73,7 @@ mysize = size(y)
 sio = beta.javaseis.io.Seisio('newtest');
 sio.open('r');
 
-Axis = sio.getGridDefinition().getAxisLengths() ;
+Axis = sio.getGridDefinition().getAxisLengths() 
 
 normComp = 0.0 ; 
 normexp = 2 ;
@@ -84,14 +87,15 @@ normexp = 2 ;
             pos(3) = i-1;
             pos(4) = j-1;
             
+            % JAVA CALL
             normComp = normComp + beta.javaseis.examples.io.normTot.sliceNormComponent(sio,pos,normexp);
-       
-     end
+         
+       end
  end
  
 
-JSnorm = normComp*(1/normexp) 
-%JSnorm = normComp 
+%JSnorm = normComp*(1/normexp) 
+JSnorm = sqrt(normComp) 
 
 K=5;
 J=12;
@@ -100,7 +104,7 @@ J=12;
 tStart1 = tic 
 MatNorm = SDCpckg.io.JavaSeis.serial.FileNorm('newtest',normexp,'double')
 tElapsed1 = toc(tStart1)
-% Much faster
+% Java call - Much faster
 tStart2 = tic 
 JSnorm2 = beta.javaseis.examples.io.normTot.FileNorm('newtest',normexp) 
 tElapsed2 =toc(tStart2)       
