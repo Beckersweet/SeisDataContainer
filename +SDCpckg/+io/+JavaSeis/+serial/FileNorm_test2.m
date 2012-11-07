@@ -74,6 +74,9 @@ if(norm == inf)
                
          end
          
+        % TwoDArrayNormPlusInf works for 2D only
+        % anothertest = beta.javaseis.examples.io.PartNorm.TwoDArrayNormPlusInf(r) ; 
+         
         total     = max(abs(r)) ;
         x         = max(total,x) ;        
         reminder  = reminder - buffer;
@@ -83,7 +86,7 @@ if(norm == inf)
     end
      
    
-     totaltest2 = beta.javaseis.examples.io.allNorms.fileNormVectInf(matarr1D) ;
+     totaltest2 = beta.javaseis.examples.io.PartNorm.ArrayNormPlusInf(matarr1D) ;
      y     = max(totaltest2,y);
      zz = y;
     
@@ -93,6 +96,10 @@ elseif(norm == -inf)
     total =0 ;
     totaltest2 = 0;
     rstart = 1;
+    
+    dnorm = -999;
+    double(dnorm);
+    
     
     x = inf;
     y = inf;
@@ -118,6 +125,9 @@ elseif(norm == -inf)
                
          end
          
+        % TwoDArrayNormMinusInf works for 2D only
+        % anothertest = beta.javaseis.examples.io.PartNorm.TwoDArrayNormMinusInf(r) ; 
+         
         total     = min(abs(r));
         x         = min(total,x);        
         reminder  = reminder - buffer;
@@ -126,9 +136,9 @@ elseif(norm == -inf)
     end
     
     
-    totaltest2 = beta.javaseis.examples.io.allNorms.fileNormVectPInf(matarr1D) ;
+    totaltest2 = beta.javaseis.examples.io.PartNorm.ArrayNormMinusInf(matarr1D) ;
     y = min(totaltest2,y) ;
-    zz=y;
+    zz= y;
   %  x = total^(1/norm);
        
 % P-norm
@@ -150,8 +160,8 @@ elseif (isscalar(norm))
         r =  SDCpckg.io.JavaSeis.serial.DataReadLeftChunk(dirname,[1 K],[],[rstart rend],'double') ;
         size_r= size(r);
         
-        % FileNormScalar works for 2D only
-        anothertest = anothertest + beta.javaseis.examples.io.allNorms.fileNormScalar(r,norm) ;
+        %TwoDArrayNormScalar works for 2D only
+        anothertest = anothertest + beta.javaseis.examples.io.PartNorm.TwoDArrayNormScalar(r,norm) ;
        
         
          for i=1:size_r(1)
@@ -173,7 +183,7 @@ elseif (isscalar(norm))
     
     zz = anothertest^(1/norm) 
     
-    totaltest2 = beta.javaseis.examples.io.allNorms.fileNormVectScalar(matarr1D,norm) ;
+    totaltest2 = beta.javaseis.examples.io.PartNorm.ArrayNormScalar(matarr1D,norm) ;
     y = totaltest2^(1/norm);
     
     x = total^(1/norm);

@@ -92,11 +92,11 @@ normComp = 0.0 ;
             
             if (normexp == 0 || normexp == 1 || normexp == 2)
             
-               normComp = normComp + beta.javaseis.examples.io.normTot.sliceNormComponent(sio,pos,normexp);
+               normComp = normComp + beta.javaseis.examples.io.PartNorm.sliceNormComponent(sio,pos,normexp);
             
             else
                  
-               normComp = beta.javaseis.examples.io.normTot.sliceNormComponent(sio,pos,normexp);
+               normComp = beta.javaseis.examples.io.PartNorm.sliceNormComponent(sio,pos,normexp);
                     
             end        
        end
@@ -117,7 +117,7 @@ MatNorm = SDCpckg.io.JavaSeis.serial.FileNorm('newtest',normexp,'double')
 %tElapsed1 = toc(tStart1)
 % Java call - Much faster
 %tStart2 = tic 
-JSnorm2 = beta.javaseis.examples.io.normTot.FileNorm('newtest',normexp) 
+JSnorm2 = beta.javaseis.examples.io.FileNorm.Norm('newtest',normexp) 
 %tElapsed2 =toc(tStart2)       
 
 % JSnorm must be equal to MatNorm must be equal to JSnorm2 
