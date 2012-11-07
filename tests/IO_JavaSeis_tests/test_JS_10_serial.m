@@ -52,7 +52,7 @@ function test_serial_file_LeftSlice_lastOne_single_real
     path = 'newtest' ;
     x    = [13,11,19] ;
     imat  = rand(x) ;
-    K     = 9 ;
+    K     = 19 ;
     td    = ConDir() ;
     hdr  = SDCpckg.io.JavaSeis.serial.HeaderWrite(x,'single',0);
     hdr.precision='single';

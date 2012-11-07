@@ -89,12 +89,26 @@ normComp = 0.0 ;
             pos(4) = j-1;
             
             % JAVA CALL
-            normComp = normComp + beta.javaseis.examples.io.normTot.sliceNormComponent(sio,pos,normexp);
-         
+            
+            if (normexp == 0 || normexp == 1 || normexp == 2)
+            
+               normComp = normComp + beta.javaseis.examples.io.normTot.sliceNormComponent(sio,pos,normexp);
+            
+            else
+                 
+               normComp = beta.javaseis.examples.io.normTot.sliceNormComponent(sio,pos,normexp);
+                    
+            end        
        end
  end
  
+ 
+if (normexp == 0 || normexp == 1 || normexp == 2)      
 JSnorm = normComp^(1/double(normexp)) 
+else
+JSnorm = normComp     
+end    
+
 %JSnorm = sqrt(normComp) 
 
 % Full File Norm

@@ -178,39 +178,6 @@ function test_serial_file_LeftSlice_lastOne_double_complex
     assert(isequal(smat,nmat))
 end
 
-function test_serial_file_LeftSlice_lastOne_single_real
-%%
-    SeisDataContainer_init ;
-    path = 'newtest' ;
-    x    = [13,11,19] ;
-    imat  = rand(x) ;
-    K     = 9 ;
-    td    = ConDir() ;
-    hdr  = SDCpckg.io.JavaSeis.serial.HeaderWrite(x,'single',0);
-    hdr.precision='single';
-    SDCpckg.io.JavaSeis.serial.FileAlloc(path,hdr) ;
-    SDCpckg.io.JavaSeis.serial.FileWrite(path,imat,hdr);
-    for k = 1:K
-        mytest = k
-        slice = SDCpckg.io.JavaSeis.serial.FileReadLeftSlice(path,[k 1])
-        orig  = imat(:,:,k)
-        assert(isequal(single(orig),slice))
-    end
-    nmat  = imat+1
-    
-    SeisDataContainer_init ;
-    td    = ConDir();
-    hdr2  = SDCpckg.io.JavaSeis.serial.HeaderWrite(x,'single',0);
-    hdr2.precision='single';
-    SDCpckg.io.JavaSeis.serial.FileAlloc(path,hdr2) ;
-    for k = 1:K
-        mytest2 =k
-        SDCpckg.io.JavaSeis.serial.FileWriteLeftSlice(path,nmat(:,:,k),[k 1]);
-    end
-    smat  = SDCpckg.io.JavaSeis.serial.FileRead(path,'single')
-    single(nmat)
-    assert(isequal(smat,single(nmat)))
-end
 
 function test_serial_file_LeftSlice_lastOne_double_real
 %%
