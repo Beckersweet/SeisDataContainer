@@ -52,4 +52,7 @@ else % Both data containers
        assert(all(A.header.size == B.header.size),...
            'Strict flag enforced. Implicit dimensions much match.')
     end
+    
+    % Complex propagation
+    y.header.complex = A.header.complex || B.header.complex
 end
