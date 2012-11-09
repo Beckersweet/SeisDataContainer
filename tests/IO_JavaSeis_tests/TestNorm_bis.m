@@ -123,6 +123,26 @@ JSnorm2 = beta.javaseis.examples.io.FileNorm.Norm('newtest',normexp)
 % JSnorm must be equal to MatNorm must be equal to JSnorm2 
 % if not equal , then there is a problem ..
 
+if (exist('newtest2','dir') == 1) 
+SDCpckg.io.isFileClean('newtest2');
+end
+
+%Test case4 ;
+x2  = [14,12,5] ;
+slice = [] ;
+range(1) = 1;
+range(2) = 5;
+
+header2 = SDCpckg.io.JavaSeis.serial.HeaderWrite(x2,'double',0);
+SDCpckg.io.JavaSeis.serial.FileAlloc('newtest2',header2) ;
+% fill x
+x2 = rand(x2) ;
+% Write in JS file
+SDCpckg.io.JavaSeis.serial.FileWrite('newtest2',x2) ;
+
+% Return a multi-dimensional Java array to be used in FilePlus.m
+beta.javaseis.examples.io.FileAdd.add('newtest','newtest2');
+
 sio.close();
 
 
