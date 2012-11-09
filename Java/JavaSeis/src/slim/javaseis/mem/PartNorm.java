@@ -1,4 +1,4 @@
-package beta.javaseis.examples.io;
+package slim.javaseis.io;
 
 import beta.javaseis.io.Seisio;
 import beta.javaseis.util.SeisException; 
@@ -9,10 +9,8 @@ public class PartNorm {
 	public static double sliceNormComponent(Seisio sio, int[] position,int norm) throws SeisException {
 		 
 	    int ntrc = sio.readFrame(position) ;
-	//  System.out.println(Arrays.toString(position));
 	    
 	    double f = 0.0 ;
-	//  int nbElt = 0 ;
 	
 		double min2 = 999.00;
 		double max2 = -999.00;
@@ -56,20 +54,15 @@ public class PartNorm {
 	        }
 	    }
 	
-	//    System.out.println("nbElt " + nbElt);  
-	
 	  return f ;
 	
   
 }
-	
-	
    public static double TwoDArrayNormMinusInf(float [][] trc) throws SeisException {
 	  
 	         int   ntrc = trc.length;
 	         double min2 = 999;
 	         double f = 0.0 ;
-	      //   int   n = trc[0].length;
 
 	         for (int j=0; j<ntrc; j++) {
 	 	    	
@@ -91,7 +84,6 @@ public class PartNorm {
    public static double ArrayNormMinusInf(float [] trc) throws SeisException {
 		  
        int   ntrc = trc.length;
-      // int   n = trc[0].length;
 
 	      double min2 = 999;
 	      double f = 0.0;
@@ -114,8 +106,7 @@ public class PartNorm {
 	   int   ntrc = trc.length;
        double max2 = -999;
        double f = 0.0 ;
-    //   int   n = trc[0].length;
-
+  
        for (int j=0; j<ntrc; j++) {
 	    	
 	    	double[] vals = new double[trc[j].length] ;
@@ -134,13 +125,10 @@ public class PartNorm {
        
  }
 
-
-  
    
    public static double ArrayNormPlusInf(float [] trc) throws SeisException {
 		  
 	         int   ntrc = trc.length;
-	      // int   n = trc[0].length;
 
 		      double max2 = -999;
 		      double f = 0.0;
@@ -168,7 +156,7 @@ public class PartNorm {
 	     double s = 0;
 	      
 	      for (int i = 0; i < m; i++) {
-	       //  double s = 0;
+	      
 	         for (int j = 0; j < n; j++) {
 	        	f =  Math.abs(trc[i][j]);
 	            s += Math.pow(f,norm);
@@ -187,8 +175,7 @@ public class PartNorm {
 	     double s = 0;
 	      
 	      for (int i = 0; i < m; i++) {
-	      
-	        //	f =  Math.abs(trc[i]);
+	     
 	            s += Math.pow(Math.abs(trc[i]),norm);
 	      
 	      }

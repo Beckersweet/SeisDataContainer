@@ -1,4 +1,4 @@
-package beta.javaseis.examples.io;
+package slim.javaseis.io;
 
 import java.util.Arrays;
 
@@ -16,7 +16,6 @@ public class FileAdd {
 	  sio2.open("r");
 	   
       double finallala = 0.0;
-     
     
       long[] Axis = sio1.getGridDefinition().getAxisLengths() ;
       long[] Axis2 = sio2.getGridDefinition().getAxisLengths() ;
@@ -36,20 +35,18 @@ public class FileAdd {
     	   
     	       pos[3] = j ;
     	       pos[2] = i ;
-	       //    System.out.println(Arrays.toString(pos));
-	           NewSlices[j][i]=beta.javaseis.examples.io.ArrayAdd.sliceAddComponent(sio1,sio2,pos) ;
-	          // System.out.println(Arrays.toString(NewSlices[j][i][0]));
-	         // Write New Slice in sio3 
+	       
+	           NewSlices[j][i]= slim.javaseis.io.ArrayAdd.sliceAddComponent(sio1,sio2,pos) ;
+	        
 	           
     	   }
-        }
+      }
       
       for(int j=0;j<Axis[3];j++) {
    	      for(int i=0;i<Axis[2];i++) {
               for(int k=0;k<Axis[1];k++) {
 	  
                System.out.println(Arrays.toString(NewSlices[j][i][k]));
-               // Write New Slice in sio3 
           
 	           }
    	       }
