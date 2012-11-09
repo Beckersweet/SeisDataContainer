@@ -1,4 +1,4 @@
-package slim.javaseis.io;
+package slim.javaseis.mem;
 
 import beta.javaseis.io.Seisio;
 import beta.javaseis.util.SeisException; 

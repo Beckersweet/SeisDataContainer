@@ -36,7 +36,7 @@ public class FileAdd {
     	       pos[3] = j ;
     	       pos[2] = i ;
 	       
-	           NewSlices[j][i]= slim.javaseis.io.ArrayAdd.sliceAddComponent(sio1,sio2,pos) ;
+	           NewSlices[j][i]= slim.javaseis.mem.ArrayAdd.sliceAddComponent(sio1,sio2,pos) ;
 	        
 	           
     	   }
