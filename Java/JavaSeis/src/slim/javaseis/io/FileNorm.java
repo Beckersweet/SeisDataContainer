@@ -18,13 +18,16 @@ public class FileNorm {
       
       long[] Axis = sio.getGridDefinition().getAxisLengths() ;
     
+      int[] pos = new int[4];
+      pos[0]=0;
+      pos[1]=0;
       
       for(int j=0;j<Axis[3];j++) {
     	   for(int i=0;i<Axis[2];i++) {
     	   
-               pos[]
+               pos[2]=i;
+    		   pos[3]=j;
                
-    	       int[] pos = {0,0,i,j} ;
 	           System.out.println(Arrays.toString(pos));
 	           
 	           if (norm == 1 || norm == 0 || norm ==2) {
