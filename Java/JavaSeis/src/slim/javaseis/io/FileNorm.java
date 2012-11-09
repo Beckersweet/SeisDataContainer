@@ -1,4 +1,4 @@
-package slim.javaseis.io;
+package slim.javaseis.io ;
 
 import java.util.Arrays;
 import beta.javaseis.io.Seisio;
@@ -30,13 +30,13 @@ public class FileNorm {
                
 	           System.out.println(Arrays.toString(pos));
 	           
-	           if (norm == 1 || norm == 0 || norm ==2) {
+	           if (norm == 1 || norm == 0 || norm == 2) {
 	           
-	               normComp += slim.javaseis.io.PartNorm.sliceNormComponent(sio,pos,norm) ;
+	               normComp += slim.javaseis.mem.PartNorm.sliceNormComponent(sio,pos,norm) ;
 	           
 	           } else if (norm == 999 || norm == -999) {
 	        	   
-	        	   normComp = slim.javaseis.io.PartNorm.sliceNormComponent(sio,pos,norm) ;
+	        	   normComp = slim.javaseis.mem.PartNorm.sliceNormComponent(sio,pos,norm) ;
 	           }
     	   }
 	    }     

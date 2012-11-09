@@ -92,11 +92,11 @@ normComp = 0.0 ;
             
             if (normexp == 0 || normexp == 1 || normexp == 2)
             
-               normComp = normComp + beta.javaseis.examples.io.PartNorm.sliceNormComponent(sio,pos,normexp);
+               normComp = normComp + beta.javaseis.example.io.PartNorm.sliceNormComponent(sio,pos,normexp);
             
             else
                  
-               normComp = beta.javaseis.examples.io.PartNorm.sliceNormComponent(sio,pos,normexp);
+               normComp = beta.javaseis.example.io.PartNorm.sliceNormComponent(sio,pos,normexp);
                     
             end        
        end
