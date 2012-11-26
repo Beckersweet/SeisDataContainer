@@ -1,0 +1,27 @@
+<project name="JavaProject" default="compile" basedir=".">
+	<description>
+        Simple example build file inspired from "http://ant.apache.org"
+    </description>
+	<!-- set global properties for this build -->
+	<property name="src" location="slim"/>
+	<property name="build" location="bin"/>
+
+	<target name="init">
+		<!-- Create the time stamp -->
+		<tstamp/>
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${build}"/>
+	</target>
+
+	<target name="compile" depends="init"
+        description="compile the source " >
+		<!-- Compile the java code from ${src} into ${build} -->
+		<javac srcdir="${src}" destdir="${build}" includeantruntime="false"/>
+	</target>
+
+	<target name="clean"
+        description="clean up" >
+		<!-- Delete the ${build} and ${dist} directory trees -->
+		<delete dir="${build}"/>
+	</target>
+</project>
