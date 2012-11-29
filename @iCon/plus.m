@@ -54,5 +54,5 @@ else % Both data containers
     end
     
     % Complex propagation
-    y.header.complex = A.header.complex || B.header.complex
+    y.header.complex = A.header.complex || B.header.complex;
 end
