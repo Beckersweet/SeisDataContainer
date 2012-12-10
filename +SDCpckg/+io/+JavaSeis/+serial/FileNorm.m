@@ -54,6 +54,7 @@ if(norm == inf)
         rend = rstart + buffer - 1 ;
       
         % We expect the Chunk to be already a vector
+        % Current test case: x = [14,12,5] - dims = [1 5]
         r =  SDCpckg.io.JavaSeis.serial.DataReadLeftChunk(dirname,[1 5],[],[rstart rend],file_precision) ;
        
         total     = max(abs(r));
