@@ -16,7 +16,7 @@ SDCpckg.io.isFileClean(dirname);
 global SDCbufferSize;
 %assert(~isempty(SDCbufferSize),'you first need to execute SeisDataContainer_init')
 % Must be equal to range*slice
-SDCbufferSize = 840 ;
+SDCbufferSize = 840 ; % works for current test case
 
 % Reading the header
 header    = SDCpckg.io.JavaSeis.serial.HeaderRead(dirname);
