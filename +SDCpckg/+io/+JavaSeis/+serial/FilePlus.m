@@ -97,14 +97,17 @@ elseif(isdir(A))
     file_precision = 'double'
     bytesize  = SDCpckg.utils.getByteSize(file_precision)
 
+    x = [14,12,5]
+    headerOut = SDCpckg.io.JavaSeis.serial.HeaderWrite(x,'double',0)
     SDCpckg.io.JavaSeis.serial.FileAlloc(dirnameOut,headerOut);
     xsize       = headerOut.size;
     headerOut.size = [1 prod(xsize)];
-    SDCpckg.io.JavaSeis.serial.HeaderWrite(dirnameOut,headerOut);
+    %SDCpckg.io.JavaSeis.serial.HeaderWrite(dirnameOut,headerOut);
 
     % Set the sizes
     dims      = [1 prod(xsize)];
     reminder  = prod(xsize);
+    SDCbufferSize = 840 ;
     maxbuffer = SDCbufferSize/bytesize;
     rstart = 1;
 
@@ -118,7 +121,7 @@ elseif(isdir(A))
         
         % This call works for test case x = [14,12,5] ;
         % dims = [1 5]
-        r1 = SDCpckg.io.JavaSeis.serial.DataReadLeftChunk(dirname,[1 5],[],[rstart rend],headerA.precision) ;
+        r1 = SDCpckg.io.JavaSeis.serial.DataReadLeftChunk(A,[1 5],[],[rstart rend],file_precision) ;
         
         % DataReadLeftChunk for the complex part has to be developed 
         % if headerA.complex
@@ -135,7 +138,7 @@ elseif(isdir(A))
         
         % This call works for test case x = [14,12,5] ;
         % dims = [1 5]
-        r2 = SDCpckg.io.JavaSeis.serial.DataReadLeftChunk(dirname,[1 5],[],[rstart rend],headerB.precision) ;
+        r2 = SDCpckg.io.JavaSeis.serial.DataReadLeftChunk(B,[1 5],[],[rstart rend],file_precision) ;
         
         % DataReadLeftChunk for the complex part has to be developed 
         %if headerB.complex
@@ -151,7 +154,9 @@ elseif(isdir(A))
         rstart   = rend + 1;
     end
     headerOut.size = xsize;
-    SDCpckg.io.JavaSeis.serial.HeaderWrite(dirnameOut,headerOut);
+    x = [14,12,5]
+    headerOut = SDCpckg.io.JavaSeis.serial.HeaderWrite(x,'double',0)
+    %SDCpckg.io.JavaSeis.serial.HeaderWrite(dirnameOut,headerOut);
 else
     error('Fail: Wrong input type')
 end

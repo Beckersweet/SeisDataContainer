@@ -30,7 +30,7 @@ seisio = beta.javaseis.io.Seisio( dirname );
 seisio.open('rw');
 
 % Read header
-header = SDCpckg.io.JavaSeis.serial.HeaderRead(dirname)
+header = SDCpckg.io.JavaSeis.serial.HeaderRead(dirname);
 
 % Get number of dimensions and set position accordingly
 dimensions = header.dims ;
@@ -135,14 +135,14 @@ for hyp=1:1
 
              else 
             
-                globalTable(vol,frm,:,:) = a' 
+                globalTable(vol,frm,:,:) = a' ;
                 size_Glob = size(globalTable) ;
                 shape_init = shape';
 
 
                 if (size_Glob(3) == shape_init(2))
                    
-                   globalFrame = globalTable(vol,frm,:,:)
+                   globalFrame = globalTable(vol,frm,:,:);
                    %sum(all(globalFrame)) ;
             
                    seisio.setTraceDataArray(globalFrame); 
