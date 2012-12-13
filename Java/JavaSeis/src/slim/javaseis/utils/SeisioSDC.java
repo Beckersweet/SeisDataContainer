@@ -142,7 +142,9 @@ public class SeisioSDC extends Seisio {
 	/** Method enabling to get the file properties in a HashMap object
 	 * @param propNames
 	 * 			List of the names of the file properties to get
-	 */
+	 * @return Hash map containing the values of the properties whose names 
+	 * 			have been specified in input
+	 */			
 	public HashMap<String,Object> getFileProperties(String[] propNames){
 		//Number of required properties
 		int nbProps=propNames.length;
