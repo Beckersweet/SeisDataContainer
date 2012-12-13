@@ -79,27 +79,55 @@ function test_serial_file_LeftSlice_lastOne_single_real
     assert(isequal(smat,single(nmat)))
 end
 
-function test_serial_file_LeftChunk_lastNone_single_real
+function test_serial_file_LeftChunk_lastOne_single_real
 %%
+    global globalTable
+    
     SeisDataContainer_init ;
     path = 'newtest' ;
     x    = [13,11,9] ;
+   % x = [4,5,2]
+    globalTable = zeros(x);
     imat  = rand(x) ;
-    K     = 9 ;
+   
+  %  J             = 11;
+  %  K             = 9;
+  
+     J=11;
+     K=9;
+  
     td    = ConDir() ;
     hdr  = SDCpckg.io.JavaSeis.serial.HeaderWrite(x,'single',0);
     hdr.precision='single';
     SDCpckg.io.JavaSeis.serial.FileAlloc(path,hdr) ;
     SDCpckg.io.JavaSeis.serial.FileWrite(path,imat,hdr);
-    mytest = 1
-    for k = 1:K-2
-        
-        slice = SDCpckg.io.JavaSeis.serial.FileReadLeftChunk(path,[k k+2],[])
-        orig  = imat(:,:,k:k+2)
-        assert(isequal(single(orig),slice))
-        
+    
+    for k = 1:K
+        for j = 1:J-2
+            slice = SDCpckg.io.JavaSeis.serial.FileReadLeftChunk(path,[j j+2],[k 1]);
+            orig  = imat(:,j:j+2,k);
+            assert(isequal(single(orig),slice)) 
+        end
     end
-
+    
+    J=11;
+    K=9;
+    
+    SeisDataContainer_init ;
+  %  path = 'newtest2'
+    nmat  = imat+1
+    td    = ConDir();
+    hdr  = SDCpckg.io.JavaSeis.serial.HeaderWrite(x,'single',0);
+    hdr.precision='single';
+    SDCpckg.io.JavaSeis.serial.FileAlloc(path,hdr) ;
+   % SDCpckg.io.JavaSeis.serial.FileWrite(path,nmat,hdr);
+    for k = 1:K
+        SDCpckg.io.JavaSeis.serial.FileWriteLeftChunk(path,nmat(:,1:2,k),[1 2],[k 1]) %write the 2 first columns
+        SDCpckg.io.JavaSeis.serial.FileWriteLeftChunk(path,nmat(:,3:J,k),[3 J],[k 1]) %write the 3 column only .. ??
+    end
+    smat  = SDCpckg.io.JavaSeis.serial.FileRead(path,'single')
+    single(nmat)
+    assert(isequal(smat,single(nmat))) 
 end
 
 
