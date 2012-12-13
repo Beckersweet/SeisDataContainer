@@ -25,7 +25,24 @@ assert(isdir(dirname),'Fatal error: input directory %s does not exist'...
 
 
 % Reading the header
-header    = SDCpckg.io.JavaSeis.serial.HeaderRead(dirname);
+% header    = SDCpckg.io.JavaSeis.serial.HeaderRead(dirname);
+
+% Set up the Seisio object
+import beta.javaseis.io.Seisio.*;    
+seisio = beta.javaseis.io.Seisio( dirname );
+seisio.open('r');
+
+% Reading the header
+% header    = SDCpckg.io.JavaSeis.serial.HeaderRead(dirname);
+
+% Get number of dimensions and set position accordingly
+header.dims = seisio.getGridDefinition.getNumDimensions() ;
+
+% Define number of Hypercubes, Volumes, Frames & Traces
+header.size = seisio.getGridDefinition.getAxisLengths() ;
+
+seisio.close(); 
+
 file_precision = 'double';
 dimensions = header.size';
 

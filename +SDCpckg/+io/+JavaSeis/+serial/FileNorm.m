@@ -18,8 +18,23 @@ global SDCbufferSize;
 % Must be equal to range*slice
 SDCbufferSize = 840 ; % works for current test case
 
+% Set up the Seisio object
+import beta.javaseis.io.Seisio.*;    
+seisio = beta.javaseis.io.Seisio( dirname );
+seisio.open('r');
+
+
 % Reading the header
-header    = SDCpckg.io.JavaSeis.serial.HeaderRead(dirname);
+% header    = SDCpckg.io.JavaSeis.serial.HeaderRead(dirname);
+
+% Get number of dimensions and set position accordingly
+header.dims = seisio.getGridDefinition.getNumDimensions() ;
+
+% Define number of Hypercubes, Volumes, Frames & Traces
+header.size = seisio.getGridDefinition.getAxisLengths() ;
+
+seisio.close(); 
+
 %file_precision = 'double';
 dimensions = header.size
 newdim = dimensions(1)*dimensions(2)*dimensions(3)*dimensions(4)
