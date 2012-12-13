@@ -33,7 +33,13 @@ seisio = beta.javaseis.io.Seisio( dirname );
 seisio.open('rw');
 
 % Read header
-header = SDCpckg.io.JavaSeis.serial.HeaderRead(dirname);
+%header = SDCpckg.io.JavaSeis.serial.HeaderRead(dirname);
+
+% Get number of dimensions and set position accordingly
+header.dims = seisio.getGridDefinition.getNumDimensions() ;
+
+% Define number of Hypercubes, Volumes, Frames & Traces
+header.size = seisio.getGridDefinition.getAxisLengths() ;
 
 % Get number of dimensions and set position accordingly
 dimensions = header.dims ;
@@ -163,11 +169,16 @@ for hyp=1:1
                 end
 
              else 
+                 
+                 range_1= range(1)
+                 range_2 = range(2)
+                 % RangeCount
+                 rangeCount=range(2)-range(1)+1
             
                  size_Glob =  size(globalTable)
                  size_aT = size(a')
                  
-                globalTable(vol,range(1):range(2),:,:) = a' ;
+                globalTable(vol,range(1)+countPosition,:,:) = a' ;
                 size_Glob = size(globalTable) ;
                 shape_init = shape';
 
