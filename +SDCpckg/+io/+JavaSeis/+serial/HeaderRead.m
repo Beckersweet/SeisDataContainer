@@ -1,29 +1,45 @@
 function header = HeaderRead(dirname)
 %HEADERREAD Reads header from specified directory
 %
-% Edited for JavaSeis by Trisha, Barbara
-%
 %   HeaderRead(DIRNAME) reads the serial header
 %   from file DIRNAME/FILENAME.
 %
 %   DIRNAME - A string specifying the directory name
 %
+
+%% Check of the input arguments
 error(nargchk(1, 1, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 assert(isdir(dirname),'Fatal error: directory %s does not exist',dirname);
 
-% Set up the Seisio object
-import beta.javaseis.io.Seisio.*; 
-import beta.javaseis.grid.* ;
-seisio = beta.javaseis.io.Seisio(dirname);
+%% Imports
+import org.javaseis.properties.*;
+import SDCpckg.io.JavaSeis.utils.*;
+
+%% Loading of the Seisio file storing the header's properties
+seisio=slim.javaseis.utils.SeisioSDC(dirname);
 seisio.open('r');
 
-% Get number of dimensions and set position accordingly
-header.dims = seisio.getGridDefinition.getNumDimensions() ;
+%% Intermediate properties
+gridDef=seisio.getGridDefinition;
+dataDef=seisio.getDataDefinition;
+% headerDef=seisio.getTraceProperties; %NON USED FOR THE CURRENT SDC TYPE
+% OF HEADER
+supplPropDef=seisio.getFileProperties({'varName','varUnits','complex',...
+    'distributedIO'});
+seisio.close;
 
-% Define number of Hypercubes, Volumes, Frames & Traces
-header.size = seisio.getGridDefinition.getAxisLengths() ;
+%% Reading of the header's properties
+header.varName=char(supplPropDef.get('varName'));
+header.varUnits=char(supplPropDef.get('varUnits'));
+header.dims=gridDef.getNumDimensions;
+header.size=(gridDef.getAxisLengths)';
+header.origin=(gridDef.getAxisLogicalOrigins+1)';
+header.delta=(gridDef.getAxisPhysicalDeltas)';
+header.precision=js2mbDataFormat(char(dataDef.getTraceFormat.getName));
+header.complex=supplPropDef.get('complex');
+header.unit=(cell(gridDef.getAxisUnitsStrings))';
+header.label=(cell(gridDef.getAxisLabelsStrings))';
+header.distributedIO=supplPropDef.get('distributedIO');
 
-seisio.close() ;
-    
 end
