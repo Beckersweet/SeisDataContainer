@@ -94,7 +94,7 @@ function test_serial_file_LeftChunk_lastOne_single_real
     K=9;
   
     td    = ConDir() ;
-    hdr  = SDCpckg.io.JavaSeis.serial.MatHeader(x,'single',0);
+    hdr  = SDCpckg.basicHeaderStruct(x,'single',0);
     hdr.precision='single';
     SDCpckg.io.JavaSeis.serial.FileAlloc(path,hdr) ;
     SDCpckg.io.JavaSeis.serial.FileWrite(path,imat,hdr);
@@ -114,7 +114,7 @@ function test_serial_file_LeftChunk_lastOne_single_real
   
     nmat  = imat+1
     td    = ConDir();
-    hdr  = SDCpckg.io.JavaSeis.serial.MatHeader(x,'single',0);
+    hdr  = SDCpckg.basicHeaderStruct(x,'single',0);
     hdr.precision='single';
     SDCpckg.io.JavaSeis.serial.FileAlloc(path,hdr) ;
  
