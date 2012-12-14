@@ -5,7 +5,7 @@ mkdir(dirname);
 Written_SDCheader=SDCpckg.basicHeaderStruct([10 10],'double',1,'varName',...
     'velocity','varUnits','m/s','origin',[1 2],'delta',[7 7],'unit',...
     {'m','m'},'label',{'x','y'})
-SDCpckg.io.JavaSeis.serial.HeaderWrite(dirname,header);
+SDCpckg.io.JavaSeis.serial.HeaderWrite(dirname,Written_SDCheader);
 
 Read_SDCheader=SDCpckg.io.JavaSeis.serial.HeaderRead(dirname)
 
