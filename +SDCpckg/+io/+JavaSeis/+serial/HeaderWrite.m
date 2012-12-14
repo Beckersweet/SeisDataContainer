@@ -67,6 +67,6 @@ supplProps.put('distributedIO',header.distributedIO);
 %% Saving of SDC header's properties in a SeisioSDC object
 seisio=slim.javaseis.utils.SeisioSDC(dirname,gridDef,dataDef,...
     headerDef,supplProps);
-seisio.create();
+seisio.create;
 
 end
