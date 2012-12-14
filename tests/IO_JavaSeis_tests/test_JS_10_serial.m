@@ -9,7 +9,7 @@ function test_serial_file_single_real
     x    = [13,11,19] ;
     imat = rand(x);
     td   = ConDir();
-    hdr  = SDCpckg.io.JavaSeis.serial.HeaderWrite(x,'single',0);
+    hdr  = SDCpckg.basicHeaderStruct(x,'single',0);
     SDCpckg.io.JavaSeis.serial.FileAlloc(path,hdr) ;
     SDCpckg.io.JavaSeis.serial.FileWrite(path,imat,'single');
     new  = SDCpckg.io.JavaSeis.serial.FileRead(path,'single');
@@ -27,7 +27,7 @@ function test_serial_file_LeftSlice_lastNone_single_real
     x    = [13,11,19] ;
     imat  = rand(x)
     td    = ConDir();
-    hdr  = SDCpckg.io.JavaSeis.serial.HeaderWrite(x,'single',0);
+    hdr  = SDCpckg.basicHeaderStruct(x,'single',0);
     hdr.precision='single';
     SDCpckg.io.JavaSeis.serial.FileAlloc(path,hdr) ;
     SDCpckg.io.JavaSeis.serial.FileWrite(path,imat,hdr);
@@ -36,7 +36,7 @@ function test_serial_file_LeftSlice_lastNone_single_real
     nmat  = imat+1;
     SeisDataContainer_init ;
     td    = ConDir();
-    hdr2  = SDCpckg.io.JavaSeis.serial.HeaderWrite(x,'single',0);
+    hdr2  = SDCpckg.basicHeaderStruct(x,'single',0);
     hdr2.precision='single';
     SDCpckg.io.JavaSeis.serial.FileAlloc(path,hdr2);
     SDCpckg.io.JavaSeis.serial.FileWriteLeftSlice(path,nmat,[]);
@@ -53,7 +53,7 @@ function test_serial_file_LeftSlice_lastOne_single_real
     imat  = rand(x) ;
     K     = 19 ;
     td    = ConDir() ;
-    hdr  = SDCpckg.io.JavaSeis.serial.HeaderWrite(x,'single',0);
+    hdr  = SDCpckg.basicHeaderStruct(x,'single',0);
     hdr.precision='single';
     SDCpckg.io.JavaSeis.serial.FileAlloc(path,hdr) ;
     SDCpckg.io.JavaSeis.serial.FileWrite(path,imat,hdr);
@@ -67,7 +67,7 @@ function test_serial_file_LeftSlice_lastOne_single_real
     
     SeisDataContainer_init ;
     td    = ConDir();
-    hdr2  = SDCpckg.io.JavaSeis.serial.HeaderWrite(x,'single',0);
+    hdr2  = SDCpckg.basicHeaderStruct(x,'single',0);
     hdr2.precision='single';
     SDCpckg.io.JavaSeis.serial.FileAlloc(path,hdr2) ;
     for k = 1:K
@@ -79,15 +79,70 @@ function test_serial_file_LeftSlice_lastOne_single_real
     assert(isequal(smat,single(nmat)))
 end
 
-function test_serial_file_LeftChunk_lastNone_single_real
+function test_serial_file_LeftChunk_lastOne_single_real
 %%
+    global globalTable
+    
     SeisDataContainer_init ;
     path = 'newtest' ;
     x    = [13,11,9] ;
+ 
+    globalTable = zeros(x);
     imat  = rand(x) ;
-    K     = 9 ;
+    
+    J=11;
+    K=9;
+  
     td    = ConDir() ;
-    hdr  = SDCpckg.io.JavaSeis.serial.HeaderWrite(x,'single',0);
+    hdr  = SDCpckg.basicHeaderStruct(x,'single',0);
+    hdr.precision='single';
+    SDCpckg.io.JavaSeis.serial.FileAlloc(path,hdr) ;
+    SDCpckg.io.JavaSeis.serial.FileWrite(path,imat,hdr);
+    
+    for k = 1:K
+        for j = 1:J-2
+            slice = SDCpckg.io.JavaSeis.serial.FileReadLeftChunk(path,[j j+2],[k 1]);
+            orig  = imat(:,j:j+2,k);
+            assert(isequal(single(orig),slice)) 
+        end
+    end
+    
+    J=11;
+    K=9;
+    
+    SeisDataContainer_init ;
+  
+    nmat  = imat+1
+    td    = ConDir();
+    hdr  = SDCpckg.basicHeaderStruct(x,'single',0);
+    hdr.precision='single';
+    SDCpckg.io.JavaSeis.serial.FileAlloc(path,hdr) ;
+ 
+    for k = 1:K
+        SDCpckg.io.JavaSeis.serial.FileWriteLeftChunk(path,nmat(:,1:2,k),[1 2],[k 1]) 
+        SDCpckg.io.JavaSeis.serial.FileWriteLeftChunk(path,nmat(:,3:J,k),[3 J],[k 1]) 
+    end
+    smat  = SDCpckg.io.JavaSeis.serial.FileRead(path,'single')
+    single(nmat)
+    assert(isequal(smat,single(nmat))) 
+end
+
+function test_serial_file_LeftChunk_lastNone_single_real
+%%
+   
+    global globalTable
+
+    SeisDataContainer_init ;
+    path = 'newtest' ;
+    x    = [13,11,9] ;
+  
+    globalTable = zeros(x);
+    imat  = rand(x) ;
+  
+    K     = 9 ;
+   
+    td   = ConDir() ;
+    hdr  = SDCpckg.basicHeaderStruct(x,'single',0);
     hdr.precision='single';
     SDCpckg.io.JavaSeis.serial.FileAlloc(path,hdr) ;
     SDCpckg.io.JavaSeis.serial.FileWrite(path,imat,hdr);
@@ -100,6 +155,19 @@ function test_serial_file_LeftChunk_lastNone_single_real
         
     end
 
+    SeisDataContainer_init ;
+    nmat = imat+1;
+    td   = ConDir();
+    hdr2  = SDCpckg.basicHeaderStruct(x,'single',0);
+    hdr2.precision='single';
+    mytest = 2
+     single(nmat)
+    SDCpckg.io.JavaSeis.serial.FileAlloc(path,hdr2) ;
+    SDCpckg.io.JavaSeis.serial.FileWriteLeftChunk(path,nmat(:,:,1:2),[1 2],[])
+    SDCpckg.io.JavaSeis.serial.FileWriteLeftChunk(path,nmat(:,:,3:K),[3 K],[])
+    smat = SDCpckg.io.JavaSeis.serial.FileRead(path,'single')
+    single(nmat)
+    assert(isequal(smat,single(nmat)))
 end
 
 
@@ -113,7 +181,7 @@ function test_serial_file_LeftChunk_lastOne_single_real
     J             = 11;
     K             = 9;
     td    = ConDir() ;
-    hdr  = SDCpckg.io.JavaSeis.serial.HeaderWrite(x,'single',0);
+    hdr  = SDCpckg.basicHeaderStruct(x,'single',0);
     hdr.precision='single';
     SDCpckg.io.JavaSeis.serial.FileAlloc(path,hdr) ;
     SDCpckg.io.JavaSeis.serial.FileWrite(path,imat,hdr);
@@ -139,7 +207,7 @@ function test_serial_file_Norm_double_real
     imat  = rand(x) ;
     imat = double(imat) ;
     td    = ConDir() ;
-    hdr  = SDCpckg.io.JavaSeis.serial.HeaderWrite(x,'double',0);
+    hdr  = SDCpckg.basicHeaderStruct(x,'double',0);
     hdr.precision='double';
     SDCpckg.io.JavaSeis.serial.FileAlloc(path,hdr) ;
     SDCpckg.io.JavaSeis.serial.FileWrite(path,imat,hdr);
@@ -172,7 +240,7 @@ function test_serial_file_Norm_single_real
     x    = [14,12,5] ;
     imat  = rand(x) ;
     td    = ConDir() ;
-    hdr  = SDCpckg.io.JavaSeis.serial.HeaderWrite(x,'single',0);
+    hdr  = SDCpckg.basicHeaderStruct(x,'single',0);
     hdr.precision='single';
     SDCpckg.io.JavaSeis.serial.FileAlloc(path,hdr) ;
     SDCpckg.io.JavaSeis.serial.FileWrite(path,imat,hdr);
@@ -206,34 +274,34 @@ function test_serial_file_NormTest2_double_real
     x    = [14,12,5] ;
     imat  = rand(x) ;
     td    = ConDir() ;
-    hdr  = SDCpckg.io.JavaSeis.serial.HeaderWrite(x,'double',0);
+    hdr  = SDCpckg.basicHeaderStruct(x,'double',0);
     hdr.precision='double';
     SDCpckg.io.JavaSeis.serial.FileAlloc(path,hdr) ;
     SDCpckg.io.JavaSeis.serial.FileWrite(path,imat,hdr);
     K=5;
     J=12;
-    [n,m,o] = SDCpckg.io.JavaSeis.serial.FileNorm_test2(path,K,J,0) 
+    [n,m,o] = SDCpckg.io.JavaSeis.obselete.FileNorm_test2(path,K,J,0) 
     x      = norm(SDCpckg.utils.vecNativeSerial(imat),0) 
     assertElementsAlmostEqual(x,m)
     assertElementsAlmostEqual(x,o)
     
-    [n,m,o]      = SDCpckg.io.JavaSeis.serial.FileNorm_test2(path,K,J,1)
+    [n,m,o]      = SDCpckg.io.JavaSeis.obselete.FileNorm_test2(path,K,J,1)
     x      = norm(SDCpckg.utils.vecNativeSerial(imat),1)
     assertElementsAlmostEqual(x,m)
     assertElementsAlmostEqual(x,o)
-    [n,m,o]     = SDCpckg.io.JavaSeis.serial.FileNorm_test2(path,K,J,2)
+    [n,m,o]     = SDCpckg.io.JavaSeis.obselete.FileNorm_test2(path,K,J,2)
     x      = norm(SDCpckg.utils.vecNativeSerial(imat),2)
     assertElementsAlmostEqual(x,m)
     assertElementsAlmostEqual(x,o)
-    [n,m,o]     = SDCpckg.io.JavaSeis.serial.FileNorm_test2(path,K,J,inf)
+    [n,m,o]     = SDCpckg.io.JavaSeis.obselete.FileNorm_test2(path,K,J,inf)
     x      = norm(SDCpckg.utils.vecNativeSerial(imat),inf)
     assertElementsAlmostEqual(x,m)
     assertElementsAlmostEqual(x,o)
-    [n,m,o]    = SDCpckg.io.JavaSeis.serial.FileNorm_test2(path,K,J,-inf)
+    [n,m,o]    = SDCpckg.io.JavaSeis.obselete.FileNorm_test2(path,K,J,-inf)
     x      = norm(SDCpckg.utils.vecNativeSerial(imat),-inf)
     assertElementsAlmostEqual(x,m)
     assertElementsAlmostEqual(x,o)
-    [n,m,o]      = SDCpckg.io.JavaSeis.serial.FileNorm_test2(path,K,J,'fro')
+    [n,m,o]      = SDCpckg.io.JavaSeis.obselete.FileNorm_test2(path,K,J,'fro')
     x      = norm(SDCpckg.utils.vecNativeSerial(imat),'fro')
     assertElementsAlmostEqual(x,m)
     assertElementsAlmostEqual(x,o)

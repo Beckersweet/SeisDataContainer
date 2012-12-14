@@ -32,7 +32,13 @@ seisio = beta.javaseis.io.Seisio( dirname );
 seisio.open('r');
 
 % Read header
-header = SDCpckg.io.JavaSeis.serial.HeaderRead(dirname)
+% header = SDCpckg.io.JavaSeis.serial.HeaderRead(dirname)
+
+% Get number of dimensions and set position accordingly
+header.dims = seisio.getGridDefinition.getNumDimensions() ;
+
+% Define number of Hypercubes, Volumes, Frames & Traces
+header.size = seisio.getGridDefinition.getAxisLengths() ;
 
 % Get number of dimensions and set position accordingly
 dimensions = header.dims ;
