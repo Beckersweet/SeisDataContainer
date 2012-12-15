@@ -14,11 +14,13 @@ end % empty labs
 
 function test_oppKron2Lo_dirac
 %% Test for Dirac-skipping functionality
-m  = 4;
-n  = 3;
-A  = opDirac(m);
-B  = opDFT(n);
-x  = vec(redistribute(piCon.randn(n,m),2));
+m = 4;
+n = 3;
+A = opDirac(m);
+B = opDFT(n);
+x = pSPOT.utils.distVectorize(distributed.randn(n,m));
+x = piCon(x);
+
 A2 = A;
 A2.isDirac = false;
 
@@ -43,7 +45,11 @@ K2 = oppKron2Lo(opDirac(4),opKron(A,opDirac(101)),1);
 x1 = iCon.randn(101,51,4);
 x2 = distributed(x1);
 y1 = K1*vec(x1);
-y2 = K2*vec(x2);
+xc2 = piCon(pSPOT.utils.distVectorize(double(x2)));
+xd2 = vec(x2);
+xc2.header = xd2.header;
+xc2.exsize = xd2.exsize;
+y2 = K2*xc2;
 assertElementsAlmostEqual(y1,y2);
 end % dirac special
 
