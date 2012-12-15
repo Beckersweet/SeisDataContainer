@@ -42,4 +42,20 @@ header.unit=(cell(gridDef.getAxisUnitsStrings))';
 header.label=(cell(gridDef.getAxisLabelsStrings))';
 header.distributedIO=supplPropDef.get('distributedIO');
 
+%Swapping of the 2 first dimensions to match Matlab convention
+tmp=header.size(1);
+header.size(1)=header.size(2);
+header.size(2)=tmp;
+tmp=header.origin(1);
+header.origin(1)=header.origin(2);
+header.origin(2)=tmp;
+tmp=header.delta(1);
+header.delta(1)=header.delta(2);
+header.delta(2)=tmp;
+tmp=header.unit{1};
+header.unit{1}=header.unit{2};
+header.unit{2}=tmp;
+tmp=header.label{1};
+header.label{1}=header.label{2};
+header.label{2}=tmp;
 end

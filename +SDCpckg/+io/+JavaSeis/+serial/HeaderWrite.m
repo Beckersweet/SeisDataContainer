@@ -24,21 +24,41 @@ nb_dims=header.dims; %Number of dimensions
 if nb_dims<3
     warning('JavaSeis:dimension',['the number of dimensions should at'...
         ' least be 3. Creation of the missing dimension(s)...']);
-    nb_dims=3;
-    axisDef=javaArray('org.javaseis.properties.AxisDefinition',3);
-else
-    axisDef=javaArray('org.javaseis.properties.AxisDefinition',nb_dims);
+    header.dims=3;
+    for k=nb_dims+1:3
+        header.size(k)=1;
+        header.origin(k)=1;
+        header.delta(k)=NaN;
+        header.unit{k}='unknown';
+        header.label{k}='unknown';
+    end
 end
+axisDef=javaArray('org.javaseis.properties.AxisDefinition',header.dims);
+
+%Swapping of the 2 first dimensions to match JavaSeis convention
+tmp=header.size(1);
+header.size(1)=header.size(2);
+header.size(2)=tmp;
+tmp=header.origin(1);
+header.origin(1)=header.origin(2);
+header.origin(2)=tmp;
+tmp=header.delta(1);
+header.delta(1)=header.delta(2);
+header.delta(2)=tmp;
+tmp=header.unit{1};
+header.unit{1}=header.unit{2};
+header.unit{2}=tmp;
+tmp=header.label{1};
+header.label{1}=header.label{2};
+header.label{2}=tmp;
+
 for k=1:header.dims;
     axisDef(k)=AxisDefinition(AxisLabel(header.label{k},''),mb2jsUnit(...
         header.unit{k}),DataDomain.NULL,header.size(k),...
         header.origin(k)-1,1,0,header.delta(k));
 end
-for k=header.dims+1:3
-    axisDef(k)=AxisDefinition(AxisLabel('Unknown',''),Units.UNKNOWN,...
-        DataDomain.NULL,1,0,1,0,1);
-end
-gridDef=org.javaseis.grid.GridDefinition(nb_dims,axisDef);
+
+gridDef=org.javaseis.grid.GridDefinition(header.dims,axisDef);
 
 %% Data definition
 dataDef=DataDefinition(DataType.UNKNOWN,mb2jsDataFormat(header.precision));
