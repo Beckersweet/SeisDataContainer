@@ -3,6 +3,7 @@ package slim.javaseis.utils;
 import java.nio.ByteOrder;
 import java.util.HashMap;
 
+import org.javaseis.grid.BinGrid;
 import org.javaseis.grid.GridDefinition;
 import org.javaseis.io.Seisio;
 import org.javaseis.properties.DataDefinition;
@@ -139,9 +140,39 @@ public class SeisioSDC extends Seisio {
 		}
 	}
 
-	/** Method enabling to get the file properties in a HashMap object
+	/** Method enabling to get the file properties in a HashMap object.
 	 * @param propNames
 	 * 			List of the names of the file properties to get
+	 * 
+	 * The native properties' names that can be specified in the list are:
+	 * 
+	 * 		SeisioSDC.COMMENTS;
+	 * 		SeisioSDC.JAVASEIS_VERSION;
+	 * 		SeisioSDC.DATA_TYPE;
+	 * 		SeisioSDC.TRACE_FORMAT;
+	 * 		SeisioSDC.BYTE_ORDER;
+	 * 		SeisioSDC.MAPPED;
+	 * 		SeisioSDC.DATA_DIMENSIONS;
+	 * 		SeisioSDC.AXIS_LABELS;
+	 * 		SeisioSDC.AXIS_UNITS;
+	 * 		SeisioSDC.AXIS_DOMAINS;
+	 * 		SeisioSDC.AXIS_LENGTHS;
+	 * 		SeisioSDC.LOGICAL_ORIGINS;
+	 * 		SeisioSDC.LOGICAL_DELTAS;
+	 * 		SeisioSDC.PHYSICAL_ORIGINS;
+	 * 		SeisioSDC.PHYSICAL_DELTAS;
+	 * 		SeisioSDC.HEADER_LENGTH_BYTES;
+	 * 
+	 * 		BinGrid.BIN_GRID.
+	 * 		
+	 * SDC additional parameters' names (subject to potential changes in case of
+	 * modification of SDC header fields' names):
+	 * 
+	 * 		"varName";
+	 * 		"varUnits";
+	 * 		"complex";
+	 * 		"distributedIO".
+	 * 
 	 * @return Hash map containing the values of the properties whose names 
 	 * 			have been specified in input
 	 */			
