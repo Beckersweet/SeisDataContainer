@@ -14,12 +14,12 @@ function test_serial_file_single_real
     'velocity','varUnits','m/s','origin',[0 0 0],'delta',[1 1 1],'unit',...
     {'m','m','m'},'label',{'x','y','z'})
 
-     SDCpckg.io.JavaSeis.serial.FileAlloc(path,hdr) ;
+  %   SDCpckg.io.JavaSeis.serial.FileAlloc(path,hdr) ;
    
     % FileAlloc
-   % SDCpckg.io.setFileDirty('newtest')
-   % SDCpckg.io.JavaSeis.serial.HeaderWrite(path,hdr) ;
-   % SDCpckg.io.setFileClean('newtest')
+    SDCpckg.io.setFileDirty('newtest')
+    SDCpckg.io.JavaSeis.serial.HeaderWrite(path,hdr) ;
+    SDCpckg.io.setFileClean('newtest')
   
     SDCpckg.io.JavaSeis.serial.FileWrite(path,imat,'single');
     new  = SDCpckg.io.JavaSeis.serial.FileRead(path,'single');
