@@ -27,7 +27,7 @@ if nb_dims<3
     header.dims=3;
     for k=nb_dims+1:3
         header.size(k)=1;
-        header.origin(k)=1;
+        header.origin(k)=NaN;
         header.delta(k)=NaN;
         header.unit{k}='unknown';
         header.label{k}='unknown';
@@ -54,8 +54,8 @@ header.label{2}=tmp;
 
 for k=1:header.dims;
     axisDef(k)=AxisDefinition(AxisLabel(header.label{k},''),mb2jsUnit(...
-        header.unit{k}),DataDomain.NULL,header.size(k),...
-        header.origin(k)-1,1,0,header.delta(k));
+        header.unit{k}),DataDomain.NULL,header.size(k),0,1,...
+        header.origin(k),header.delta(k));
 end
 
 gridDef=org.javaseis.grid.GridDefinition(header.dims,axisDef);
