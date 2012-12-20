@@ -21,9 +21,9 @@ import SDCpckg.io.JavaSeis.utils.*;
 
 nb_dims=header.dims; %Number of dimensions
 
+%Creation of the missing dimensions if necessary (in JavaSeis, the number 
+%of dimensions should at least be 3.
 if nb_dims<3
-    warning('JavaSeis:dimension',['the number of dimensions should at'...
-        ' least be 3. Creation of the missing dimension(s)...']);
     header.dims=3;
     for k=nb_dims+1:3
         header.size(k)=1;

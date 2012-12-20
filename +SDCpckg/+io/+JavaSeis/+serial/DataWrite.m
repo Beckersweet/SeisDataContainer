@@ -42,8 +42,8 @@ seisio.loadDatasetDefinition;
 %Properties of interest
 props=seisio.getFileProperties({char(SeisioSDC.DATA_DIMENSIONS),'complex'});
 
-%JavaSeis grid dimensions
-dims=double(props.get(char(SeisioSDC.DATA_DIMENSIONS)));
+%Data number of dimensions
+dims=length(size(x));
 
 %Writing of the data in the Trace file
 seisio.open('rw');

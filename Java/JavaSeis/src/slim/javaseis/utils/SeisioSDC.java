@@ -182,7 +182,8 @@ public class SeisioSDC extends Seisio {
 		//Initialization of the hashMap
 		HashMap<String,Object> hashMap=new HashMap<String,Object>();
 		for (int k=0;k<nbProps;k++){
-			Parameter parameter=_filePropertiesParset.getParameter(propNames[k]);
+			Parameter parameter=_filePropertiesParset.getParameter(
+					propNames[k]);
 			int type=parameter.getType();
 			switch(type){
 			case 0: hashMap.put(propNames[k],null);break;
@@ -198,23 +199,122 @@ public class SeisioSDC extends Seisio {
 	}
 
 	/**
-	 * Write data from a Matlab multidimensional array to an open JavaSeis 
-	 * dataset.
+	 * Write data from a Matlab single value  to an open JavaSeis dataset.
 	 * Shape must be conformable with the JavaSeis dataset axis lengths for the 
-	 * subset that will be written. The multidimensional array must have at 
-	 * least 2 and not more than 5 dimensions.
-	 * The first "n" elements of the position array are ignored, where "n" is 
-	 * the number of dimensions of the multidimensional.
-	 * @param <T>
+	 * subset that will be written.
 	 * 
 	 * @param a multidimensional array containing data to be written
 	 * @param position starting position in the JavaSeis dataset
-	 * @param lengths of the Matlab multidimensional array with JavaSeis
-	 * dimension conventions (i.e. same dimensions' lengths as the ones
-	 * obtained using Matlab's function 'size' excepted for the 2 first lengths
-	 * which are swapped)
 	 * @throws SeisException on errors
 	 */
+	public void writeMatlabMultiArray(float a, int[] position)
+			throws SeisException {
+		/* Check lengths of the multidimensional array for conformance with 
+		data on disk*/
+		long[] dlen = _gridDefinition.getAxisLengths();
+
+		for (int i = 0; i < 3; i++) {
+			if (dlen[i] != 1)
+				throw new SeisException("MultiArray size does not match " +
+						"dataset");
+		}
+		//Reshape the trace 'a' to a frame
+		float[][] a_frame; a_frame=new float[1][1];
+		a_frame[0][0]=a;
+		// Read trace into the multidimensional array
+		this.setTraceDataArray(a_frame);
+		writeFrame(new int[]{0,0,0}, _traceData.length);
+	}
+
+	/**
+	 * Write data from a Matlab 1D array to an open JavaSeis dataset.
+	 * Shape must be conformable with the JavaSeis dataset axis lengths for the 
+	 * subset that will be written.
+	 * 
+	 * IMPORTANT: in Matlab, try to work with data sets where the lengths of the 
+	 * dimensions decrease while going to upper dimensions. It will be faster
+	 * (less for loops involved). 
+	 * 
+	 * @param a multidimensional array containing data to be written
+	 * @param position starting position in the JavaSeis dataset
+	 * @throws SeisException on errors
+	 */
+	public void writeMatlabMultiArray(float[] a, int[] position)
+			throws SeisException {
+		//2D array to reshape the trace 'a' to a frame
+		float[][] a_frame = null;
+
+		/* Check lengths of the multidimensional array for conformance with 
+		data on disk and reshape the input data to a frame*/
+		int nsample_trace=a.length; //Number of samples or traces
+		int nframe=1; //Number of frames
+		long[] dlen = _gridDefinition.getAxisLengths();
+
+		if (dlen[2]==nframe){
+			if (dlen[0]==nsample_trace && dlen[1]==1){
+				a_frame=new float[1][];
+				a_frame[0]=a.clone();
+			}
+			else{
+				if (dlen[1]==nsample_trace && dlen[0]==1){
+					a_frame=new float[nsample_trace][1];
+					for (int k=0;k<nsample_trace;k++){
+						a_frame[k][0]=a[k];
+					}
+				}
+				else{
+					throw new SeisException("MultiArray size does not match " +
+							"dataset");
+				}
+			}
+		}
+		// Read trace into the multidimensional array
+		this.setTraceDataArray(a_frame);
+		writeFrame(new int[]{0,0,0}, _traceData.length);
+	}
+
+	/**
+	 * Write data from a Matlab 2D array to an open JavaSeis dataset.
+	 * Shape must be conformable with the JavaSeis dataset axis lengths for the 
+	 * subset that will be written.
+	 * 
+	 * @param a multidimensional array containing data to be written
+	 * @param position starting position in the JavaSeis dataset
+	 * @throws SeisException on errors
+	 */
+	
+	public void writeMatlabMultiArray(float[][] a, int[] position)
+			throws SeisException {
+		/* Check lengths of the multidimensional array for conformance with 
+		data on disk*/
+		int[] alen = new int[3];
+		alen[0]=a[0].length; //Number of samples per trace
+		alen[1]=a.length; //Number of traces per frame
+		alen[2]=1; //Number of frames
+		long[] dlen = _gridDefinition.getAxisLengths();
+
+		for (int i = 0; i < 3; i++) {
+			if (alen[i] != dlen[i])
+				throw new SeisException("MultiArray size does not match " +
+						"dataset");
+			position[i] = 0;
+		}
+
+		// Read frame into the multidimensional array
+		this.setTraceDataArray(a);
+		writeFrame(position, _traceData.length);
+	}
+
+	/**
+	 * Write data from a Matlab 3D array to an open JavaSeis dataset.
+	 * Shape must be conformable with the JavaSeis dataset axis lengths for the 
+	 * subset that will be written.
+	 * 
+	 * @param a multidimensional array containing data to be written
+	 * @param position starting position in the JavaSeis dataset
+	 * @throws SeisException on errors
+	 */
+	
 	public void writeMatlabMultiArray(float[][][] a, int[] position)
 			throws SeisException {
 		/* Check lengths of the multidimensional array for conformance with 
@@ -225,11 +325,13 @@ public class SeisioSDC extends Seisio {
 		alen[2]=a.length; //Number of frames
 		long[] dlen = _gridDefinition.getAxisLengths();
 		if (3 > _gridDefinition.getNumDimensions()) {
-			throw new SeisException("MultiArray dimensions exceeds dataset dimensions");
+			throw new SeisException("MultiArray dimensions exceeds dataset " +
+					"dimensions");
 		}
 		for (int i = 0; i < 3; i++) {
 			if (alen[i] != dlen[i])
-				throw new SeisException("MultiArray size does not match dataset");
+				throw new SeisException("MultiArray size does not match " +
+						"dataset");
 			position[i] = 0;
 		}
 		// Calculate number of frames to write
@@ -248,6 +350,16 @@ public class SeisioSDC extends Seisio {
 		}
 	}
 
+	/**
+	 * Write data from a Matlab 4D array to an open JavaSeis dataset.
+	 * Shape must be conformable with the JavaSeis dataset axis lengths for the 
+	 * subset that will be written.
+	 * 
+	 * @param a multidimensional array containing data to be written
+	 * @param position starting position in the JavaSeis dataset
+	 * @throws SeisException on errors
+	 */
+	
 	public void writeMatlabMultiArray(float[][][][] a, int[] position)
 			throws SeisException {
 		/* Check lengths of the multidimensional array for conformance with 
@@ -260,11 +372,13 @@ public class SeisioSDC extends Seisio {
 
 		long[] dlen = _gridDefinition.getAxisLengths();
 		if (4 > _gridDefinition.getNumDimensions()) {
-			throw new SeisException("MultiArray dimensions exceeds dataset dimensions");
+			throw new SeisException("MultiArray dimensions exceeds dataset " +
+					"dimensions");
 		}
 		for (int i = 0; i < 4; i++) {
 			if (alen[i] != dlen[i])
-				throw new SeisException("MultiArray size does not match dataset");
+				throw new SeisException("MultiArray size does not match " +
+						"dataset");
 			position[i] = 0;
 		}
 		// Calculate number of frames to write
@@ -289,6 +403,16 @@ public class SeisioSDC extends Seisio {
 		}
 	}
 
+	/**
+	 * Write data from a Matlab 5D array to an open JavaSeis dataset.
+	 * Shape must be conformable with the JavaSeis dataset axis lengths for the 
+	 * subset that will be written.
+	 * 
+	 * @param a multidimensional array containing data to be written
+	 * @param position starting position in the JavaSeis dataset
+	 * @throws SeisException on errors
+	 */
+	
 	public void writeMatlabMultiArray(float[][][][][] a, int[] position)
 			throws SeisException {
 		/* Check lengths of the multidimensional array for conformance with 
@@ -301,11 +425,13 @@ public class SeisioSDC extends Seisio {
 		alen[4]=a.length;
 		long[] dlen = _gridDefinition.getAxisLengths();
 		if (5 > _gridDefinition.getNumDimensions()) {
-			throw new SeisException("MultiArray dimensions exceeds dataset dimensions");
+			throw new SeisException("MultiArray dimensions exceeds dataset " +
+					"dimensions");
 		}
 		for (int i = 0; i < 5; i++) {
 			if (alen[i] != dlen[i])
-				throw new SeisException("MultiArray size does not match dataset");
+				throw new SeisException("MultiArray size does not match " +
+						"ataset");
 			position[i] = 0;
 		}
 		// Calculate number of frames to write
@@ -334,14 +460,12 @@ public class SeisioSDC extends Seisio {
 	/**
 	 * Reads data from an open JavaSeis dataset into a Matlab multidimensional
 	 * array.
-	 * Shape must be greater than or equal to the
-	 * JavaSeis dataset axis lengths for the subset that will be read. The
-	 * multidimensional array must have at least 2 and not more than 5 
-	 * dimensions.
+	 * Shape must be greater than or equal to the JavaSeis dataset axis lengths 
+	 * for the subset that will be read. The multidimensional array must have at 
+	 * least 2 and not more than 5 dimensions.
 	 * The first "n" elements of the position array are ignored, where "n"
 	 * is the number of dimensions of the multidimensional array.
-	 * @param <T>
-	 * @param a multidimensional array that will contain data on output
+	 * @param asize number of dimensions of the array to be read
 	 * @param position starting position in the JavaSeis dataset
 	 * @throws SeisException on errors
 	 */
@@ -351,7 +475,8 @@ public class SeisioSDC extends Seisio {
 		/* Check size of the required multi array for conformance with data on 
 		disk */
 		if (asize > _gridDefinition.getNumDimensions()) {
-			throw new SeisException("MultiArray dimensions exceeds dataset dimensions");
+			throw new SeisException("MultiArray dimensions exceeds dataset " +
+					"dimensions");
 		}
 		// Definition of the output
 		Object a=null;

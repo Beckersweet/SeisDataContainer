@@ -41,4 +41,18 @@ header.complex=supplPropDef.get('complex');
 header.unit=(cell(gridDef.getAxisUnitsStrings))';
 header.label=(cell(gridDef.getAxisLabelsStrings))';
 header.distributedIO=supplPropDef.get('distributedIO');
+
+%% In the case where the number of dimensions is equal to 3, which means
+%that additional dimensions may have been added in JavaSeis header (cf.
+%HeaderWrite), check if the number of dimensions of x can be reduced
+
+if header.dims==3
+    if header.size(3)==1
+        header.size(3)=[];
+        header.origin(3)=[];
+        header.delta(3)=[];
+        header.unit(3)=[];
+        header.label(3)=[];
+    end
+end
 end
