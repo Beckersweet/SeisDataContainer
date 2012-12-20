@@ -48,6 +48,7 @@ header.distributedIO=supplPropDef.get('distributedIO');
 
 if header.dims==3
     if header.size(3)==1
+        header.dims=2;
         header.size(3)=[];
         header.origin(3)=[];
         header.delta(3)=[];
