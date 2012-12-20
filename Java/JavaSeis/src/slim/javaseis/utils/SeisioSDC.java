@@ -3,7 +3,7 @@ package slim.javaseis.utils;
 import java.nio.ByteOrder;
 import java.util.HashMap;
 
-import org.javaseis.grid.BinGrid;
+import org.javaseis.array.ArrayUtil;
 import org.javaseis.grid.GridDefinition;
 import org.javaseis.io.Seisio;
 import org.javaseis.properties.DataDefinition;
@@ -195,5 +195,276 @@ public class SeisioSDC extends Seisio {
 			}
 		}
 		return hashMap;
+	}
+
+	/**
+	 * Write data from a Matlab multidimensional array to an open JavaSeis 
+	 * dataset.
+	 * Shape must be conformable with the JavaSeis dataset axis lengths for the 
+	 * subset that will be written. The multidimensional array must have at 
+	 * least 2 and not more than 5 dimensions.
+	 * The first "n" elements of the position array are ignored, where "n" is 
+	 * the number of dimensions of the multidimensional.
+	 * @param <T>
+	 * 
+	 * @param a multidimensional array containing data to be written
+	 * @param position starting position in the JavaSeis dataset
+	 * @param lengths of the Matlab multidimensional array with JavaSeis
+	 * dimension conventions (i.e. same dimensions' lengths as the ones
+	 * obtained using Matlab's function 'size' excepted for the 2 first lengths
+	 * which are swapped)
+	 * @throws SeisException on errors
+	 */
+	public void writeMatlabMultiArray(float[][][] a, int[] position)
+			throws SeisException {
+		/* Check lengths of the multidimensional array for conformance with 
+		data on disk*/
+		int[] alen = new int[3];
+		alen[0]=a[0][0].length; //Number of samples per trace
+		alen[1]=a[0].length; //Number of traces per frame
+		alen[2]=a.length; //Number of frames
+		long[] dlen = _gridDefinition.getAxisLengths();
+		if (3 > _gridDefinition.getNumDimensions()) {
+			throw new SeisException("MultiArray dimensions exceeds dataset dimensions");
+		}
+		for (int i = 0; i < 3; i++) {
+			if (alen[i] != dlen[i])
+				throw new SeisException("MultiArray size does not match dataset");
+			position[i] = 0;
+		}
+		// Calculate number of frames to write
+		int nframe = alen[2];
+
+		// Loop and read frames into the multidimensional array
+		int[] apos = new int[3];
+		for (int i = 0; i < nframe; i++) {
+			this.setTraceDataArray(a[position[2]]);
+			writeFrame(position, _traceData.length);
+			apos[2]++;
+			if (apos[2] >= alen[2]) {
+				apos[2] = 0;
+			}
+			ArrayUtil.arraycopy(apos, 0, position, 0, 3);
+		}
+	}
+
+	public void writeMatlabMultiArray(float[][][][] a, int[] position)
+			throws SeisException {
+		/* Check lengths of the multidimensional array for conformance with 
+		data on disk*/
+		int[] alen = new int[4];
+		alen[0]=a[0][0][0].length; //Number of samples per trace
+		alen[1]=a[0][0].length; //Number of traces per frame
+		alen[2]=a[0].length; //Number of frames per volume
+		alen[3]=a.length; //Number of volumes
+
+		long[] dlen = _gridDefinition.getAxisLengths();
+		if (4 > _gridDefinition.getNumDimensions()) {
+			throw new SeisException("MultiArray dimensions exceeds dataset dimensions");
+		}
+		for (int i = 0; i < 4; i++) {
+			if (alen[i] != dlen[i])
+				throw new SeisException("MultiArray size does not match dataset");
+			position[i] = 0;
+		}
+		// Calculate number of frames to write
+		int nframe = 1;
+		for (int i = 2; i < 4; i++)
+			nframe *= alen[i];
+
+		// Loop and read frames into the multidimensional array
+		int[] apos = new int[4];
+		for (int i = 0; i < nframe; i++) {
+			this.setTraceDataArray(a[position[3]][position[2]]);
+			writeFrame(position,_traceData.length);
+			apos[2]++;
+			if (apos[2] >= alen[2]) {
+				apos[2] = 0;
+				apos[3]++;
+				if (apos[3] >= alen[3]) {
+					apos[3] = 0;
+				}
+			}
+			ArrayUtil.arraycopy(apos, 0, position, 0, 4);
+		}
+	}
+
+	public void writeMatlabMultiArray(float[][][][][] a, int[] position)
+			throws SeisException {
+		/* Check lengths of the multidimensional array for conformance with 
+		data on disk*/
+		int[] alen = new int[5];
+		alen[0]=a[0][0][0][0].length;
+		alen[1]=a[0][0][0].length;
+		alen[2]=a[0][0].length;
+		alen[3]=a[0].length;
+		alen[4]=a.length;
+		long[] dlen = _gridDefinition.getAxisLengths();
+		if (5 > _gridDefinition.getNumDimensions()) {
+			throw new SeisException("MultiArray dimensions exceeds dataset dimensions");
+		}
+		for (int i = 0; i < 5; i++) {
+			if (alen[i] != dlen[i])
+				throw new SeisException("MultiArray size does not match dataset");
+			position[i] = 0;
+		}
+		// Calculate number of frames to write
+		int nframe = 1;
+		for (int i = 2; i < 5; i++)
+			nframe *= alen[i];
+
+		// Loop and read frames into the multidimensional array
+		int[] apos = new int[5];
+		for (int i = 0; i < nframe; i++) {
+			this.setTraceDataArray(a[position[3]][position[3]][position[2]]);
+			writeFrame(position, _traceData.length);
+			apos[2]++;
+			if (apos[2] >= alen[2]) {
+				apos[2] = 0;
+				apos[3]++;
+				if (apos[3] >= alen[3]) {
+					apos[3] = 0;
+					apos[4]++;
+				}
+			}
+			ArrayUtil.arraycopy(apos, 0, position, 0, 5);
+		}
+	}
+
+	/**
+	 * Reads data from an open JavaSeis dataset into a Matlab multidimensional
+	 * array.
+	 * Shape must be greater than or equal to the
+	 * JavaSeis dataset axis lengths for the subset that will be read. The
+	 * multidimensional array must have at least 2 and not more than 5 
+	 * dimensions.
+	 * The first "n" elements of the position array are ignored, where "n"
+	 * is the number of dimensions of the multidimensional array.
+	 * @param <T>
+	 * @param a multidimensional array that will contain data on output
+	 * @param position starting position in the JavaSeis dataset
+	 * @throws SeisException on errors
+	 */
+	public Object readMatlabMultiArray(int asize,int[] position) 
+			throws SeisException {
+
+		/* Check size of the required multi array for conformance with data on 
+		disk */
+		if (asize > _gridDefinition.getNumDimensions()) {
+			throw new SeisException("MultiArray dimensions exceeds dataset dimensions");
+		}
+		// Definition of the output
+		Object a=null;
+		// Call of the convenient method to read data from Trace file
+		switch (asize){
+		case 3:
+			a=read3DArray(position);break;
+		case 4:
+			a=read4DArray(position);break;
+		case 5:
+			a=read5DArray(position);break;
+		}
+		return a;
+	}
+
+	private float[][][] read3DArray(int[] position) throws SeisException{
+		long[] dlen = _gridDefinition.getAxisLengths();
+		float[][][] a=new float[(int)dlen[2]][(int)dlen[1]][(int)dlen[0]];
+
+		// Calculate number of frames to read
+		int nframe = (int) dlen[2];
+
+		//Dimensions of a frame
+		int frame_width=(int) dlen[1];
+		int frame_length=(int) dlen[0];
+
+		// Loop and read frames into the multidimensional array
+		int[] apos = new int[3];
+		for (int i = 0; i < nframe; i++) {
+			readFrame(position);
+			for (int j=0;j<frame_width;j++){
+				System.arraycopy(_traceData[j],0,a[position[2]][j],0,
+						frame_length);
+			}
+			apos[2]++;
+			if (apos[2] >= dlen[2]) {
+				apos[2] = 0;
+			}
+			ArrayUtil.arraycopy(apos, 0, position, 0, 3);
+		}
+		return a;
+	}
+
+	private float[][][][] read4DArray(int[] position) throws SeisException {
+		long[] dlen = _gridDefinition.getAxisLengths();
+		float[][][][] a=new float[(int)dlen[3]][(int)dlen[2]][(int)dlen[1]]
+				[(int)dlen[0]];
+
+		// Calculate number of frames to read
+		int nframe = 1;
+		for (int i = 2; i < 4; i++)
+			nframe *= dlen[i];
+
+		//Dimensions of a frame
+		int frame_width=(int) dlen[1];
+		int frame_length=(int) dlen[0];
+
+		// Loop and read frames into the multiarray
+		int[] apos = new int[4];
+		for (int i = 0; i < nframe; i++) {
+			readFrame(position);
+			for (int j=0;j<frame_width;j++){
+				System.arraycopy(_traceData[j],0,a[position[3]][position[2]][j],
+						0,frame_length);
+			}
+			apos[2]++;
+			if (apos[2] >= dlen[2]) {
+				apos[2] = 0;
+				apos[3]++;
+				if (apos[3] >= dlen[3]) {
+					apos[3] = 0;
+				}
+			}
+			ArrayUtil.arraycopy(apos, 0, position, 0, 4);
+		}
+		return a;
+	}
+
+	private float[][][][][] read5DArray(int[] position) throws SeisException {
+		long[] dlen = _gridDefinition.getAxisLengths();
+		float[][][][][] a=new float[(int)dlen[4]][(int)dlen[3]][(int)dlen[2]]
+				[(int)dlen[1]][(int)dlen[0]];
+
+		// Calculate number of frames to read
+		int nframe = 1;
+		for (int i = 2; i < 5; i++)
+			nframe *= dlen[i];
+
+		//Dimensions of a frame
+		int frame_width=(int) dlen[1];
+		int frame_length=(int) dlen[0];
+
+		// Loop and read frames into the multiarray
+		int[] apos = new int[5];
+		position[0] = position[1] = 0;
+		for (int i = 0; i < nframe; i++) {
+			readFrame(position);
+			for (int j=0;j<frame_width;j++){
+				System.arraycopy(_traceData[j],0,a[position[4]][position[3]]
+						[position[2]][j],
+						0,frame_length);
+			}
+			apos[2]++;
+			if (apos[2] >= dlen[2]) {
+				apos[2] = 0;
+				apos[3]++;
+				if (apos[3] >= dlen[3]) {
+					apos[3] = 0;
+					apos[4]++;
+				}
+			}
+			ArrayUtil.arraycopy(apos, 0, position, 0, 5);
+		}
+		return a;
 	}
 }
