@@ -35,23 +35,6 @@ if nb_dims<3
 end
 axisDef=javaArray('org.javaseis.properties.AxisDefinition',header.dims);
 
-%Swapping of the 2 first dimensions to match JavaSeis convention
-tmp=header.size(1);
-header.size(1)=header.size(2);
-header.size(2)=tmp;
-tmp=header.origin(1);
-header.origin(1)=header.origin(2);
-header.origin(2)=tmp;
-tmp=header.delta(1);
-header.delta(1)=header.delta(2);
-header.delta(2)=tmp;
-tmp=header.unit{1};
-header.unit{1}=header.unit{2};
-header.unit{2}=tmp;
-tmp=header.label{1};
-header.label{1}=header.label{2};
-header.label{2}=tmp;
-
 for k=1:header.dims;
     axisDef(k)=AxisDefinition(AxisLabel(header.label{k},''),mb2jsUnit(...
         header.unit{k}),DataDomain.NULL,header.size(k),0,1,...
@@ -88,5 +71,4 @@ supplProps.put('distributedIO',header.distributedIO);
 seisio=slim.javaseis.utils.SeisioSDC(dirname,gridDef,dataDef,...
     headerDef,supplProps);
 seisio.create;
-
 end
