@@ -25,7 +25,7 @@ function x = DataReadLeftChunk(dirname,range,slice,buffer,x_precision,varargin)
 r =  SDCpckg.io.JavaSeis.serial.FileReadLeftChunk(dirname,range,slice) ;
 
 % Reshape to 4D
- totalsize = size(r)
+ totalsize = size(r) ;
  if length(size(r)) < 4
      for nullDim=length(size(r)):3
   

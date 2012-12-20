@@ -13,26 +13,36 @@ assert(ischar(dirname), 'directory name must be a string');
 assert(isdir(dirname),'Fatal error: directory %s does not exist',dirname);
 assert(isstruct(header),'header has to be a struct');
 
-%% Imports
-import org.javaseis.properties.*;
+
+ %Load dynamic libraries
+ javaaddpath('/Users/bcollignon/Documents/workspace/dhale-jtk-78bca79.jar');
+ %javaaddpath('/Users/bcollignon/Documents/workspace/betajavaseis1819.jar');
+ javaaddpath('/Users/bcollignon/Documents/workspace/JavaSeisSlim.jar');
+ javaaddpath('/Users/bcollignon/Documents/workspace/OrgJavaSeis.jar');
+
+
+% Import
+%import slim.javaseis.utils.*;
 import SDCpckg.io.JavaSeis.utils.*;
+import org.javaseis.properties.*;
 
 %% Grid definition
 
-nb_dims=header.dims; %Number of dimensions
+nb_dims=header.dims ; %Number of dimensions
 
-if nb_dims<3
+ if nb_dims<4
     warning('JavaSeis:dimension',['the number of dimensions should at'...
         ' least be 3. Creation of the missing dimension(s)...']);
-    header.dims=3;
-    for k=nb_dims+1:3
+    header.dims=4;
+    for k=nb_dims+1:header.dims
         header.size(k)=1;
         header.origin(k)=NaN;
         header.delta(k)=NaN;
         header.unit{k}='unknown';
         header.label{k}='unknown';
     end
-end
+ end
+ 
 axisDef=javaArray('org.javaseis.properties.AxisDefinition',header.dims);
 
 for k=1:header.dims;

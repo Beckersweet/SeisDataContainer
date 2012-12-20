@@ -52,11 +52,6 @@ testx = X ;
 
 size_X = size(testx) ;
 
-testzeros = zeros(size(X)) ;
-
-% RangeCount
-rangeCount=range(2)-range(1)+1;
-
 if isequal(slice,[]) == 0 
     
    sizeslice = size(slice) ;
@@ -103,9 +98,9 @@ for hyp=1:1
              if seisio.frameExists(position)
              
                 if isequal(slice,[]) == 0
-                  a = testx(:,:,1,1) 
+                  a = testx(:,:,1,1) ;
                 else
-                  a = testx(:,:,frm,vol) 
+                  a = testx(:,:,frm,vol) ;
                 end
            
              else
@@ -124,7 +119,6 @@ for hyp=1:1
                 if (size_Glob(3) == shape_init(2))
                  
                     globalFrame = globalTable(vol,frm,:,:) ;
-                    size_Fram = size(globalFrame) 
                
                     seisio.setTraceDataArray(globalFrame); 
                     seisio.setPosition(position);

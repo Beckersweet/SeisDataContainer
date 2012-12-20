@@ -24,8 +24,8 @@ if nargin>1
 end;
 
 % Set up the Seisio object
-import beta.javaseis.io.Seisio.*;    
-seisio = beta.javaseis.io.Seisio(dirname);
+import org.javaseis.io.Seisio.*;    
+seisio = org.javaseis.io.Seisio(dirname);
 seisio.open('r');
 
 % Read header
@@ -39,10 +39,10 @@ header.size = seisio.getGridDefinition.getAxisLengths() ;
 
 % Get number of dimensions and set position accordingly
 dimensions = header.dims ;
-position = zeros(dimensions,1);
+position = zeros(dimensions,1) ;
 
-% Get Shape
-shape = header.size 
+% Get shape
+shape = header.size ;
 
 % Pre-set X to be 4d array of zeros with the correct dimensions
 x=zeros(shape(1),...
@@ -50,17 +50,16 @@ x=zeros(shape(1),...
     shape(3), ...
     shape(4));
 
-% Matlab reads the frame in transposed, so traces then samples. This is
-% an issue to keep in mind. 
-
 % Read up to 4D datasets    
 for j=1:shape(4)
     position(4) = j-1 ;
   for i = 1:shape(3)
     position(3) = i -1 ; 
-    myposread = position 
-    seisio.readFrame(position) % reads one 2D "Frame"
-    x(:,:,i,j) = seisio.getTraceDataArray()'   ; 
+   
+    seisio.readFrame(position) ; % reads one 2D "Frame"
+  
+    x(:,:,i,j) = seisio.getTraceDataArray()'; 
+    
   end
 end  
   seisio.close();
