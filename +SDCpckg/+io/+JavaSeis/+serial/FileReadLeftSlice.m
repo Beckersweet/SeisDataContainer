@@ -27,8 +27,8 @@ if nargin>2
 end;
 
 % Set up the Seisio object
-import beta.javaseis.io.Seisio.*;    
-seisio = beta.javaseis.io.Seisio( dirname );
+import org.javaseis.io.Seisio.*;    
+seisio = org.javaseis.io.Seisio( dirname );
 seisio.open('r');
 
 % Read header
@@ -46,6 +46,23 @@ position = zeros(dimensions,1);
 
 % Get Shape
 shape = header.size ;
+
+
+% Define Grid Size
+%testHsize = header.size;
+% gridsize = [header.size]' ;
+% gridsize = [header.size] ;
+
+% if less than 4D: Reshape to 4D
+  if size(shape) < 4
+     for nullDim=size(shape):3
+  
+      shape(nullDim+1) =  1 
+      header.origin(nullDim+1) = 0
+      header.delta(nullDim+1) = 0
+     
+     end
+  end    
 
 %assert(isequal(slice,[]), 'Code only completed for slice == []');
 %asser(isequal(dimensions, 3), 'Code only completed for 3 dimensions');

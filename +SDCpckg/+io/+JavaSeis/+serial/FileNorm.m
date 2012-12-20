@@ -37,6 +37,17 @@ seisio.close();
 
 %file_precision = 'double';
 dimensions = header.size
+
+% if less than 4D: Reshape to 4D
+  if size(dimensions) < 4
+     for nullDim=size(dimensions):3
+  
+      dimensions(nullDim+1) =  1 
+    
+     
+     end
+  end    
+
 newdim = dimensions(1)*dimensions(2)*dimensions(3)*dimensions(4)
 
 % Set byte size
