@@ -51,11 +51,6 @@ position = zeros(dimensions,1);
 % Get Shape
 shape = header.size ;
 
-%assert(isequal(slice,[]), 'Code only completed for slice == []');
-%asser(isequal(dimensions, 3), 'Code only completed for 3 dimensions');
-%position = zeros(dimensions,1);
-
-
 % Pre-set X to be 4d array of zeros with the correct dimensions
 rangeCount=range(2)-range(1)+1; 
 if isequal(slice,[]) == 0 
@@ -80,9 +75,6 @@ else
   
    
 end
-
-% Matlab reads the frame in transposed, so traces then samples. This is
-% an issue to keep in mind. 
 
 % Read up to 4D datasets    
 for j=jstart:jend

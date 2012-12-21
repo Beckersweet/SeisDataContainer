@@ -47,13 +47,13 @@ header.distributedIO=supplPropDef.get('distributedIO');
 %HeaderWrite), check if the number of dimensions of x can be reduced
 
 if header.dims==3
-    if header.size(3)==1
-        header.dims=2;
-        header.size(3)=[];
-        header.origin(3)=[];
-        header.delta(3)=[];
-        header.unit(3)=[];
-        header.label(3)=[];
-    end
+if header.size(3)==1
+header.dims=2;
+header.size(3)=[];
+header.origin(3)=[];
+header.delta(3)=[];
+header.unit(3)=[];
+header.label(3)=[];
+end
 end
 end

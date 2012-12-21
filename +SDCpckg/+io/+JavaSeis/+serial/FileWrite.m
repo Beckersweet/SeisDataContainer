@@ -30,15 +30,15 @@ f_precision = header.precision;
 
 % Preprocess input arguments
 if nargin>2
-    assert(ischar(varargin{1})|isstruct(varargin{1}),...
-        'argument mast be either file_precision string or header struct')
-    if ischar(varargin{1})
-        f_precision = varargin{1};
-        header.precision = f_precision;
-    elseif isstruct(varargin{1})
-        header = varargin{1};
-        f_precision = header.precision;
-    end
+assert(ischar(varargin{1})|isstruct(varargin{1}),...
+       'argument mast be either file_precision string or header struct')
+if ischar(varargin{1})
+f_precision = varargin{1};
+header.precision = f_precision;
+elseif isstruct(varargin{1})
+header = varargin{1};
+f_precision = header.precision;
+end
 end;
 SDCpckg.verifyHeaderStructWithX(header,x);
 

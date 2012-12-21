@@ -27,8 +27,8 @@ if nargin>2
 end;
 
 % Set up the Seisio object
-import beta.javaseis.io.Seisio.*;    
-seisio = beta.javaseis.io.Seisio( dirname );
+import org.javaseis.io.Seisio.*;    
+seisio = org.javaseis.io.Seisio( dirname );
 seisio.open('r');
 
 % Read header
@@ -47,8 +47,6 @@ position = zeros(dimensions,1);
 % Get Shape
 shape = header.size ;
 
-%assert(isequal(slice,[]), 'Code only completed for slice == []');
-%asser(isequal(dimensions, 3), 'Code only completed for 3 dimensions');
 position = zeros(dimensions,1);
 
 % Pre-set X to be 4d array of zeros with the correct dimensions
@@ -57,27 +55,22 @@ position = zeros(dimensions,1);
  if isequal(slice,[]) == 0 
    x = zeros([shape(1),shape(2),1,1]) ;
   % test = 0
-   jstart = slice(2) 
-   jend = jstart 
-   istart = slice(1) 
-   iend = istart 
+   jstart = slice(2) ;
+   jend = jstart ;
+   istart = slice(1) ;
+   iend = istart ;
    
 else 
     x = zeros(shape(1),shape(2),shape(3),shape(4)) ;
  
   % test = 1
    
-   jstart = 1 
-   jend = shape(4) 
-   istart = 1 
-   iend = shape(3) 
+   jstart = 1 ;
+   jend = shape(4) ;
+   istart = 1 ;
+   iend = shape(3) ;
    
 end
-
-
-%x=zeros(226,676,rangeCount);
-    % Matlab reads the frame in transposed, so traces then samples. This is
-    % an issue to keep in mind. 
 
 % Read up to 4D datasets    
 for j= jstart:jend
@@ -85,11 +78,8 @@ for j= jstart:jend
   for i = istart:iend
     position(3) = i - 1 ; 
     seisio.readFrame(position); % reads one 2D "Frame"
-    x(:,:,i,j) = seisio.getTraceDataArray()' 
+    x(:,:,i,j) = seisio.getTraceDataArray()' ;
     y=x(:,:,i,j) ;
-    
-    testi =i
-    testj = j
     
   end
 end  
@@ -97,7 +87,7 @@ end
   % Case of multiple read of the same file
   % Take the last slice added in x
   if isequal(slice,[]) == 0 
-  y = x(:,:,i,j) 
+  y = x(:,:,i,j) ;
   end
 
   seisio.close();

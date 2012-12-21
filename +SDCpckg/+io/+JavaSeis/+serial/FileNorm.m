@@ -36,23 +36,18 @@ header.size = seisio.getGridDefinition.getAxisLengths() ;
 seisio.close(); 
 
 %file_precision = 'double';
-dimensions = header.size
-newdim = dimensions(1)*dimensions(2)*dimensions(3)*dimensions(4)
+dimensions = header.size;
+newdim = dimensions(1)*dimensions(2)*dimensions(3)*dimensions(4);
 
 % Set byte size
 bytesize  = SDCpckg.utils.getByteSize(file_precision);
 
 % Set the sizes
-dims      = [1 newdim]
+dims      = [1 newdim];
 reminder  = newdim ;
-maxbuffer = SDCbufferSize/bytesize
-
-class(reminder)
-class(maxbuffer)
+maxbuffer = SDCbufferSize/bytesize;
 
 reminder = typecast(maxbuffer,'int64') ;
-
-class(maxbuffer) 
 
 if(norm == 'fro')
     norm = 2;

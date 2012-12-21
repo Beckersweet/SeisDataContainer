@@ -103,7 +103,7 @@ if(norm == inf)
     end
      
    
-     totaltest2 = beta.javaseis.examples.io.PartNorm.ArrayNormPlusInf(matarr1D) ;
+     totaltest2 = slim.javaseis.mem.PartNorm.ArrayNormPlusInf(matarr1D) ;
      y     = max(totaltest2,y);
      zz = y;
     
@@ -153,7 +153,7 @@ elseif(norm == -inf)
     end
     
     
-    totaltest2 = beta.javaseis.examples.io.PartNorm.ArrayNormMinusInf(matarr1D) ;
+    totaltest2 = slim.javaseis.mem.PartNorm.ArrayNormMinusInf(matarr1D) ;
     y = min(totaltest2,y) ;
     zz= y;
   %  x = total^(1/norm);
@@ -178,7 +178,7 @@ elseif (isscalar(norm))
         size_r= size(r);
         
         %TwoDArrayNormScalar works for 2D only
-        anothertest = anothertest + beta.javaseis.examples.io.PartNorm.TwoDArrayNormScalar(r,norm) ;
+        anothertest = anothertest + slim.javaseis.mem.PartNorm.TwoDArrayNormScalar(r,norm) ;
        
         
          for i=1:size_r(1)
@@ -200,7 +200,7 @@ elseif (isscalar(norm))
     
     zz = anothertest^(1/norm) 
     
-    totaltest2 = beta.javaseis.examples.io.PartNorm.ArrayNormScalar(matarr1D,norm) ;
+    totaltest2 = slim.javaseis.mem.PartNorm.ArrayNormScalar(matarr1D,norm) ;
     y = totaltest2^(1/norm);
     
     x = total^(1/norm);
