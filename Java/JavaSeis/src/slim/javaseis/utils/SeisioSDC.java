@@ -204,10 +204,9 @@ public class SeisioSDC extends Seisio {
 	 * subset that will be written.
 	 * 
 	 * @param a multidimensional array containing data to be written
-	 * @param position starting position in the JavaSeis dataset
 	 * @throws SeisException on errors
 	 */
-	public void writeMatlabMultiArray(float a, int[] position)
+	public void writeMatlabMultiArray(float a)
 			throws SeisException {
 		/* Check lengths of the multidimensional array for conformance with 
 		data on disk*/
@@ -236,10 +235,9 @@ public class SeisioSDC extends Seisio {
 	 * (less for loops involved). 
 	 * 
 	 * @param a multidimensional array containing data to be written
-	 * @param position starting position in the JavaSeis dataset
 	 * @throws SeisException on errors
 	 */
-	public void writeMatlabMultiArray(float[] a, int[] position)
+	public void writeMatlabMultiArray(float[] a)
 			throws SeisException {
 		//2D array to reshape the trace 'a' to a frame
 		float[][] a_frame = null;
@@ -279,11 +277,9 @@ public class SeisioSDC extends Seisio {
 	 * subset that will be written.
 	 * 
 	 * @param a multidimensional array containing data to be written
-	 * @param position starting position in the JavaSeis dataset
 	 * @throws SeisException on errors
 	 */
-	
-	public void writeMatlabMultiArray(float[][] a, int[] position)
+	public void writeMatlabMultiArray(float[][] a)
 			throws SeisException {
 		/* Check lengths of the multidimensional array for conformance with 
 		data on disk*/
@@ -297,12 +293,11 @@ public class SeisioSDC extends Seisio {
 			if (alen[i] != dlen[i])
 				throw new SeisException("MultiArray size does not match " +
 						"dataset");
-			position[i] = 0;
 		}
 
 		// Read frame into the multidimensional array
 		this.setTraceDataArray(a);
-		writeFrame(position, _traceData.length);
+		writeFrame(new int[]{0,0,0}, _traceData.length);
 	}
 
 	/**
@@ -311,11 +306,9 @@ public class SeisioSDC extends Seisio {
 	 * subset that will be written.
 	 * 
 	 * @param a multidimensional array containing data to be written
-	 * @param position starting position in the JavaSeis dataset
 	 * @throws SeisException on errors
 	 */
-	
-	public void writeMatlabMultiArray(float[][][] a, int[] position)
+	public void writeMatlabMultiArray(float[][][] a)
 			throws SeisException {
 		/* Check lengths of the multidimensional array for conformance with 
 		data on disk*/
@@ -332,7 +325,6 @@ public class SeisioSDC extends Seisio {
 			if (alen[i] != dlen[i])
 				throw new SeisException("MultiArray size does not match " +
 						"dataset");
-			position[i] = 0;
 		}
 		// Calculate number of frames to write
 		int nframe = alen[2];
@@ -340,13 +332,12 @@ public class SeisioSDC extends Seisio {
 		// Loop and read frames into the multidimensional array
 		int[] apos = new int[3];
 		for (int i = 0; i < nframe; i++) {
-			this.setTraceDataArray(a[position[2]]);
-			writeFrame(position, _traceData.length);
+			this.setTraceDataArray(a[apos[2]]);
+			writeFrame(apos, _traceData.length);
 			apos[2]++;
 			if (apos[2] >= alen[2]) {
 				apos[2] = 0;
 			}
-			ArrayUtil.arraycopy(apos, 0, position, 0, 3);
 		}
 	}
 
@@ -356,11 +347,9 @@ public class SeisioSDC extends Seisio {
 	 * subset that will be written.
 	 * 
 	 * @param a multidimensional array containing data to be written
-	 * @param position starting position in the JavaSeis dataset
 	 * @throws SeisException on errors
 	 */
-	
-	public void writeMatlabMultiArray(float[][][][] a, int[] position)
+	public void writeMatlabMultiArray(float[][][][] a)
 			throws SeisException {
 		/* Check lengths of the multidimensional array for conformance with 
 		data on disk*/
@@ -379,7 +368,6 @@ public class SeisioSDC extends Seisio {
 			if (alen[i] != dlen[i])
 				throw new SeisException("MultiArray size does not match " +
 						"dataset");
-			position[i] = 0;
 		}
 		// Calculate number of frames to write
 		int nframe = 1;
@@ -389,8 +377,8 @@ public class SeisioSDC extends Seisio {
 		// Loop and read frames into the multidimensional array
 		int[] apos = new int[4];
 		for (int i = 0; i < nframe; i++) {
-			this.setTraceDataArray(a[position[3]][position[2]]);
-			writeFrame(position,_traceData.length);
+			this.setTraceDataArray(a[apos[3]][apos[2]]);
+			writeFrame(apos,_traceData.length);
 			apos[2]++;
 			if (apos[2] >= alen[2]) {
 				apos[2] = 0;
@@ -399,7 +387,6 @@ public class SeisioSDC extends Seisio {
 					apos[3] = 0;
 				}
 			}
-			ArrayUtil.arraycopy(apos, 0, position, 0, 4);
 		}
 	}
 
@@ -409,11 +396,9 @@ public class SeisioSDC extends Seisio {
 	 * subset that will be written.
 	 * 
 	 * @param a multidimensional array containing data to be written
-	 * @param position starting position in the JavaSeis dataset
 	 * @throws SeisException on errors
 	 */
-	
-	public void writeMatlabMultiArray(float[][][][][] a, int[] position)
+	public void writeMatlabMultiArray(float[][][][][] a)
 			throws SeisException {
 		/* Check lengths of the multidimensional array for conformance with 
 		data on disk*/
@@ -432,7 +417,6 @@ public class SeisioSDC extends Seisio {
 			if (alen[i] != dlen[i])
 				throw new SeisException("MultiArray size does not match " +
 						"ataset");
-			position[i] = 0;
 		}
 		// Calculate number of frames to write
 		int nframe = 1;
@@ -442,8 +426,8 @@ public class SeisioSDC extends Seisio {
 		// Loop and read frames into the multidimensional array
 		int[] apos = new int[5];
 		for (int i = 0; i < nframe; i++) {
-			this.setTraceDataArray(a[position[3]][position[3]][position[2]]);
-			writeFrame(position, _traceData.length);
+			this.setTraceDataArray(a[apos[3]][apos[3]][apos[2]]);
+			writeFrame(apos, _traceData.length);
 			apos[2]++;
 			if (apos[2] >= alen[2]) {
 				apos[2] = 0;
@@ -453,7 +437,6 @@ public class SeisioSDC extends Seisio {
 					apos[4]++;
 				}
 			}
-			ArrayUtil.arraycopy(apos, 0, position, 0, 5);
 		}
 	}
 
@@ -465,34 +448,31 @@ public class SeisioSDC extends Seisio {
 	 * least 2 and not more than 5 dimensions.
 	 * The first "n" elements of the position array are ignored, where "n"
 	 * is the number of dimensions of the multidimensional array.
-	 * @param asize number of dimensions of the array to be read
-	 * @param position starting position in the JavaSeis dataset
 	 * @throws SeisException on errors
+	 * @return Object that can be a 3D, 4D or 5D array of float type
 	 */
-	public Object readMatlabMultiArray(int asize,int[] position) 
+	public Object readMatlabMultiArray() 
 			throws SeisException {
 
-		/* Check size of the required multi array for conformance with data on 
-		disk */
-		if (asize > _gridDefinition.getNumDimensions()) {
-			throw new SeisException("MultiArray dimensions exceeds dataset " +
-					"dimensions");
-		}
-		// Definition of the output
+		//Number of dimensions of the output
+		int asize = _gridDefinition.getNumDimensions();
+		
+		// Initialization of the output
 		Object a=null;
+		
 		// Call of the convenient method to read data from Trace file
 		switch (asize){
 		case 3:
-			a=read3DArray(position);break;
+			a=read3DArray();break;
 		case 4:
-			a=read4DArray(position);break;
+			a=read4DArray();break;
 		case 5:
-			a=read5DArray(position);break;
+			a=read5DArray();break;
 		}
 		return a;
 	}
 
-	private float[][][] read3DArray(int[] position) throws SeisException{
+	private float[][][] read3DArray() throws SeisException{
 		long[] dlen = _gridDefinition.getAxisLengths();
 		float[][][] a=new float[(int)dlen[2]][(int)dlen[1]][(int)dlen[0]];
 
@@ -506,21 +486,20 @@ public class SeisioSDC extends Seisio {
 		// Loop and read frames into the multidimensional array
 		int[] apos = new int[3];
 		for (int i = 0; i < nframe; i++) {
-			readFrame(position);
+			readFrame(apos);
 			for (int j=0;j<frame_width;j++){
-				System.arraycopy(_traceData[j],0,a[position[2]][j],0,
+				System.arraycopy(_traceData[j],0,a[apos[2]][j],0,
 						frame_length);
 			}
 			apos[2]++;
 			if (apos[2] >= dlen[2]) {
 				apos[2] = 0;
 			}
-			ArrayUtil.arraycopy(apos, 0, position, 0, 3);
 		}
 		return a;
 	}
 
-	private float[][][][] read4DArray(int[] position) throws SeisException {
+	private float[][][][] read4DArray() throws SeisException {
 		long[] dlen = _gridDefinition.getAxisLengths();
 		float[][][][] a=new float[(int)dlen[3]][(int)dlen[2]][(int)dlen[1]]
 				[(int)dlen[0]];
@@ -537,9 +516,9 @@ public class SeisioSDC extends Seisio {
 		// Loop and read frames into the multiarray
 		int[] apos = new int[4];
 		for (int i = 0; i < nframe; i++) {
-			readFrame(position);
+			readFrame(apos);
 			for (int j=0;j<frame_width;j++){
-				System.arraycopy(_traceData[j],0,a[position[3]][position[2]][j],
+				System.arraycopy(_traceData[j],0,a[apos[3]][apos[2]][j],
 						0,frame_length);
 			}
 			apos[2]++;
@@ -550,12 +529,11 @@ public class SeisioSDC extends Seisio {
 					apos[3] = 0;
 				}
 			}
-			ArrayUtil.arraycopy(apos, 0, position, 0, 4);
 		}
 		return a;
 	}
 
-	private float[][][][][] read5DArray(int[] position) throws SeisException {
+	private float[][][][][] read5DArray() throws SeisException {
 		long[] dlen = _gridDefinition.getAxisLengths();
 		float[][][][][] a=new float[(int)dlen[4]][(int)dlen[3]][(int)dlen[2]]
 				[(int)dlen[1]][(int)dlen[0]];
@@ -571,12 +549,11 @@ public class SeisioSDC extends Seisio {
 
 		// Loop and read frames into the multiarray
 		int[] apos = new int[5];
-		position[0] = position[1] = 0;
 		for (int i = 0; i < nframe; i++) {
-			readFrame(position);
+			readFrame(apos);
 			for (int j=0;j<frame_width;j++){
-				System.arraycopy(_traceData[j],0,a[position[4]][position[3]]
-						[position[2]][j],
+				System.arraycopy(_traceData[j],0,a[apos[4]][apos[3]]
+						[apos[2]][j],
 						0,frame_length);
 			}
 			apos[2]++;
@@ -588,7 +565,6 @@ public class SeisioSDC extends Seisio {
 					apos[4]++;
 				}
 			}
-			ArrayUtil.arraycopy(apos, 0, position, 0, 5);
 		}
 		return a;
 	}

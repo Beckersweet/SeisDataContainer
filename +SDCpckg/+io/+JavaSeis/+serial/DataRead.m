@@ -28,9 +28,7 @@ assert(exist(filename,'file')==2,'Fatal error: file %s does not exist',...
 
 %Creation of the seisio object enabling to read from the JavaSeis file
 seisio=slim.javaseis.utils.SeisioSDC(dirname);
-
-%Loading of the file data set definition
-seisio.loadDatasetDefinition;
+seisio.open('r');
 
 %Properties of interest
 props=seisio.getFileProperties({char(SeisioSDC.DATA_DIMENSIONS),'complex'});
@@ -42,14 +40,13 @@ dims=double(props.get(char(SeisioSDC.DATA_DIMENSIONS)));
 x=zeros(dimensions);
 
 %Reading of the data from the Trace file
-seisio.open('rw');
 if props.get('complex')==1 %Complex case
-    x=permute(seisio.readMatlabMultiArray(dims,zeros(1,dims)),dims:-1:1);
+    x=permute(seisio.readMatlabMultiArray(),dims:-1:1);
 else %Real case
-    x=permute(seisio.readMatlabMultiArray(dims,zeros(1,dims)),dims:-1:1);
+    x=permute(seisio.readMatlabMultiArray(),dims:-1:1);
 end
 
 % swap x_precision
 x = SDCpckg.utils.switchPrecisionIP(x,x_precision);
-
+seisio.close;
 end

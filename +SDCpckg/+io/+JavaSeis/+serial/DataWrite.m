@@ -7,7 +7,7 @@ function DataWrite(dirname,filename,x,file_precision)
 %   DIRNAME        - A string specifying the directory name
 %   FILENAME       - A string specifying the file name
 %   DATA           - Non-distributed real data
-%   FILE_PRECISION - A string specifying the precision of one unit of 
+%   FILE_PRECISION - A string specifying the precision of one unit of
 %                       data,
 %               Supported precisions: 'double', 'single'
 %
@@ -35,9 +35,7 @@ x = SDCpckg.utils.switchPrecisionIP(x,file_precision);
 
 %Creation of the seisio object enabling to write into the JavaSeis file
 seisio=slim.javaseis.utils.SeisioSDC(dirname);
-
-%Loading of the file data set definition
-seisio.loadDatasetDefinition;
+seisio.open('rw');
 
 %Properties of interest
 props=seisio.getFileProperties({char(SeisioSDC.DATA_DIMENSIONS),'complex'});
@@ -46,12 +44,12 @@ props=seisio.getFileProperties({char(SeisioSDC.DATA_DIMENSIONS),'complex'});
 dims=length(size(x));
 
 %Writing of the data in the Trace file
-seisio.open('rw');
 if props.get('complex')==1 %Complex case
     x=single(x);
-    seisio.writeMatlabMultiArray(permute(x,dims:-1:1),zeros(1,dims));
+    seisio.writeMatlabMultiArray(permute(x,dims:-1:1));
 else %Real case
     x=single(x);
-    seisio.writeMatlabMultiArray(permute(x,dims:-1:1),zeros(1,dims));
+    seisio.writeMatlabMultiArray(permute(x,dims:-1:1));
 end
+seisio.close;
 end
