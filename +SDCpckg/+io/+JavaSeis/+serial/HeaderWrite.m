@@ -71,4 +71,5 @@ supplProps.put('distributedIO',header.distributedIO);
 seisio=slim.javaseis.utils.SeisioSDC(dirname,gridDef,dataDef,...
     headerDef,supplProps);
 seisio.create;
+seisio.close;
 end
