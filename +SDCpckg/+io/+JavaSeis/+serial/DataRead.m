@@ -33,17 +33,14 @@ seisio.open('r');
 %Properties of interest
 props=seisio.getFileProperties({char(SeisioSDC.DATA_DIMENSIONS),'complex'});
 
-%Number of dimensions
-dims=double(props.get(char(SeisioSDC.DATA_DIMENSIONS)));
-
 %Initialization of the output
 x=zeros(dimensions);
 
 %Reading of the data from the Trace file
 if props.get('complex')==1 %Complex case
-    x=permute(seisio.readMatlabMultiArray(),dims:-1:1);
+    x=seisio.readMatlabMultiArray;
 else %Real case
-    x=permute(seisio.readMatlabMultiArray(),dims:-1:1);
+    x=seisio.readMatlabMultiArray;
 end
 
 % swap x_precision

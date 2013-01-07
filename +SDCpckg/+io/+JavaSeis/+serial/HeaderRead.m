@@ -42,18 +42,27 @@ header.unit=(cell(gridDef.getAxisUnitsStrings))';
 header.label=(cell(gridDef.getAxisLabelsStrings))';
 header.distributedIO=supplPropDef.get('distributedIO');
 
+%Swapping of the header's properties so as to match Matlab dimensions
+%conventions. The dimensions in Matlab are simply flipped. e.g.: (x y z)
+%in JavaSeis becomes (z y x) in Matlab.
+header.size=fliplr(header.size);
+header.origin=fliplr(header.origin);
+header.delta=fliplr(header.delta);
+header.unit=fliplr(header.unit);
+header.label=fliplr(header.label);
+
 %% In the case where the number of dimensions is equal to 3, which means
 %that additional dimensions may have been added in JavaSeis header (cf.
 %HeaderWrite), check if the number of dimensions of x can be reduced
 
 if header.dims==3
-if header.size(3)==1
-header.dims=2;
-header.size(3)=[];
-header.origin(3)=[];
-header.delta(3)=[];
-header.unit(3)=[];
-header.label(3)=[];
-end
+    if header.size(3)==1
+        header.dims=2;
+        header.size(3)=[];
+        header.origin(3)=[];
+        header.delta(3)=[];
+        header.unit(3)=[];
+        header.label(3)=[];
+    end
 end
 end

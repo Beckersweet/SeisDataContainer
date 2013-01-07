@@ -3,7 +3,6 @@ package slim.javaseis.utils;
 import java.nio.ByteOrder;
 import java.util.HashMap;
 
-import org.javaseis.array.ArrayUtil;
 import org.javaseis.grid.GridDefinition;
 import org.javaseis.io.Seisio;
 import org.javaseis.properties.DataDefinition;
@@ -143,6 +142,7 @@ public class SeisioSDC extends Seisio {
 	/** Method enabling to get the file properties in a HashMap object.
 	 * @param propNames
 	 * 			List of the names of the file properties to get
+	 * 
 	 * 
 	 * The native properties' names that can be specified in the list are:
 	 * 
@@ -351,6 +351,7 @@ public class SeisioSDC extends Seisio {
 	 */
 	public void writeMatlabMultiArray(float[][][][] a)
 			throws SeisException {
+		
 		/* Check lengths of the multidimensional array for conformance with 
 		data on disk*/
 		int[] alen = new int[4];
@@ -400,6 +401,7 @@ public class SeisioSDC extends Seisio {
 	 */
 	public void writeMatlabMultiArray(float[][][][][] a)
 			throws SeisException {
+		
 		/* Check lengths of the multidimensional array for conformance with 
 		data on disk*/
 		int[] alen = new int[5];
@@ -456,10 +458,10 @@ public class SeisioSDC extends Seisio {
 
 		//Number of dimensions of the output
 		int asize = _gridDefinition.getNumDimensions();
-		
+
 		// Initialization of the output
 		Object a=null;
-		
+
 		// Call of the convenient method to read data from Trace file
 		switch (asize){
 		case 3:

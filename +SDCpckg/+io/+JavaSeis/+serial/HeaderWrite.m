@@ -22,7 +22,7 @@ import SDCpckg.io.JavaSeis.utils.*;
 nb_dims=header.dims; %Number of dimensions
 
 %Creation of the missing dimensions if necessary (in JavaSeis, the number 
-%of dimensions should at least be 3.
+%of dimensions should at least be 3).
 if nb_dims<3
     header.dims=3;
     for k=nb_dims+1:3
@@ -34,6 +34,15 @@ if nb_dims<3
     end
 end
 axisDef=javaArray('org.javaseis.properties.AxisDefinition',header.dims);
+
+%Swapping of the header's properties so as to match JavaSeis dimensions
+%conventions. The dimensions in JavaSeis are simply flipped. e.g.: (x y z) 
+%in Matlab becomes (z y x) in JavaSeis.
+header.size=fliplr(header.size);
+header.origin=fliplr(header.origin);
+header.delta=fliplr(header.delta);
+header.unit=fliplr(header.unit);
+header.label=fliplr(header.label);
 
 for k=1:header.dims;
     axisDef(k)=AxisDefinition(AxisLabel(header.label{k},''),mb2jsUnit(...
@@ -66,6 +75,7 @@ supplProps.put('varName',header.varName);
 supplProps.put('varUnits',header.varUnits);
 supplProps.put('complex',header.complex);
 supplProps.put('distributedIO',header.distributedIO);
+
 
 %% Saving of SDC header's properties in a SeisioSDC object
 seisio=slim.javaseis.utils.SeisioSDC(dirname,gridDef,dataDef,...

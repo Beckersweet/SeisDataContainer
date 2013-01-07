@@ -22,7 +22,7 @@ assert(ischar(file_precision), 'file_precision name must be a string')
 
 %Imports
 import slim.javaseis.utils.*;
-
+import org.javaseis.array.*;
 % Preprocess input arguments
 filename=fullfile(dirname,filename);
 
@@ -40,16 +40,13 @@ seisio.open('rw');
 %Properties of interest
 props=seisio.getFileProperties({char(SeisioSDC.DATA_DIMENSIONS),'complex'});
 
-%Data number of dimensions
-dims=length(size(x));
-
 %Writing of the data in the Trace file
 if props.get('complex')==1 %Complex case
     x=single(x);
-    seisio.writeMatlabMultiArray(permute(x,dims:-1:1));
+    seisio.writeMatlabMultiArray(x);
 else %Real case
     x=single(x);
-    seisio.writeMatlabMultiArray(permute(x,dims:-1:1));
+    seisio.writeMatlabMultiArray(x);
 end
 seisio.close;
 end
