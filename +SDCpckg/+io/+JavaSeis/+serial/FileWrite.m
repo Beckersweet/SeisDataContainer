@@ -1,6 +1,7 @@
 function FileWrite(dirname,x,varargin)
 %FILEWRITE Writes serial data to binary file
-%
+%   Create a 5D MultiArray 
+%  
 %   FileWrite(DIRNAME,DATA,FILE_PRECISION|HEADER_STRUCT) writes
 %   the real serial array X into DIRNAME/FILENAME.
 %
@@ -12,43 +13,99 @@ function FileWrite(dirname,x,varargin)
 %                    defaults to type of x
 %                    Supported precisions: 'double', 'single'
 %   HEADER_STRUCT  - An optional header struct as created
-%                    by SDCpckg.basicHeaderStructFromX
-%                    or SDCpckg.basicHeaderStruct
+%                    by DataContainer.basicHeaderStructFromX
+%                    or DataContainer.basicHeaderStruct
 %
 %   Warning: If the specified dirname exists, it will be removed.
-
-% Check Directory
-assert(isdir(dirname),'Fatal error: directory %s does not exist',dirname);
 error(nargchk(2, 3, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 assert(isfloat(x), 'data must be float')
-assert(~isdistributed(x), 'data must not be distributed')
+%assert(~isdistributed(x), 'data must not be distributed')
 
-% Setup variables
-header = SDCpckg.basicHeaderStructFromX(x);
-f_precision = header.precision;
+%javaaddpath('/Users/bcollignon/Documents/workspace/betajavaseis1819.jar');
 
-% Preprocess input arguments
-if nargin>2
-assert(ischar(varargin{1})|isstruct(varargin{1}),...
-       'argument mast be either file_precision string or header struct')
-if ischar(varargin{1})
-f_precision = varargin{1};
-header.precision = f_precision;
-elseif isstruct(varargin{1})
-header = varargin{1};
-f_precision = header.precision;
+% Import External Functions
+import edu.mines.jtk.util.*;
+%import beta.javaseis.io.Seisio.*;
+
+% Open Seisio File Structure
+seisio = org.javaseis.io.Seisio(dirname);
+seisio.open('rw');
+
+% Define number of Hypercubes, Volumes, Frames & Traces
+AxisLengths = seisio.getGridDefinition.getAxisLengths() ;
+
+% Get number of dimensions and set position accordingly
+dimensions = seisio.getGridDefinition.getNumDimensions() ;
+position = zeros(dimensions,1);
+
+% Test: Check Position
+%  checkpos = org.javaseis.array.Position.checkPosition(seisio,position) ;
+
+%if checkpos
+
+%    fprintf('%s\n','checkpos is TRUE');
+    
+%end    
+
+% Create a format array with size of AxisLenghts
+y = ones(AxisLengths') ;
+formatgridsize = size(y) ;
+
+% if less than 4D: Reshape to 4D
+  if length(formatgridsize) < 4
+     for nullDim=length(formatgridsize):3
+  
+      formatgridsize(nullDim+1) = 1 ;
+     
+     
+     end
+  end
+  
+testx = x ;
+
+% Loop implementation
+% Loop over 1 hypercube
+for hyp=1:1
+ %loop over volumes 
+ for vol=1:formatgridsize(4)
+    % vola = formatgridsize(4) ;
+     position(4) = vol-1;   
+     %loop over frames
+      for frm=1:formatgridsize(3)
+         % frmb = formatgridsize(3) ;
+          position(3) = frm-1;
+         
+          %Store matrixofframes - Java format (right slice contiguous in memory)
+          %matrixofframes(frm,:,:) = testx(:,:,frm,vol) 
+           a = testx(:,:,frm,vol) ;
+          
+          % matrixofframes(frm,:,:) = a' ;
+           seisio.setTraceDataArray(a');
+           seisio.setPosition(position);
+           seisio.writeFrame(size(a,2));
+          
+      end
+      
+      
+ end
+ 
 end
-end;
-SDCpckg.verifyHeaderStructWithX(header,x);
-
-% Write header
-SDCpckg.io.setFileDirty(dirname);
-SDCpckg.io.JavaSeis.serial.HeaderWrite(dirname,header);
-SDCpckg.io.setFileClean(dirname);
-
-% Write file
-SDCpckg.io.setFileDirty(dirname);
-SDCpckg.io.JavaSeis.serial.DataWrite(dirname,'TraceFile',x,f_precision);
-SDCpckg.io.setFileClean(dirname);
+   
+   % Debugging 
+   %if seisio.frameExists(position)
+       
+       %fprintf('%s\n','FRAME'); 
+       
+       %seisio.getTracesInFrame() ;
+       %seisio.getTraceDataArray() ;
+       
+   %else
+       
+      %fprintf('%s\n','NO FRAME'); 
+       
+   %end    
+    
+   seisio.close();
+   
 end

@@ -1,23 +1,21 @@
-function [x header] = FileRead(dirname,varargin)
+function [x, header] = FileRead(dirname,varargin)
 %FILEREAD  Read serial data and header from binary file
+%TODO: >3dims
 %
 %   [X, HEADER] = FileRead(DIRNAME,X_PRECISION) reads
 %   the serial file from DIRNAME/FILENAME.
 %
 %   DIRNAME     - A string specifying the directory name
 %   X_PRECISION - An optional string specifying the precision of one unit of data,
-%                 defaults to 'double' (8 bits)
+%                 defaults to 'double' (8 bytes)
 %                 Supported precisions: 'double', 'single'
 %
-
-SDCpckg.io.isFileClean(dirname);
 error(nargchk(1, 2, nargin, 'struct'));
 assert(ischar(dirname), 'directory name must be a string')
 assert(isdir(dirname),'Fatal error: directory %s does not exist',dirname);
-assert(SDCpckg.io.isFileClean(dirname));
 
 % Setup variables
-x_precision = 'double';
+%x_precision = 'double';
 
 % Preprocess input arguments
 if nargin>1
@@ -25,9 +23,45 @@ if nargin>1
     x_precision = varargin{1};
 end;
 
+% Set up the Seisio object
+import org.javaseis.io.Seisio.*;    
+seisio = org.javaseis.io.Seisio(dirname);
+seisio.open('r');
+
 % Read header
-header = SDCpckg.io.JavaSeis.serial.HeaderRead(dirname);
-% Read file
-x=SDCpckg.io.JavaSeis.serial.DataRead(dirname,'TraceFile',...
-    header.size,header.precision,x_precision);
+%header = SDCpckg.io.JavaSeis.serial.HeaderRead(dirname)
+
+% Get number of dimensions and set position accordingly
+header.dims = seisio.getGridDefinition.getNumDimensions() ;
+
+% Define number of Hypercubes, Volumes, Frames & Traces
+header.size = seisio.getGridDefinition.getAxisLengths() ;
+
+% Get number of dimensions and set position accordingly
+dimensions = header.dims ;
+position = zeros(dimensions,1) ;
+
+% Get shape
+shape = header.size ;
+
+% Pre-set X to be 4d array of zeros with the correct dimensions
+x=zeros(shape(1),...
+    shape(2), ...
+    shape(3), ...
+    shape(4));
+
+% Read up to 4D datasets    
+for j=1:shape(4)
+    position(4) = j-1 ;
+  for i = 1:shape(3)
+    position(3) = i -1 ; 
+   
+    seisio.readFrame(position) ; % reads one 2D "Frame"
+  
+    x(:,:,i,j) = seisio.getTraceDataArray()'; 
+    
+  end
+end  
+  seisio.close();
+ 
 end
