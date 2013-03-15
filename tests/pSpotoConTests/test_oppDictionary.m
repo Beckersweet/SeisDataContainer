@@ -35,14 +35,14 @@ end
 function test_oppDictionary_repeating
 %% Repeating operators
 N  = 3;
-OP = randn(randi([2 5]),randi([2 5]));
+OP = randn(3,2);
 for i = 1:N
     oplist{i} = OP;
 end
 S1 = oppDictionary(N,OP,1);
 S2 =  opDictionary(oplist{:});
 x1 = piCon(S1.drandn);
-x2 = piCon(S1.rrandn);
+x2 = iCon(S1.rrandn);
 y1 = S1*x1;
 y2 = S2*gather(x1);
 z1 = S1'*x2;

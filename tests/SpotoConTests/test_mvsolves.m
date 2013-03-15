@@ -18,7 +18,7 @@ end
 
 function test_mvsolves_mldivide
 
-n  = 100; on = iCon(ones(n,1)); A = spdiags([-2*on 4*on -on],-1:1,n,n);
+n  = 100; on = ones(n,1); A = spdiags([-2*on 4*on -on],-1:1,n,n);
 b  = [sum(A,2) sum(A,2)]; tol = 1e-8; maxit = 60;
 b  = iCon(b);
 for i = 1:2

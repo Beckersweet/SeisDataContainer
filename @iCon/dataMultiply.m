@@ -1,6 +1,6 @@
-function y = applyOp(x, op)
-%APPLYOP Function to strip data from datacontainer for op to apply
-%   y = applyOp(x,op) returns what op*x is supposed to return
+function y = dataMultiply(x, op)
+%DATAMULTIPLY Function to strip data from datacontainer for op to apply
+%   y = dataMultiply(x,op) returns what op*x is supposed to return
 
 % Unwrap data and multiply
 y_data   = mtimes(op,double(x));
@@ -13,7 +13,7 @@ else
 end
 header        = x.header;
 header.exsize = x.exsize; % Inject exsize
-y.header      = headerMod(op,header,1);
+y.header      = headerMod(op, header, 1);
 y.exsize      = y.header.exsize; % Extract exsize
 
 % Remove field
@@ -21,4 +21,6 @@ y.header = rmfield(y.header,'exsize');
 
 % Post calculation reshape
 x_n = size(x,2);
-y = reshape(y,[prod(size(y))/x_n x_n]);
+if ~(length(size(y)) == 2 && size(y,2) == size(x,2))
+    y = reshape(y,[prod(size(y))/x_n x_n]);
+end

@@ -8,9 +8,9 @@ end
 
 function x = setup
 % Setup
-n1 = randi([2 5]);
-n2 = randi([2 5]);
-n3 = randi([2 5]);
+n1 = 4;
+n2 = 3;
+n3 = 2;
 
 x = iCon.randn(n1,n2,n3);
 

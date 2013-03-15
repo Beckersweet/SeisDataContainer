@@ -1,4 +1,4 @@
-function y = size(x,varargin)
+function varargout = size(x,varargin)
     
     y = zeros(1, size(x.exsize,2));
     for i=1:size(x.exsize,2)
@@ -12,8 +12,18 @@ function y = size(x,varargin)
     
     % Size indexing
     if ~isempty(varargin)
-        y = y(varargin{:});
+        if varargin{1} > length(y) % Indexing into all the singleton dimensions
+            y = 1;
+        else
+            y = y(varargin{:});
+        end
     end 
     
-    
-end
+    if nargout == length(y)
+        varargout = cell(1,length(y));
+        for u = 1:length(y)
+            varargout{u} = y(u);
+        end
+    else
+        varargout{1} = y;
+    end

@@ -19,7 +19,7 @@ function test_oppMatrix_multiply
 % multiplications because of the distributed nature of the distributed
 % matrices. Error is in the order of e-15 so it is ok. We will just use
 % assertElementsAlmostEqual
-m  = randi(100); n = randi(100);
+m  = 4; n = 3;
 A1 = iCon.randn(m,n);
 A2 = oppMatrix(distributed(A1));
 x1 = iCon([A2.drandn A2.drandn]);
@@ -36,7 +36,7 @@ end % multiply
 
 function test_oppMatrix_basis_rn
 %% Test for oppMatrix so that it generates the correct result
-m  = randi(100); n = randi(100);
+m  = 4; n = 3;
 A1 = iCon.randn(m,n);
 A2 = oppMatrix(distributed(A1));
 x  = eye(n);
@@ -47,10 +47,10 @@ end % basis
 function test_oppMatrix_divide
 %% test for divide of oppMatrix
 % distributed matrix only supports left divide of square matrices
-n  = randi(100);
-A1 = randn(n);
-A2 = oppMatrix(distributed(A1));
-x  = iCon(A2.drandn);
+n  = 3;
+A1 = piCon.randn(n);
+A2 = oppMatrix(A1);
+x  = piCon(A2.drandn);
 y  = A1*x;
 
 assertElementsAlmostEqual(gather(A2\y),gather(x));
@@ -58,22 +58,21 @@ end % divide
 
 function test_oppMatrix_plus
 %% test for plus of oppMatrix
-m  = randi(100); n = randi(100);
-A1 = iCon.randn(m,n);
-A2 = oppMatrix(distributed(A1));
-B  = iCon.randn(m,n);
+m  = 4; n = 3;
+A1 = piCon.randn(m,n);
+A2 = oppMatrix(A1);
+B  = randn(m,n);
 y1 = A1 + B;
 y2 = A2 + B;
-z  = zeros(m,n);
-assertEqual(y1,gather(y2));
+assertEqual(double(y1),double(y2));
 end % plus
 
 function test_oppMatrix_minus
 %% test for minus of oppMatrix
-m  = randi(100); n = randi(100);
-A1 = iCon.randn(m,n);
-A2 = oppMatrix(distributed(A1));
-B  = iCon.randn(m,n);
+m  = 4; n = 3;
+A1 = piCon.randn(m,n);
+A2 = oppMatrix(A1);
+B  = randn(m,n);
 y1 = A1 - B;
 y2 = A2 - B;
 z  = zeros(m,n);

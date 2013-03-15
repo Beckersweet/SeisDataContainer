@@ -9,7 +9,6 @@ tic, y2 = spgl1(A,iCon(b)); toc
 
 assertEqual(norm(y1-x), norm(y2-x));
 
-
 end
 
 function test_iCon_lsqr

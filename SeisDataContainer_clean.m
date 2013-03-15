@@ -1,4 +1,4 @@
-function  SeisDataContainer_clean()
+function  SeisDataContainer_clean(varargin)
 % SeisDataContainer_finalize cleans global and local temporary directories
 %
     global SDCglobalTmpDir;
@@ -6,6 +6,15 @@ function  SeisDataContainer_clean()
     global SDCbufferSize;
     global SDCdefaultIOdist;
     global SDCdebugFlag;
+    if length(varargin) > 1
+        if strcmp(name,'Verbose')
+            verbose = mode;
+        else
+            verbose = 1;
+        end
+    else
+        verbose = 1;
+    end
 
     if matlabpool('size') > 0
         spmd
@@ -17,17 +26,23 @@ function  SeisDataContainer_clean()
             end
         end
     end
-    fprintf('Deleted local temporary home %s\n',SDClocalTmpDir);
+    if verbose
+        fprintf('Deleted local temporary home %s\n',SDClocalTmpDir);
+    end
     if isdir(SDCglobalTmpDir)
         rmdir(SDCglobalTmpDir,'s')
     end
-    fprintf('Deleted global temporary home in %s\n',SDCglobalTmpDir);
+    if verbose
+        fprintf('Deleted global temporary home in %s\n',SDCglobalTmpDir);
+    end
 
     clear global SDCglobalTmpDir;
     clear global SDClocalTmpDir;
     clear global SDCbufferSize;
     clear global SDCdefaultIOdist;
     clear global SDCdebugFlag;
-
-    fprintf('SDC global variables were cleared\n');
+    
+    if verbose
+        fprintf('SDC global variables were cleared\n');
+    end
 end

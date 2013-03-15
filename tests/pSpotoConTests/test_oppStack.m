@@ -12,14 +12,14 @@ function test_oppStack_prod
     E  = opStack(A,B);    
     x  = iCon(drandn(D,2));    
     assertElementsAlmostEqual(D*x, E*x);    
-    x  = iCon(rrandn(D,2));
+    x  = piCon(rrandn(D,2));
     x2 = gather(x);    
     assertElementsAlmostEqual(D'*x, E'*x2);
 end
 
 function test_oppStack_weights
 %%
-    m1 = randi(10); m2 = randi(10); n = randi(10);
+    m1 = 5; m2 = 4; n = 3;
     A1 = randn(m1,n);
     A2 = randn(m2,n);
     D  = oppStack([m2 m1],A1,A2,1);
@@ -28,7 +28,7 @@ function test_oppStack_weights
     E  = opStack(A1,A2);
     x  = iCon(drandn(D,2));    
     assertElementsAlmostEqual(D*x, E*x);
-    x  = iCon(rrandn(D,2));
+    x  = piCon(rrandn(D,2));
     x2 = gather(x);
     assertElementsAlmostEqual(D'*x, E'*x2);
 end
@@ -43,7 +43,7 @@ end
 S1 = oppStack(N,OP,1);
 S2 =  opStack(oplist{:});
 x1 = iCon(S1.drandn);
-x2 = iCon(S1.rrandn);
+x2 = piCon(S1.rrandn);
 y1 = S1*x1;
 y2 = S2*x1;
 z1 = S1'*x2;
