@@ -36,9 +36,9 @@ function  SeisDataContainer_init(varargin)
     p = inputParser;
     p.addParamValue('SDCglobalTmpDir',getenv('GLOBTMPDIR'),@ischar);
     p.addParamValue('SDClocalTmpDir',getenv('TMPDIR'),@ischar);
-    p.addParamValue('SDCbufferSize',doubleSize*MBsize,@(x)isnumeric(x)||isscalar(x));
-    p.addParamValue('SDCdefaultIOdist',0,@(x)isnumeric(x)||isscalar(x));
-    p.addParamValue('SDCdebugFlag',0,@(x)isnumeric(x)||isscalar(x));
+    p.addParamValue('SDCbufferSize',doubleSize*MBsize,@(x)isnumeric(x)&&isscalar(x));
+    p.addParamValue('SDCdefaultIOdist',0,@(x)isnumeric(x)&&isscalar(x));
+    p.addParamValue('SDCdebugFlag',0,@(x)isnumeric(x)&&isscalar(x));
     p.addParamValue('Verbose',1,@isnumeric);
     p.parse(varargin{:});
     verbose = p.Results.Verbose;
