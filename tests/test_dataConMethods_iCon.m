@@ -12,7 +12,7 @@ n1 = 4;
 n2 = 3;
 n3 = 2;
 
-x = iCon.randn(n1,n2,n3);
+x = iCon(randn(n1,n2,n3),'delta',[5,6,7],'unit',{'m','kg','N'});
 
 end % setup
 
@@ -99,4 +99,32 @@ end
 
 function test_dataConMethods_iCon_vec(x)
     vec(x);
+end
+
+function test_dataConMethods_iCon_delta(x)
+    assertEqual(delta(x),[5,6,7]);
+    
+    assertEqual(delta(x,2),6);
+    assertEqual(delta(x,3),7);
+    assertEqual(delta(x,1),5);
+    
+    assertEqual(delta(x,2,3),[6,7]);
+    assertEqual(delta(x,1,3),[5,7]);
+    assertEqual(delta(x,2,1),[6,5]);
+    
+    assertEqual(delta(x,2,1,3),[6,5,7]);
+end
+
+function test_dataConMethods_iCon_unit(x)
+    assertEqual(unit(x),{'m','kg','N'});
+    
+    assertEqual(unit(x,2),{'kg'});
+    assertEqual(unit(x,1),{'m'});
+    assertEqual(unit(x,3),{'N'});
+    
+    assertEqual(unit(x,2,3),{'kg','N'});
+    assertEqual(unit(x,3,1),{'N','m'});
+    assertEqual(unit(x,2,1),{'kg','m'});
+    
+    assertEqual(unit(x,2,3,1),{'kg','N','m'});
 end
