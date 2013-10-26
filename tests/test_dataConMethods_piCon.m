@@ -11,7 +11,7 @@ n1 = randi([2 5]);
 n2 = randi([2 5]);
 n3 = randi([2 5]);
 
-x = iCon(randn(n1,n2,n3),'delta',[5,6,7],'unit',{'m','kg','N'});
+x = piCon(randn(n1,n2,n3),'delta',[5,6,7],'unit',{'m','kg','N'});
 
 end % setup
 
