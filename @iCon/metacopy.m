@@ -7,3 +7,5 @@ function y = metacopy(x,y)
 y.exsize = x.exsize;
 y.perm   = x.perm;
 y.strict = x.strict;
+
+y.header.size = x.header.size;

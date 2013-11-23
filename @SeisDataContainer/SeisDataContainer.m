@@ -57,7 +57,7 @@ classdef SeisDataContainer
                         1:length(x.header.size)];
 
             % parse extra arguments
-            ldims = length(x.header.size);
+            ldims = x.header.dims;
             p = inputParser;
             p.addParamValue('varName',x.header.varName,@ischar);
             p.addParamValue('varUnits',x.header.varUnits,@ischar);

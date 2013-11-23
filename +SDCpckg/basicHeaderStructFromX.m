@@ -37,6 +37,9 @@ function header = basicHeaderStructFromX(x,varargin)
 
     header.varName = 'unknown';
     header.varUnits = 'unknown';
+    if length(xsize)==2 && (xsize(1) == 1 || xsize(2) == 1)
+       dims = 1; % 1 by n or m by 1 matrices should be considered 1 dimensional
+    end
     header.dims = dims;
     header.size = xsize;
     header.origin = zeros(1,dims);
