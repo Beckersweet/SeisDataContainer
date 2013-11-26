@@ -36,7 +36,8 @@ else % multiple dims case
                     'the God of SeisDataContainer by using non-scalars ',...
                     'to index over the rightmost dimensions. Your metadata ',...
                     'has been sacrificed to appease His Containedness']);
-                y = construct(x,x,subsref(x.data,s));
+                %y = construct(x,x,subsref(x.data,s));
+                y = construct(x,subsref(x.data,s));
                 return;
             end
             

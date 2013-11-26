@@ -8,4 +8,4 @@ y.exsize = x.exsize;
 y.perm   = x.perm;
 y.strict = x.strict;
 
-y.header.size = x.header.size;
+y.header = x.header;

@@ -3,6 +3,10 @@ function y = abs(x)
 %   X is complex, ABS(X) is the complex modulus (magnitude) of
 %   the elements of X.
 %
-%   Note: This returns a Matlab data array
+%   Note: This returns a Matlab data array %%%
+%   Note: Now returns dataContainer for testing purpose
 
-y = abs(double(x));
+%y = abs(double(x));
+y = iCon(abs(double(x)));
+y.header = x.header;
+y.exsize = x.exsize;
