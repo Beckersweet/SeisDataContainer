@@ -58,8 +58,6 @@ function header = basicHeaderStructFromX(x,varargin)
     header.label = l;
 
     header.distributedIO = 0;
-    
-    header.sampleInterval = nan;
 
     p = inputParser;
     p.addParamValue('varName',header.varName,@ischar);

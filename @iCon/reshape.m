@@ -15,7 +15,11 @@ function y = reshape(x,varargin)
 
 % Setting up the variables
 imsize  = x.header.size;
-redims  = [varargin{:}];
+if isa(varargin{1},'SeisDataContainer')
+    redims = size(varargin{1});
+else
+    redims  = [varargin{:}];
+end
 
 % Reshape data 
 y = iCon(reshape(x.data,redims));
@@ -76,4 +80,6 @@ else % Collapsing implicit size
     y_header.distributedIO = x.header.distributedIO;
     y_header.size          = x.header.size;
     y.header               = y_header;
+    
+    y.IDHistory            = x.IDHistory;
 end % collapsing implicit size

@@ -42,6 +42,10 @@ classdef SeisDataContainer
     properties ( Access = protected )
         data   = []; % Actual data for the container
     end
+    
+    properties
+        IDHistory % List of operator ID and some extra info
+    end
         
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Public Methods
@@ -73,6 +77,7 @@ classdef SeisDataContainer
             x.header.unit     = p.Results.unit;
             x.header.label    = p.Results.label;
             
+            x.IDHistory = ContainerStack();
         end % Constructor
                 
     end % Public methods

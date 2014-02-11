@@ -15,7 +15,7 @@ function varargout = size(x,varargin)
         if varargin{1} > length(y) % Indexing into all the singleton dimensions
             y = 1;
         else
-            y = y(spot.utils.uncell(varargin));
+            y = y(varargin{:});
         end
     end 
     

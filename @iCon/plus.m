@@ -28,6 +28,7 @@ if ~isa(A,'iCon') % Right plus
         y = iCon(y);
     end
     y = metacopy(B,y);
+    y.IDHistory = B.IDHistory;
             
 elseif ~isa(B,'iCon') % Left plus
     y = double(double(A) + B);
@@ -37,7 +38,7 @@ elseif ~isa(B,'iCon') % Left plus
         y = iCon(y);
     end
     y = metacopy(A,y);
-    
+    y.IDHistory = A.IDHistory;
 else % Both data containers
     y = double(A) + double(B);
     if isa(y, 'distributed')
@@ -55,4 +56,7 @@ else % Both data containers
     
     % Complex propagation
     y.header.complex = A.header.complex || B.header.complex;
+    
+    % operation history
+    y.IDHistory = A.IDHistory;
 end

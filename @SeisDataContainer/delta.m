@@ -2,12 +2,7 @@ function y = delta(x,varargin)
     y = x.header.delta;
     
     if ~isempty(varargin)
-        len = length(varargin);
-        % converting cell array of integers into double array
-        ind = zeros(1,len);
-        for i = 1 : len
-            ind(i) = varargin{i};
-        end
+        ind = spot.utils.uncell(varargin);
             
         y = y(ind);
     end

@@ -28,6 +28,7 @@ if ~isa(A,'iCon') % Right minus
         y = iCon(y);
     end
     y = metacopy(B,y);
+    y.IDHistory = B.IDHistory;
             
 elseif ~isa(B,'iCon') % Left minus
     y = double(double(A) - B);
@@ -37,7 +38,7 @@ elseif ~isa(B,'iCon') % Left minus
         y = iCon(y);
     end
     y = metacopy(A,y);
-    
+    y.IDHistory = A.IDHistory;
 else % Both data containers
     y = double(A) - double(B);
     if isa(y, 'distributed')
@@ -52,4 +53,7 @@ else % Both data containers
        assert(all(A.header.size == B.header.size),...
            'Strict flag enforced. Implicit dimensions much match.')
     end
+    
+    % operation history
+    y.IDHistory = A.IDHistory;
 end
